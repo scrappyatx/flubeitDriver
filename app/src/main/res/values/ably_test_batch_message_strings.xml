@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
+  -->
+
+<resources>
+    <string-array name="batch_messages">
+        <item>Request Assigned Batches</item>
+        <item>Forfeit Batch</item>
+        <item>Batch START</item>
+        <item>Arrived To Pickup</item>
+        <item>Driver Takes Vehicle from Customer</item>
+        <item>Arrived To Service</item>
+        <item>Service Takes Vehicle</item>
+        <item>Service START</item>
+        <item>Service COMPLETE</item>
+        <item>Driver Takes Vehicle from Service</item>
+        <item>Owner Takes Vehicle</item>
+        <item>Location Update</item>
+    </string-array>
+</resources>
+
+
+
