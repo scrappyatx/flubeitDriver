@@ -2,7 +2,7 @@
  * Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
  */
 
-package it.flube.driver.dataLayer.interfaces.eventBusEvents.preStartupActivity;
+package it.flube.driver.dataLayer.interfaces.eventBusEvents.activities.preStartupActivity;
 
 import it.flube.driver.modelLayer.entities.DriverSingleton;
 

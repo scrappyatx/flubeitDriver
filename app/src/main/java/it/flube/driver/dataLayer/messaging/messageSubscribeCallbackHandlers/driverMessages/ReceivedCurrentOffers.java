@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.ably.lib.types.Message;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyMessages.driverMessages.ReceivedCurrentOffersMessage;
+import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyMessages.driverMessages.ReceivedCurrentOffersMessage;
 import it.flube.driver.dataLayer.interfaces.messaging.AblyMessageSubscribeCallback;
 import it.flube.driver.modelLayer.entities.Offer;
 

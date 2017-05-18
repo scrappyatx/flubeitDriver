@@ -2,7 +2,7 @@
  * Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
  */
 
-package it.flube.driver.dataLayer.interfaces.eventBusEvents.activityTransition;
+package it.flube.driver.dataLayer.interfaces.eventBusEvents.activityNavigation;
 
 /**
  * Created by Bryan on 5/3/2017.

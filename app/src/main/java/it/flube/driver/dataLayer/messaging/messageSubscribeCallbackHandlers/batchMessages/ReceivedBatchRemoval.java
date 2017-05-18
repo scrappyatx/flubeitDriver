@@ -9,7 +9,7 @@ import android.util.Log;
 import org.greenrobot.eventbus.EventBus;
 
 import io.ably.lib.types.Message;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyMessages.batchMessages.ReceivedBatchRemovalMessage;
+import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyMessages.batchMessages.ReceivedBatchRemovalMessage;
 import it.flube.driver.dataLayer.interfaces.messaging.AblyMessageSubscribeCallback;
 
 /**

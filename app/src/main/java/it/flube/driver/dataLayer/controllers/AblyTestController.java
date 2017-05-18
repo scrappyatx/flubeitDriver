@@ -11,13 +11,13 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import io.ably.lib.types.ErrorInfo;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyMessages.batchMessages.ReceivedAssignedBatchesMessage;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyMessages.batchMessages.ReceivedBatchNotificationMessage;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyMessages.batchMessages.ReceivedBatchRemovalMessage;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyMessages.driverMessages.ReceivedClaimOfferResultMessage;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyMessages.driverMessages.ReceivedCurrentOffersMessage;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyTestActivity.ConnectionWasUpdatedEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyTestActivity.MessageWasUpdatedEvent;
+import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyMessages.batchMessages.ReceivedAssignedBatchesMessage;
+import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyMessages.batchMessages.ReceivedBatchNotificationMessage;
+import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyMessages.batchMessages.ReceivedBatchRemovalMessage;
+import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyMessages.driverMessages.ReceivedClaimOfferResultMessage;
+import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyMessages.driverMessages.ReceivedCurrentOffersMessage;
+import it.flube.driver.dataLayer.interfaces.eventBusEvents.activities.ablyTestActivity.ConnectionWasUpdatedEvent;
+import it.flube.driver.dataLayer.interfaces.eventBusEvents.activities.ablyTestActivity.MessageWasUpdatedEvent;
 import it.flube.driver.dataLayer.interfaces.messaging.AblyChannelCallback;
 import it.flube.driver.dataLayer.interfaces.messaging.AblyConnectionCallback;
 import it.flube.driver.dataLayer.messaging.AblyChannel;
@@ -296,39 +296,39 @@ public class AblyTestController implements AblyConnectionCallback, AblyChannelCa
 
 
     // channel callbacks
-    public void onChannelCallbackInitialized() {
-        Log.d(TAG, "*** Channel Initiallized");
-        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel Initialized"));
+    public void onChannelCallbackInitialized(String channelName) {
+        Log.d(TAG, "*** Channel " + channelName + " Initialized");
+        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel " + channelName + " Initialized"));
     }
 
-    public void onChannelCallbackAttaching() {
-        Log.d(TAG, "*** Channel Attaching...");
-        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel Attaching..."));
+    public void onChannelCallbackAttaching(String channelName) {
+        Log.d(TAG, "*** Channel " + channelName + " Attaching...");
+        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel " + channelName + " Attaching..."));
     }
 
-    public void onChannelCallbackAttached(boolean resumed) {
-        Log.d(TAG, "*** Channel Attached");
-        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel Attached"));
+    public void onChannelCallbackAttached(String channelName, boolean resumed) {
+        Log.d(TAG, "*** Channel " + channelName + " Attached");
+        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel " + channelName + " Attached"));
     }
 
-    public void onChannelCallbackDetaching() {
-        Log.d(TAG, "*** Channel Detaching...");
-        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel Detaching..."));
+    public void onChannelCallbackDetaching(String channelName) {
+        Log.d(TAG, "*** Channel " + channelName + " Detaching...");
+        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel " + channelName + " Detaching..."));
     }
 
-    public void onChannelCallbackDetached() {
-        Log.d(TAG, "*** Channel Detached");
-        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel Detached"));
+    public void onChannelCallbackDetached(String channelName) {
+        Log.d(TAG, "*** Channel " + channelName + " Detached");
+        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel " + channelName + " Detached"));
     }
 
-    public void onChannelCallbackSuspended() {
-        Log.d(TAG, "*** Channel Suspended");
-        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel Suspended"));
+    public void onChannelCallbackSuspended(String channelName) {
+        Log.d(TAG, "*** Channel " + channelName + " Suspended");
+        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel " + channelName + " Suspended"));
     }
 
-    public void onChannelCallbackFailed(ErrorInfo e) {
-        Log.d(TAG, "*** Channel Failed -> " + e.toString());
-        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel Failed -> " + e.toString()));
+    public void onChannelCallbackFailed(String channelName, ErrorInfo e) {
+        Log.d(TAG, "*** Channel " + channelName + "Failed -> " + e.toString());
+        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel " + channelName + "Failed -> " + e.toString()));
     }
 
 }

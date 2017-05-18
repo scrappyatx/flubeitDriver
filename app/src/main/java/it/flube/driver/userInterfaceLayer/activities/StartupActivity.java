@@ -15,8 +15,8 @@ import com.rollbar.android.Rollbar;
 import it.flube.driver.BuildConfig;
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.controllers.StartupController;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.activityTransition.GotoLoginActivityEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.activityTransition.GotoMainActivityEvent;
+import it.flube.driver.dataLayer.interfaces.eventBusEvents.activityNavigation.GotoLoginActivityEvent;
+import it.flube.driver.dataLayer.interfaces.eventBusEvents.activityNavigation.GotoMainActivityEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -28,7 +28,7 @@ public class StartupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //initialize rollbar
-        if (!Rollbar.isInit()) {Rollbar.init(this,"6489dbbc16e943beaebf5c0028ee588a", BuildConfig.BUILD_TYPE);}
+        if (!Rollbar.isInit()) {Rollbar.init(this,"6489dbbc16e943beaebf5c0028ee588a", BuildConfig.BUILD_TYPE+"_"+BuildConfig.VERSION_NAME);}
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_startup);
         Log.d(TAG, "StartupActivity CREATED");

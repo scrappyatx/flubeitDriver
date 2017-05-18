@@ -2,17 +2,17 @@
  * Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
  */
 
-package it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyTestActivity;
+package it.flube.driver.dataLayer.interfaces.eventBusEvents.activities.ablyTestActivity;
 
 /**
  * Created on 5/12/2017
  * Project : Driver
  */
 
-public class ConnectionWasUpdatedEvent {
+public class MessageWasUpdatedEvent {
     String mResultMessage;
 
-    public ConnectionWasUpdatedEvent(String resultMessage) {
+    public MessageWasUpdatedEvent(String resultMessage) {
         mResultMessage = resultMessage;
     }
 

@@ -2,17 +2,17 @@
  * Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
  */
 
-package it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyTestActivity;
+package it.flube.driver.dataLayer.interfaces.eventBusEvents.activities.preStartupActivity;
 
 /**
- * Created on 5/12/2017
+ * Created on 5/9/2017
  * Project : Driver
  */
 
-public class MessageWasUpdatedEvent {
+public class ResultWasUpdatedEvent {
     String mResultMessage;
 
-    public MessageWasUpdatedEvent(String resultMessage) {
+    public ResultWasUpdatedEvent(String resultMessage) {
         mResultMessage = resultMessage;
     }
 

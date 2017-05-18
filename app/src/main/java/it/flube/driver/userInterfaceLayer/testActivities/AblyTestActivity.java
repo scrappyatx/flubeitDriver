@@ -23,8 +23,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import it.flube.driver.BuildConfig;
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.controllers.AblyTestController;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyTestActivity.ConnectionWasUpdatedEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyTestActivity.MessageWasUpdatedEvent;
+import it.flube.driver.dataLayer.interfaces.eventBusEvents.activities.ablyTestActivity.ConnectionWasUpdatedEvent;
+import it.flube.driver.dataLayer.interfaces.eventBusEvents.activities.ablyTestActivity.MessageWasUpdatedEvent;
 
 
 /**
@@ -55,9 +55,8 @@ public class AblyTestActivity extends AppCompatActivity implements AdapterView.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //initialize rollbar
-        if (!Rollbar.isInit()) {Rollbar.init(this,"6489dbbc16e943beaebf5c0028ee588a", BuildConfig.BUILD_TYPE);}
+        if (!Rollbar.isInit()) {Rollbar.init(this,"6489dbbc16e943beaebf5c0028ee588a", BuildConfig.BUILD_TYPE+"_"+BuildConfig.VERSION_NAME);}
 
-        Log.d(TAG, "build config.name " + BuildConfig.VERSION_NAME);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ably_test);

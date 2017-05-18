@@ -9,9 +9,9 @@ import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.activityTransition.GotoMainActivityEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.preStartupActivity.DriverWasUpdatedEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.preStartupActivity.ResultWasUpdatedEvent;
+import it.flube.driver.dataLayer.interfaces.eventBusEvents.activityNavigation.GotoMainActivityEvent;
+import it.flube.driver.dataLayer.interfaces.eventBusEvents.activities.preStartupActivity.DriverWasUpdatedEvent;
+import it.flube.driver.dataLayer.interfaces.eventBusEvents.activities.preStartupActivity.ResultWasUpdatedEvent;
 import it.flube.driver.dataLayer.interfaces.network.HttpAblyTokenCallback;
 import it.flube.driver.dataLayer.network.HttpAblyTokenDELETE;
 import it.flube.driver.dataLayer.network.HttpDriverProfile;

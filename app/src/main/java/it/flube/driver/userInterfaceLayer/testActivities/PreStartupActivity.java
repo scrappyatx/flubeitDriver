@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.rollbar.android.Rollbar;
@@ -21,10 +20,9 @@ import org.greenrobot.eventbus.ThreadMode;
 import it.flube.driver.BuildConfig;
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.controllers.PreStartupController;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.activityTransition.GotoMainActivityEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.activityTransition.GotoStartupActivityEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.preStartupActivity.DriverWasUpdatedEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.preStartupActivity.ResultWasUpdatedEvent;
+import it.flube.driver.dataLayer.interfaces.eventBusEvents.activityNavigation.GotoStartupActivityEvent;
+import it.flube.driver.dataLayer.interfaces.eventBusEvents.activities.preStartupActivity.DriverWasUpdatedEvent;
+import it.flube.driver.dataLayer.interfaces.eventBusEvents.activities.preStartupActivity.ResultWasUpdatedEvent;
 import it.flube.driver.userInterfaceLayer.activities.StartupActivity;
 
 public class PreStartupActivity extends AppCompatActivity {
@@ -44,7 +42,7 @@ public class PreStartupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //initialize rollbar
-        if (!Rollbar.isInit()) {Rollbar.init(this,"6489dbbc16e943beaebf5c0028ee588a", BuildConfig.BUILD_TYPE);}
+        if (!Rollbar.isInit()) {Rollbar.init(this,"6489dbbc16e943beaebf5c0028ee588a", BuildConfig.BUILD_TYPE+"_"+BuildConfig.VERSION_NAME);}
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pre_startup);

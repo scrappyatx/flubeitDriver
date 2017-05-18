@@ -10,6 +10,7 @@ import com.rollbar.android.Rollbar;
 
 import io.ably.lib.realtime.AblyRealtime;
 import io.ably.lib.realtime.Channel;
+import io.ably.lib.realtime.ChannelStateListener;
 import io.ably.lib.types.AblyException;
 import io.ably.lib.types.ErrorInfo;
 import io.ably.lib.types.Message;
@@ -42,7 +43,7 @@ public class AblyChannel implements AblyChannelCallback, AblyMessagePublishCallb
 
     public AblyChannel(String name, AblyChannelCallback callback) {
         mName = name;
-        mChannelStateListener = new AblyChannelStateListener(this);
+        mChannelStateListener = new AblyChannelStateListener(mName, this);
         mSubcribeListener = new AblyMessageSubscribeListener(this);
         mPublishListener = new AblyMessagePublishListener(this);
         mCallback = callback;
@@ -87,50 +88,50 @@ public class AblyChannel implements AblyChannelCallback, AblyMessagePublishCallb
     }
 
     //channel callbacks
-    public void onChannelCallbackInitialized() {
+    public void onChannelCallbackInitialized(String channelName) {
         Log.d(TAG, "*** Channel Initalized");
         mIsAttached = false;
-        mCallback.onChannelCallbackInitialized();
+        mCallback.onChannelCallbackInitialized(channelName);
     }
 
-    public void onChannelCallbackAttaching() {
+    public void onChannelCallbackAttaching(String channelName) {
         Log.d(TAG, "*** Channel Attaching...");
         mIsAttached = false;
-        mCallback.onChannelCallbackAttaching();
+        mCallback.onChannelCallbackAttaching(channelName);
     }
 
-    public void onChannelCallbackAttached(boolean resumed) {
+    public void onChannelCallbackAttached(String channelName, boolean resumed) {
         Log.d(TAG, "*** Channel Attached");
         mIsAttached = true;
         if (!resumed) {
             //TODO need to go and request channel history to recover missed messages
-            Rollbar.reportMessage("Channel " + mName + " missed some messages from the server!!!", "critical");
+            Rollbar.reportMessage("Channel " + channelName + " missed some messages from the server!!!", "critical");
         }
-        mCallback.onChannelCallbackAttached(resumed);
+        mCallback.onChannelCallbackAttached(channelName, resumed);
     }
 
-    public void onChannelCallbackDetaching() {
+    public void onChannelCallbackDetaching(String channelName) {
         Log.d(TAG, "*** Channel Detaching...");
         mIsAttached = false;
-        mCallback.onChannelCallbackDetaching();
+        mCallback.onChannelCallbackDetaching(channelName);
     }
 
-    public void onChannelCallbackDetached() {
+    public void onChannelCallbackDetached(String channelName) {
         Log.d(TAG, "*** Channel Detached");
         mIsAttached = false;
-        mCallback.onChannelCallbackDetached();
+        mCallback.onChannelCallbackDetached(channelName);
     }
 
-    public void onChannelCallbackSuspended() {
+    public void onChannelCallbackSuspended(String channelName) {
         Log.d(TAG, "*** Channel Suspended");
         mIsAttached = false;
-        mCallback.onChannelCallbackSuspended();
+        mCallback.onChannelCallbackSuspended(channelName);
     }
 
-    public void onChannelCallbackFailed(ErrorInfo e) {
+    public void onChannelCallbackFailed(String channelName, ErrorInfo e) {
         Log.d(TAG, "*** Channel Failed -> " + Integer.toString(e.code) + " : " + e.message);
         mIsAttached = false;
-        mCallback.onChannelCallbackFailed(e);
+        mCallback.onChannelCallbackFailed(channelName, e);
     }
 
     // message publish callbacks

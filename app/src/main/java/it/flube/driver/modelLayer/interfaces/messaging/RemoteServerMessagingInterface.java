@@ -10,7 +10,12 @@ package it.flube.driver.modelLayer.interfaces.messaging;
  */
 
 public interface RemoteServerMessagingInterface {
+    //connect and disconnect to remote server
+    public void connect();
 
+    public void disconnect();
+
+    //send messages to remote server
     public void sendMsgOnDuty(boolean dutyStatus);
 
     public void sendMsgRequestCurrentOffers();

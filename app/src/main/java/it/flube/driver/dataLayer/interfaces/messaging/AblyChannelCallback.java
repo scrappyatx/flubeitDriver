@@ -13,19 +13,19 @@ import io.ably.lib.types.ErrorInfo;
 
 public interface AblyChannelCallback {
 
-    void onChannelCallbackInitialized();
+    void onChannelCallbackInitialized(String channelName);
 
-    void onChannelCallbackAttaching();
+    void onChannelCallbackAttaching(String channelName);
 
-    void onChannelCallbackAttached(boolean resumed);
+    void onChannelCallbackAttached(String channelName, boolean resumed);
 
-    void onChannelCallbackDetaching();
+    void onChannelCallbackDetaching(String channelName);
 
-    void onChannelCallbackDetached();
+    void onChannelCallbackDetached(String channelName);
 
-    void onChannelCallbackSuspended();
+    void onChannelCallbackSuspended(String channelName);
 
-    void onChannelCallbackFailed(ErrorInfo e);
+    void onChannelCallbackFailed(String channelName, ErrorInfo e);
 
     //  A channel can exist in any of the following states:
 

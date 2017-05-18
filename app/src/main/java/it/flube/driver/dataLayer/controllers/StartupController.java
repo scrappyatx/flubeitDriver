@@ -7,9 +7,8 @@ package it.flube.driver.dataLayer.controllers;
 import android.content.Context;
 import android.util.Log;
 
-import com.rollbar.android.Rollbar;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.activityTransition.GotoLoginActivityEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.activityTransition.GotoMainActivityEvent;
+import it.flube.driver.dataLayer.interfaces.eventBusEvents.activityNavigation.GotoLoginActivityEvent;
+import it.flube.driver.dataLayer.interfaces.eventBusEvents.activityNavigation.GotoMainActivityEvent;
 import it.flube.driver.modelLayer.interfaces.callBacks.repositories.driver.DriverStorageRepositoryCallback;
 import it.flube.driver.modelLayer.interfaces.callBacks.useCase.driver.ClearDriverSingletonCallback;
 import it.flube.driver.modelLayer.entities.DriverSingleton;

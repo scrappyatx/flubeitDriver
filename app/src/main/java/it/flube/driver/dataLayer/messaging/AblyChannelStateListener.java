@@ -16,35 +16,37 @@ import it.flube.driver.dataLayer.interfaces.messaging.AblyConnectionCallback;
 
 public class AblyChannelStateListener implements ChannelStateListener {
     private AblyChannelCallback mCallback;
+    private String mChannelName;
 
-    public AblyChannelStateListener(AblyChannelCallback callback) {
+    public AblyChannelStateListener(String channelName, AblyChannelCallback callback) {
+        mChannelName = channelName;
         mCallback = callback;
     }
 
     public void onChannelStateChanged(ChannelStateChange channelStateChange) {
         switch (channelStateChange.current) {
             case initialized:
-                mCallback.onChannelCallbackInitialized();
+                mCallback.onChannelCallbackInitialized(mChannelName);
                 break;
             case attaching:
-                mCallback.onChannelCallbackAttaching();
+                mCallback.onChannelCallbackAttaching(mChannelName);
                 break;
             case attached:
                 // if resumed = TRUE, then message continuity was preserved, NO MESSAGES HAVE BEEN LOST
                 // if resumed = FALSE, then some messages have been missed by the client, MESSAGES HAVE BEEN LOST
-                mCallback.onChannelCallbackAttached(channelStateChange.resumed);
+                mCallback.onChannelCallbackAttached(mChannelName, channelStateChange.resumed);
                 break;
             case detaching:
-                mCallback.onChannelCallbackDetaching();
+                mCallback.onChannelCallbackDetaching(mChannelName);
                 break;
             case detached:
-                mCallback.onChannelCallbackDetached();
+                mCallback.onChannelCallbackDetached(mChannelName);
                 break;
             case suspended:
-                mCallback.onChannelCallbackSuspended();
+                mCallback.onChannelCallbackSuspended(mChannelName);
                 break;
             case failed:
-                mCallback.onChannelCallbackFailed(channelStateChange.reason);
+                mCallback.onChannelCallbackFailed(mChannelName, channelStateChange.reason);
                 break;
         }
     }
