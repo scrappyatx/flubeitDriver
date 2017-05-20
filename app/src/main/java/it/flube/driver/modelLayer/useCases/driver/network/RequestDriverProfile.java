@@ -5,7 +5,7 @@
 package it.flube.driver.modelLayer.useCases.driver.network;
 
 import it.flube.driver.modelLayer.entities.DriverSingleton;
-import it.flube.driver.modelLayer.interfaces.repositories.driver.DriverNetworkRepository;
+import it.flube.driver.modelLayer.interfaces.repositories.driverStorage.DriverNetworkRepository;
 
 /**
  * Created on 5/5/2017

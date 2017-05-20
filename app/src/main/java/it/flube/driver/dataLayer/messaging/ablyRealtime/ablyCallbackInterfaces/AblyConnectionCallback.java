@@ -2,8 +2,7 @@
  * Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
  */
 
-package it.flube.driver.dataLayer.interfaces.messaging;
-import io.ably.lib.realtime.ConnectionState;
+package it.flube.driver.dataLayer.messaging.ablyRealtime.ablyCallbackInterfaces;
 
 /**
  * Created on 5/11/2017

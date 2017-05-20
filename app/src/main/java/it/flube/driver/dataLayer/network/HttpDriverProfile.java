@@ -9,7 +9,7 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import it.flube.driver.modelLayer.entities.DriverSingleton;
 import it.flube.driver.modelLayer.interfaces.callBacks.repositories.driver.DriverNetworkRepositoryCallback;
-import it.flube.driver.modelLayer.interfaces.repositories.driver.DriverNetworkRepository;
+import it.flube.driver.modelLayer.interfaces.repositories.driverStorage.DriverNetworkRepository;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;

@@ -2,12 +2,10 @@
  * Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
  */
 
-package it.flube.driver.dataLayer.messaging;
+package it.flube.driver.dataLayer.messaging.ablyRealtime.ablyListeners;
 
 import io.ably.lib.realtime.ChannelStateListener;
-import io.ably.lib.realtime.ConnectionStateListener;
-import it.flube.driver.dataLayer.interfaces.messaging.AblyChannelCallback;
-import it.flube.driver.dataLayer.interfaces.messaging.AblyConnectionCallback;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyCallbackInterfaces.AblyChannelCallback;
 
 /**
  * Created on 5/13/2017

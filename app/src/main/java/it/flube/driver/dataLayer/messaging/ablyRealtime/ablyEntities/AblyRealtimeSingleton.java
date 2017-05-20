@@ -2,7 +2,7 @@
  * Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
  */
 
-package it.flube.driver.dataLayer.messaging;
+package it.flube.driver.dataLayer.messaging.ablyRealtime.ablyEntities;
 
 import android.util.Log;
 
@@ -15,8 +15,9 @@ import io.ably.lib.realtime.Channel;
 import io.ably.lib.types.AblyException;
 import io.ably.lib.types.ClientOptions;
 import io.ably.lib.types.Param;
-import it.flube.driver.dataLayer.interfaces.messaging.AblyChannelCallback;
-import it.flube.driver.dataLayer.interfaces.messaging.AblyConnectionCallback;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyCallbackInterfaces.AblyChannelCallback;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyCallbackInterfaces.AblyConnectionCallback;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyListeners.AblyConnectionStateListener;
 
 
 /**

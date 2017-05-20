@@ -2,11 +2,11 @@
  * Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
  */
 
-package it.flube.driver.dataLayer.messaging;
+package it.flube.driver.dataLayer.messaging.ablyRealtime.ablyListeners;
 
 import io.ably.lib.realtime.CompletionListener;
 import io.ably.lib.types.ErrorInfo;
-import it.flube.driver.dataLayer.interfaces.messaging.AblyMessagePublishCallback;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyCallbackInterfaces.AblyMessagePublishCallback;
 
 /**
  * Created on 5/14/2017

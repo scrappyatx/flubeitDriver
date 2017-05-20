@@ -7,7 +7,7 @@ package it.flube.driver.modelLayerTests.mockData.mockStorage;
 import junit.framework.Assert;
 
 import it.flube.driver.modelLayer.entities.DriverSingleton;
-import it.flube.driver.modelLayer.interfaces.repositories.driver.DriverStorageRepository;
+import it.flube.driver.modelLayer.interfaces.driverStorageRepository.DriverStorageRepository;
 
 /**
  * Created on 5/5/2017

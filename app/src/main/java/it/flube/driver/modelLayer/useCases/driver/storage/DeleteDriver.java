@@ -5,7 +5,7 @@
 package it.flube.driver.modelLayer.useCases.driver.storage;
 
 import it.flube.driver.modelLayer.interfaces.callBacks.repositories.driver.DriverStorageRepositoryCallback;
-import it.flube.driver.modelLayer.interfaces.repositories.driver.DriverStorageRepository;
+import it.flube.driver.modelLayer.interfaces.driverStorageRepository.DriverStorageRepository;
 
 /**
  * Created on 5/7/2017

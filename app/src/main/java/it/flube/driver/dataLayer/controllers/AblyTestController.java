@@ -18,15 +18,16 @@ import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyMess
 import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyMessages.driverMessages.ReceivedCurrentOffersMessage;
 import it.flube.driver.dataLayer.interfaces.eventBusEvents.activities.ablyTestActivity.ConnectionWasUpdatedEvent;
 import it.flube.driver.dataLayer.interfaces.eventBusEvents.activities.ablyTestActivity.MessageWasUpdatedEvent;
-import it.flube.driver.dataLayer.interfaces.messaging.AblyChannelCallback;
-import it.flube.driver.dataLayer.interfaces.messaging.AblyConnectionCallback;
-import it.flube.driver.dataLayer.messaging.AblyChannel;
-import it.flube.driver.dataLayer.messaging.AblyRealtimeSingleton;
-import it.flube.driver.dataLayer.messaging.messageSubscribeCallbackHandlers.batchMessages.ReceivedAssignedBatches;
-import it.flube.driver.dataLayer.messaging.messageSubscribeCallbackHandlers.batchMessages.ReceivedBatchNotification;
-import it.flube.driver.dataLayer.messaging.messageSubscribeCallbackHandlers.batchMessages.ReceivedBatchRemoval;
-import it.flube.driver.dataLayer.messaging.messageSubscribeCallbackHandlers.driverMessages.ReceivedClaimOfferResult;
-import it.flube.driver.dataLayer.messaging.messageSubscribeCallbackHandlers.driverMessages.ReceivedCurrentOffers;
+import it.flube.driver.dataLayer.messaging.RemoteServerMessaging;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyCallbackInterfaces.AblyChannelCallback;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyCallbackInterfaces.AblyConnectionCallback;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyEntities.AblyChannel;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyEntities.AblyRealtimeSingleton;
+import it.flube.driver.dataLayer.messaging.messageReceivedCallbackHandlers.batchMessages.ReceivedAssignedBatches;
+import it.flube.driver.dataLayer.messaging.messageReceivedCallbackHandlers.batchMessages.ReceivedBatchNotification;
+import it.flube.driver.dataLayer.messaging.messageReceivedCallbackHandlers.batchMessages.ReceivedBatchRemoval;
+import it.flube.driver.dataLayer.messaging.messageReceivedCallbackHandlers.driverMessages.ReceivedClaimOfferResult;
+import it.flube.driver.dataLayer.messaging.messageReceivedCallbackHandlers.driverMessages.ReceivedCurrentOffers;
 import it.flube.driver.modelLayer.entities.DriverSingleton;
 
 /**
@@ -36,14 +37,20 @@ import it.flube.driver.modelLayer.entities.DriverSingleton;
 
 public class AblyTestController implements AblyConnectionCallback, AblyChannelCallback {
     private final String TAG = "AblyTestController";
-    private AblyRealtimeSingleton mAblyMessaging;
-    private AblyChannel mLookingForOffers;
-    private AblyChannel mBatchActivity;
+
+    private RemoteServerMessaging mMessaging;
 
 
     //constructor
     public AblyTestController() {
-        mAblyMessaging = AblyRealtimeSingleton.getInstance();
+        String serverUrl = "https://api.cloudconfidant.com/concierge-oil-service/ably/token";
+        String clientId = DriverSingleton.getInstance().getClientId();
+        String lookingForOffers = "LookingForOffers";
+        String batchActivity = "BatchActivity";
+
+
+        mMessaging = new RemoteServerMessaging(serverUrl, clientId, lookingForOffers, batchActivity);
+
         Log.d(TAG, "AblyTestController CREATED");
     }
 
@@ -56,51 +63,27 @@ public class AblyTestController implements AblyConnectionCallback, AblyChannelCa
         EventBus.getDefault().unregister(this);
     }
 
-    public void createConnection() {
-        Log.d(TAG, "createConnection START...");
-        String url = "https://api.cloudconfidant.com/concierge-oil-service/ably/token";
-        String clientId = DriverSingleton.getInstance().getClientId();
-        mAblyMessaging.establishConnection(clientId, url, this);
-        Log.d(TAG, "...createConnection END");
-    }
 
     public void connect() {
         Log.d(TAG, "*** connect command");
-        mAblyMessaging.connect();
+        mMessaging.connect();
     }
-
-    public void createChannels() {
-        mLookingForOffers = new AblyChannel("LookingForOffers", this);
-
-        //subscribe for the messages we can receive from the server
-        mLookingForOffers.subscribe("currentOffers", new ReceivedCurrentOffers());
-        mLookingForOffers.subscribe("claimOfferResult", new ReceivedClaimOfferResult());
-
-
-        mBatchActivity = new AblyChannel("BatchActivity", this);
-
-        //subscribe for the messages we can receive from the server
-        mBatchActivity.subscribe("assignedBatches", new ReceivedAssignedBatches());
-        mBatchActivity.subscribe("batchNotification", new ReceivedBatchNotification());
-        mBatchActivity.subscribe("batchRemoval", new ReceivedBatchRemoval());
-    }
-
 
     public void disconnect() {
         Log.d(TAG, "*** disconnect command");
-        mAblyMessaging.disconnect();
+        mMessaging.disconnect();
     }
 
     public void processDriverMessage(String message) {
         switch (message) {
             case "OnDuty TRUE":
-                sendOnDuty(true);
+                mMessaging.sendMsgOnDuty(true);
                 break;
             case "OnDuty FALSE":
-                sendOnDuty(false);
+               mMessaging.sendMsgOnDuty(false);
                 break;
             case "Request Current Offers":
-                sendRequestCurrentOffers();
+                mMessaging.sendMsgRequestCurrentOffers();
                 break;
             case "Claim Offer Request":
                 sendClaimOfferRequest();
@@ -152,14 +135,7 @@ public class AblyTestController implements AblyConnectionCallback, AblyChannelCa
 
 
     // private message commands
-    private void sendOnDuty(boolean dutyStatus) {
-        Log.d(TAG, "Sending OnDuty " + String.valueOf(dutyStatus));
-    }
 
-    private void sendRequestCurrentOffers() {
-        Log.d(TAG, "Sending RequestCurrentOffers");
-        mLookingForOffers.publish("requestCurrentOffers", "Gimme dem offers!");
-    }
 
     private void sendClaimOfferRequest() {
         Log.d(TAG, "Sending ClaimOfferRequest");
@@ -207,7 +183,7 @@ public class AblyTestController implements AblyConnectionCallback, AblyChannelCa
     }
 
 
-    //event bus -> messages received from server
+    //event bus -> messages received
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ReceivedCurrentOffersMessage event) {
         Log.d(TAG, "*** Received Current Offers Message");
@@ -243,6 +219,9 @@ public class AblyTestController implements AblyConnectionCallback, AblyChannelCa
         EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Received Batch Removal Message"));
     }
 
+    //event bus connection status
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent()
 
 
 
