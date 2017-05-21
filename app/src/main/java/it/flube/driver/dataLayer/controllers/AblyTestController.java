@@ -10,35 +10,52 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+
 import io.ably.lib.types.ErrorInfo;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyMessages.batchMessages.ReceivedAssignedBatchesMessage;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyMessages.batchMessages.ReceivedBatchNotificationMessage;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyMessages.batchMessages.ReceivedBatchRemovalMessage;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyMessages.driverMessages.ReceivedClaimOfferResultMessage;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyMessages.driverMessages.ReceivedCurrentOffersMessage;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.activities.ablyTestActivity.ConnectionWasUpdatedEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.activities.ablyTestActivity.MessageWasUpdatedEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelAttachedEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelAttachingEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelDetachedEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelDetachingEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelFailedEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelInitializedEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelSuspendedEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionClosedEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionClosingEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionConnectedEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionConnectingEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionDisconnectedEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionExceptionEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionFailedEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionInitializedEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionSuspendedEvent;
+import it.flube.driver.dataLayer.eventBus.messagingEvents.batchMessages.ReceivedAssignedBatchesMessage;
+import it.flube.driver.dataLayer.eventBus.messagingEvents.batchMessages.ReceivedBatchNotificationMessage;
+import it.flube.driver.dataLayer.eventBus.messagingEvents.batchMessages.ReceivedBatchRemovalMessage;
+import it.flube.driver.dataLayer.eventBus.messagingEvents.driverMessages.ReceivedClaimOfferResultMessage;
+import it.flube.driver.dataLayer.eventBus.messagingEvents.driverMessages.ReceivedCurrentOffersMessage;
+import it.flube.driver.dataLayer.eventBus.activityUIevents.ablyTestActivity.ConnectionWasUpdatedEvent;
+import it.flube.driver.dataLayer.eventBus.activityUIevents.ablyTestActivity.MessageWasUpdatedEvent;
 import it.flube.driver.dataLayer.messaging.RemoteServerMessaging;
 import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyCallbackInterfaces.AblyChannelCallback;
 import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyCallbackInterfaces.AblyConnectionCallback;
-import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyEntities.AblyChannel;
-import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyEntities.AblyRealtimeSingleton;
-import it.flube.driver.dataLayer.messaging.messageReceivedCallbackHandlers.batchMessages.ReceivedAssignedBatches;
-import it.flube.driver.dataLayer.messaging.messageReceivedCallbackHandlers.batchMessages.ReceivedBatchNotification;
-import it.flube.driver.dataLayer.messaging.messageReceivedCallbackHandlers.batchMessages.ReceivedBatchRemoval;
-import it.flube.driver.dataLayer.messaging.messageReceivedCallbackHandlers.driverMessages.ReceivedClaimOfferResult;
-import it.flube.driver.dataLayer.messaging.messageReceivedCallbackHandlers.driverMessages.ReceivedCurrentOffers;
 import it.flube.driver.modelLayer.entities.DriverSingleton;
+import it.flube.driver.modelLayer.entities.Offer;
 
 /**
  * Created on 5/12/2017
  * Project : Driver
  */
 
-public class AblyTestController implements AblyConnectionCallback, AblyChannelCallback {
+public class AblyTestController {
     private final String TAG = "AblyTestController";
 
     private RemoteServerMessaging mMessaging;
+    private String testOfferOID = "testOfferOID";
+    private String testBatchOID = "testBatchOID";
+    private double testLat = 30.545750;
+    private double testLong = -97.758355;
+
 
 
     //constructor
@@ -48,13 +65,14 @@ public class AblyTestController implements AblyConnectionCallback, AblyChannelCa
         String lookingForOffers = "LookingForOffers";
         String batchActivity = "BatchActivity";
 
-
         mMessaging = new RemoteServerMessaging(serverUrl, clientId, lookingForOffers, batchActivity);
-
+        mMessaging.createActiveBatchChannel(testBatchOID);
         Log.d(TAG, "AblyTestController CREATED");
     }
 
-    //methods that activities can call
+    //the activity will subscribe and unsubscribe this controller to the event bus based
+    //on activity lifecycle
+
     public void subscribeEventBus() {
         EventBus.getDefault().register(this);
     }
@@ -63,6 +81,7 @@ public class AblyTestController implements AblyConnectionCallback, AblyChannelCa
         EventBus.getDefault().unregister(this);
     }
 
+    // commands to connect & disconnect from the remote server messaging connection
 
     public void connect() {
         Log.d(TAG, "*** connect command");
@@ -74,6 +93,7 @@ public class AblyTestController implements AblyConnectionCallback, AblyChannelCa
         mMessaging.disconnect();
     }
 
+    //handlers for the driver messages drop-down list
     public void processDriverMessage(String message) {
         switch (message) {
             case "OnDuty TRUE":
@@ -86,109 +106,66 @@ public class AblyTestController implements AblyConnectionCallback, AblyChannelCa
                 mMessaging.sendMsgRequestCurrentOffers();
                 break;
             case "Claim Offer Request":
-                sendClaimOfferRequest();
+                mMessaging.sendMsgClaimOfferRequest(testOfferOID);
                 break;
         }
     }
 
+    //handlers for the batch message drop-down list
     public void processBatchMessage(String message) {
         switch (message) {
             case "Request Assigned Batches":
-                sendRequestAssignedBatches();
+                mMessaging.sendMsgRequestAssignedBatches();
                 break;
             case "Forfeit Batch":
-                sendForfeitBatch();
+                mMessaging.sendMsgForfeitBatch(testBatchOID);
                 break;
             case "Batch START":
-                sendBatchStart();
+                mMessaging.sendMsgBatchStart(testBatchOID);
                 break;
             case "Arrived To Pickup":
-                sendArrivedToPickup();
+                mMessaging.sendMsgArrivedToPickup(testBatchOID);
                 break;
             case "Driver Takes Vehicle from Customer":
-                sendDriverTakesVehicleFromCustomer();
+                mMessaging.sendMsgDriverTakesVehicleFromCustomer(testBatchOID);
                 break;
             case "Arrived To Service":
-                sendArrivedToService();
+                mMessaging.sendMsgArrivedToService(testBatchOID);
                 break;
-            case "Service Takes Vehicle":
-                sendServiceTakesVehicle();
+            case "Service Takes Vehicle from Driver":
+                mMessaging.sendMsgServiceTakesVehicleFromDriver(testBatchOID);
                 break;
             case "Service START":
-                sendServiceStart();
+                mMessaging.sendMsgServiceStart(testBatchOID);
                 break;
             case "Service COMPLETE":
-                sendServiceComplete();
+                mMessaging.sendMsgServiceComplete(testBatchOID);
                 break;
             case "Driver Takes Vehicle from Service":
-                sendDriverTakesVehicleFromService();
+                mMessaging.sendMsgDriverTakesVehicleFromService(testBatchOID);
                 break;
-            case "Owner Takes Vehicle":
-                sendOwnerTakesVehicle();
+            case "Arrived to Dropoff":
+                mMessaging.sendMsgArrivedToDropOff(testBatchOID);
+                break;
+            case "Owner Takes Vehicle from Driver":
+                mMessaging.sendMsgOwnerTakesVehicleFromDriver(testBatchOID);
                 break;
             case "Location Update":
-                sendLocationUpdate();
+                mMessaging.sendMsgLocationUpdate(testLat, testLong);
                 break;
 
         }
     }
 
+    // ****
+    //update activity UI when messages are received
+    // ****
 
-    // private message commands
-
-
-    private void sendClaimOfferRequest() {
-        Log.d(TAG, "Sending ClaimOfferRequest");
-    }
-
-    private void sendRequestAssignedBatches() {
-        Log.d(TAG, "Sending RequestAssignedBatches") ;
-    }
-
-    private void sendForfeitBatch() {
-        Log.d(TAG, "Sending ForfeitBatch");
-    }
-
-    private void sendBatchStart() {
-        Log.d(TAG, "Sending BatchStart");
-    }
-
-    private void sendArrivedToPickup() {
-        Log.d(TAG, "Sending ArrivedToPickup");
-    }
-    private void sendDriverTakesVehicleFromCustomer() {
-        Log.d(TAG, "Sending DriverTakesVehicleFromCustomer");
-    }
-    private void sendArrivedToService() {
-        Log.d(TAG, "Sending ArrivedToService");
-    }
-
-    private void sendServiceTakesVehicle() {
-        Log.d(TAG, "Sending ServiceTakesVehicle");
-    }
-    private void sendServiceStart() {
-        Log.d(TAG, "Sending ServiceStart");
-    }
-    private void sendServiceComplete() {
-        Log.d(TAG, "Sending ServiceComplete");
-    }
-    private void sendDriverTakesVehicleFromService() {
-        Log.d(TAG, "Sending DriverTakesVehicleFromService");
-    }
-    private void sendOwnerTakesVehicle() {
-        Log.d(TAG, "Sending OwnerTakesVehicle");
-    }
-    private void sendLocationUpdate() {
-        Log.d(TAG, "Sending LocationUpdate");
-    }
-
-
-    //event bus -> messages received
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ReceivedCurrentOffersMessage event) {
         Log.d(TAG, "*** Received Current Offers Message");
         //now do something with current offers list
-        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Received Current Offers Message"));
+        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Received Current Offers Message -> " + event.getCurrentOfferList().size() + " offers!"));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -219,95 +196,117 @@ public class AblyTestController implements AblyConnectionCallback, AblyChannelCa
         EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Received Batch Removal Message"));
     }
 
-    //event bus connection status
+    // ***
+    // Update Activity UI when event bus channel events are received
+    // ***
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent()
-
-
-
-    //connection callbacks
-
-    public void onConnectionCallbackException(Exception ex) {
-        Log.d(TAG, "*** Connection Exception -> " + ex.getMessage());
-        EventBus.getDefault().post(new ConnectionWasUpdatedEvent("*** Connection Exception -> " + ex.getMessage()));
+    public void onEvent(ChannelAttachingEvent event) {
+        String channelName = event.getChannelName();
+        Log.d(TAG, "*** received ATTACHING event from channel " + channelName);
+        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel " + channelName + " ATTACHING..."));
     }
 
-    public void onConnectionCallbackInitialized() {
-        Log.d(TAG, "*** Connection Initalized");
-        EventBus.getDefault().post(new ConnectionWasUpdatedEvent("*** Connection Initialized"));
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ChannelAttachedEvent event) {
+        String channelName = event.getChannelName();
+        Log.d(TAG, "*** received ATTACHED event from channel " + channelName);
+        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel " + channelName + " ATTACHED"));
     }
 
-    public void onConnectionCallbackConnecting() {
-        Log.d(TAG, "*** Connection Connecting...");
-        EventBus.getDefault().post(new ConnectionWasUpdatedEvent("*** Connection Connecting..."));
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ChannelDetachedEvent event) {
+        String channelName = event.getChannelName();
+        Log.d(TAG, "*** received DETACHED event from channel " + channelName);
+        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel " + channelName + " DETACHED"));
     }
 
-    public void onConnectionCallbackConnected() {
-        Log.d(TAG, "*** Connection Connected");
-
-        EventBus.getDefault().post(new ConnectionWasUpdatedEvent("*** Connection Connected!!!"));
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ChannelDetachingEvent event) {
+        String channelName = event.getChannelName();
+        Log.d(TAG, "*** received DETACHING event from channel " + channelName);
+        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel " + channelName + " DETACHING..."));
     }
 
-    public void onConnectionCallbackDisconnected() {
-        Log.d(TAG, "*** Connection Disconnected");
-        EventBus.getDefault().post(new ConnectionWasUpdatedEvent("*** Connection Disconnected"));
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ChannelInitializedEvent event) {
+        String channelName = event.getChannelName();
+        Log.d(TAG, "*** received Initialized event from channel " + channelName);
+        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel " + channelName + " INITIALIZED"));
     }
 
-    public void onConnectionCallbackSuspended() {
-        Log.d(TAG, "*** Connection Suspended");
-        EventBus.getDefault().post(new ConnectionWasUpdatedEvent("*** Connection Suspended"));
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ChannelSuspendedEvent event) {
+        String channelName = event.getChannelName();
+        Log.d(TAG, "*** received Suspended event from channel " + channelName);
+        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel " + channelName + " SUSPENDED"));
     }
 
-    public void onConnectionCallbackClosing() {
-        Log.d(TAG, "*** Connection Closing...");
-        EventBus.getDefault().post(new ConnectionWasUpdatedEvent("*** Connection Closing..."));
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ChannelFailedEvent event) {
+        String channelName = event.getChannelName();
+        String errorMessage = event.getErrorInfo().message;
+
+        Log.d(TAG, "*** received Failed event from channel " + channelName);
+        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel " + channelName + " FAILED --> " + errorMessage));
     }
 
-    public void onConnectionCallbackClosed() {
-        Log.d(TAG, "*** Connection Closed");
+    // ***
+    // Update Activity UI when event bus connection events are received
+    // ***
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ConnectionClosedEvent event) {
+        Log.d(TAG, "*** received Connection CLOSED event");
         EventBus.getDefault().post(new ConnectionWasUpdatedEvent("*** Connection Closed"));
     }
 
-    public void onConnectionCallbackFailed() {
-        Log.d(TAG, "*** Connection Failed");
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ConnectionClosingEvent event) {
+        Log.d(TAG, "*** received Connection CLOSING event");
+        EventBus.getDefault().post(new ConnectionWasUpdatedEvent("*** Connection Closing..."));
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ConnectionConnectedEvent event) {
+        Log.d(TAG, "*** received Connection CONNECTED event");
+        EventBus.getDefault().post(new ConnectionWasUpdatedEvent("*** Connection Connected!!!"));
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ConnectionConnectingEvent event) {
+        Log.d(TAG, "*** received Connection CONNECTING event");
+        EventBus.getDefault().post(new ConnectionWasUpdatedEvent("*** Connection Connecting..."));
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ConnectionDisconnectedEvent event) {
+        Log.d(TAG, "*** received Connection DISCONNECTED event");
+        EventBus.getDefault().post(new ConnectionWasUpdatedEvent("*** Connection Disconnected"));
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ConnectionExceptionEvent event) {
+        Log.d(TAG, "*** received Connection EXCEPTION event");
+        EventBus.getDefault().post(new ConnectionWasUpdatedEvent("*** Connection Exception -> " + event.getException().getMessage()));
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ConnectionFailedEvent event) {
+        Log.d(TAG, "*** received Connection FAILED event");
         EventBus.getDefault().post(new ConnectionWasUpdatedEvent("*** Connection Failed"));
     }
 
-
-    // channel callbacks
-    public void onChannelCallbackInitialized(String channelName) {
-        Log.d(TAG, "*** Channel " + channelName + " Initialized");
-        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel " + channelName + " Initialized"));
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ConnectionInitializedEvent event) {
+        Log.d(TAG, "*** received Connection INITIALIZED event");
+        EventBus.getDefault().post(new ConnectionWasUpdatedEvent("*** Connection Initialized"));
     }
 
-    public void onChannelCallbackAttaching(String channelName) {
-        Log.d(TAG, "*** Channel " + channelName + " Attaching...");
-        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel " + channelName + " Attaching..."));
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ConnectionSuspendedEvent event) {
+        Log.d(TAG, "*** received Connection SUSPENDED event");
+        EventBus.getDefault().post(new ConnectionWasUpdatedEvent("*** Connection Suspended"));
     }
 
-    public void onChannelCallbackAttached(String channelName, boolean resumed) {
-        Log.d(TAG, "*** Channel " + channelName + " Attached");
-        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel " + channelName + " Attached"));
-    }
-
-    public void onChannelCallbackDetaching(String channelName) {
-        Log.d(TAG, "*** Channel " + channelName + " Detaching...");
-        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel " + channelName + " Detaching..."));
-    }
-
-    public void onChannelCallbackDetached(String channelName) {
-        Log.d(TAG, "*** Channel " + channelName + " Detached");
-        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel " + channelName + " Detached"));
-    }
-
-    public void onChannelCallbackSuspended(String channelName) {
-        Log.d(TAG, "*** Channel " + channelName + " Suspended");
-        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel " + channelName + " Suspended"));
-    }
-
-    public void onChannelCallbackFailed(String channelName, ErrorInfo e) {
-        Log.d(TAG, "*** Channel " + channelName + "Failed -> " + e.toString());
-        EventBus.getDefault().post(new MessageWasUpdatedEvent("*** Channel " + channelName + "Failed -> " + e.toString()));
-    }
 
 }

@@ -51,24 +51,25 @@ public class AblyChannel implements AblyChannelCallback, AblyMessagePublishCallb
         mCallback = callback;
         mIsAttached = false;
 
-        //if  (AblyRealtimeSingleton.getInstance().isConnected()) {
-            mChannel = AblyRealtimeSingleton.getInstance().getChannel(name);
-            try {
-                mChannel.attach();
-                mChannel.on(mChannelStateListener);
-                mChannel.subscribe(mSubcribeListener); //register this class to get callbacks for every message received on this channel
-                Log.d(TAG, "channel attached");
-            } catch ( AblyException e) {
-                Log.e(TAG, "AblyException attaching to channel -> " + e.getMessage());
-                Rollbar.reportException(e,"warning","AblyException attaching to channel -> " + e.getMessage());
-            }
-        //} else {
-            //Log.d(TAG, "Tried to create a channel when AblyRealtimeSingleton is NOT connected");
-        //}
+        mChannel = AblyRealtimeSingleton.getInstance().getChannel(name);
+        try {
+            mChannel.attach();
+            mChannel.on(mChannelStateListener);
+            mChannel.subscribe(mSubcribeListener); //register this class to get callbacks for every message received on this channel
+            Log.d(TAG, "channel attached");
+        } catch ( AblyException e) {
+            Log.e(TAG, "AblyException attaching to channel -> " + e.getMessage());
+            Rollbar.reportException(e,"warning","AblyException attaching to channel -> " + e.getMessage());
+        }
+
     }
 
-    public boolean IsAttached() {
+    public boolean isAttached() {
         return mIsAttached;
+    }
+
+    public String getName() {
+        return mName;
     }
 
 
@@ -84,6 +85,7 @@ public class AblyChannel implements AblyChannelCallback, AblyMessagePublishCallb
     public void publish(String name, Object data) {
             try {
                 mChannel.publish(name, data, mPublishListener);
+                Log.d(TAG, "Publishing message: Channel -> " + mName + " name -> " + name + " message -> " + data.toString());
             } catch (AblyException e) {
                 Rollbar.reportException(e,"critical","Error trying to publish a message -> " + e.getMessage());
             }

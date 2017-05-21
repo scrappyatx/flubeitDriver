@@ -1,0 +1,13 @@
+/*
+ * Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
+ */
+
+package it.flube.driver.modelLayer.useCases.driver.driverGoesOffDuty;
+
+/**
+ * Created by Bryan on 5/1/2017.
+ */
+
+public interface DriverGoesOffDutyResult {
+    void driverGoesOffDutyEvent();
+}

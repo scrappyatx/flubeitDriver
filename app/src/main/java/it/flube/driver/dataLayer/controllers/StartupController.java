@@ -7,13 +7,13 @@ package it.flube.driver.dataLayer.controllers;
 import android.content.Context;
 import android.util.Log;
 
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.activityNavigation.GotoLoginActivityEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.activityNavigation.GotoMainActivityEvent;
-import it.flube.driver.modelLayer.interfaces.callBacks.repositories.driver.DriverStorageRepositoryCallback;
-import it.flube.driver.modelLayer.interfaces.callBacks.useCase.driver.ClearDriverSingletonCallback;
+import it.flube.driver.dataLayer.eventBus.activityNavigationEvents.GotoLoginActivityEvent;
+import it.flube.driver.dataLayer.eventBus.activityNavigationEvents.GotoMainActivityEvent;
+import it.flube.driver.modelLayer.interfaces.driverStorageRepository.DriverStorageRepositoryCallback;
+import it.flube.driver.modelLayer.useCases.driver.testingUseCases.clearDriverSingleton.ClearDriverSingletonCallback;
 import it.flube.driver.modelLayer.entities.DriverSingleton;
-import it.flube.driver.modelLayer.useCases.driver.storage.LoadDriver;
-import it.flube.driver.modelLayer.useCases.driver.testing.ClearDriverSingleton;
+import it.flube.driver.modelLayer.useCases.driver.storageUseCases.loadDriver.LoadDriver;
+import it.flube.driver.modelLayer.useCases.driver.testingUseCases.clearDriverSingleton.ClearDriverSingleton;
 import it.flube.driver.dataLayer.storage.DriverStorage;
 
 import org.greenrobot.eventbus.EventBus;

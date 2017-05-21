@@ -9,9 +9,9 @@ import android.util.Log;
 import org.greenrobot.eventbus.EventBus;
 
 import io.ably.lib.types.Message;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyMessages.driverMessages.ReceivedClaimOfferResultMessage;
+import it.flube.driver.dataLayer.eventBus.messagingEvents.driverMessages.ReceivedClaimOfferResultMessage;
 import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyCallbackInterfaces.AblyMessageSubscribeCallback;
-import it.flube.driver.modelLayer.interfaces.messaging.receivedMessageCallbacks.RsmReceiveMsgCallbackClaimOfferResult;
+import it.flube.driver.modelLayer.interfaces.messaging.RsmReceiveMsgCallbackClaimOfferResult;
 
 /**
  * Created on 5/17/2017

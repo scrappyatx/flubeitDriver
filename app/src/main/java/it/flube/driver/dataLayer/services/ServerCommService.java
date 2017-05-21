@@ -30,7 +30,7 @@ import com.google.android.gms.location.LocationServices;
 import com.rollbar.android.Rollbar;
 
 import it.flube.driver.R;
-import it.flube.driver.dataLayer.network.ServerMessaging;
+import it.flube.driver.dataLayer.network.toBeDeleted.ServerMessagingDELETE;
 import it.flube.driver.userInterfaceLayer.activities.MainActivity;
 
 import java.util.concurrent.TimeUnit;
@@ -48,7 +48,7 @@ public class ServerCommService extends Service {
     private static final long UPDATE_INTERVAL_MS = TimeUnit.SECONDS.toMillis(5);
     private static final int SERVICE_ID = 101;
 
-    private ServerMessaging mServerMessaging;
+    private ServerMessagingDELETE mServerMessagingDELETE;
 
     private static final int FIVE_SECONDS = 1000 * 5;
     private static final int TWO_MINUTES = 1000 * 60 * 2;
@@ -71,7 +71,7 @@ public class ServerCommService extends Service {
         Log.d(TAG, "onCreate() start");
 
         //establish communication to remote server
-        mServerMessaging = new ServerMessaging("test");
+        mServerMessagingDELETE = new ServerMessagingDELETE("test");
 
         //connect to google play api for location services
         if (IsGoogleApiAvailable()) {
@@ -150,13 +150,13 @@ public class ServerCommService extends Service {
             Log.d(TAG,"handling intent:" + action);
             switch (action) {
                 case "location":
-                    //mServerMessaging.sendCurrentLocation();
+                    //mServerMessagingDELETE.sendCurrentLocation();
 
                     break;
 
                 case "onDuty":
                     //set duty status
-                    mServerMessaging.sendDutyStatus(true);
+                    mServerMessagingDELETE.sendDutyStatus(true);
 
                     //start location updates if google api client is avaialable
                     if (mGoogleApiAvailable) {
@@ -176,7 +176,7 @@ public class ServerCommService extends Service {
                     }
 
                     //set duty status
-                    mServerMessaging.sendDutyStatus(false);
+                    mServerMessagingDELETE.sendDutyStatus(false);
 
                     //stop foreground
                     stopForeground(true);
@@ -283,7 +283,7 @@ public class ServerCommService extends Service {
     {
         public void onLocationChanged(final Location myLoc)
         {
-            mServerMessaging.sendCurrentLocation(myLoc.getLatitude(), myLoc.getLongitude());
+            mServerMessagingDELETE.sendCurrentLocation(myLoc.getLatitude(), myLoc.getLongitude());
             Log.d(TAG,"Got a fix: " + myLoc.toString());
         }
     }

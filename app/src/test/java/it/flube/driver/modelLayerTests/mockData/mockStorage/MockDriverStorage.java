@@ -8,6 +8,7 @@ import junit.framework.Assert;
 
 import it.flube.driver.modelLayer.entities.DriverSingleton;
 import it.flube.driver.modelLayer.interfaces.driverStorageRepository.DriverStorageRepository;
+import it.flube.driver.modelLayer.interfaces.driverStorageRepository.DriverStorageRepositoryCallback;
 
 /**
  * Created on 5/5/2017
@@ -22,7 +23,7 @@ public class MockDriverStorage implements DriverStorageRepository {
         return true;
     }
 
-    public boolean load(DriverSingleton driver) {
+    public void load(DriverSingleton driver, DriverStorageRepositoryCallback callback) {
         Assert.assertNotNull(driver);
 
         driver.setFirstName("Fizzi");
@@ -31,14 +32,15 @@ public class MockDriverStorage implements DriverStorageRepository {
         driver.setEmail("test@example.com");
         driver.setLoaded(true);
 
-        return true;
+        callback.loadDriverSuccess(driver);
     }
 
-    public void save(DriverSingleton driver) {
+    public void save(DriverSingleton driver, DriverStorageRepositoryCallback callback) {
         Assert.assertNotNull(driver);
+        callback.saveDriverSuccess();
     }
 
-    public void delete() {
-
+    public void delete(DriverStorageRepositoryCallback callback) {
+        callback.deleteDriverSuccess();
     }
 }

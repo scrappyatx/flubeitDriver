@@ -20,9 +20,9 @@ import org.greenrobot.eventbus.ThreadMode;
 import it.flube.driver.BuildConfig;
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.controllers.PreStartupController;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.activityNavigation.GotoStartupActivityEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.activities.preStartupActivity.DriverWasUpdatedEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.activities.preStartupActivity.ResultWasUpdatedEvent;
+import it.flube.driver.dataLayer.eventBus.activityNavigationEvents.GotoStartupActivityEvent;
+import it.flube.driver.dataLayer.eventBus.activityUIevents.preStartupActivity.DriverWasUpdatedEvent;
+import it.flube.driver.dataLayer.eventBus.activityUIevents.preStartupActivity.ResultWasUpdatedEvent;
 import it.flube.driver.userInterfaceLayer.activities.StartupActivity;
 
 public class PreStartupActivity extends AppCompatActivity {

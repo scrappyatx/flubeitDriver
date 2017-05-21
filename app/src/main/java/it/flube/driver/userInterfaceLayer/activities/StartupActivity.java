@@ -15,8 +15,8 @@ import com.rollbar.android.Rollbar;
 import it.flube.driver.BuildConfig;
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.controllers.StartupController;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.activityNavigation.GotoLoginActivityEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.activityNavigation.GotoMainActivityEvent;
+import it.flube.driver.dataLayer.eventBus.activityNavigationEvents.GotoLoginActivityEvent;
+import it.flube.driver.dataLayer.eventBus.activityNavigationEvents.GotoMainActivityEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

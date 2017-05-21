@@ -15,7 +15,7 @@ import java.util.List;
 import io.ably.lib.types.Message;
 import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyCallbackInterfaces.AblyMessageSubscribeCallback;
 import it.flube.driver.modelLayer.entities.Batch;
-import it.flube.driver.modelLayer.interfaces.messaging.receivedMessageCallbacks.RsmReceiveMsgCallbackAssignedBatches;
+import it.flube.driver.modelLayer.interfaces.messaging.RsmReceiveMsgCallbackAssignedBatches;
 
 /**
  * Created on 5/17/2017

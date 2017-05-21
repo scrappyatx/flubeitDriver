@@ -23,8 +23,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import it.flube.driver.BuildConfig;
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.controllers.AblyTestController;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.activities.ablyTestActivity.ConnectionWasUpdatedEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.activities.ablyTestActivity.MessageWasUpdatedEvent;
+import it.flube.driver.dataLayer.eventBus.activityUIevents.ablyTestActivity.ConnectionWasUpdatedEvent;
+import it.flube.driver.dataLayer.eventBus.activityUIevents.ablyTestActivity.MessageWasUpdatedEvent;
 
 
 /**
@@ -103,10 +103,6 @@ public class AblyTestActivity extends AppCompatActivity implements AdapterView.O
         mController.disconnect();
     }
 
-    public void clickAblyCreateChannels(View v) {
-        Log.d(TAG, "*** clicked Ably Create Channel Button");
-        mController.createChannels();
-    }
 
     public void clickAblyDriverSend(View v) {
         Log.d(TAG,"*** clicked Ably Driver Send Button ");
@@ -156,7 +152,6 @@ public class AblyTestActivity extends AppCompatActivity implements AdapterView.O
 
         //instantiate controller for this activity
         mController = new AblyTestController();
-        mController.createConnection();
 
         //register on eventbus
         EventBus.getDefault().register(this);

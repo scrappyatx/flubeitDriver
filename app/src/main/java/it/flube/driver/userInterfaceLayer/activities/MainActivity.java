@@ -22,10 +22,10 @@ import com.rollbar.android.Rollbar;
 
 import it.flube.driver.BuildConfig;
 import it.flube.driver.R;
-import it.flube.driver.dataLayer.network.HttpMessagingDELETE;
+import it.flube.driver.dataLayer.network.toBeDeleted.HttpMessagingDELETE;
 import it.flube.driver.modelLayer.entities.Offer;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.EbEventClientId;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.EbEventOfferList;
+import it.flube.driver.dataLayer.interfaces.toBeDeleted.EbEventClientIdDELETE;
+import it.flube.driver.dataLayer.interfaces.toBeDeleted.EbEventOfferListDELETE;
 import it.flube.driver.dataLayer.presenters.OffersListAdapter;
 import it.flube.driver.dataLayer.services.ServerCommService;
 
@@ -269,9 +269,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onOfferEvent(EbEventOfferList event) {
+    public void onOfferEvent(EbEventOfferListDELETE event) {
 
-        ArrayList<Offer> offerList = EbEventOfferList.getOfferList();
+        ArrayList<Offer> offerList = EbEventOfferListDELETE.getOfferList();
 
         Log.d(TAG,"*** offers received in MainActivity ***");
         Log.d(TAG," offers available = " + offerList.size());
@@ -300,7 +300,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onClientIdEvent(EbEventClientId clientId) {
+    public void onClientIdEvent(EbEventClientIdDELETE clientId) {
         Log.d(TAG,"*** client ID received : " + clientId.getEbEventClientId());
 
     }

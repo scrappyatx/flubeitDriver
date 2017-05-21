@@ -9,31 +9,31 @@ import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.activityNavigation.GotoMainActivityEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.activities.preStartupActivity.DriverWasUpdatedEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.activities.preStartupActivity.ResultWasUpdatedEvent;
-import it.flube.driver.dataLayer.interfaces.network.HttpAblyTokenCallback;
-import it.flube.driver.dataLayer.network.HttpAblyTokenDELETE;
+import it.flube.driver.dataLayer.eventBus.activityNavigationEvents.GotoMainActivityEvent;
+import it.flube.driver.dataLayer.eventBus.activityUIevents.preStartupActivity.DriverWasUpdatedEvent;
+import it.flube.driver.dataLayer.eventBus.activityUIevents.preStartupActivity.ResultWasUpdatedEvent;
+import it.flube.driver.dataLayer.network.toBeDeleted.HttpAblyTokenCallbackDELETE;
+import it.flube.driver.dataLayer.network.toBeDeleted.HttpAblyTokenDELETE;
 import it.flube.driver.dataLayer.network.HttpDriverProfile;
 import it.flube.driver.dataLayer.storage.DriverStorage;
 import it.flube.driver.modelLayer.entities.DriverSingleton;
-import it.flube.driver.modelLayer.interfaces.callBacks.repositories.driver.DriverNetworkRepositoryCallback;
-import it.flube.driver.modelLayer.interfaces.callBacks.repositories.driver.DriverStorageRepositoryCallback;
-import it.flube.driver.modelLayer.interfaces.callBacks.useCase.driver.ClearDriverSingletonCallback;
-import it.flube.driver.modelLayer.interfaces.callBacks.useCase.driver.LoadDriverTestInfoCallback;
-import it.flube.driver.modelLayer.useCases.driver.network.RequestDriverProfile;
-import it.flube.driver.modelLayer.useCases.driver.storage.DeleteDriver;
-import it.flube.driver.modelLayer.useCases.driver.storage.LoadDriver;
-import it.flube.driver.modelLayer.useCases.driver.storage.SaveDriver;
-import it.flube.driver.modelLayer.useCases.driver.testing.ClearDriverSingleton;
-import it.flube.driver.modelLayer.useCases.driver.testing.LoadDriverTestInfo;
+import it.flube.driver.modelLayer.interfaces.driverNetwork.DriverNetworkRepositoryCallback;
+import it.flube.driver.modelLayer.interfaces.driverStorageRepository.DriverStorageRepositoryCallback;
+import it.flube.driver.modelLayer.useCases.driver.testingUseCases.clearDriverSingleton.ClearDriverSingletonCallback;
+import it.flube.driver.modelLayer.useCases.driver.testingUseCases.loadDriverTestInfo.LoadDriverTestInfoCallback;
+import it.flube.driver.modelLayer.useCases.driver.networkUseCases.requestDriverProfile.RequestDriverProfile;
+import it.flube.driver.modelLayer.useCases.driver.storageUseCases.deleteDriver.DeleteDriver;
+import it.flube.driver.modelLayer.useCases.driver.storageUseCases.loadDriver.LoadDriver;
+import it.flube.driver.modelLayer.useCases.driver.storageUseCases.saveDriver.SaveDriver;
+import it.flube.driver.modelLayer.useCases.driver.testingUseCases.clearDriverSingleton.ClearDriverSingleton;
+import it.flube.driver.modelLayer.useCases.driver.testingUseCases.loadDriverTestInfo.LoadDriverTestInfo;
 
 /**
  * Created on 5/7/2017
  * Project : Driver
  */
 
-public class PreStartupController implements DriverStorageRepositoryCallback, LoadDriverTestInfoCallback, ClearDriverSingletonCallback, DriverNetworkRepositoryCallback, HttpAblyTokenCallback {
+public class PreStartupController implements DriverStorageRepositoryCallback, LoadDriverTestInfoCallback, ClearDriverSingletonCallback, DriverNetworkRepositoryCallback, HttpAblyTokenCallbackDELETE {
     private final String TAG = "PreStartupController";
     private Context mContext;
     private DriverSingleton mDriver;

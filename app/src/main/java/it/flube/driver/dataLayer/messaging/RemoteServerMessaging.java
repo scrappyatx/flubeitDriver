@@ -5,50 +5,65 @@
 package it.flube.driver.dataLayer.messaging;
 
 import android.util.Log;
-
 import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
-
 import io.ably.lib.types.ErrorInfo;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyChannelState.ChannelAttachedEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyChannelState.ChannelAttachingEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyChannelState.ChannelDetachedEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyChannelState.ChannelDetachingEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyChannelState.ChannelFailedEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyChannelState.ChannelInitializedEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyChannelState.ChannelSuspendedEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyConnectionState.ConnectionClosedEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyConnectionState.ConnectionClosingEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyConnectionState.ConnectionConnectedEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyConnectionState.ConnectionConnectingEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyConnectionState.ConnectionDisconnectedEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyConnectionState.ConnectionExceptionEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyConnectionState.ConnectionFailedEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyConnectionState.ConnectionInitializedEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyConnectionState.ConnectionSuspendedEvent;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyMessages.batchMessages.ReceivedAssignedBatchesMessage;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyMessages.batchMessages.ReceivedBatchNotificationMessage;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyMessages.batchMessages.ReceivedBatchRemovalMessage;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyMessages.driverMessages.ReceivedClaimOfferResultMessage;
-import it.flube.driver.dataLayer.interfaces.eventBusEvents.ablyRealtime.ablyMessages.driverMessages.ReceivedCurrentOffersMessage;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelAttachedEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelAttachingEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelDetachedEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelDetachingEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelFailedEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelInitializedEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelSuspendedEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionClosedEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionClosingEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionConnectedEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionConnectingEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionDisconnectedEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionExceptionEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionFailedEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionInitializedEvent;
+import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionSuspendedEvent;
+import it.flube.driver.dataLayer.eventBus.messagingEvents.batchMessages.ReceivedAssignedBatchesMessage;
+import it.flube.driver.dataLayer.eventBus.messagingEvents.batchMessages.ReceivedBatchNotificationMessage;
+import it.flube.driver.dataLayer.eventBus.messagingEvents.batchMessages.ReceivedBatchRemovalMessage;
+import it.flube.driver.dataLayer.eventBus.messagingEvents.driverMessages.ReceivedClaimOfferResultMessage;
+import it.flube.driver.dataLayer.eventBus.messagingEvents.driverMessages.ReceivedCurrentOffersMessage;
 import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyCallbackInterfaces.AblyChannelCallback;
 import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyCallbackInterfaces.AblyConnectionCallback;
 import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyEntities.AblyChannel;
 import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyEntities.AblyRealtimeSingleton;
+import it.flube.driver.dataLayer.messaging.messageBuilders.batchMessages.ArriveToPickupMessageBuilder;
+import it.flube.driver.dataLayer.messaging.messageBuilders.batchMessages.ArrivedToDropOffMessageBuilder;
+import it.flube.driver.dataLayer.messaging.messageBuilders.batchMessages.ArrivedToServiceMessageBuilder;
+import it.flube.driver.dataLayer.messaging.messageBuilders.batchMessages.BatchStartMessageBuilder;
+import it.flube.driver.dataLayer.messaging.messageBuilders.batchMessages.DriverTakesVehicleFromCustomerMessageBuilder;
+import it.flube.driver.dataLayer.messaging.messageBuilders.batchMessages.DriverTakesVehicleFromService;
+import it.flube.driver.dataLayer.messaging.messageBuilders.batchMessages.ForfeitBatchMessageBuilder;
+import it.flube.driver.dataLayer.messaging.messageBuilders.batchMessages.OwnerTakesVehicleMessageBuilder;
+import it.flube.driver.dataLayer.messaging.messageBuilders.batchMessages.RequestAssignedBatchesMessageBuilder;
+import it.flube.driver.dataLayer.messaging.messageBuilders.batchMessages.ServiceCompleteMessageBuilder;
+import it.flube.driver.dataLayer.messaging.messageBuilders.batchMessages.ServiceStartMessageBuilder;
+import it.flube.driver.dataLayer.messaging.messageBuilders.batchMessages.ServiceTakesVehicleMessageBuilder;
+import it.flube.driver.dataLayer.messaging.messageBuilders.clientIdMessages.LocationMessageBuilder;
 import it.flube.driver.dataLayer.messaging.messageReceivedCallbackHandlers.batchMessages.ReceivedAssignedBatches;
 import it.flube.driver.dataLayer.messaging.messageReceivedCallbackHandlers.batchMessages.ReceivedBatchNotification;
 import it.flube.driver.dataLayer.messaging.messageReceivedCallbackHandlers.batchMessages.ReceivedBatchRemoval;
 import it.flube.driver.dataLayer.messaging.messageReceivedCallbackHandlers.driverMessages.ReceivedClaimOfferResult;
 import it.flube.driver.dataLayer.messaging.messageReceivedCallbackHandlers.driverMessages.ReceivedCurrentOffers;
+import it.flube.driver.dataLayer.messaging.messageBuilders.driverMessages.ClaimOfferRequestMessageBuilder;
+import it.flube.driver.dataLayer.messaging.messageBuilders.driverMessages.RequestCurrentOffersMessageBuilder;
+import it.flube.driver.dataLayer.messaging.messageBuilders.driverMessages.SendOnDutyMessageBuilder;
 import it.flube.driver.modelLayer.entities.Batch;
 import it.flube.driver.modelLayer.entities.Offer;
-import it.flube.driver.modelLayer.interfaces.messaging.receivedMessageCallbacks.RsmReceiveMsgCallbackAssignedBatches;
-import it.flube.driver.modelLayer.interfaces.messaging.receivedMessageCallbacks.RsmReceiveMsgCallbackBatchNotification;
-import it.flube.driver.modelLayer.interfaces.messaging.receivedMessageCallbacks.RsmReceiveMsgCallbackBatchRemoval;
-import it.flube.driver.modelLayer.interfaces.messaging.receivedMessageCallbacks.RsmReceiveMsgCallbackClaimOfferResult;
-import it.flube.driver.modelLayer.interfaces.messaging.receivedMessageCallbacks.RsmReceiveMsgCallbackCurrentOffers;
+import it.flube.driver.modelLayer.interfaces.messaging.RsmReceiveMsgCallbackAssignedBatches;
+import it.flube.driver.modelLayer.interfaces.messaging.RsmReceiveMsgCallbackBatchNotification;
+import it.flube.driver.modelLayer.interfaces.messaging.RsmReceiveMsgCallbackBatchRemoval;
+import it.flube.driver.modelLayer.interfaces.messaging.RsmReceiveMsgCallbackClaimOfferResult;
+import it.flube.driver.modelLayer.interfaces.messaging.RsmReceiveMsgCallbackCurrentOffers;
 import it.flube.driver.modelLayer.interfaces.messaging.RemoteServerMessagingInterface;
+
+import static java.util.Objects.isNull;
 
 /**
  * Created on 5/17/2017
@@ -58,13 +73,14 @@ import it.flube.driver.modelLayer.interfaces.messaging.RemoteServerMessagingInte
 public class RemoteServerMessaging implements RemoteServerMessagingInterface, AblyConnectionCallback, AblyChannelCallback,
         RsmReceiveMsgCallbackCurrentOffers, RsmReceiveMsgCallbackClaimOfferResult, RsmReceiveMsgCallbackBatchRemoval,
         RsmReceiveMsgCallbackBatchNotification, RsmReceiveMsgCallbackAssignedBatches {
+
     private final String TAG = "RemoteServerMessaging";
 
     private AblyRealtimeSingleton mAblyRealtime;
-
     private AblyChannel mLookingForOffers;
     private AblyChannel mBatchActivity;
     private AblyChannel mClientId;
+    private AblyChannel mActiveBatch;
 
 
     public RemoteServerMessaging(String serverUrl, String clientId, String lookingForOffersChannelName, String batchActivityChannelName) {
@@ -76,16 +92,16 @@ public class RemoteServerMessaging implements RemoteServerMessagingInterface, Ab
         Log.d(TAG, "...create ably Connection END");
 
         //create LookingForOffers channel
-        mLookingForOffers = new AblyChannel(lookingForOffersChannelName, this);
+        mLookingForOffers = mAblyRealtime.createChannel(lookingForOffersChannelName, this);
         //subscribe for the messages we can receive from the server
         mLookingForOffers.subscribe("currentOffers", new ReceivedCurrentOffers(this));
         mLookingForOffers.subscribe("claimOfferResult", new ReceivedClaimOfferResult(this));
 
         //create BatchActivity channel
-        mBatchActivity = new AblyChannel(batchActivityChannelName, this);
+        mBatchActivity = mAblyRealtime.createChannel(batchActivityChannelName, this);
 
         //create clientId channel
-        mClientId = new AblyChannel(clientId, this);
+        mClientId = mAblyRealtime.createChannel(clientId, this);
         //subscribe for the messages we can receive from the server
         mClientId.subscribe("assignedBatches", new ReceivedAssignedBatches(this));
         mClientId.subscribe("batchNotification", new ReceivedBatchNotification(this));
@@ -102,72 +118,148 @@ public class RemoteServerMessaging implements RemoteServerMessagingInterface, Ab
         mAblyRealtime.disconnect();
     }
 
+    //attach to ActiveBatch channel
+    public void createActiveBatchChannel(String name) {
+        mActiveBatch = mAblyRealtime.createChannel(name, this);
+    }
+
+    public void releaseActiveBatchChannel(String name) {
+        mAblyRealtime.releaseChannel(name);
+    }
+
+
     // implement Remote Server Messaging Interface for SENDING MESSAGES
     // messages that can be sent
     public void sendMsgOnDuty(boolean dutyStatus) {
-
+        Log.d(TAG, "Sending onDuty");
+        SendOnDutyMessageBuilder mb = new SendOnDutyMessageBuilder(dutyStatus);
+        mLookingForOffers.publish(mb.getMessageName(), mb.getMessageBody());
     }
 
     public void sendMsgRequestCurrentOffers() {
         Log.d(TAG, "Sending RequestCurrentOffers");
-        mLookingForOffers.publish("requestCurrentOffers", "Gimme dem offers!");
+        RequestCurrentOffersMessageBuilder mb = new RequestCurrentOffersMessageBuilder();
+        mLookingForOffers.publish(mb.getMessageName(), mb.getMessageBody());
     }
 
     public void sendMsgClaimOfferRequest(String offerOID) {
         Log.d(TAG, "Sending ClaimOfferRequest");
-        mLookingForOffers.publish("claimOfferRequest", "Gimme dem offers!");
+        ClaimOfferRequestMessageBuilder mb  = new ClaimOfferRequestMessageBuilder(offerOID);
+        mLookingForOffers.publish(mb.getMessageName(), mb.getMessageBody());
     }
 
     public void sendMsgRequestAssignedBatches() {
-
+        Log.d(TAG, "Sending RequestAssignedBatches");
+        RequestAssignedBatchesMessageBuilder mb = new RequestAssignedBatchesMessageBuilder();
+        mBatchActivity.publish(mb.getMessageName(), mb.getMessageBody());
     }
 
     public void sendMsgForfeitBatch(String batchOID) {
-
+        Log.d(TAG, "Sending ForfeitBatch");
+        ForfeitBatchMessageBuilder mb = new ForfeitBatchMessageBuilder(batchOID);
+        mBatchActivity.publish(mb.getMessageName(), mb.getMessageBody());
     }
 
     public void sendMsgBatchStart(String batchOID) {
-
+        Log.d(TAG, "Sending Batch Start");
+        BatchStartMessageBuilder mb = new BatchStartMessageBuilder(batchOID);
+        mBatchActivity.publish(mb.getMessageName(), mb.getMessageBody());
     }
 
-    public void sendMsgLocationUpdate() {
-
+    public void sendMsgLocationUpdate(double latitude, double longitude) {
+        Log.d(TAG, "Sending Location");
+        LocationMessageBuilder mb = new LocationMessageBuilder(latitude, longitude);
+        mBatchActivity.publish(mb.getMessageName(), mb.getMessageBody());
     }
 
-    public void sendMsgArrivedToPickup() {
-
+    public void sendMsgArrivedToPickup(String batchOID) {
+        Log.d(TAG, "Sending ArrivedToPickup");
+        ArriveToPickupMessageBuilder mb = new ArriveToPickupMessageBuilder(batchOID);
+        if (mActiveBatch.getName().equals(batchOID)) {
+            mActiveBatch.publish(mb.getMessageName(), mb.getMessageBody());
+        } else {
+            Log.d(TAG,"Error trying to send ArrivedToPickup.  supplied batchOID (" + batchOID + ") does not equal active batch channel name (" + mActiveBatch.getName() + ")");
+        }
     }
 
-    public void sendMsgDriverTakesVehicle() {
-
+    public void sendMsgDriverTakesVehicleFromCustomer(String batchOID) {
+        Log.d(TAG, "Sending DriverTakesVehiclelFromCustomer");
+        DriverTakesVehicleFromCustomerMessageBuilder mb = new DriverTakesVehicleFromCustomerMessageBuilder(batchOID);
+        if (mActiveBatch.getName().equals(batchOID)) {
+            mActiveBatch.publish(mb.getMessageName(), mb.getMessageBody());
+        } else {
+            Log.d(TAG,"Error trying to send driverTakesVehicle.  supplied batchOID (" + batchOID + ") does not equal active batch channel name (" + mActiveBatch.getName() + ")");
+        }
     }
 
-    public void sendMsgArrivedToService() {
-
+    public void sendMsgArrivedToService(String batchOID) {
+        Log.d(TAG, "Sending ArrivedToService");
+        ArrivedToServiceMessageBuilder mb = new ArrivedToServiceMessageBuilder(batchOID);
+        if (mActiveBatch.getName().equals(batchOID)) {
+            mActiveBatch.publish(mb.getMessageName(), mb.getMessageBody());
+        } else {
+            Log.d(TAG,"Error trying to send ArrivedToService.  supplied batchOID (" + batchOID + ") does not equal active batch channel name (" + mActiveBatch.getName() + ")");
+        }
     }
 
-    public void sendMsgServiceTakesVehicle() {
-
+    public void sendMsgServiceTakesVehicleFromDriver(String batchOID) {
+        Log.d(TAG, "Sending ServiceTakesVehicleFromDriver");
+        ServiceTakesVehicleMessageBuilder mb = new ServiceTakesVehicleMessageBuilder(batchOID);
+        if (mActiveBatch.getName().equals(batchOID)) {
+            mActiveBatch.publish(mb.getMessageName(), mb.getMessageBody());
+        } else {
+            Log.d(TAG,"Error trying to send ServiceTakesVehicle.  supplied batchOID (" + batchOID + ") does not equal active batch channel name (" + mActiveBatch.getName() + ")");
+        }
     }
 
-    public void sendMsgServiceStart() {
-
+    public void sendMsgServiceStart(String batchOID) {
+        Log.d(TAG, "Sending ServiceStart");
+        ServiceStartMessageBuilder mb = new ServiceStartMessageBuilder(batchOID);
+        if (mActiveBatch.getName().equals(batchOID)) {
+            mActiveBatch.publish(mb.getMessageName(), mb.getMessageBody());
+        } else {
+            Log.d(TAG,"Error trying to send ServiceStart.  supplied batchOID (" + batchOID + ") does not equal active batch channel name (" + mActiveBatch.getName() + ")");
+        }
     }
 
-    public void sendMsgServiceComplete() {
-
+    public void sendMsgServiceComplete(String batchOID) {
+        Log.d(TAG, "Sending ServiceComplete");
+        ServiceCompleteMessageBuilder mb = new ServiceCompleteMessageBuilder(batchOID);
+        if (mActiveBatch.getName().equals(batchOID)) {
+            mActiveBatch.publish(mb.getMessageName(), mb.getMessageBody());
+        } else {
+            Log.d(TAG,"Error trying to send ServiceComplete.  supplied batchOID (" + batchOID + ") does not equal active batch channel name (" + mActiveBatch.getName() + ")");
+        }
     }
 
-    public void sendMsgDriverTakesCarFromService() {
-
+    public void sendMsgDriverTakesVehicleFromService(String batchOID) {
+        Log.d(TAG, "Sending DriverTakesVehicleFromService");
+        DriverTakesVehicleFromService mb = new DriverTakesVehicleFromService(batchOID);
+        if (mActiveBatch.getName().equals(batchOID)) {
+            mActiveBatch.publish(mb.getMessageName(), mb.getMessageBody());
+        } else {
+            Log.d(TAG,"Error trying to send DriverTakesCarFromService.  supplied batchOID (" + batchOID + ") does not equal active batch channel name (" + mActiveBatch.getName() + ")");
+        }
     }
 
-    public void sendMsgArrivedToDropOff() {
-
+    public void sendMsgArrivedToDropOff(String batchOID) {
+        Log.d(TAG, "Sending ArrivedToDropOff");
+        ArrivedToDropOffMessageBuilder mb = new ArrivedToDropOffMessageBuilder(batchOID);
+        if (mActiveBatch.getName().equals(batchOID)) {
+            mActiveBatch.publish(mb.getMessageName(), mb.getMessageBody());
+        } else {
+            Log.d(TAG,"Error trying to send ArrivedToDropOff.  supplied batchOID (" + batchOID + ") does not equal active batch channel name (" + mActiveBatch.getName() + ")");
+        }
     }
 
-    public void sendMsgOwnerTakesVehicle() {
-
+    public void sendMsgOwnerTakesVehicleFromDriver(String batchOID) {
+        Log.d(TAG, "Sending OwnerTakesVehicleFromDriver");
+        OwnerTakesVehicleMessageBuilder mb = new OwnerTakesVehicleMessageBuilder(batchOID);
+        if (mActiveBatch.getName().equals(batchOID)) {
+            mActiveBatch.publish(mb.getMessageName(), mb.getMessageBody());
+        } else {
+            Log.d(TAG,"Error trying to send OwnerTakesVehicle.  supplied batchOID (" + batchOID + ") does not equal active batch channel name (" + mActiveBatch.getName() + ")");
+        }
     }
 
     //

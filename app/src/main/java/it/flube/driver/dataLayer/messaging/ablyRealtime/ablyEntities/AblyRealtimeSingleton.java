@@ -96,6 +96,7 @@ public class AblyRealtimeSingleton implements AblyConnectionCallback {
 
     public void disconnect() {
         if (mAblyRealtime != null) {
+
             mAblyRealtime.close();
         }
     }
@@ -105,7 +106,19 @@ public class AblyRealtimeSingleton implements AblyConnectionCallback {
     public AblyChannel createChannel(String name, AblyChannelCallback callback) {
         AblyChannel ch = new AblyChannel(name, callback);  //create channel
         mChannelList.add(ch);
+        Log.d(TAG,"*** Created channel " + name);
         return ch;
+    }
+
+    public void releaseChannel(String name) {
+        //see if channel is in channel list
+        //if it is, then release it
+        for (int i = 0; i < mChannelList.size(); i++) {
+            if (mChannelList.get(i).getName().equals(name)) {
+                mAblyRealtime.channels.release(name);
+                Log.d(TAG,"*** Released channel " + name);
+            }
+        }
     }
 
     // call back handlers

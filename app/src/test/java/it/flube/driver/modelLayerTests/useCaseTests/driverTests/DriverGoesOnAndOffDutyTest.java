@@ -9,10 +9,10 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import it.flube.driver.modelLayer.entities.DriverSingleton;
-import it.flube.driver.modelLayer.interfaces.callBacks.useCase.driver.DriverGoesOffDutyResult;
-import it.flube.driver.modelLayer.interfaces.callBacks.useCase.driver.DriverGoesOnDutyResult;
-import it.flube.driver.modelLayer.useCases.driver.DriverGoesOffDuty;
-import it.flube.driver.modelLayer.useCases.driver.DriverGoesOnDuty;
+import it.flube.driver.modelLayer.useCases.driver.driverGoesOffDuty.DriverGoesOffDutyResult;
+import it.flube.driver.modelLayer.useCases.driver.driverGoesOnDuty.DriverGoesOnDutyResult;
+import it.flube.driver.modelLayer.useCases.driver.driverGoesOffDuty.DriverGoesOffDuty;
+import it.flube.driver.modelLayer.useCases.driver.driverGoesOnDuty.DriverGoesOnDuty;
 
 /**
  * Created on 5/5/2017

@@ -28,24 +28,24 @@ public interface RemoteServerMessagingInterface {
 
     public void sendMsgBatchStart(String batchOID);
 
-    public void sendMsgLocationUpdate();
+    public void sendMsgLocationUpdate(double latitude, double longitude);
 
-    public void sendMsgArrivedToPickup();
+    public void sendMsgArrivedToPickup(String batchOID);
 
-    public void sendMsgDriverTakesVehicle();
+    public void sendMsgDriverTakesVehicleFromCustomer(String batchOID);
 
-    public void sendMsgArrivedToService();
+    public void sendMsgArrivedToService(String batchOID);
 
-    public void sendMsgServiceTakesVehicle();
+    public void sendMsgServiceTakesVehicleFromDriver(String batchOID);
 
-    public void sendMsgServiceStart();
+    public void sendMsgServiceStart(String batchOID);
 
-    public void sendMsgServiceComplete();
+    public void sendMsgServiceComplete(String batchOID);
 
-    public void sendMsgDriverTakesCarFromService();
+    public void sendMsgDriverTakesVehicleFromService(String batchOID);
 
-    public void sendMsgArrivedToDropOff();
+    public void sendMsgArrivedToDropOff(String batchOID);
 
-    public void sendMsgOwnerTakesVehicle();
+    public void sendMsgOwnerTakesVehicleFromDriver(String batchOID);
 
 }

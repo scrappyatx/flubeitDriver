@@ -9,7 +9,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import it.flube.driver.modelLayer.entities.DriverSingleton;
-import it.flube.driver.modelLayer.interfaces.callBacks.useCase.driver.LoadDriverInfoResult;
+import it.flube.driver.modelLayer.useCases.driver.storageUseCases.loadDriver.LoadDriverInfoResult;
 import it.flube.driver.modelLayerTests.mockData.mockStorage.MockDriverStorage;
 
 /**
