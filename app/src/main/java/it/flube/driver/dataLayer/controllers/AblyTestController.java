@@ -10,37 +10,31 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
-
-import io.ably.lib.types.ErrorInfo;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelAttachedEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelAttachingEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelDetachedEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelDetachingEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelFailedEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelInitializedEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelSuspendedEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionClosedEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionClosingEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionConnectedEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionConnectingEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionDisconnectedEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionExceptionEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionFailedEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionInitializedEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionSuspendedEvent;
-import it.flube.driver.dataLayer.eventBus.messagingEvents.batchMessages.ReceivedAssignedBatchesMessage;
-import it.flube.driver.dataLayer.eventBus.messagingEvents.batchMessages.ReceivedBatchNotificationMessage;
-import it.flube.driver.dataLayer.eventBus.messagingEvents.batchMessages.ReceivedBatchRemovalMessage;
-import it.flube.driver.dataLayer.eventBus.messagingEvents.driverMessages.ReceivedClaimOfferResultMessage;
-import it.flube.driver.dataLayer.eventBus.messagingEvents.driverMessages.ReceivedCurrentOffersMessage;
-import it.flube.driver.dataLayer.eventBus.activityUIevents.ablyTestActivity.ConnectionWasUpdatedEvent;
-import it.flube.driver.dataLayer.eventBus.activityUIevents.ablyTestActivity.MessageWasUpdatedEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.channelStateEvents.ChannelAttachedEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.channelStateEvents.ChannelAttachingEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.channelStateEvents.ChannelDetachedEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.channelStateEvents.ChannelDetachingEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.channelStateEvents.ChannelFailedEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.channelStateEvents.ChannelInitializedEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.channelStateEvents.ChannelSuspendedEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.connectionStateEvents.ConnectionClosedEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.connectionStateEvents.ConnectionClosingEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.connectionStateEvents.ConnectionConnectedEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.connectionStateEvents.ConnectionConnectingEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.connectionStateEvents.ConnectionDisconnectedEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.connectionStateEvents.ConnectionExceptionEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.connectionStateEvents.ConnectionFailedEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.connectionStateEvents.ConnectionInitializedEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.connectionStateEvents.ConnectionSuspendedEvent;
+import it.flube.driver.dataLayer.messaging.eventBus.batchMessageEvents.ReceivedAssignedBatchesMessage;
+import it.flube.driver.dataLayer.messaging.eventBus.batchMessageEvents.ReceivedBatchNotificationMessage;
+import it.flube.driver.dataLayer.messaging.eventBus.batchMessageEvents.ReceivedBatchRemovalMessage;
+import it.flube.driver.dataLayer.messaging.eventBus.driverMessageEvents.ReceivedClaimOfferResultMessage;
+import it.flube.driver.dataLayer.messaging.eventBus.driverMessageEvents.ReceivedCurrentOffersMessage;
+import it.flube.driver.userInterfaceLayer.eventBus.activityUIevents.ablyTestActivity.ConnectionWasUpdatedEvent;
+import it.flube.driver.userInterfaceLayer.eventBus.activityUIevents.ablyTestActivity.MessageWasUpdatedEvent;
 import it.flube.driver.dataLayer.messaging.RemoteServerMessaging;
-import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyCallbackInterfaces.AblyChannelCallback;
-import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyCallbackInterfaces.AblyConnectionCallback;
 import it.flube.driver.modelLayer.entities.DriverSingleton;
-import it.flube.driver.modelLayer.entities.Offer;
 
 /**
  * Created on 5/12/2017
@@ -65,7 +59,8 @@ public class AblyTestController {
         String lookingForOffers = "LookingForOffers";
         String batchActivity = "BatchActivity";
 
-        mMessaging = new RemoteServerMessaging(serverUrl, clientId, lookingForOffers, batchActivity);
+        mMessaging = RemoteServerMessaging.getInstance();
+        RemoteServerMessaging.getInstance().setConnectionValues(serverUrl, clientId, lookingForOffers, batchActivity);
         mMessaging.createActiveBatchChannel(testBatchOID);
         Log.d(TAG, "AblyTestController CREATED");
     }

@@ -15,6 +15,7 @@ import io.ably.lib.realtime.Channel;
 import io.ably.lib.types.AblyException;
 import io.ably.lib.types.ClientOptions;
 import io.ably.lib.types.Param;
+import it.flube.driver.dataLayer.messaging.RemoteServerMessaging;
 import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyCallbackInterfaces.AblyChannelCallback;
 import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyCallbackInterfaces.AblyConnectionCallback;
 import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyListeners.AblyConnectionStateListener;
@@ -26,26 +27,49 @@ import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyListeners.AblyConnec
  */
 
 public class AblyRealtimeSingleton implements AblyConnectionCallback {
-    private static AblyRealtimeSingleton instance = new AblyRealtimeSingleton();
-    private static final String TAG = "AblyRealtimeSingleton";
 
+    ///
+    ///  Loader class provides synchronization across threads
+    ///  Lazy initialization since Loader class is only called when "getInstance" is called
+    ///  volatile keyword guarantees visibility of changes to variables across threads
+    ///
+    private static class Loader {
+        static volatile AblyRealtimeSingleton mInstance = new AblyRealtimeSingleton();
+    }
 
-    private AblyRealtime mAblyRealtime;
-    private AblyConnectionCallback mCallback;
-    private boolean mIsConnected;
-
-    //channels on this connection
-    private ArrayList<AblyChannel> mChannelList;
-
+    ///
+    ///  constructor is private, instances can only be created internally by the class
+    ///
     private AblyRealtimeSingleton() {
         //initialize channel list
         mChannelList = new ArrayList<AblyChannel>();
     }
 
+    ///
+    ///  getInstance() provides access to the singleton instance outside the class
+    ///
     public static AblyRealtimeSingleton getInstance() {
-        return instance;
+        return Loader.mInstance;
     }
 
+    ///
+    ///     all class variables are static so there is only one across all instances (and there will only be one instance)
+    ///
+
+    private static AblyRealtimeSingleton instance = new AblyRealtimeSingleton();
+    private static final String TAG = "AblyRealtimeSingleton";
+
+
+    private static AblyRealtime mAblyRealtime;
+    private static AblyConnectionCallback mCallback;
+    private static boolean mIsConnected;
+
+    //channels on this connection
+    private static ArrayList<AblyChannel> mChannelList;
+
+    ///
+    ///   class methods follow
+    ///
 
     public void establishConnection(final String clientId, final String tokenUrl, AblyConnectionCallback callback) {
         //instance our network connection

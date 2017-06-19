@@ -19,7 +19,7 @@ public class DriverGoesOffDuty implements Runnable {
     }
 
     public void run() {
-        DriverSingleton.getInstance().setOnDuty(false);
+        //DriverSingleton.getInstance().setOnDuty(false);
         mDriverGoesOffDutyResult.driverGoesOffDutyEvent();
     }
 }

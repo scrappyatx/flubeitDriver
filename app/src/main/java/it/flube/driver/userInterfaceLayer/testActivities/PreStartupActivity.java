@@ -7,10 +7,12 @@ package it.flube.driver.userInterfaceLayer.testActivities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.mikepenz.materialdrawer.Drawer;
 import com.rollbar.android.Rollbar;
 
 import org.greenrobot.eventbus.EventBus;
@@ -20,10 +22,31 @@ import org.greenrobot.eventbus.ThreadMode;
 import it.flube.driver.BuildConfig;
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.controllers.PreStartupController;
-import it.flube.driver.dataLayer.eventBus.activityNavigationEvents.GotoStartupActivityEvent;
-import it.flube.driver.dataLayer.eventBus.activityUIevents.preStartupActivity.DriverWasUpdatedEvent;
-import it.flube.driver.dataLayer.eventBus.activityUIevents.preStartupActivity.ResultWasUpdatedEvent;
-import it.flube.driver.userInterfaceLayer.activities.StartupActivity;
+import it.flube.driver.userInterfaceLayer.activities.account.AccountActivity;
+import it.flube.driver.userInterfaceLayer.activities.DemoActivity;
+import it.flube.driver.userInterfaceLayer.activities.EarningsActivity;
+import it.flube.driver.userInterfaceLayer.activities.HelpActivity;
+import it.flube.driver.userInterfaceLayer.activities.HomeActiveBatchActivity;
+import it.flube.driver.userInterfaceLayer.activities.HomeNoActiveBatchActivity;
+import it.flube.driver.userInterfaceLayer.activities.signIn.LoginActivity;
+import it.flube.driver.userInterfaceLayer.activities.MessagesActivity;
+import it.flube.driver.userInterfaceLayer.activities.OffersActivity;
+import it.flube.driver.userInterfaceLayer.activities.ScheduledBatchesActivity;
+import it.flube.driver.userInterfaceLayer.activities.splashScreen.SplashScreenActivity;
+import it.flube.driver.userInterfaceLayer.eventBus.activityNavigationEvents.GotoAccountActivityEvent;
+import it.flube.driver.userInterfaceLayer.eventBus.activityNavigationEvents.GotoDemoActivityEvent;
+import it.flube.driver.userInterfaceLayer.eventBus.activityNavigationEvents.GotoEarningsActivityEvent;
+import it.flube.driver.userInterfaceLayer.eventBus.activityNavigationEvents.GotoHelpActivityEvent;
+import it.flube.driver.userInterfaceLayer.eventBus.activityNavigationEvents.GotoHomeActiveBatchActivityEventDELETE;
+import it.flube.driver.userInterfaceLayer.eventBus.activityNavigationEvents.GotoHomeNoActiveBatchActivityEventDELETE;
+import it.flube.driver.userInterfaceLayer.eventBus.activityNavigationEvents.GotoLoginActivityEvent;
+import it.flube.driver.userInterfaceLayer.eventBus.activityNavigationEvents.GotoMessagesActivityEvent;
+import it.flube.driver.userInterfaceLayer.eventBus.activityNavigationEvents.GotoOffersActivityEvent;
+import it.flube.driver.userInterfaceLayer.eventBus.activityNavigationEvents.GotoScheduledBatchesActivityEvent;
+import it.flube.driver.userInterfaceLayer.eventBus.activityNavigationEvents.GotoSplashScreenActivityEvent;
+import it.flube.driver.userInterfaceLayer.eventBus.activityUIevents.preStartupActivity.DriverWasUpdatedEvent;
+import it.flube.driver.userInterfaceLayer.eventBus.activityUIevents.preStartupActivity.ResultWasUpdatedEvent;
+import it.flube.driver.userInterfaceLayer.drawerMenu.NavigationMenu;
 
 public class PreStartupActivity extends AppCompatActivity {
     private static final String TAG = "PreStartupActivity";
@@ -37,7 +60,8 @@ public class PreStartupActivity extends AppCompatActivity {
     private TextView mClientId;
     private TextView mEmail;
     private TextView mResult;
-
+    private Drawer mDrawer;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +70,13 @@ public class PreStartupActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pre_startup);
-        Log.d(TAG, "StartupActivity CREATED");
+        Log.d(TAG, "SplashScreenActivity CREATED");
+
+        //setup toolbar
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        this.setSupportActionBar(mToolbar);
+
+        mDrawer = new NavigationMenu(this, mToolbar).getDrawer();
 
         //get UI elements
         mFirstName = (TextView) findViewById(R.id.firstName_value);
@@ -54,6 +84,11 @@ public class PreStartupActivity extends AppCompatActivity {
         mClientId = (TextView) findViewById(R.id.clientId_value);
         mEmail = (TextView) findViewById(R.id.email_value);
         mResult = (TextView) findViewById(R.id.result_value);
+
+
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        //mDrawer.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
+
 
     }
 
@@ -132,7 +167,7 @@ public class PreStartupActivity extends AppCompatActivity {
     public void clickGoToStartupActivity(View v) {
         Log.d(TAG,"*** clicked GoToStartupActivity Button ");
 
-        Intent intent = new Intent(this,StartupActivity.class);
+        Intent intent = new Intent(this,SplashScreenActivity.class);
         startActivity(intent);
         Log.d(TAG,"*** Sent intent to start StartActivity");
      }
@@ -147,13 +182,13 @@ public class PreStartupActivity extends AppCompatActivity {
      }
 
     //event bus events
-    //get the GotoMainActivityEvent
+    //get the GotoMainActivityEventDELETE
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(GotoStartupActivityEvent event) {
-        Log.d(TAG,"*** GotoStartupActivityEvent received");
-        Intent intent = new Intent(this, StartupActivity.class);
+    public void onEvent(GotoSplashScreenActivityEvent event) {
+        Log.d(TAG,"*** GotoSplashScreenActivityEvent received");
+        Intent intent = new Intent(this, SplashScreenActivity.class);
         startActivity(intent);
-        Log.d(TAG,"*** Sent intent to start the activity <StartupActivity>");
+        Log.d(TAG,"*** Sent intent to start the activity <SplashScreenActivity>");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -171,5 +206,81 @@ public class PreStartupActivity extends AppCompatActivity {
         mResult.setText(event.getResultMessage());
         mResult.setVisibility(View.VISIBLE);
     }
+
+      /* ---------------------------------------
+     Activity Navigation Events
+     ----------------------------------------- */
+
+    //event bus events
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GotoAccountActivityEvent event) {
+        Intent i = new Intent(this, AccountActivity.class);
+        this.startActivity(i);
+        Log.d(TAG,"sent intent to start AccountActivity");
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GotoDemoActivityEvent event) {
+        Intent i = new Intent(this, DemoActivity.class);
+        this.startActivity(i);
+        Log.d(TAG,"sent intent to start DemoActivity");
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GotoEarningsActivityEvent event) {
+        Intent i = new Intent(this, EarningsActivity.class);
+        this.startActivity(i);
+        Log.d(TAG,"sent intent to start EarningsActivity");
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GotoHelpActivityEvent event) {
+        Intent i = new Intent(this, HelpActivity.class);
+        this.startActivity(i);
+        Log.d(TAG,"sent intent to start HelpActivity");
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GotoHomeActiveBatchActivityEventDELETE event) {
+        Intent i = new Intent(this, HomeActiveBatchActivity.class);
+        this.startActivity(i);
+        Log.d(TAG,"sent intent to start HomeActiveBatchActivity");
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GotoHomeNoActiveBatchActivityEventDELETE event) {
+        Intent i = new Intent(this, HomeNoActiveBatchActivity.class);
+        this.startActivity(i);
+        Log.d(TAG,"sent intent to start HomeNoActiveBatchActivity");
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GotoMessagesActivityEvent event) {
+        Intent i = new Intent(this, MessagesActivity.class);
+        this.startActivity(i);
+        Log.d(TAG,"sent intent to start MessagesActivity");
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GotoOffersActivityEvent event) {
+        Intent i = new Intent(this, OffersActivity.class);
+        this.startActivity(i);
+        Log.d(TAG,"sent intent to start OffersActivity");
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GotoScheduledBatchesActivityEvent event) {
+        Intent i = new Intent(this, ScheduledBatchesActivity.class);
+        this.startActivity(i);
+        Log.d(TAG,"sent intent to start ScheduledBatchesActivity");
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(GotoLoginActivityEvent event) {
+        Intent i = new Intent(this, LoginActivity.class);
+        this.startActivity(i);
+        Log.d(TAG,"sent intent to start LoginActivity");
+    }
+
 
 }

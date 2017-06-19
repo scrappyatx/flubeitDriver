@@ -19,8 +19,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import it.flube.driver.R;
+import it.flube.driver.dataLayer.messaging.RemoteServerMessaging;
 import it.flube.driver.modelLayer.entities.Offer;
-import it.flube.driver.userInterfaceLayer.activities.OfferClaimActivity;
+import it.flube.driver.userInterfaceLayer.activities.OfferClaimActivityDELETE;
 
 import java.util.ArrayList;
 
@@ -75,9 +76,11 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Of
         public void onClick(View v) {
             Log.d(TAG,"onClick start");
             Context context = itemView.getContext();
-            Intent showOfferIntent = new Intent(context, OfferClaimActivity.class);
-            showOfferIntent.putExtra(OFFER_KEY, mOffer);
-            context.startActivity(showOfferIntent);
+            RemoteServerMessaging.getInstance().sendMsgClaimOfferRequest(mOffer.getOfferOID());
+            Log.d(TAG,"Sent claim offer request for offerOID --> " + mOffer.getOfferOID());
+            //Intent showOfferIntent = new Intent(context, OfferClaimActivityDELETE.class);
+            //showOfferIntent.putExtra(OFFER_KEY, mOffer);
+            //context.startActivity(showOfferIntent);
             Log.d(TAG,"onClick complete");
         }
 

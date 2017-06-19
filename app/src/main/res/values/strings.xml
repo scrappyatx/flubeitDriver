@@ -30,7 +30,59 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+    <string name="permission_rationale">Contacts permissions are needed for providing email completions.</string>
+
+
+    <!-- Strings related to remote logging & error reporting -->
+    <string name="LOGGLY_DEBUG_ACTIVE_KEY">loggly_debug_active</string>
+    <string name="LOGGLY_RELEASE_ACTIVE_KEY">loggly_release_active</string>
+    <string name="ROLLBAR_DEBUG_ACTIVE_KEY">rollbar_debug_active</string>
+    <string name="ROLLBAR_RELEASE_ACTIVE_KEY">rollbar_release_active</string>
+    <string name="LOGGLY_AUTH">46832b1c-b4cc-4440-b06a-382e4a958bc4</string>
+    <string name="ROLLBAR_AUTH">6489dbbc16e943beaebf5c0028ee588a</string>
+
+    <!-- Strings related to foreground service -->
+    <string name="rtm_and_loc_updates_fg_svc_notification_title">flube.it Driver</string>
+    <string name="rtm_and_loc_updates_fg_svc_notification_text_searching">Searching for offers</string>
+    <string name="rtm_and_loc_updates_fg_svc_notification_text_activebatch">Active Batch in progress</string>
+
+
+    <!-- Strings related to navigation drawer menu -->
+    <string name="nav_menu_home">Home</string>
+    <string name="nav_menu_offers">Offers</string>
+    <string name="nav_menu_scheduled_batches">Calendar</string>
+    <string name="nav_menu_messages">Messages</string>
+    <string name="nav_menu_earnings">Earnings</string>
+    <string name="nav_menu_account">Account</string>
+    <string name="nav_menu_help">Help</string>
+    <string name="nav_menu_demo">Demo Service Orders</string>
+
+    <!-- Strings related to toolbar -->
+    <string name="toolbar_switch_looking_for_work_OFF">Search for Offers</string>
+    <string name="toolbar_switch_looking_for_work_ON">Searching for Offers</string>
+
+
+    <!-- Strings related to splashscreen activity layout  -->
+    <string name="splashscreen_title">flube.it Driver</string>
+
+    <!-- Strings related to loginscreen activity layout  -->
+    <string name="login_title">Sign In</string>
+    <string name="login_email_hint">email</string>
+    <string name="login_password_hint">password</string>
+    <string name="login_submit_caption">Submit</string>
+    <string name="login_error_text">error text</string>
+
+    <!-- Strings related to login controller -->
+    <string name="login_url_key">driver_profile_url</string>
+
+
+    <!-- Strings related to account activity layout  -->
+    <string name="account_logout_caption">Sign Out</string>
+    <string name="account_title">Account Info</string>
+    <string name="account_profile_details_default">No profile information is available</string>
+
+    <!-- Strings related to account activity layout  -->
+    <string name="account_activity_title">Account</string>
+
+
 </resources>

@@ -4,9 +4,10 @@
 
 package it.flube.driver.modelLayer.useCases.driver.storageUseCases.saveDriver;
 
-import it.flube.driver.modelLayer.interfaces.driverStorageRepository.DriverStorageRepositoryCallback;
+import it.flube.driver.modelLayer.interfaces.driverStorageRepository.DriverStorageRepositoryCallbackDELETE;
 import it.flube.driver.modelLayer.interfaces.driverStorageRepository.DriverStorageRepository;
 import it.flube.driver.modelLayer.entities.DriverSingleton;
+import it.flube.driver.modelLayer.interfaces.driverStorageRepository.DriverStorageRepositorySaveCallback;
 
 /**
  * Created by Bryan on 4/25/2017.
@@ -14,14 +15,14 @@ import it.flube.driver.modelLayer.entities.DriverSingleton;
 
 public class SaveDriver implements Runnable {
     private DriverStorageRepository mRepository;
-    private DriverStorageRepositoryCallback mCallback;
+    private DriverStorageRepositorySaveCallback mCallback;
 
-    public SaveDriver(DriverStorageRepository repository, DriverStorageRepositoryCallback callback) {
+    public SaveDriver(DriverStorageRepository repository, DriverStorageRepositorySaveCallback callback) {
         mCallback = callback;
         mRepository = repository;
     }
 
     public void run() {
-        mRepository.save(DriverSingleton.getInstance(), mCallback );
+        mRepository.save(mCallback );
     }
 }

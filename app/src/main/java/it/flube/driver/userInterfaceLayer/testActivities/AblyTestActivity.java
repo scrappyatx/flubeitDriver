@@ -23,8 +23,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import it.flube.driver.BuildConfig;
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.controllers.AblyTestController;
-import it.flube.driver.dataLayer.eventBus.activityUIevents.ablyTestActivity.ConnectionWasUpdatedEvent;
-import it.flube.driver.dataLayer.eventBus.activityUIevents.ablyTestActivity.MessageWasUpdatedEvent;
+import it.flube.driver.userInterfaceLayer.eventBus.activityUIevents.ablyTestActivity.ConnectionWasUpdatedEvent;
+import it.flube.driver.userInterfaceLayer.eventBus.activityUIevents.ablyTestActivity.MessageWasUpdatedEvent;
 
 
 /**

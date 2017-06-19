@@ -22,8 +22,6 @@ public class ClearDriverSingleton implements Runnable {
         DriverSingleton.getInstance().setLastName("<not loaded>");
         DriverSingleton.getInstance().setClientId("<not loaded>");
         DriverSingleton.getInstance().setEmail("<not loaded>");
-        DriverSingleton.getInstance().setLoaded(false);
-        DriverSingleton.getInstance().setOnDuty(false);
         mCallback.clearDriverSingletonSuccess(DriverSingleton.getInstance());
     }
 }

@@ -56,9 +56,9 @@ public class AblyChannel implements AblyChannelCallback, AblyMessagePublishCallb
             mChannel.attach();
             mChannel.on(mChannelStateListener);
             mChannel.subscribe(mSubcribeListener); //register this class to get callbacks for every message received on this channel
-            Log.d(TAG, "channel attached");
+            Log.d(TAG, "channel " + mName + " attached");
         } catch ( AblyException e) {
-            Log.e(TAG, "AblyException attaching to channel -> " + e.getMessage());
+            Log.e(TAG, "AblyException attaching to channel " + mName + " --> " + e.getMessage());
             Rollbar.reportException(e,"warning","AblyException attaching to channel -> " + e.getMessage());
         }
 
@@ -77,7 +77,7 @@ public class AblyChannel implements AblyChannelCallback, AblyMessagePublishCallb
         try {
             mChannel.subscribe(messageName, new AblyMessageSubscribeListener(callback));
         } catch (AblyException e) {
-            Log.e(TAG, "Error trying to subscribe to channel " + e.getMessage());
+            Log.e(TAG, "Error trying to subscribe to channel " + mName + " --> " + e.getMessage());
             Rollbar.reportException(e,"warning","Error trying to subscribe to channel -> " + e.getMessage());
         }
     }
@@ -93,19 +93,19 @@ public class AblyChannel implements AblyChannelCallback, AblyMessagePublishCallb
 
     //channel callbacks
     public void onChannelCallbackInitialized(String channelName) {
-        Log.d(TAG, "*** Channel Initalized");
+        Log.d(TAG, "*** Channel " + mName + " Initalized");
         mIsAttached = false;
         mCallback.onChannelCallbackInitialized(channelName);
     }
 
     public void onChannelCallbackAttaching(String channelName) {
-        Log.d(TAG, "*** Channel Attaching...");
+        Log.d(TAG, "*** Channel " + mName + " Attaching...");
         mIsAttached = false;
         mCallback.onChannelCallbackAttaching(channelName);
     }
 
     public void onChannelCallbackAttached(String channelName, boolean resumed) {
-        Log.d(TAG, "*** Channel Attached");
+        Log.d(TAG, "*** Channel " + mName + " Attached");
         mIsAttached = true;
         if (!resumed) {
             //TODO need to go and request channel history to recover missed messages
@@ -115,19 +115,19 @@ public class AblyChannel implements AblyChannelCallback, AblyMessagePublishCallb
     }
 
     public void onChannelCallbackDetaching(String channelName) {
-        Log.d(TAG, "*** Channel Detaching...");
+        Log.d(TAG, "*** Channel " + mName + " Detaching...");
         mIsAttached = false;
         mCallback.onChannelCallbackDetaching(channelName);
     }
 
     public void onChannelCallbackDetached(String channelName) {
-        Log.d(TAG, "*** Channel Detached");
+        Log.d(TAG, "*** Channel " + mName + " Detached");
         mIsAttached = false;
         mCallback.onChannelCallbackDetached(channelName);
     }
 
     public void onChannelCallbackSuspended(String channelName) {
-        Log.d(TAG, "*** Channel Suspended");
+        Log.d(TAG, "*** Channel " + mName + " Suspended");
         mIsAttached = false;
         mCallback.onChannelCallbackSuspended(channelName);
     }
@@ -141,18 +141,18 @@ public class AblyChannel implements AblyChannelCallback, AblyMessagePublishCallb
     // message publish callbacks
     public void onSuccess() {
 
-        Log.d(TAG, "success on publish");
+        Log.d(TAG, "Channel " + mName + " --> message successfully sent");
     }
 
     public void onError(ErrorInfo reason) {
 
-        Log.d(TAG, "error on publish -> " + reason.toString());
+        Log.d(TAG, "Channel " + mName + "--> error on publish -> " + reason.toString());
     }
 
     //message subscribe callbacks
     public void onMessage(Message message) {
 
-        Log.d(TAG, "subscribe -> message received in channel");
+        Log.d(TAG, "Channel " + mName + " --> message received in channel --> " + mName + " name --> " + message.name + " message --> " + message.data.toString());
     }
 
 }

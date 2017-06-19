@@ -4,12 +4,19 @@
   -->
 
 <resources>
-    <color name="colorPrimary">#009CC8</color>
-    <color name="colorPrimaryDark">#005989</color>
-    <color name="colorAccent">#FACF00</color>
+    <color name="colorPrimary">@color/mediumblue</color>
+    <color name="colorPrimaryDark">@color/darkblue</color>
+    <color name="colorAccent">@color/yellow</color>
+    <color name="colorButton">@color/yellow</color>
+    <color name="colorErrorText">@color/lightred</color>
+    <color name="colorBackground">@color/offwhite</color>
+    <color name="colorControlActivated">@color/yellow</color>
+
     <color name="grey">#788FA0</color>
     <color name="lightblue">#77CEE7</color>
     <color name="mediumblue">#009CC8</color>
     <color name="darkblue">#005989</color>
     <color name="yellow">#FACF00</color>
+    <color name="lightred">#EF5350</color>
+    <color name="offwhite">#F3F3F3</color>
 </resources>

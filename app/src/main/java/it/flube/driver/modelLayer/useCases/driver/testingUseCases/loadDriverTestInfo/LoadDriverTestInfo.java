@@ -37,8 +37,6 @@ public class LoadDriverTestInfo implements Runnable {
         DriverSingleton.getInstance().setLastName(mLastName);
         DriverSingleton.getInstance().setClientId(mClientId);
         DriverSingleton.getInstance().setEmail(mEmail);
-        DriverSingleton.getInstance().setOnDuty(false);
-        DriverSingleton.getInstance().setLoaded(true);
         mCallback.loadDriverTestInfoSuccess(DriverSingleton.getInstance());
     }
 

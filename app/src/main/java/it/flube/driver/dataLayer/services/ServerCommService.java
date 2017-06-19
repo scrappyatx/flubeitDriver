@@ -31,7 +31,7 @@ import com.rollbar.android.Rollbar;
 
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.network.toBeDeleted.ServerMessagingDELETE;
-import it.flube.driver.userInterfaceLayer.activities.MainActivity;
+import it.flube.driver.userInterfaceLayer.activities.MainActivityDELETE;
 
 import java.util.concurrent.TimeUnit;
 
@@ -120,7 +120,7 @@ public class ServerCommService extends Service {
 
         Resources resources = getResources();
 
-        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        Intent i = new Intent(getApplicationContext(), MainActivityDELETE.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pi = PendingIntent.getActivity(getApplicationContext(),0,i,0);
 

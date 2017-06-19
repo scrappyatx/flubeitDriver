@@ -12,5 +12,7 @@ import it.flube.driver.modelLayer.entities.DriverSingleton;
  */
 
 public interface DriverNetworkRepository {
-    void requestDriverProfile(DriverSingleton driver, String requestUrl, String email, String password);
+    void requestDriverProfile(String requestUrl, String email, String password);
+
+    void setCallback(DriverNetworkRepositoryCallback callback);
 }

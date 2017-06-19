@@ -4,8 +4,9 @@
 
 package it.flube.driver.modelLayer.useCases.driver.storageUseCases.deleteDriver;
 
-import it.flube.driver.modelLayer.interfaces.driverStorageRepository.DriverStorageRepositoryCallback;
+import it.flube.driver.modelLayer.interfaces.driverStorageRepository.DriverStorageRepositoryCallbackDELETE;
 import it.flube.driver.modelLayer.interfaces.driverStorageRepository.DriverStorageRepository;
+import it.flube.driver.modelLayer.interfaces.driverStorageRepository.DriverStorageRepositoryDeleteCallback;
 
 /**
  * Created on 5/7/2017
@@ -14,9 +15,9 @@ import it.flube.driver.modelLayer.interfaces.driverStorageRepository.DriverStora
 
 public class DeleteDriver implements Runnable {
     private DriverStorageRepository mRepository;
-    private DriverStorageRepositoryCallback mCallback;
+    private DriverStorageRepositoryDeleteCallback mCallback;
 
-    public DeleteDriver(DriverStorageRepository repository, DriverStorageRepositoryCallback callback) {
+    public DeleteDriver(DriverStorageRepository repository, DriverStorageRepositoryDeleteCallback callback) {
         mCallback = callback;
         mRepository = repository;
     }

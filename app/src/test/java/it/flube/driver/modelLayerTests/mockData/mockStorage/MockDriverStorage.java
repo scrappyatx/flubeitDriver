@@ -8,7 +8,10 @@ import junit.framework.Assert;
 
 import it.flube.driver.modelLayer.entities.DriverSingleton;
 import it.flube.driver.modelLayer.interfaces.driverStorageRepository.DriverStorageRepository;
-import it.flube.driver.modelLayer.interfaces.driverStorageRepository.DriverStorageRepositoryCallback;
+import it.flube.driver.modelLayer.interfaces.driverStorageRepository.DriverStorageRepositoryCallbackDELETE;
+import it.flube.driver.modelLayer.interfaces.driverStorageRepository.DriverStorageRepositoryDeleteCallback;
+import it.flube.driver.modelLayer.interfaces.driverStorageRepository.DriverStorageRepositoryLoadCallback;
+import it.flube.driver.modelLayer.interfaces.driverStorageRepository.DriverStorageRepositorySaveCallback;
 
 /**
  * Created on 5/5/2017
@@ -23,24 +26,26 @@ public class MockDriverStorage implements DriverStorageRepository {
         return true;
     }
 
-    public void load(DriverSingleton driver, DriverStorageRepositoryCallback callback) {
+    public void load(DriverStorageRepositoryLoadCallback callback) {
+        DriverSingleton driver = DriverSingleton.getInstance();
+
         Assert.assertNotNull(driver);
 
         driver.setFirstName("Fizzi");
         driver.setLastName("Battlecrank");
         driver.setClientId("12345");
         driver.setEmail("test@example.com");
-        driver.setLoaded(true);
+        driver.setSignedIn(true);
 
-        callback.loadDriverSuccess(driver);
+        callback.loadDriverSuccess();
     }
 
-    public void save(DriverSingleton driver, DriverStorageRepositoryCallback callback) {
-        Assert.assertNotNull(driver);
+
+    public void save(DriverStorageRepositorySaveCallback callback) {
         callback.saveDriverSuccess();
     }
 
-    public void delete(DriverStorageRepositoryCallback callback) {
+    public void delete(DriverStorageRepositoryDeleteCallback callback) {
         callback.deleteDriverSuccess();
     }
 }

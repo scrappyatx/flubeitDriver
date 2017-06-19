@@ -9,7 +9,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F3F3F3"
-    tools:context=".userInterfaceLayer.activities.MainActivity">
+    tools:context=".userInterfaceLayer.activities.MainActivityDELETE">
 
     <Switch
         android:id="@+id/online_switch"
@@ -87,7 +87,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/offersView"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/test_switch"
         app:layout_constraintTop_toBottomOf="@+id/online_switch"

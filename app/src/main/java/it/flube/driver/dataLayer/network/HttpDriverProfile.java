@@ -6,6 +6,8 @@ package it.flube.driver.dataLayer.network;
 
 import android.util.Log;
 import com.google.gson.Gson;
+import com.rollbar.android.Rollbar;
+
 import java.io.IOException;
 import it.flube.driver.modelLayer.entities.DriverSingleton;
 import it.flube.driver.modelLayer.interfaces.driverNetwork.DriverNetworkRepositoryCallback;
@@ -30,9 +32,7 @@ public class HttpDriverProfile implements DriverNetworkRepository, Callback {
     private DriverSingleton mDriver;
     private OkHttpClient mClient;
 
-    public HttpDriverProfile(DriverNetworkRepositoryCallback callback) {
-        mCallback = callback;
-
+    public HttpDriverProfile() {
         //initialize the http client & add logging
         HttpLoggingInterceptor li = new HttpLoggingInterceptor();
         li.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -40,9 +40,13 @@ public class HttpDriverProfile implements DriverNetworkRepository, Callback {
         mClient = new OkHttpClient().newBuilder().addInterceptor(li).build();
     }
 
-    public void requestDriverProfile(DriverSingleton driver, String requestUrl, String username, String password) {
+    public void setCallback(DriverNetworkRepositoryCallback callback) {
+        mCallback = callback;
+    }
+
+    public void requestDriverProfile(String requestUrl, String username, String password) {
         //this is where the request result will be stored
-        mDriver = driver;
+        mDriver = DriverSingleton.getInstance();
 
         //build the request URL
         HttpUrl.Builder uB = HttpUrl.parse(requestUrl).newBuilder();
@@ -65,8 +69,11 @@ public class HttpDriverProfile implements DriverNetworkRepository, Callback {
         Log.d(TAG,"onFailure()");
         String errorMessage = e.getMessage();
         Log.d(TAG, "*** onHttp call failed -->" + errorMessage);
-        e.printStackTrace();
-        mCallback.requestDriverProfileFailure(errorMessage);
+        Rollbar.reportException(e,"Critical","onHttp call to get driver profile failled");
+
+        if (mCallback!=null) {
+            mCallback.requestDriverProfileFailure(errorMessage);
+        }
     }
 
     @Override
@@ -82,14 +89,19 @@ public class HttpDriverProfile implements DriverNetworkRepository, Callback {
             Log.d(TAG, "Client ID --> " + rJ.getClientId());
             Log.d(TAG, "First name --> " + rJ.getFirstName());
             Log.d(TAG, "Last name--> " + rJ.getLastName());
+            Log.d(TAG, "Email --> " + rJ.getEmail());
+            Log.d(TAG, "Role --> " + rJ.getRole());
 
             mDriver.setClientId(rJ.getClientId());
             mDriver.setFirstName(rJ.getFirstName());
             mDriver.setLastName(rJ.getLastName());
-            mDriver.setLoaded(true);
-            mDriver.setOnDuty(false);
+            mDriver.setEmail(rJ.getEmail());
+            mDriver.setRole(rJ.getRole());
+            mDriver.setSignedIn(true);
 
-            mCallback.requestDriverProfileSuccess(mDriver);
+            if (mCallback!=null) {
+                mCallback.requestDriverProfileSuccess();
+            }
         } else {
             //report failure
             FailureJSON rJ = new Gson().fromJson(rB,FailureJSON.class);
@@ -97,10 +109,12 @@ public class HttpDriverProfile implements DriverNetworkRepository, Callback {
             Log.d(TAG, "Error Code --> " + rJ.getErrorCode());
             Log.d(TAG, "Documentation -> " + rJ.getDocumentation());
 
-            if (rJ.getErrorCode().equals("401")) {
-                mCallback.requestDriverProfileAuthenticationFailure(rJ.getErrorCode() + " : " + rJ.getErrorMessage());
-            } else {
-                mCallback.requestDriverProfileFailure(rJ.getErrorCode() + " : " + rJ.getErrorMessage());
+            if (mCallback!=null) {
+                if (rJ.getErrorCode().equals("401")) {
+                    mCallback.requestDriverProfileAuthenticationFailure(rJ.getErrorCode() + " : " + rJ.getErrorMessage());
+                } else {
+                    mCallback.requestDriverProfileFailure(rJ.getErrorCode() + " : " + rJ.getErrorMessage());
+                }
             }
 
             throw new IOException("Unexpected code " + response);
@@ -112,6 +126,10 @@ public class HttpDriverProfile implements DriverNetworkRepository, Callback {
         private String firstName;
         private String lastName;
         private String clientId;
+        private String email;
+        private String role;
+        String getEmail() { return email;}
+        String getRole() { return role; }
         String getClientId() { return clientId; }
         String getFirstName() { return firstName; }
         String getLastName() { return lastName; }

@@ -8,27 +8,27 @@ import android.util.Log;
 import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import io.ably.lib.types.ErrorInfo;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelAttachedEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelAttachingEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelDetachedEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelDetachingEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelFailedEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelInitializedEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.channelStateEvents.ChannelSuspendedEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionClosedEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionClosingEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionConnectedEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionConnectingEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionDisconnectedEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionExceptionEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionFailedEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionInitializedEvent;
-import it.flube.driver.dataLayer.eventBus.ablyRealtimeEvents.connectionStateEvents.ConnectionSuspendedEvent;
-import it.flube.driver.dataLayer.eventBus.messagingEvents.batchMessages.ReceivedAssignedBatchesMessage;
-import it.flube.driver.dataLayer.eventBus.messagingEvents.batchMessages.ReceivedBatchNotificationMessage;
-import it.flube.driver.dataLayer.eventBus.messagingEvents.batchMessages.ReceivedBatchRemovalMessage;
-import it.flube.driver.dataLayer.eventBus.messagingEvents.driverMessages.ReceivedClaimOfferResultMessage;
-import it.flube.driver.dataLayer.eventBus.messagingEvents.driverMessages.ReceivedCurrentOffersMessage;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.channelStateEvents.ChannelAttachedEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.channelStateEvents.ChannelAttachingEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.channelStateEvents.ChannelDetachedEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.channelStateEvents.ChannelDetachingEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.channelStateEvents.ChannelFailedEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.channelStateEvents.ChannelInitializedEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.channelStateEvents.ChannelSuspendedEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.connectionStateEvents.ConnectionClosedEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.connectionStateEvents.ConnectionClosingEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.connectionStateEvents.ConnectionConnectedEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.connectionStateEvents.ConnectionConnectingEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.connectionStateEvents.ConnectionDisconnectedEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.connectionStateEvents.ConnectionExceptionEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.connectionStateEvents.ConnectionFailedEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.connectionStateEvents.ConnectionInitializedEvent;
+import it.flube.driver.dataLayer.messaging.ablyRealtime.eventBus.connectionStateEvents.ConnectionSuspendedEvent;
+import it.flube.driver.dataLayer.messaging.eventBus.batchMessageEvents.ReceivedAssignedBatchesMessage;
+import it.flube.driver.dataLayer.messaging.eventBus.batchMessageEvents.ReceivedBatchNotificationMessage;
+import it.flube.driver.dataLayer.messaging.eventBus.batchMessageEvents.ReceivedBatchRemovalMessage;
+import it.flube.driver.dataLayer.messaging.eventBus.driverMessageEvents.ReceivedClaimOfferResultMessage;
+import it.flube.driver.dataLayer.messaging.eventBus.driverMessageEvents.ReceivedCurrentOffersMessage;
 import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyCallbackInterfaces.AblyChannelCallback;
 import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyCallbackInterfaces.AblyConnectionCallback;
 import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyEntities.AblyChannel;
@@ -55,6 +55,7 @@ import it.flube.driver.dataLayer.messaging.messageBuilders.driverMessages.ClaimO
 import it.flube.driver.dataLayer.messaging.messageBuilders.driverMessages.RequestCurrentOffersMessageBuilder;
 import it.flube.driver.dataLayer.messaging.messageBuilders.driverMessages.SendOnDutyMessageBuilder;
 import it.flube.driver.modelLayer.entities.Batch;
+import it.flube.driver.modelLayer.entities.DriverSingleton;
 import it.flube.driver.modelLayer.entities.Offer;
 import it.flube.driver.modelLayer.interfaces.messaging.RsmReceiveMsgCallbackAssignedBatches;
 import it.flube.driver.modelLayer.interfaces.messaging.RsmReceiveMsgCallbackBatchNotification;
@@ -62,8 +63,6 @@ import it.flube.driver.modelLayer.interfaces.messaging.RsmReceiveMsgCallbackBatc
 import it.flube.driver.modelLayer.interfaces.messaging.RsmReceiveMsgCallbackClaimOfferResult;
 import it.flube.driver.modelLayer.interfaces.messaging.RsmReceiveMsgCallbackCurrentOffers;
 import it.flube.driver.modelLayer.interfaces.messaging.RemoteServerMessagingInterface;
-
-import static java.util.Objects.isNull;
 
 /**
  * Created on 5/17/2017
@@ -74,17 +73,42 @@ public class RemoteServerMessaging implements RemoteServerMessagingInterface, Ab
         RsmReceiveMsgCallbackCurrentOffers, RsmReceiveMsgCallbackClaimOfferResult, RsmReceiveMsgCallbackBatchRemoval,
         RsmReceiveMsgCallbackBatchNotification, RsmReceiveMsgCallbackAssignedBatches {
 
-    private final String TAG = "RemoteServerMessaging";
+    ///
+    ///  Loader class provides synchronization across threads
+    ///  Lazy initialization since Loader class is only called when "getInstance" is called
+    ///  volatile keyword guarantees visibility of changes to variables across threads
+    ///
+    private static class Loader {
+        static volatile RemoteServerMessaging mInstance = new RemoteServerMessaging();
+    }
 
-    private AblyRealtimeSingleton mAblyRealtime;
-    private AblyChannel mLookingForOffers;
-    private AblyChannel mBatchActivity;
-    private AblyChannel mClientId;
-    private AblyChannel mActiveBatch;
-
-
-    public RemoteServerMessaging(String serverUrl, String clientId, String lookingForOffersChannelName, String batchActivityChannelName) {
+    ///
+    ///  constructor is private, instances can only be created internally by the class
+    ///
+    private RemoteServerMessaging() {
         mAblyRealtime = AblyRealtimeSingleton.getInstance();
+    }
+
+    ///
+    ///  getInstance() provides access to the singleton instance outside the class
+    ///
+    public static RemoteServerMessaging getInstance() {
+        return Loader.mInstance;
+    }
+
+    ///
+    ///     all class variables are static so there is only one across all instances (and there will only be one instance)
+    ///
+    private static final String TAG = "RemoteServerMessaging";
+
+    private static AblyRealtimeSingleton mAblyRealtime;
+    private static AblyChannel mLookingForOffers;
+    private static AblyChannel mBatchActivity;
+    private static AblyChannel mClientId;
+    private static AblyChannel mActiveBatch;
+    private static boolean mOkToSendActiveBatchChannel;
+
+    public void setConnectionValues(String serverUrl, String clientId, String lookingForOffersChannelName, String batchActivityChannelName) {
 
         //create connection
         Log.d(TAG, "create ably Connection START...");
@@ -107,6 +131,8 @@ public class RemoteServerMessaging implements RemoteServerMessagingInterface, Ab
         mClientId.subscribe("batchNotification", new ReceivedBatchNotification(this));
         mClientId.subscribe("batchRemoval", new ReceivedBatchRemoval(this));
 
+        //initialize ok to send to active batch channel
+        mOkToSendActiveBatchChannel = false;
     }
 
     //connect & disconnect
@@ -131,7 +157,7 @@ public class RemoteServerMessaging implements RemoteServerMessagingInterface, Ab
     // implement Remote Server Messaging Interface for SENDING MESSAGES
     // messages that can be sent
     public void sendMsgOnDuty(boolean dutyStatus) {
-        Log.d(TAG, "Sending onDuty");
+        Log.d(TAG, "Sending onDuty --> " + Boolean.toString(dutyStatus));
         SendOnDutyMessageBuilder mb = new SendOnDutyMessageBuilder(dutyStatus);
         mLookingForOffers.publish(mb.getMessageName(), mb.getMessageBody());
     }
@@ -164,6 +190,7 @@ public class RemoteServerMessaging implements RemoteServerMessagingInterface, Ab
         Log.d(TAG, "Sending Batch Start");
         BatchStartMessageBuilder mb = new BatchStartMessageBuilder(batchOID);
         mBatchActivity.publish(mb.getMessageName(), mb.getMessageBody());
+
     }
 
     public void sendMsgLocationUpdate(double latitude, double longitude) {

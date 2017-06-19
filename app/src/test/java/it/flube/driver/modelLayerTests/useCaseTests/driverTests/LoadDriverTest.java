@@ -26,15 +26,15 @@ public class LoadDriverTest implements LoadDriverInfoResult {
         mDriver.setLastName("");
         mDriver.setClientId("");
         mDriver.setEmail("");
-        mDriver.setLoaded(false);
-        mDriver.setOnDuty(false);
+        //mDriver.setLoaded(false);
+        //mDriver.setOnDuty(false);
 
         Assert.assertEquals("First Name","", mDriver.getFirstName());
         Assert.assertEquals("Last Name", "", mDriver.getLastName());
         Assert.assertEquals("Client Id", "", mDriver.getClientId());
         Assert.assertEquals("Email", "", mDriver.getEmail());
-        Assert.assertEquals("Loaded", false, mDriver.isLoaded());
-        Assert.assertEquals("On Duty", false, mDriver.isOnDuty());
+        //Assert.assertEquals("Loaded", false, mDriver.isLoaded());
+        //Assert.assertEquals("On Duty", false, mDriver.isOnDuty());
 
         //initialize driver storage & use case
         MockDriverStorage mDriverStorage = new MockDriverStorage();
@@ -48,8 +48,8 @@ public class LoadDriverTest implements LoadDriverInfoResult {
         Assert.assertEquals("Last Name", "Battlecrank", mDriver.getLastName());
         Assert.assertEquals("Client Id", "12345", mDriver.getClientId());
         Assert.assertEquals("Email", "test@example.com", mDriver.getEmail());
-        Assert.assertEquals("Loaded", true, mDriver.isLoaded());
-        Assert.assertEquals("On Duty", false, mDriver.isOnDuty());
+        //Assert.assertEquals("Loaded", true, mDriver.isLoaded());
+        //Assert.assertEquals("On Duty", false, mDriver.isOnDuty());
 
     }
 

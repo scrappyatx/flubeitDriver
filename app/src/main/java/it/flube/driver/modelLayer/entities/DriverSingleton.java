@@ -9,20 +9,45 @@ package it.flube.driver.modelLayer.entities;
  */
 
 public class DriverSingleton {
-    private static final DriverSingleton mInstance = new DriverSingleton();
+
+    ///
+    ///  Loader class provides synchronization across threads
+    ///  Lazy initialization since Loader class is only called when "getInstance" is called
+    ///  volatile keyword guarantees visibility of changes to variables across threads
+    ///
+    private static class Loader {
+        static volatile DriverSingleton mInstance = new DriverSingleton();
+    }
+
+    ///
+    ///  constructor is private, instances can only be created internally by the class
+    ///
+    private DriverSingleton() {}
+
+    ///
+    ///  getInstance() provides access to the singleton instance outside the class
+    ///
+    public static DriverSingleton getInstance() {
+        return Loader.mInstance;
+    }
+
+
+    ///
+    ///     all class variables are static so there is only one across all instances (and there will only be one instance)
+    ///
     private static String mFirstName;
     private static String mLastName;
     private static String mClientId;
     private static String mEmail;
-    private static boolean mOnDuty;
-    private static boolean mIsLoaded;
+    private static String mRole;
+    private static String mActiveBatchOID;
+    private static boolean mSignedIn;
+    private static boolean mHasActiveBatch;
 
-    public static DriverSingleton getInstance() {
-        return mInstance;
-    }
 
-    private DriverSingleton() {
-    }
+    ///
+    ///   getters & setters for the class variables
+    ///
 
     public String getFirstName() {
         return mFirstName;
@@ -52,21 +77,41 @@ public class DriverSingleton {
 
     public void setEmail(String email) { mEmail = email; }
 
-    public boolean isOnDuty() {
-        return mOnDuty;
+    public String getRole() { return mRole; }
+
+    public void setRole(String role) { mRole = role; }
+
+    public void setSignedIn(boolean status) {
+        mSignedIn = status;
     }
 
-    public void setOnDuty(boolean onDuty) {
-        mOnDuty = onDuty;
+    public boolean isSignedIn() {
+        return mSignedIn;
     }
 
-    public boolean isLoaded() {
-        return mIsLoaded;
+    public void setHasActiveBatch(boolean status) {
+        mHasActiveBatch = status;
     }
 
-    public void setLoaded(boolean loaded) {
-        mIsLoaded = loaded;
+    public void setActiveBatchOID(String oid) {
+        mActiveBatchOID = oid;
     }
 
+    public String getActiveBatchOID() {
+        return mActiveBatchOID;
+    }
 
+    ///
+    ///  convenience method to clear all internal variables
+    ///
+    public void clear() {
+        mFirstName = null;
+        mLastName = null;
+        mClientId = null;
+        mEmail = null;
+        mRole = null;
+        mSignedIn = false;
+        mHasActiveBatch = false;
+        mActiveBatchOID = null;
+    }
 }

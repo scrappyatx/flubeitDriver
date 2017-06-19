@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
+  -->
+
+<android.support.v7.widget.Toolbar
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?attr/actionBarSize"
+
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintLeft_toLeftOf="parent"
+
+    app:theme="@style/ToolBarStyle"
+    app:elevation="4dp"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/switch_looking_for_work"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+
+        android:switchPadding="10dp"
+        android:text="@string/toolbar_switch_looking_for_work_ON"
+        android:textColor="@android:color/white"
+        android:textOff="OFF"
+        android:textOn="ON"
+        android:thumbTextPadding="10sp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:showText="true"
+        app:splitTrack="true"
+
+        app:switchTextAppearance="@style/SwitchStyleText"
+
+        app:theme="@style/SwitchStyleColor" />
+
+</android.support.v7.widget.Toolbar>
+
+
+

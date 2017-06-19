@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
+  -->
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android.support.v7.appcompat="http://schemas.android.com/apk/res-auto"
+
+    android:id="@+id/switchView_looking_for_work"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    android:orientation="horizontal">
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/switch_looking_for_work"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:switchPadding="10dp"
+        android:text="@string/toolbar_switch_looking_for_work_ON"
+        android:textColor="@android:color/white"
+        android:textOn="ON"
+        android:textOff="OFF"
+
+        app:switchTextAppearance="@style/SwitchStyleText"
+        app:splitTrack="true"
+        app:thumbTintMode="src_in"
+        app:trackTintMode="src_over"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:showText="true"
+
+        app:theme="@style/SwitchStyleColor"/>
+
+</android.support.constraint.ConstraintLayout>

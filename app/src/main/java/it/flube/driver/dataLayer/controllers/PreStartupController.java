@@ -9,19 +9,22 @@ import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 
-import it.flube.driver.dataLayer.eventBus.activityNavigationEvents.GotoMainActivityEvent;
-import it.flube.driver.dataLayer.eventBus.activityUIevents.preStartupActivity.DriverWasUpdatedEvent;
-import it.flube.driver.dataLayer.eventBus.activityUIevents.preStartupActivity.ResultWasUpdatedEvent;
+import it.flube.driver.modelLayer.interfaces.driverStorageRepository.DriverStorageRepositoryDeleteCallback;
+import it.flube.driver.modelLayer.interfaces.driverStorageRepository.DriverStorageRepositoryLoadCallback;
+import it.flube.driver.modelLayer.interfaces.driverStorageRepository.DriverStorageRepositorySaveCallback;
+import it.flube.driver.userInterfaceLayer.eventBus.activityNavigationEvents.GotoMainActivityEventDELETE;
+import it.flube.driver.userInterfaceLayer.eventBus.activityUIevents.preStartupActivity.DriverWasUpdatedEvent;
+import it.flube.driver.userInterfaceLayer.eventBus.activityUIevents.preStartupActivity.ResultWasUpdatedEvent;
 import it.flube.driver.dataLayer.network.toBeDeleted.HttpAblyTokenCallbackDELETE;
 import it.flube.driver.dataLayer.network.toBeDeleted.HttpAblyTokenDELETE;
 import it.flube.driver.dataLayer.network.HttpDriverProfile;
 import it.flube.driver.dataLayer.storage.DriverStorage;
 import it.flube.driver.modelLayer.entities.DriverSingleton;
 import it.flube.driver.modelLayer.interfaces.driverNetwork.DriverNetworkRepositoryCallback;
-import it.flube.driver.modelLayer.interfaces.driverStorageRepository.DriverStorageRepositoryCallback;
+import it.flube.driver.modelLayer.interfaces.driverStorageRepository.DriverStorageRepositoryCallbackDELETE;
 import it.flube.driver.modelLayer.useCases.driver.testingUseCases.clearDriverSingleton.ClearDriverSingletonCallback;
 import it.flube.driver.modelLayer.useCases.driver.testingUseCases.loadDriverTestInfo.LoadDriverTestInfoCallback;
-import it.flube.driver.modelLayer.useCases.driver.networkUseCases.requestDriverProfile.RequestDriverProfile;
+import it.flube.driver.modelLayer.useCases.driver.networkUseCases.requestDriverProfileDELETE.RequestDriverProfileDELETE;
 import it.flube.driver.modelLayer.useCases.driver.storageUseCases.deleteDriver.DeleteDriver;
 import it.flube.driver.modelLayer.useCases.driver.storageUseCases.loadDriver.LoadDriver;
 import it.flube.driver.modelLayer.useCases.driver.storageUseCases.saveDriver.SaveDriver;
@@ -33,7 +36,8 @@ import it.flube.driver.modelLayer.useCases.driver.testingUseCases.loadDriverTest
  * Project : Driver
  */
 
-public class PreStartupController implements DriverStorageRepositoryCallback, LoadDriverTestInfoCallback, ClearDriverSingletonCallback, DriverNetworkRepositoryCallback, HttpAblyTokenCallbackDELETE {
+public class PreStartupController implements DriverStorageRepositorySaveCallback, DriverStorageRepositoryLoadCallback, DriverStorageRepositoryDeleteCallback,
+        LoadDriverTestInfoCallback, ClearDriverSingletonCallback, DriverNetworkRepositoryCallback, HttpAblyTokenCallbackDELETE {
     private final String TAG = "PreStartupController";
     private Context mContext;
     private DriverSingleton mDriver;
@@ -47,7 +51,7 @@ public class PreStartupController implements DriverStorageRepositoryCallback, Lo
     private SaveDriver mSaveDriver;
     private DeleteDriver mDeleteDriver;
     private ClearDriverSingleton mClearDriverSingleton;
-    private RequestDriverProfile mRequestDriverProfile;
+    private RequestDriverProfileDELETE mRequestDriverProfileDELETE;
 
     //network shit
     private String mClientIdURL;
@@ -62,7 +66,9 @@ public class PreStartupController implements DriverStorageRepositoryCallback, Lo
     }
 
     private void initializeNetwork() {
-        mDriverNetwork = new HttpDriverProfile(this);
+        mDriverNetwork = new HttpDriverProfile();
+        mDriverNetwork.setCallback(this);
+
         mHttpAblyTokenDELETE = new HttpAblyTokenDELETE(this);
         mClientIdURL = "https://api.cloudconfidant.com/concierge-oil-service/ably/clientId";
         mUsername = "test@test24.com";
@@ -76,7 +82,7 @@ public class PreStartupController implements DriverStorageRepositoryCallback, Lo
         mDeleteDriver = new DeleteDriver(mDriverStorage, this);
         mLoadDriverTestInfo = new LoadDriverTestInfo(this);
         mClearDriverSingleton = new ClearDriverSingleton(this);
-        mRequestDriverProfile = new RequestDriverProfile(mDriverNetwork, mClientIdURL, mUsername, mPassword );
+        mRequestDriverProfileDELETE = new RequestDriverProfileDELETE(mDriverNetwork, mClientIdURL, mUsername, mPassword );
         Log.d(TAG, "Use cases initialized");
     }
 
@@ -88,7 +94,7 @@ public class PreStartupController implements DriverStorageRepositoryCallback, Lo
         initializeStorage();
         initializeNetwork();
         initializeUseCases();
-        Log.d(TAG, "StartupController Controller CREATED");
+        Log.d(TAG, "SplashScreenController Controller CREATED");
     }
 
 
@@ -141,12 +147,12 @@ public class PreStartupController implements DriverStorageRepositoryCallback, Lo
     }
 
     public void requestDriverProfile() {
-        mRequestDriverProfile.setUsername(DriverSingleton.getInstance().getEmail());
-        mRequestDriverProfile.setPassword("password");
+        mRequestDriverProfileDELETE.setUsername(DriverSingleton.getInstance().getEmail());
+        mRequestDriverProfileDELETE.setPassword("password");
 
-        Thread t = new Thread(mRequestDriverProfile);
+        Thread t = new Thread(mRequestDriverProfileDELETE);
         t.start();
-        //mRequestDriverProfile.run();
+        //mRequestDriverProfileDELETE.run();
         Log.d(TAG, "*** request driver profile");
     }
 
@@ -156,8 +162,8 @@ public class PreStartupController implements DriverStorageRepositoryCallback, Lo
     }
 
     public void goToStartupActivity() {
-        EventBus.getDefault().post(new GotoMainActivityEvent());
-        Log.d(TAG, "*** posted GotoMainActivityEvent on EventBus");
+        EventBus.getDefault().post(new GotoMainActivityEventDELETE());
+        Log.d(TAG, "*** posted GotoMainActivityEventDELETE on EventBus");
     }
 
     // Use case callbacks
@@ -176,7 +182,12 @@ public class PreStartupController implements DriverStorageRepositoryCallback, Lo
         EventBus.getDefault().post(new ResultWasUpdatedEvent("Last action -> Saved driver data to shared preferences"));
     }
 
-    public void loadDriverSuccess(DriverSingleton driver) {
+    public void saveDriverFailure(String errorMessage) {
+        Log.d(TAG, "*** Driver data saved to device");
+        EventBus.getDefault().post(new ResultWasUpdatedEvent("Last action -> Saved driver data error --> " + errorMessage));
+    }
+
+    public void loadDriverSuccess() {
         Log.d(TAG, "*** Driver data loaded from device");
         EventBus.getDefault().post(new DriverWasUpdatedEvent(DriverSingleton.getInstance()));
         EventBus.getDefault().post(new ResultWasUpdatedEvent("Last action -> loaded driver data from shared preferences"));
@@ -204,7 +215,7 @@ public class PreStartupController implements DriverStorageRepositoryCallback, Lo
         EventBus.getDefault().post(new ResultWasUpdatedEvent("Last action -> cleared data from driver singleton"));
     }
 
-    public void requestDriverProfileSuccess(DriverSingleton driver) {
+    public void requestDriverProfileSuccess() {
         Log.d(TAG, "*** HTTP request driver profile SUCCESS");
         EventBus.getDefault().post(new DriverWasUpdatedEvent(DriverSingleton.getInstance()));
         EventBus.getDefault().post(new ResultWasUpdatedEvent("Last action -> HTTP request for driver profile SUCCESS"));

@@ -20,7 +20,7 @@ public class DriverGoesOnDuty implements Runnable {
     }
 
     public void run() {
-        DriverSingleton.getInstance().setOnDuty(true);
+        //DriverSingleton.getInstance().setOnDuty(true);
         mResult.driverGoesOnDutyEvent();
     }
 

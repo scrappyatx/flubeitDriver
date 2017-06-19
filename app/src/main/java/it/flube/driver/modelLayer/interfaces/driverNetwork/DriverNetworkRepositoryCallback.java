@@ -12,7 +12,7 @@ import it.flube.driver.modelLayer.entities.DriverSingleton;
  */
 
 public interface DriverNetworkRepositoryCallback {
-    void requestDriverProfileSuccess(DriverSingleton driver);
+    void requestDriverProfileSuccess();
 
     void requestDriverProfileFailure(String responseMessage);
 
