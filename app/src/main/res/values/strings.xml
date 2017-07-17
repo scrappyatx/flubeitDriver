@@ -33,14 +33,6 @@
     <string name="permission_rationale">Contacts permissions are needed for providing email completions.</string>
 
 
-    <!-- Strings related to remote logging & error reporting -->
-    <string name="LOGGLY_DEBUG_ACTIVE_KEY">loggly_debug_active</string>
-    <string name="LOGGLY_RELEASE_ACTIVE_KEY">loggly_release_active</string>
-    <string name="ROLLBAR_DEBUG_ACTIVE_KEY">rollbar_debug_active</string>
-    <string name="ROLLBAR_RELEASE_ACTIVE_KEY">rollbar_release_active</string>
-    <string name="LOGGLY_AUTH">46832b1c-b4cc-4440-b06a-382e4a958bc4</string>
-    <string name="ROLLBAR_AUTH">6489dbbc16e943beaebf5c0028ee588a</string>
-
     <!-- Strings related to foreground service -->
     <string name="rtm_and_loc_updates_fg_svc_notification_title">flube.it Driver</string>
     <string name="rtm_and_loc_updates_fg_svc_notification_text_searching">Searching for offers</string>
@@ -73,7 +65,7 @@
     <string name="login_error_text">error text</string>
 
     <!-- Strings related to login controller -->
-    <string name="login_url_key">driver_profile_url</string>
+    <string name="login_auth_failure_message">The email address or password is incorrect</string>
 
 
     <!-- Strings related to account activity layout  -->
@@ -83,6 +75,30 @@
 
     <!-- Strings related to account activity layout  -->
     <string name="account_activity_title">Account</string>
+
+    <!-- Strings related to demo activity layout -->
+    <string name="demo_activity_title">Demo</string>
+
+    <!-- Strings related to earnings activity layout -->
+    <string name="earnings_activity_title">Earnings</string>
+
+    <!-- Strings related to help activity layout -->
+    <string name="help_activity_title">Help</string>
+
+    <!-- Strings related to home activity layout -->
+    <string name="home_activity_title">Home</string>
+
+    <!-- Strings related to home no active batch activity layout -->
+    <string name="home_no_active_batch_activity_title">Home No Active Batch</string>
+
+    <!-- Strings related to messages activity layout -->
+    <string name="messages_activity_title">Messages</string>
+
+    <!-- Strings related to offers activity layout -->
+    <string name="offers_activity_title">Offers</string>
+
+    <!-- Strings related to scheduled batches activity layout -->
+    <string name="scheduled_batches_activity_title">Scheduled Batches</string>
 
 
 </resources>

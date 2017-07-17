@@ -9,9 +9,9 @@ import android.util.Log;
 import org.greenrobot.eventbus.EventBus;
 
 import io.ably.lib.types.Message;
-import it.flube.driver.dataLayer.messaging.eventBus.driverMessageEvents.ReceivedClaimOfferResultMessage;
+import it.flube.driver.deviceLayer.realtimeMessaging.eventBus.driverMessageEvents.RealtimeMessageClaimOfferResultEvent;
 import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyCallbackInterfaces.AblyMessageSubscribeCallback;
-import it.flube.driver.modelLayer.interfaces.messaging.RsmReceiveMsgCallbackClaimOfferResult;
+import it.flube.driver.useCaseLayer.interfaces.realtimeMessaging.RtmReceiveMsgClaimOfferResult;
 
 /**
  * Created on 5/17/2017
@@ -20,15 +20,15 @@ import it.flube.driver.modelLayer.interfaces.messaging.RsmReceiveMsgCallbackClai
 
 public class ReceivedClaimOfferResult implements AblyMessageSubscribeCallback {
     private final String TAG = "RcvdClaimOfferResult";
-    private RsmReceiveMsgCallbackClaimOfferResult mCallback;
+    private RtmReceiveMsgClaimOfferResult mCallback;
 
-    public ReceivedClaimOfferResult(RsmReceiveMsgCallbackClaimOfferResult callback) {
+    public ReceivedClaimOfferResult(RtmReceiveMsgClaimOfferResult callback) {
         mCallback = callback;
     }
 
     public void onMessage(Message message) {
         Log.d(TAG,"Received claim offer result: name -> " + message.name + "  data ->" + message.data);
         mCallback.receiveMsgClaimOfferResult(message.name, message.data.toString());
-        EventBus.getDefault().post(new ReceivedClaimOfferResultMessage());
+        EventBus.getDefault().post(new RealtimeMessageClaimOfferResultEvent());
     }
 }

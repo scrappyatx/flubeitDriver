@@ -5,41 +5,19 @@
 package it.flube.driver.userInterfaceLayer.activities.account;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SwitchCompat;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.widget.Switch;
 import android.widget.TextView;
-
-import com.mikepenz.materialdrawer.Drawer;
-import com.rollbar.android.Rollbar;
-
-import junit.framework.Assert;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import it.flube.driver.BuildConfig;
 import it.flube.driver.R;
-import it.flube.driver.dataLayer.controllers.AccountController;
-import it.flube.driver.userInterfaceLayer.drawerMenu.NavigationMenu;
-import it.flube.driver.userInterfaceLayer.eventBus.activityNavigationEvents.GotoAccountActivityEvent;
-import it.flube.driver.userInterfaceLayer.eventBus.activityNavigationEvents.GotoDemoActivityEvent;
-import it.flube.driver.userInterfaceLayer.eventBus.activityNavigationEvents.GotoEarningsActivityEvent;
-import it.flube.driver.userInterfaceLayer.eventBus.activityNavigationEvents.GotoHelpActivityEvent;
-import it.flube.driver.userInterfaceLayer.eventBus.activityNavigationEvents.GotoHomeActiveBatchActivityEventDELETE;
-import it.flube.driver.userInterfaceLayer.eventBus.activityNavigationEvents.GotoHomeActivityEvent;
-import it.flube.driver.userInterfaceLayer.eventBus.activityNavigationEvents.GotoHomeNoActiveBatchActivityEventDELETE;
-import it.flube.driver.userInterfaceLayer.eventBus.activityNavigationEvents.GotoLoginActivityEvent;
-import it.flube.driver.userInterfaceLayer.eventBus.activityNavigationEvents.GotoMessagesActivityEvent;
-import it.flube.driver.userInterfaceLayer.eventBus.activityNavigationEvents.GotoOffersActivityEvent;
-import it.flube.driver.userInterfaceLayer.eventBus.activityNavigationEvents.GotoScheduledBatchesActivityEvent;
-import it.flube.driver.userInterfaceLayer.eventBus.activityUIevents.accountActivity.ProfileDetailNotAvailableEvent;
-import it.flube.driver.userInterfaceLayer.eventBus.activityUIevents.accountActivity.ProfileDetailWasUpdatedEvent;
+import it.flube.driver.dataLayer.useCaseResponseHandlers.GetAccountDetailsResponseHandler;
+import it.flube.driver.dataLayer.useCaseResponseHandlers.SignOutResponseHandler;
+import it.flube.driver.userInterfaceLayer.ActivityNavigator;
+import it.flube.driver.userInterfaceLayer.DrawerMenu;
 import timber.log.Timber;
 
 import static junit.framework.Assert.assertNotNull;
@@ -50,95 +28,92 @@ import static junit.framework.Assert.assertNotNull;
  * Project : Driver
  */
 
-public class AccountActivity extends AppCompatActivity implements AccountActivityInterface {
+public class AccountActivity extends AppCompatActivity {
     private static final String TAG = "AccountActivity";
 
-    private AccountController mController;
-    private Toolbar mToolbar;
-    private SwitchCompat mSwitch;
-    private Drawer mDrawer;
+    private AccountController controller;
+    private ActivityNavigator navigator;
+    private DrawerMenu drawer;
 
-    private TextView mProfileDetail;
+    private TextView profileDetail;
 
-     /* ------------------------------------------------------------------
-     Activity Lifecycle Overrides - onCreate
-
-     1.  Instantiate Rollbar (if required)
-     2.  Call superclass onCreate()
-     3.  Inflate the view associated with this activity
-     4.  Create toolbar & navigation menu
-     ------------------------------------------------------------------ */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_account);
-
-        //setup toolbar
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle(R.string.account_activity_title);
-
-        mSwitch = (SwitchCompat) findViewById(R.id.switch_looking_for_work);
-
-        mDrawer = new NavigationMenu(this, mToolbar).getDrawer();
-
-        //setup UI elements
-        mProfileDetail = (TextView) findViewById(R.id.account_profile_details);
-        mProfileDetail.setVisibility(View.INVISIBLE);
-
-        //instantiate controller for this activity
-        mController = new AccountController(this, this);
+        profileDetail = (TextView) findViewById(R.id.account_profile_details);
+        profileDetail.setVisibility(View.INVISIBLE);
 
         Timber.tag(TAG).d("onCreate");
     }
 
-
     @Override
-    public void onStart() {
-        super.onStart();
-        Timber.tag(TAG).d(TAG, "onStart");
+    public void onResume(){
+        super.onResume();
+
+        EventBus.getDefault().register(this);
+
+        navigator = new ActivityNavigator();
+        drawer = new DrawerMenu(this, navigator, R.string.account_activity_title);
+        controller = new AccountController();
+        controller.getAccountDetailRequest();
+
+        Timber.tag(TAG).d("onResume");
     }
 
-    //unsubscribe to EventBus
     @Override
-    public void onStop() {
-        super.onStop();
-        Timber.tag(TAG).d(TAG, "onStop");
+    public void onPause(){
+
+        drawer.close();
+        controller.close();
+
+        EventBus.getDefault().unregister(this);
+        Timber.tag(TAG).d("onPause");
+
+        super.onPause();
     }
 
-    /* ---------------------------------------
-     UI button click event
-     ----------------------------------------- */
+
     public void clickLogoutButton(View v) {
         //user wants to logout
         Timber.tag(TAG).d("*** user clicked Logout button");
-        mController.signOut();
+        controller.signOutRequest();
     }
 
-    /* ---------------------------------------
-     UI update Events
-     ----------------------------------------- */
-
-    public void ProfileDetailUpdate(String firstName, String lastName, String email, String role, String clientId){
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEvent(GetAccountDetailsResponseHandler.UseCaseGetAccountDetailsSuccessEvent event) {
+        EventBus.getDefault().removeStickyEvent(GetAccountDetailsResponseHandler.UseCaseGetAccountDetailsSuccessEvent.class);
 
         Timber.tag(TAG).d("*** Profille Detail was updated event");
 
-        String details = "Name --> " + firstName + " " + lastName  + System.getProperty("line.separator")
-                + "Email --> " + email + System.getProperty("line.separator")
-                + "Role --> " +  role + System.getProperty("line.separator")
-                + "Client ID --> "  + clientId;
+        String details = "Name --> " + event.getDriver().getDisplayName() + System.getProperty("line.separator")
+                + "Email --> " + event.getDriver().getEmail() + System.getProperty("line.separator")
+                + "Role --> " +  event.getDriver().getRole() + System.getProperty("line.separator")+ System.getProperty("line.separator")
+                + "Client ID --> "  + event.getDriver().getClientId() + System.getProperty("line.separator")+ System.getProperty("line.separator")
+                + "Photo Url --> "  + event.getDriver().getPhotoUrl();
 
         Timber.tag(TAG).d("details -->" + details);
 
-        mProfileDetail.setText(details);
-        mProfileDetail.setVisibility(View.VISIBLE);
+        profileDetail.setText(details);
+        profileDetail.setVisibility(View.VISIBLE);
     }
 
-    public void ProfileDetailNotAvailable(String message) {
-        Timber.tag(TAG).w("*** Profille Detail is not available -> should never get here");
-        mProfileDetail.setText(message);
-        mProfileDetail.setVisibility(View.VISIBLE);
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEvent(GetAccountDetailsResponseHandler.UseCaseGetAccountDetailsFailureEvent event) {
+        EventBus.getDefault().removeStickyEvent(GetAccountDetailsResponseHandler.UseCaseGetAccountDetailsFailureEvent.class);
+
+        Timber.tag(TAG).w("profille detail is not available -> should never get here");
+        profileDetail.setText(getResources().getString(R.string.account_profile_details_default));
+        profileDetail.setVisibility(View.VISIBLE);
+    }
+
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEvent(SignOutResponseHandler.UseCaseSignOutCompleteEvent event) {
+        EventBus.getDefault().removeStickyEvent(SignOutResponseHandler.UseCaseSignOutCompleteEvent.class);
+        navigator.gotoActivityLogin(this);
     }
 
 }

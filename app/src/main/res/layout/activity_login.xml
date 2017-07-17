@@ -9,7 +9,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context=".userInterfaceLayer.activities.signIn.LoginActivity"
+    tools:context=".userInterfaceLayer.activities.signIn.SignInActivity"
     tools:layout_editor_absoluteY="25dp"
     tools:layout_editor_absoluteX="0dp">
 
@@ -27,16 +27,15 @@
 
     <ImageView
         android:id="@+id/login_image"
-        android:layout_width="389dp"
-        android:layout_height="267dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:scaleType="centerCrop"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/login_screen_logo"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="0dp"
-        tools:ignore="ContentDescription"/>
+        app:srcCompat="@drawable/login_screen_logo"
+        tools:ignore="ContentDescription" />
 
     <EditText
         android:id="@+id/login_username_text"
@@ -107,7 +106,9 @@
         app:lottie_fileName="material_wave_loading.json"
         app:lottie_loop="true"
         android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/login_submit_button" />
+        app:layout_constraintBottom_toTopOf="@+id/login_submit_button"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp" />
 
 
 </android.support.constraint.ConstraintLayout>

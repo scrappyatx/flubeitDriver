@@ -9,7 +9,6 @@ package it.flube.driver.dataLayer.presenters;
  */
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,11 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import it.flube.driver.R;
-import it.flube.driver.dataLayer.messaging.RemoteServerMessaging;
-import it.flube.driver.modelLayer.entities.Offer;
-import it.flube.driver.userInterfaceLayer.activities.OfferClaimActivityDELETE;
+import it.flube.driver.dataLayer.AndroidDevice;
+import it.flube.driver.dataLayer.messaging.RealtimeMessaging;
+import it.flube.driver.modelLayer.Offer;
 
 import java.util.ArrayList;
 
@@ -75,12 +75,11 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Of
         @Override
         public void onClick(View v) {
             Log.d(TAG,"onClick start");
-            Context context = itemView.getContext();
-            RemoteServerMessaging.getInstance().sendMsgClaimOfferRequest(mOffer.getOfferOID());
+            AndroidDevice.getInstance().getRealtimeOfferMessages().sendMsgClaimOfferRequest(mOffer.getOfferOID());
+            Toast toast = Toast.makeText(AndroidDevice.getInstance().getApplicationContext(), "Claim Request for Offer " + mOffer.getOfferOID().toString(), Toast.LENGTH_SHORT);
+            toast.show();
             Log.d(TAG,"Sent claim offer request for offerOID --> " + mOffer.getOfferOID());
-            //Intent showOfferIntent = new Intent(context, OfferClaimActivityDELETE.class);
-            //showOfferIntent.putExtra(OFFER_KEY, mOffer);
-            //context.startActivity(showOfferIntent);
+
             Log.d(TAG,"onClick complete");
         }
 

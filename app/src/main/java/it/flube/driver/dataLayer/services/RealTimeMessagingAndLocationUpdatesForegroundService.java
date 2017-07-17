@@ -13,9 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.View;
 
 import com.rollbar.android.Rollbar;
 
@@ -25,9 +23,8 @@ import org.greenrobot.eventbus.ThreadMode;
 
 
 import it.flube.driver.R;
-import it.flube.driver.dataLayer.messaging.RemoteServerMessaging;
-import it.flube.driver.dataLayer.messaging.eventBus.driverMessageEvents.ReceivedCurrentOffersMessage;
-import it.flube.driver.userInterfaceLayer.eventBus.activityNavigationEvents.GotoHomeActivityEvent;
+import it.flube.driver.dataLayer.messaging.RealtimeMessaging;
+import it.flube.driver.deviceLayer.realtimeMessaging.receiveMessageHandlers.CurrentOffersMessageHandler;
 
 
 /**
@@ -39,7 +36,7 @@ public class RealTimeMessagingAndLocationUpdatesForegroundService extends Servic
     private static final String TAG = "RtmAndLocUpdateFgSvc";
     private static final int SERVICE_ID = 101;
 
-    private RemoteServerMessaging mRSM;
+    private RealtimeMessaging mRSM;
 
 
     @Override
@@ -108,8 +105,8 @@ public class RealTimeMessagingAndLocationUpdatesForegroundService extends Servic
                     startForeground(SERVICE_ID, getNotification());
 
                     //connect to remote server messaging
-                    mRSM = RemoteServerMessaging.getInstance();
-                    //mRSM = new RemoteServerMessaging(i.getStringExtra("serverUrl"),i.getStringExtra("clientId"),i.getStringExtra("lookingForOffersChannelName"),i.getStringExtra("batchActivityChannelName"));
+                    mRSM = RealtimeMessaging.getInstance();
+                    //mRSM = new RealtimeMessaging(i.getStringExtra("serverUrl"),i.getStringExtra("clientId"),i.getStringExtra("lookingForOffersChannelName"),i.getStringExtra("batchActivityChannelName"));
                     mRSM.connect();
                     mRSM.sendMsgOnDuty(true);
 
@@ -122,8 +119,8 @@ public class RealTimeMessagingAndLocationUpdatesForegroundService extends Servic
                     break;
                 case "gotoHome":
                     Log.d(TAG,"action -> " + action);
-                    EventBus.getDefault().post(new GotoHomeActivityEvent());
-                    Log.d(TAG, "*** posted GotoHomeActivityEvent on EventBus");
+
+                    Log.d(TAG, "*** posted Goto Home Activity Event on EventBus");
                     break;
                 default:
                     Log.w(TAG,"unhandled action --> " + action);
@@ -175,8 +172,8 @@ public class RealTimeMessagingAndLocationUpdatesForegroundService extends Servic
     /////   Message Received Events
     /////
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(ReceivedCurrentOffersMessage msg) {
-        Log.d(TAG,"received " + Integer.toString(msg.getCurrentOfferList().size()) + " offers");
+    public void onEvent(CurrentOffersMessageHandler.CurrentOffersEvent msg) {
+        Log.d(TAG,"received " + Integer.toString(msg.getOfferList().size()) + " offers");
     }
 
 

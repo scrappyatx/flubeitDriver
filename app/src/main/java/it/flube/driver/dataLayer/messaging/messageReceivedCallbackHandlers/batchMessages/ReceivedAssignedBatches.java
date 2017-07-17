@@ -14,8 +14,8 @@ import java.util.List;
 
 import io.ably.lib.types.Message;
 import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyCallbackInterfaces.AblyMessageSubscribeCallback;
-import it.flube.driver.modelLayer.entities.Batch;
-import it.flube.driver.modelLayer.interfaces.messaging.RsmReceiveMsgCallbackAssignedBatches;
+import it.flube.driver.modelLayer.Batch;
+import it.flube.driver.useCaseLayer.interfaces.realtimeMessaging.RtmReceiveMsgAssignedBatches;
 
 /**
  * Created on 5/17/2017
@@ -24,9 +24,9 @@ import it.flube.driver.modelLayer.interfaces.messaging.RsmReceiveMsgCallbackAssi
 
 public class ReceivedAssignedBatches implements AblyMessageSubscribeCallback {
     private final String TAG = "ReceivedAssignedBatches";
-    private RsmReceiveMsgCallbackAssignedBatches mCallback;
+    private RtmReceiveMsgAssignedBatches mCallback;
 
-    public ReceivedAssignedBatches(RsmReceiveMsgCallbackAssignedBatches callback) {
+    public ReceivedAssignedBatches(RtmReceiveMsgAssignedBatches callback) {
         mCallback = callback;
     }
     public void onMessage(Message message) {

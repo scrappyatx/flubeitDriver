@@ -26,6 +26,7 @@ android {
         applicationId "it.flube.driver"
         minSdkVersion 18
         targetSdkVersion 25
+        multiDexEnabled true
         versionCode buildVersionCode()
         versionName version
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -71,6 +72,8 @@ dependencies {
     compile('com.mikepenz:materialdrawer:5.9.1@aar') {
         transitive = true
     }
+    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.mikepenz:fontawesome-typeface:4.7.0.1@aar'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:recyclerview-v7:25.3.1'
@@ -80,15 +83,25 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'com.google.android.gms:play-services-location:11.0.1'
-    compile 'com.squareup.okhttp3:okhttp:3.7.0'
+    compile 'com.google.android.gms:play-services-location:11.0.2'
+    compile 'com.squareup.okhttp3:okhttp:3.8.1'
     compile 'com.squareup.okhttp3:logging-interceptor:3.7.0'
+    compile 'com.squareup.picasso:picasso:2.5.1'
     compile 'com.airbnb.android:lottie:2.0.0-rc2'
     compile 'com.tapadoo.android:alerter:1.0.8'
-    compile 'com.google.firebase:firebase-config:11.0.1'
+    compile 'com.instabug.library:instabug:4.2.2'
+    compile 'com.google.firebase:firebase-config:11.0.2'
+    compile 'com.google.firebase:firebase-auth:11.0.2'
+    compile 'com.google.firebase:firebase-database:11.0.2'
+    compile 'com.google.firebase:firebase-storage:11.0.2'
     compile 'com.jakewharton.timber:timber:4.5.1'
     compile 'com.inrista.loggliest:loggliest:0.2'
     compile 'com.github.halysongoncalves:pugnotification:1.8.1'
+    compile 'com.jakewharton:butterknife:8.7.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     testCompile 'junit:junit:4.12'
     testCompile 'org.json:json:20140107'
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {

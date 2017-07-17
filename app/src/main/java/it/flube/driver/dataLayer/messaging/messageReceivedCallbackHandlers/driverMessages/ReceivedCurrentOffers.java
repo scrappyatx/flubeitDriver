@@ -14,8 +14,8 @@ import java.util.List;
 
 import io.ably.lib.types.Message;
 import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyCallbackInterfaces.AblyMessageSubscribeCallback;
-import it.flube.driver.modelLayer.entities.Offer;
-import it.flube.driver.modelLayer.interfaces.messaging.RsmReceiveMsgCallbackCurrentOffers;
+import it.flube.driver.modelLayer.Offer;
+import it.flube.driver.useCaseLayer.interfaces.realtimeMessaging.RtmReceiveMsgCurrentOffers;
 
 /**
  * Created on 5/17/2017
@@ -24,9 +24,9 @@ import it.flube.driver.modelLayer.interfaces.messaging.RsmReceiveMsgCallbackCurr
 
 public class ReceivedCurrentOffers implements AblyMessageSubscribeCallback {
     private final String TAG = "ReceivedCurrentOffers";
-    private RsmReceiveMsgCallbackCurrentOffers mCallback;
+    private RtmReceiveMsgCurrentOffers mCallback;
 
-    public ReceivedCurrentOffers(RsmReceiveMsgCallbackCurrentOffers callback) {
+    public ReceivedCurrentOffers(RtmReceiveMsgCurrentOffers callback) {
         mCallback = callback;
     }
     public void onMessage(Message message) {

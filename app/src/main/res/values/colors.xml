@@ -19,4 +19,9 @@
     <color name="yellow">#FACF00</color>
     <color name="lightred">#EF5350</color>
     <color name="offwhite">#F3F3F3</color>
+    <color name="translucentLightBlue">#8877CEE7</color>
+    <color name="translucentMedBlue">#88009CC8</color>
+    <color name="translucentDarkBlue">#88005989</color>
+    <color name="translucentYellow">#88FACF00</color>
+    <color name="translucentLightRed">#88EF5350</color>
 </resources>

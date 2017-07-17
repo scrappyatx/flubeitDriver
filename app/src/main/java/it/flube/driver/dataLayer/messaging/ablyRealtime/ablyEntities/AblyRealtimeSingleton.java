@@ -15,7 +15,6 @@ import io.ably.lib.realtime.Channel;
 import io.ably.lib.types.AblyException;
 import io.ably.lib.types.ClientOptions;
 import io.ably.lib.types.Param;
-import it.flube.driver.dataLayer.messaging.RemoteServerMessaging;
 import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyCallbackInterfaces.AblyChannelCallback;
 import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyCallbackInterfaces.AblyConnectionCallback;
 import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyListeners.AblyConnectionStateListener;
