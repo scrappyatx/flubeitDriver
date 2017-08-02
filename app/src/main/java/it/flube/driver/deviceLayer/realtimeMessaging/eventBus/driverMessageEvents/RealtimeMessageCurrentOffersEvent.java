@@ -6,7 +6,7 @@ package it.flube.driver.deviceLayer.realtimeMessaging.eventBus.driverMessageEven
 
 import java.util.ArrayList;
 
-import it.flube.driver.modelLayer.Offer;
+import it.flube.driver.modelLayer.entities.Offer;
 
 /**
  * Created on 5/17/2017

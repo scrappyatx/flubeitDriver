@@ -4,7 +4,6 @@
 
 package it.flube.driver.userInterfaceLayer.activities.splashScreen;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import org.greenrobot.eventbus.EventBus;
@@ -13,11 +12,12 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.DeviceCheck;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.SignInFromDeviceStorageResponseHandler;
+import it.flube.driver.dataLayer.useCaseResponseHandlers.signInAndSignOut.SignInFromDeviceStorageResponseHandler;
 import it.flube.driver.userInterfaceLayer.ActivityNavigator;
+import it.flube.driver.userInterfaceLayer.activities.PermissionsCheckActivity;
 import timber.log.Timber;
 
-public class SplashScreenActivity extends AppCompatActivity implements DeviceCheck.Response {
+public class SplashScreenActivity extends PermissionsCheckActivity implements DeviceCheck.Response {
 
     private static final String TAG = "SplashScreenActivity";
     private SplashScreenController controller;
@@ -31,8 +31,15 @@ public class SplashScreenActivity extends AppCompatActivity implements DeviceChe
     }
 
     @Override
-    protected void onResume(){
+    public void onResume(){
         super.onResume();
+        Timber.tag(TAG).d("onResume");
+    }
+
+    @Override
+    public void onPermissionResume(){
+        super.onPermissionResume();
+        Timber.tag(TAG).d("onPermissionResume");
 
         EventBus.getDefault().register(this);
 
@@ -41,15 +48,23 @@ public class SplashScreenActivity extends AppCompatActivity implements DeviceChe
 
         Timber.tag(TAG).d("about to check for google play services");
         controller.doDeviceCheck(this);
+
     }
 
 
     @Override
     public void onPause(){
-        EventBus.getDefault().unregister(this);
-        controller.close();
         super.onPause();
         Timber.tag(TAG).d("onPause");
+    }
+
+    @Override
+    public void onPermissionPause(){
+        super.onPermissionPause();
+        Timber.tag(TAG).d("onPermissionPause");
+
+        EventBus.getDefault().unregister(this);
+        controller.close();
     }
 
 

@@ -4,17 +4,34 @@
 
 package it.flube.driver.userInterfaceLayer.activities.offers;
 
-import android.util.Log;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.OfferSelectedResponseHandler;
+import it.flube.driver.modelLayer.entities.Offer;
+import it.flube.driver.useCaseLayer.claimOffer.UseCaseOfferSelected;
+import timber.log.Timber;
 
 /**
  * Created on 5/29/2017
  * Project : Driver
  */
 
-public class OffersController {
+public class OffersController implements OffersListAdapter.Response {
     private final String TAG = "OffersController";
+    private ExecutorService useCaseExecutor;
 
     public OffersController() {
-        Log.d(TAG, "OffersController Controller CREATED");
+        useCaseExecutor = Executors.newSingleThreadExecutor();
     }
+
+    public void offerSelected(Offer offer) {
+        Timber.tag(TAG).d("offer Selected --> " + offer.getOfferOID());
+        useCaseExecutor.execute(new UseCaseOfferSelected(offer, new OfferSelectedResponseHandler()));
+    }
+
+    public void close(){
+        useCaseExecutor.shutdown();
+    }
+
 }

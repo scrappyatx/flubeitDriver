@@ -4,17 +4,16 @@
 
 package it.flube.driver.deviceLayer.realtimeMessaging;
 
-import org.greenrobot.eventbus.EventBus;
 
+import android.os.Handler;
+import android.os.Looper;
 
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.deviceLayer.realtimeMessaging.eventBus.driverMessageEvents.RealtimeMessageClaimOfferResultEvent;
-import it.flube.driver.deviceLayer.realtimeMessaging.receiveMessageHandlers.ClaimOfferResultMessageHandler;
-import it.flube.driver.deviceLayer.realtimeMessaging.receiveMessageHandlers.CurrentOffersMessageHandler;
+import it.flube.driver.deviceLayer.realtimeMessaging.messageBuilders.batchMessages.ForfeitBatchMessageBuilder;
+import it.flube.driver.deviceLayer.realtimeMessaging.receiveMessageHandlers.ClaimOfferResponseMessageHandler;
 import it.flube.driver.deviceLayer.realtimeMessaging.sendMessageHandlers.ClaimOfferRequestMessageHandler;
-import it.flube.driver.deviceLayer.realtimeMessaging.sendMessageHandlers.CurrentOffersRequestMessageHandler;
 import it.flube.driver.deviceLayer.realtimeMessaging.sendMessageHandlers.OnDutyMessageHandler;
-import it.flube.driver.useCaseLayer.interfaces.RealtimeMessagingInterface;
+import it.flube.driver.modelLayer.interfaces.RealtimeMessagingInterface;
 import timber.log.Timber;
 
 
@@ -23,7 +22,7 @@ import timber.log.Timber;
  * Project : Driver
  */
 
-public class RealtimeOfferMessages implements RealtimeMessagingInterface.OfferMessages,
+public class RealtimeOfferMessages implements RealtimeMessagingInterface.OfferChannel,
         AblyChannel.ChannelConnectResponse, AblyChannel.ChannelDisconnectResponse {
 
     ///  Singleton class using Initialization-on-demand holder idiom
@@ -45,22 +44,19 @@ public class RealtimeOfferMessages implements RealtimeMessagingInterface.OfferMe
     private final AblyChannel ablyChannel;
 
 
-    public void connect(String clientId) {
+    public void attach(String clientId) {
         ablyChannel.channelConnectRequest(clientId, this);
     }
 
     public void channelConnectSuccess(){
         Timber.tag(TAG).d("connectSuccess");
-        ablyChannel.subscribe(new CurrentOffersMessageHandler());
-        ablyChannel.subscribe(new ClaimOfferResultMessageHandler());
-        sendMsgRequestCurrentOffers();
     }
 
     public void channelConnectFailure() {
         Timber.tag(TAG).d("connectFailure");
     }
 
-    public void disconnect() {
+    public void detach() {
         ablyChannel.channelDisconnectRequest(this);
     }
 
@@ -68,16 +64,32 @@ public class RealtimeOfferMessages implements RealtimeMessagingInterface.OfferMe
         Timber.tag(TAG).d("disconnectComplete");
     }
 
-    public void sendMsgOnDuty(Boolean dutyStatus) {
+    public void sendOnDutyMessage(Boolean dutyStatus) {
         ablyChannel.publish(new OnDutyMessageHandler.MessageBuilder(true).build());
     }
 
-    public void sendMsgRequestCurrentOffers() {
-        ablyChannel.publish(new CurrentOffersRequestMessageHandler.MessageBuilder().build());
+
+    public void sendClaimOfferRequestMessage(String offerOID, final ClaimOfferResponse response) {
+
+        final ClaimOfferResponseMessageHandler messageHandler = new ClaimOfferResponseMessageHandler(response);
+        int timeout = 10000;
+
+        ablyChannel.subscribe(messageHandler);
+        ablyChannel.publish(new ClaimOfferRequestMessageHandler.MessageBuilder(offerOID).build());
+
+        Looper.prepare();
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                ablyChannel.unsubscribe(messageHandler);
+                response.claimOfferRequestTimeoutNoResponse();
+            }
+        }, timeout);
+
+        Looper.loop();
+
     }
 
-    public void sendMsgClaimOfferRequest(String offerOID) {
-        ablyChannel.publish(new ClaimOfferRequestMessageHandler.MessageBuilder(offerOID).build());
-    }
 
 }

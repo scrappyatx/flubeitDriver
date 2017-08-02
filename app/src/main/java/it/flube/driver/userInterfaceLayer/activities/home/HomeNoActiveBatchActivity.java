@@ -14,6 +14,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import it.flube.driver.R;
 import it.flube.driver.userInterfaceLayer.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.DrawerMenu;
+import it.flube.driver.userInterfaceLayer.activities.PermissionsCheckActivity;
 import timber.log.Timber;
 
 /**
@@ -21,7 +22,7 @@ import timber.log.Timber;
  * Project : Driver
  */
 
-public class HomeNoActiveBatchActivity extends AppCompatActivity {
+public class HomeNoActiveBatchActivity extends PermissionsCheckActivity {
     private static final String TAG = "HomeNabActivity";
 
     private HomeNoActiveBatchController controller;
@@ -36,9 +37,9 @@ public class HomeNoActiveBatchActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onResume(){
-        super.onResume();
-
+    public void onPermissionResume(){
+        super.onPermissionResume();
+        Timber.tag(TAG).d("onPermissionResume");
         //EventBus.getDefault().register(this);
 
         navigator = new ActivityNavigator();
@@ -46,22 +47,16 @@ public class HomeNoActiveBatchActivity extends AppCompatActivity {
         controller = new HomeNoActiveBatchController();
 
         controller.sendSomeTestMessages();
-
-        Timber.tag(TAG).d("onResume");
     }
 
 
     @Override
-    public void onPause(){
-
+    public void onPermissionPause(){
+        super.onPermissionPause();
+        Timber.tag(TAG).d("onPermissionPause");
         //EventBus.getDefault().unregister(this);
 
         drawer.close();
-
-        super.onPause();
-        Timber.tag(TAG).d("onPause");
     }
-
-
 
 }

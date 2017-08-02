@@ -7,8 +7,8 @@ package it.flube.driver.deviceLayer.realtimeMessaging;
 import java.util.ArrayList;
 
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.modelLayer.Offer;
-import it.flube.driver.useCaseLayer.interfaces.RealtimeMessagingInterface;
+import it.flube.driver.modelLayer.entities.Offer;
+import it.flube.driver.modelLayer.interfaces.RealtimeMessagingInterface;
 
 /**
  * Created on 7/8/2017

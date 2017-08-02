@@ -9,9 +9,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.SignInFromUserProfileResponseHandler;
-import it.flube.driver.useCaseLayer.interfaces.MobileDeviceInterface;
-import it.flube.driver.useCaseLayer.UseCaseSignInFromUserProfile;
+import it.flube.driver.dataLayer.useCaseResponseHandlers.signInAndSignOut.SignInFromUserProfileResponseHandler;
+import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
+import it.flube.driver.useCaseLayer.signInAndSignOut.UseCaseSignInFromUserProfile;
 import timber.log.Timber;
 
 

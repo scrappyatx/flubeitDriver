@@ -4,16 +4,16 @@
 
 package it.flube.driver.deviceLayer.realtimeMessaging;
 
-import it.flube.driver.useCaseLayer.interfaces.RealtimeMessagingInterface;
+import it.flube.driver.modelLayer.interfaces.RealtimeMessagingInterface;
 
 /**
  * Created on 7/8/2017
  * Project : Driver
  */
 
-public class RealtimeActiveBatchMessages implements RealtimeMessagingInterface.ActiveBatchMessages {
+public class RealtimeActiveBatchMessages implements RealtimeMessagingInterface.ActiveBatchChannel {
 
-    public void connect() {
+    public void connect(String batchOID) {
 
     }
 

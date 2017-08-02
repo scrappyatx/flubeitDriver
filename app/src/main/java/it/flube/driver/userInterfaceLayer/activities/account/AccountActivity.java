@@ -15,7 +15,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.GetAccountDetailsResponseHandler;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.SignOutResponseHandler;
+import it.flube.driver.dataLayer.useCaseResponseHandlers.signInAndSignOut.SignOutResponseHandler;
 import it.flube.driver.userInterfaceLayer.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.DrawerMenu;
 import timber.log.Timber;

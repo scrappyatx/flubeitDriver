@@ -6,7 +6,7 @@ package it.flube.driver.useCaseLayer.interfaces.realtimeMessaging;
 
 import java.util.ArrayList;
 
-import it.flube.driver.modelLayer.Offer;
+import it.flube.driver.modelLayer.entities.Offer;
 
 /**
  * Created on 5/18/2017

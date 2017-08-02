@@ -4,11 +4,9 @@
 
 package it.flube.driver.userInterfaceLayer.activities.home;
 
-import android.os.Handler;
 import android.util.Log;
 
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.useCaseLayer.interfaces.MobileDeviceInterface;
 
 /**
  * Created on 5/29/2017
@@ -25,7 +23,7 @@ public class HomeNoActiveBatchController {
 
     public void sendSomeTestMessages() {
         String clientId = AndroidDevice.getInstance().getUser().getDriver().getClientId();
-        AndroidDevice.getInstance().getRealtimeOfferMessages().connect(clientId);
+        AndroidDevice.getInstance().getRealtimeOfferMessages().attach(clientId);
 
 
     }

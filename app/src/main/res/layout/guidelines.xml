@@ -1,0 +1,80 @@
+<!--
+  ~ Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
+  -->
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/vGuideline25"
+        app:layout_constraintGuide_percent="0.25"
+        android:orientation="vertical" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/vGuideline33"
+        app:layout_constraintGuide_percent="0.33"
+        android:orientation="vertical" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/vGuideline50"
+        app:layout_constraintGuide_percent="0.5"
+        android:orientation="vertical" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/vGuideline67"
+        app:layout_constraintGuide_percent="0.67"
+        android:orientation="vertical" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/vGuideline75"
+        app:layout_constraintGuide_percent="0.75"
+        android:orientation="vertical" />
+
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/hGuideline25"
+        app:layout_constraintGuide_percent="0.25"
+        android:orientation="horizontal" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/hGuideline33"
+        app:layout_constraintGuide_percent="0.33"
+        android:orientation="horizontal" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/hGuideline50"
+        app:layout_constraintGuide_percent="0.5"
+        android:orientation="horizontal" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/hGuideline67"
+        app:layout_constraintGuide_percent="0.67"
+        android:orientation="horizontal" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/hGuideline75"
+        app:layout_constraintGuide_percent="0.75"
+        android:orientation="horizontal" />
+
+</merge>

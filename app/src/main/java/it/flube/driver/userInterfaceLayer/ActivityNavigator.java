@@ -12,6 +12,9 @@ import it.flube.driver.userInterfaceLayer.activities.demo.DemoActivity;
 import it.flube.driver.userInterfaceLayer.activities.earnings.EarningsActivity;
 import it.flube.driver.userInterfaceLayer.activities.help.HelpActivity;
 import it.flube.driver.userInterfaceLayer.activities.home.HomeNoActiveBatchActivity;
+import it.flube.driver.userInterfaceLayer.activities.offers.OfferClaimActivity;
+import it.flube.driver.userInterfaceLayer.activities.scheduledBatches.BatchManageActivity;
+import it.flube.driver.userInterfaceLayer.activities.scheduledBatches.BatchMapActivity;
 import it.flube.driver.userInterfaceLayer.activities.signIn.SignInActivity;
 import it.flube.driver.userInterfaceLayer.activities.messages.MessagesActivity;
 import it.flube.driver.userInterfaceLayer.activities.offers.OffersActivity;
@@ -61,9 +64,22 @@ public class ActivityNavigator {
         context.startActivity(new Intent(context, OffersActivity.class));
     }
 
+    public void gotoActivityOfferClaim(Context context) {
+        context.startActivity(new Intent(context, OfferClaimActivity.class));
+    }
+
     public void gotoActivityScheduledBatches(Context context) {
         context.startActivity(new Intent(context, ScheduledBatchesActivity.class));
     }
+
+    public void gotoActivityBatchManage(Context context) {
+        context.startActivity(new Intent(context, BatchManageActivity.class));
+    }
+
+    public void gotoActivityBatchMap(Context context) {
+        context.startActivity(new Intent(context, BatchMapActivity.class));
+    }
+
 
     public void gotoActivitySplashScreen(Context context) {
         context.startActivity(new Intent(context, SplashScreenActivity.class));

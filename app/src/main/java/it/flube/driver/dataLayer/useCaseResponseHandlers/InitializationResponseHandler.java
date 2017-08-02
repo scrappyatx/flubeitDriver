@@ -6,7 +6,7 @@ package it.flube.driver.dataLayer.useCaseResponseHandlers;
 
 import org.greenrobot.eventbus.EventBus;
 
-import it.flube.driver.useCaseLayer.UseCaseInitialization;
+import it.flube.driver.useCaseLayer.appInitialization.UseCaseInitialization;
 import timber.log.Timber;
 
 /**

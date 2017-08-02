@@ -10,8 +10,8 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 
-import it.flube.driver.modelLayer.Driver;
-import it.flube.driver.useCaseLayer.interfaces.UserProfileInterface;
+import it.flube.driver.modelLayer.entities.Driver;
+import it.flube.driver.modelLayer.interfaces.UserProfileInterface;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -74,12 +74,15 @@ public class UserProfile implements UserProfileInterface, Callback {
             if (response.isSuccessful()) {
                 // put result into driver
                 SuccessJSON rJ = new Gson().fromJson(rB, SuccessJSON.class);
+                userPropertiesJSON pJ = new Gson().fromJson(rJ.getProperties(), userPropertiesJSON.class);
 
                 Timber.tag(TAG).d("Client ID --> " + rJ.getClientId());
-                Timber.tag(TAG).d("First name --> " + rJ.getFirstName());
-                Timber.tag(TAG).d("Last name--> " + rJ.getLastName());
-                Timber.tag(TAG).d("Email --> " + rJ.getEmail());
-                Timber.tag(TAG).d("Role --> " + rJ.getRole());
+                Timber.tag(TAG).d("First name -> " + rJ.getFirstName());
+                Timber.tag(TAG).d("Last name --> " + rJ.getLastName());
+                Timber.tag(TAG).d("Email ------> " + rJ.getEmail());
+                Timber.tag(TAG).d("Role -------> " + rJ.getRole());
+                Timber.tag(TAG).d("is Driver? -> " + pJ.isDriver());
+                Timber.tag(TAG).d("imageUrl ---> " + rJ.getImageUrl());
 
                 Driver driver = new Driver();
                 driver.setClientId(rJ.getClientId());
@@ -87,12 +90,16 @@ public class UserProfile implements UserProfileInterface, Callback {
                 driver.setLastName(rJ.getLastName());
                 //TODO should get display name from profile request response instead of building myself
                 driver.setDisplayName(rJ.getFirstName() + " " + rJ.getLastName());
+
                 driver.setEmail(rJ.getEmail());
                 driver.setRole(rJ.getRole());
-                //TODO e should get photo Url as part of profile request response, instead of building it ourselves, it could change
-                driver.setPhotoUrl("https://api.cloudconfidant.com/profileManagementService/webapi/v1/profiles/" + rJ.getEmail() + "/image");
+                driver.setPhotoUrl(rJ.getImageUrl());
 
-                mResponse.getDriverSuccess(driver);
+                if (pJ.isDriver()) {
+                    mResponse.getDriverSuccess(driver);
+                } else {
+                    mResponse.getDriverUserNotADriverFailure();
+                }
             } else {
                 //report failure
                 final FailureJSON rJ = new Gson().fromJson(rB, FailureJSON.class);
@@ -121,11 +128,15 @@ public class UserProfile implements UserProfileInterface, Callback {
         private String clientId;
         private String email;
         private String role;
+        private String imageUrl;
+        private String properties;
         String getEmail() { return email;}
         String getRole() { return role; }
         String getClientId() { return clientId; }
         String getFirstName() { return firstName; }
         String getLastName() { return lastName; }
+        String getImageUrl() { return imageUrl; }
+        String getProperties() { return properties; }
     }
 
     private class FailureJSON {
@@ -135,6 +146,11 @@ public class UserProfile implements UserProfileInterface, Callback {
         String getErrorMessage() { return errorMessage; }
         String getErrorCode() { return errorCode; }
         String getDocumentation() { return documentation; }
+    }
+
+    private class userPropertiesJSON {
+        private Boolean driver;
+        Boolean isDriver(){ return driver; }
     }
 
 }

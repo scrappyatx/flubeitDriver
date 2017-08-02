@@ -5,35 +5,29 @@
 package it.flube.driver.dataLayer;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v7.app.AppCompatActivity;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import it.flube.driver.deviceLayer.AppInitialization;
+import it.flube.driver.deviceLayer.AblyConnectionWrapper;
 import it.flube.driver.deviceLayer.AppRemoteConfig;
 import it.flube.driver.deviceLayer.AppUser;
 import it.flube.driver.deviceLayer.CloudDatabaseFirebase;
 import it.flube.driver.deviceLayer.DeviceStorageSharedPrefs;
+import it.flube.driver.deviceLayer.LocationEngineWrapper;
 import it.flube.driver.deviceLayer.UserProfile;
 import it.flube.driver.deviceLayer.appLogging.AppLoggingTimber;
 import it.flube.driver.deviceLayer.cloudAuth.CloudAuthFirebase;
+import it.flube.driver.deviceLayer.realtimeMessaging.RealtimeBatchMessages;
 import it.flube.driver.deviceLayer.realtimeMessaging.RealtimeOfferMessages;
-import it.flube.driver.useCaseLayer.interfaces.AppLoggingInterface;
-import it.flube.driver.useCaseLayer.interfaces.AppRemoteConfigInterface;
-import it.flube.driver.useCaseLayer.interfaces.AppUserInterface;
-import it.flube.driver.useCaseLayer.interfaces.CloudAuthInterface;
-import it.flube.driver.useCaseLayer.interfaces.CloudDatabaseInterface;
-import it.flube.driver.useCaseLayer.interfaces.CloudStorageInterface;
-import it.flube.driver.useCaseLayer.interfaces.DeviceStorageInterface;
-import it.flube.driver.useCaseLayer.interfaces.MobileDeviceInterface;
-import it.flube.driver.useCaseLayer.interfaces.RealtimeMessagingInterface;
-import it.flube.driver.useCaseLayer.interfaces.UserProfileInterface;
-import timber.log.Timber;
+import it.flube.driver.modelLayer.interfaces.AppLoggingInterface;
+import it.flube.driver.modelLayer.interfaces.AppRemoteConfigInterface;
+import it.flube.driver.modelLayer.interfaces.AppUserInterface;
+import it.flube.driver.modelLayer.interfaces.CloudAuthInterface;
+import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
+import it.flube.driver.modelLayer.interfaces.CloudStorageInterface;
+import it.flube.driver.modelLayer.interfaces.DeviceStorageInterface;
+import it.flube.driver.modelLayer.interfaces.LocationTelemetryInterface;
+import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
+import it.flube.driver.modelLayer.interfaces.RealtimeMessagingInterface;
+import it.flube.driver.modelLayer.interfaces.UserProfileInterface;
 
 /**
  * Created on 7/3/2017
@@ -66,6 +60,7 @@ public class AndroidDevice implements MobileDeviceInterface {
     private AppLoggingInterface logging;
     private DeviceStorageInterface localStorage;
     private UserProfileInterface userProfile;
+    private LocationTelemetryInterface locationTelemetry;
 
 
     public void setApplicationContext(Context applicationContext) {
@@ -113,12 +108,27 @@ public class AndroidDevice implements MobileDeviceInterface {
         return userProfile;
     }
 
-    public RealtimeMessagingInterface.OfferMessages getRealtimeOfferMessages() {
+    public RealtimeMessagingInterface.Connection getRealtimeConnection() {
+        return AblyConnectionWrapper.getInstance();
+    }
+
+    public RealtimeMessagingInterface.OfferChannel getRealtimeOfferMessages() {
         return RealtimeOfferMessages.getInstance();
+    }
+
+    public RealtimeMessagingInterface.BatchChannel getRealtimeBatchMessages() {
+        return RealtimeBatchMessages.getInstance();
     }
 
     public AppUserInterface getUser() {
         return AppUser.getInstance();
+    }
+
+    public LocationTelemetryInterface getLocationTelemetry() {
+        if (locationTelemetry == null) {
+            locationTelemetry = new LocationEngineWrapper(applicationContext);
+        }
+        return locationTelemetry;
     }
 
 

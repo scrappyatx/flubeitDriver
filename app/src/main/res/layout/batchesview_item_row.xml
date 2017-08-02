@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
+  -->
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/offer_border">
+
+    <include layout="@layout/guidelines" />
+
+    <TextView
+        android:id="@+id/batch_row_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BatchOID"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp" />
+
+    <TextView
+        android:id="@+id/batch_row_pickup_street1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="123 Anywhere Street"
+        android:textSize="14sp"
+        android:textStyle = "normal"
+        android:typeface = "sans"
+        app:layout_constraintTop_toBottomOf="@+id/batch_row_description"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop = "8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp" />
+
+    <TextView
+        android:id="@+id/batch_row_pickup_city_state_zip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Austin, TX 78683"
+        android:textSize="14sp"
+        android:textStyle = "normal"
+        android:typeface = "sans"
+        app:layout_constraintTop_toBottomOf="@+id/batch_row_pickup_street1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop = "8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp" />
+
+    <TextView
+        android:id="@+id/batch_row_return_street1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="456 Somewhere Lane"
+        android:textSize="14sp"
+        android:textStyle = "normal"
+        android:typeface = "sans"
+        app:layout_constraintTop_toBottomOf="@+id/batch_row_description"
+        app:layout_constraintLeft_toLeftOf="@+id/vGuideline50"
+        android:layout_marginTop = "8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp" />
+
+    <TextView
+        android:id="@+id/batch_row_return_city_state_zip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Round Rock, TX 78681"
+        android:textSize="14sp"
+        android:textStyle = "normal"
+        android:typeface = "sans"
+        app:layout_constraintTop_toBottomOf="@+id/batch_row_return_street1"
+        app:layout_constraintLeft_toLeftOf="@+id/vGuideline50"
+        android:layout_marginTop = "8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp" />
+
+
+</android.support.constraint.ConstraintLayout>

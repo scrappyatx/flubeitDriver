@@ -7,8 +7,8 @@ package it.flube.driver.deviceLayer;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import it.flube.driver.modelLayer.Driver;
-import it.flube.driver.useCaseLayer.interfaces.DeviceStorageInterface;
+import it.flube.driver.modelLayer.entities.Driver;
+import it.flube.driver.modelLayer.interfaces.DeviceStorageInterface;
 
 
 import static android.content.Context.MODE_PRIVATE;

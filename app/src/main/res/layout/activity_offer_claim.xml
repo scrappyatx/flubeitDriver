@@ -3,43 +3,193 @@
   ~ Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
   -->
 
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".userInterfaceLayer.activities.OfferClaimActivityDELETE">
+    android:layout_height="match_parent">
+
+    <include layout="@layout/toolbar"
+        android:id="@+id/toolbar" />
+
+    <include layout="@layout/guidelines" />
+
+    <ImageView
+        android:id="@+id/serviceProvider_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/jiffylube"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintBottom_toBottomOf="@+id/hGuideline25"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="@+id/vGuideline50" />
 
     <TextView
-        android:id="@+id/status_text"
+        android:id="@+id/item_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="You clicked an offer fool"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_gravity="center|start"
+        android:layout_weight="1"
+        android:text="Oil Change"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintBottom_toBottomOf="@+id/hGuideline25"
+        app:layout_constraintLeft_toLeftOf="@+id/vGuideline50"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp" />
+
+
+    <TextView
+        android:id="@+id/item_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop = "8dp"
+        android:text="1:30 PM - 2:30 PM"
+        android:textSize="14sp"
+        android:textStyle = "normal"
+        android:typeface = "sans"
+        app:layout_constraintTop_toTopOf="@+id/hGuideline25"
+        app:layout_constraintBottom_toTopOf="@+id/item_duration"
         app:layout_constraintLeft_toRightOf="parent"
         app:layout_constraintRight_toLeftOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/claim_button"
-        android:textAppearance="?android:textAppearanceLarge" />
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp" />
+
+    <TextView
+        android:id="@+id/item_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_weight="1"
+        android:text="2 Hours"
+        android:textSize="18sp"
+        android:textStyle="normal"
+        android:typeface="sans"
+        app:layout_constraintTop_toBottomOf="@+id/item_time"
+        app:layout_constraintBottom_toTopOf="@+id/hGuideline33"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="parent"
+
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp" />
+
+
+
+    <TextView
+        android:id="@+id/item_earnings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="8dp"
+        android:text="$28"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="@+id/hGuideline33"
+        app:layout_constraintBottom_toTopOf="@+id/hGuideline50"
+        app:layout_constraintLeft_toLeftOf="@+id/vGuideline33"
+        app:layout_constraintRight_toLeftOf="@+id/item_earnings_extra" />
+
+    <TextView
+        android:id="@+id/item_earnings_extra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text="+ Tips"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textSize="16sp"
+        app:layout_constraintTop_toTopOf="@+id/hGuideline33"
+        app:layout_constraintBottom_toTopOf="@+id/hGuideline50"
+        app:layout_constraintLeft_toRightOf="@+id/item_earnings"
+        app:layout_constraintRight_toLeftOf="@+id/vGuideline67" />
+
+    <ImageView
+        android:id="@+id/distance_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/distance_far"
+        app:layout_constraintTop_toTopOf="@+id/hGuideline50"
+        app:layout_constraintBottom_toTopOf="@+id/hGuideline67"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="@+id/vGuideline33"
+        app:layout_constraintRight_toRightOf="@+id/vGuideline50"
+
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/item_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="10.4 miles"
+        android:textSize="10sp"
+        android:textStyle="italic"
+        android:typeface="sans"
+        app:layout_constraintTop_toTopOf="@+id/hGuideline50"
+        app:layout_constraintBottom_toTopOf="@+id/hGuideline67"
+        app:layout_constraintLeft_toLeftOf="@+id/vGuideline50"
+        app:layout_constraintRight_toRightOf="@+id/vGuideline67" />
 
     <Button
-        android:id="@+id/claim_button"
-        android:layout_width="match_parent"
+        android:id="@+id/offer_claim_button"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintRight_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="10dp"
-        android:paddingTop = "25dp"
+        android:onClick="clickClaimButton"
         android:paddingBottom="25dp"
-        android:text="CLAIM OFFER" />
+        android:paddingTop="25dp"
+        android:text="@string/offers_claim_button_caption"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
-    <Button
-        android:id="@+id/back_button"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/claim_offer_animation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="BACK" />
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="32dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitEnd"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vGuideline67"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="material_wave_loading.json"
+        app:lottie_loop="true"
+        android:layout_marginBottom="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp" />
+
 
 
 </android.support.constraint.ConstraintLayout>

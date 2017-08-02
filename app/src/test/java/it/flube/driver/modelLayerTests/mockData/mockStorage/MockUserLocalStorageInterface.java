@@ -4,7 +4,7 @@
 
 package it.flube.driver.modelLayerTests.mockData.mockStorage;
 
-import it.flube.driver.useCaseLayer.interfaces.DeviceStorageInterface;
+import it.flube.driver.modelLayer.interfaces.DeviceStorageInterface;
 
 /**
  * Created on 5/5/2017

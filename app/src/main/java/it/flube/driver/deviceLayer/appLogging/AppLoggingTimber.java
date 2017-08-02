@@ -7,8 +7,8 @@ package it.flube.driver.deviceLayer.appLogging;
 import android.content.Context;
 
 import it.flube.driver.BuildConfig;
-import it.flube.driver.useCaseLayer.interfaces.AppLoggingInterface;
-import it.flube.driver.useCaseLayer.interfaces.AppRemoteConfigInterface;
+import it.flube.driver.modelLayer.interfaces.AppLoggingInterface;
+import it.flube.driver.modelLayer.interfaces.AppRemoteConfigInterface;
 import timber.log.Timber;
 
 /**

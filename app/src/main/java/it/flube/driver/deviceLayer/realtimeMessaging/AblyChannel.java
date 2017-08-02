@@ -6,6 +6,9 @@ package it.flube.driver.deviceLayer.realtimeMessaging;
 
 
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+
 import org.json.JSONObject;
 
 import io.ably.lib.realtime.Channel;
@@ -118,12 +121,18 @@ public class AblyChannel implements AblyConnection.ServerConnectResponse, AblyCo
         }
     }
 
+    public void unsubscribe(MessageReceive message) {
+        ablyChannel.unsubscribe(message.getName(), message.getListener());
+    }
+
 
     public void publish(MessageSend message) {
         if (isConnected) {
             try {
                 Timber.tag(TAG).d("SENDING MESSAGE : channel -> " + channelName + " message name -> " + message.getName() + " message body -> " + message.getData().toString());
-                ablyChannel.publish(message.getName(),message.getData(), this);
+                //JsonElement element = new Gson().fromJson(message.getData().toString(), JsonElement.class);
+                //ablyChannel.publish(message.getName(),element, this);
+                ablyChannel.publish(message.getName(),message.getData().toString(), this);
             } catch (AblyException e) {
                 Timber.tag(TAG).e(e);
             }

@@ -14,7 +14,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import it.flube.driver.BuildConfig;
 import it.flube.driver.R;
-import it.flube.driver.useCaseLayer.interfaces.AppRemoteConfigInterface;
+import it.flube.driver.modelLayer.interfaces.AppRemoteConfigInterface;
 import timber.log.Timber;
 
 import static com.google.firebase.remoteconfig.FirebaseRemoteConfig.LAST_FETCH_STATUS_FAILURE;

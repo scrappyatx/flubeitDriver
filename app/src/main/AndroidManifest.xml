@@ -6,12 +6,14 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <!-- To auto-complete the email text field in the login form with the user's emails
+        <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+        <uses-permission android:name="android.permission.READ_PROFILE" />
+        <uses-permission android:name="android.permission.READ_CONTACTS" />
+    -->
 
     <application
         android:name=".deviceLayer.DriverApplication"
@@ -33,7 +35,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".dataLayer.services.RealTimeMessagingAndLocationUpdatesForegroundService"
+            android:name=".dataLayer.services.ActiveBatchForegroundService"
             android:enabled="true"
             android:exported="false"
             android:stopWithTask="true" />
@@ -46,8 +48,10 @@
         <activity android:name=".userInterfaceLayer.activities.home.HomeNoActiveBatchActivity" />
         <activity android:name=".userInterfaceLayer.activities.messages.MessagesActivity" />
         <activity android:name=".userInterfaceLayer.activities.offers.OffersActivity" />
+        <activity android:name=".userInterfaceLayer.activities.offers.OfferClaimActivity" />
         <activity android:name=".userInterfaceLayer.activities.scheduledBatches.ScheduledBatchesActivity" />
-        }
+        <activity android:name=".userInterfaceLayer.activities.scheduledBatches.BatchManageActivity" />
+        <activity android:name=".userInterfaceLayer.activities.scheduledBatches.BatchMapActivity" />
 
         <meta-data
             android:name="io.fabric.ApiKey"

@@ -6,9 +6,12 @@ package it.flube.driver.deviceLayer;
 
 import android.support.annotation.NonNull;
 
-import it.flube.driver.modelLayer.Batch;
-import it.flube.driver.modelLayer.Driver;
-import it.flube.driver.useCaseLayer.interfaces.AppUserInterface;
+import java.util.HashMap;
+import java.util.Map;
+
+import it.flube.driver.modelLayer.entities.Batch;
+import it.flube.driver.modelLayer.entities.Driver;
+import it.flube.driver.modelLayer.interfaces.AppUserInterface;
 
 /**
  * Created on 6/24/2017
@@ -40,12 +43,12 @@ public class AppUser implements AppUserInterface {
     ///
     ///     all class variables are static so there is only one across all instances (and there will only be one instance)
     ///
-    private static Driver mDriver;
-    private static Batch mActiveBatch;
-    private static Boolean mSignedIn;
-    private static Boolean mHasActiveBatch;
-    private static Boolean mActiveBatchOID;
-    private static Boolean developerToolsMenuEnabled;
+    private Driver mDriver;
+    private Batch mActiveBatch;
+    private Boolean mSignedIn;
+    private Boolean mHasActiveBatch;
+    private Boolean mActiveBatchOID;
+    private Boolean developerToolsMenuEnabled;
 
 
     public Driver getDriver() {
@@ -96,6 +99,7 @@ public class AppUser implements AppUserInterface {
     public Boolean isDeveloperToolsMenuEnabled(){
         return developerToolsMenuEnabled;
     }
+
 
     public void clear() {
         mDriver = null;

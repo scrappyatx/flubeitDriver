@@ -4,7 +4,6 @@
 
 package it.flube.driver.userInterfaceLayer;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -34,8 +33,11 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.deviceLayer.realtimeMessaging.receiveMessageHandlers.CurrentOffersMessageHandler;
-import it.flube.driver.useCaseLayer.interfaces.MobileDeviceInterface;
+import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.OffersAvailableResponseHandler;
+import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.ClaimOfferResponseHandler;
+import it.flube.driver.dataLayer.useCaseResponseHandlers.scheduledBatches.ScheduledBatchesAvailableResponseHandler;
+import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
+import it.flube.driver.userInterfaceLayer.activities.offers.OfferClaimAlerts;
 import timber.log.Timber;
 
 /**
@@ -74,6 +76,7 @@ public class DrawerMenu {
         // this prevents calling the "onCheckedChanged" listener everytime user switches activities
         toolbarSwitch.setChecked(mSearchingForOffers);
         toolbarSwitch.setOnCheckedChangeListener(new toolbarSwitchListener());
+        toolbarSwitch.setVisibility(View.INVISIBLE);
     }
 
     private void createDrawer() {
@@ -108,7 +111,8 @@ public class DrawerMenu {
         drawer.addItem( new DividerDrawerItem());
 
         drawer.addItem(new SecondaryDrawerItem().withName(R.string.nav_menu_scheduled_batches).withIcon(FontAwesome.Icon.faw_calendar)
-                .withIdentifier(3).withSelectable(false).withOnDrawerItemClickListener(new ScheduledBatchesClickListener()));
+                .withIdentifier(3).withSelectable(false).withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.md_red_700))
+                .withOnDrawerItemClickListener(new ScheduledBatchesClickListener()));
 
         drawer.addItem(new SecondaryDrawerItem().withName(R.string.nav_menu_messages).withIcon(FontAwesome.Icon.faw_comments)
                 .withIdentifier(4).withSelectable(false).withOnDrawerItemClickListener(new MessagesItemClickListener()));
@@ -153,9 +157,9 @@ public class DrawerMenu {
     private AccountHeader buildAccountHeader() {
         //create profile
 
-        String photoUrl = "http://lorempixel.com/60/60/people/";
+        //String photoUrl = "http://lorempixel.com/60/60/people/";
         //TODO should be AppUser.getInstance().getDriver().getDisplayName();
-
+        String photoUrl = device.getUser().getDriver().getPhotoUrl();
 
         IProfile profile = new ProfileDrawerItem().withName(device.getUser().getDriver().getDisplayName())
                 .withEmail(device.getUser().getDriver().getEmail()).withIcon(photoUrl);
@@ -187,39 +191,9 @@ public class DrawerMenu {
 
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if (isChecked) {
-                //turn on searching for offers
-                //Alerter.create(mActivity)
-                //        .setTitle("Searching For Offers")
-                //        .setText("TURNING ON")
-                //        .show();
                 mSearchingForOffers = true;
-                //String serverUrl, String clientId, String lookingForOffersChannelName, String batchActivityChannelNam
-
-                //String tokenUrl = thisDevice.getAppRemoteConfig().getRealtimeMessagingAuthTokenUrl();
-                //String clientId = thisDevice.getUser().getDriver().getClientId();
-                //String lookingForOffersChannelName = thisDevice.getAppRemoteConfig().getRealtimeMessagingLookingForOffersChannelName();
-                //String batchActivityChannelName = thisDevice.getAppRemoteConfig().getRealtimeMessagingBatchActivityChannelName();
-                //String lookingForOffersDemoChannelName = thisDevice.getAppRemoteConfig().getRealtimeMessagingLookingForOffersDemoChannelName();
-
-                //Timber.tag(TAG).d(" ****** Ably Realtime Messaging Connection Values ******");
-                //Timber.tag(TAG).d("tokenUrl                        --> " + tokenUrl);
-                //Timber.tag(TAG).d("clientId                        --> " + clientId);
-                //Timber.tag(TAG).d("looking for offers channel      --> " + lookingForOffersChannelName );
-                //Timber.tag(TAG).d("batch activity channel          --> " + batchActivityChannelName);
-                //Timber.tag(TAG).d("looking for offers demo channel --> " + lookingForOffersDemoChannelName);
-                //Timber.tag(TAG).d(" ****** Ably Realtime Messaging Connection Values ******");
-
-                //mActivity.startService(RealTimeMessagingAndLocationUpdatesForegroundService.startIntent(mActivity, tokenUrl, clientId,lookingForOffersChannelName,batchActivityChannelName));
-
             } else {
-                // turn off searching for offers
-                //Alerter.create(mActivity)
-                //        .setTitle("Searching For Offers")
-                //        .setText("TURNING OFF")
-                //        .show();
                 mSearchingForOffers = false;
-                //drawer.updateBadge(2, new StringHolder(null));
-                //mActivity.startService(RealTimeMessagingAndLocationUpdatesForegroundService.shutdownIntent(mActivity));
             }
         }
 
@@ -310,13 +284,76 @@ public class DrawerMenu {
     }
 
     @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
-    public void onEvent(CurrentOffersMessageHandler.CurrentOffersEvent event) {
+    public void onEvent(OffersAvailableResponseHandler.AvailableOffersEvent event) {
         try {
             drawer.updateBadge(2, new StringHolder(Integer.toString(event.getOfferCount()) + ""));
             Timber.tag(TAG).d("received " + Integer.toString(event.getOfferCount()) + " offers");
         } catch (Exception e) {
             Timber.tag(TAG).e(e);
         }
+    }
+
+    @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
+    public void onEvent(OffersAvailableResponseHandler.NoOffersEvent event) {
+        try {
+            drawer.updateBadge(2, null);
+            Timber.tag(TAG).d("received zero offers");
+        } catch (Exception e) {
+            Timber.tag(TAG).e(e);
+        }
+    }
+
+    @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
+    public void onEvent(ScheduledBatchesAvailableResponseHandler.ScheduledBatchUpdateEvent event) {
+        try {
+            drawer.updateBadge(3, new StringHolder(Integer.toString(event.getBatchCount()) + ""));
+            Timber.tag(TAG).d("received " + Integer.toString(event.getBatchCount()) + " scheduled batches");
+        } catch (Exception e) {
+            Timber.tag(TAG).e(e);
+        }
+    }
+
+    @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
+    public void onEvent(ScheduledBatchesAvailableResponseHandler.NoScheduledBatchesEvent event) {
+        try {
+            drawer.updateBadge(3, null);
+            Timber.tag(TAG).d("received zero scheduled batches");
+        } catch (Exception e) {
+            Timber.tag(TAG).e(e);
+        }
+    }
+
+
+    @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
+    public void onEvent(ClaimOfferResponseHandler.ClaimOfferSuccessEvent event) {
+        EventBus.getDefault().removeStickyEvent(ClaimOfferResponseHandler.ClaimOfferSuccessEvent.class);
+
+        Timber.tag(TAG).d("claim offer SUCCESS!");
+
+        EventBus.getDefault().postSticky(new OfferClaimAlerts.ShowClaimOfferSuccessAlertEvent());
+        navigator.gotoActivityOffers(activity);
+
+    }
+
+    @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
+    public void onEvent(ClaimOfferResponseHandler.ClaimOfferFailureEvent event) {
+        EventBus.getDefault().removeStickyEvent(ClaimOfferResponseHandler.ClaimOfferFailureEvent.class);
+
+        Timber.tag(TAG).d("claim offer FAILURE!");
+
+
+        EventBus.getDefault().postSticky(new OfferClaimAlerts.ShowClaimOfferFailureAlertEvent());
+        navigator.gotoActivityOffers(activity);
+    }
+
+    @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
+    public void onEvent(ClaimOfferResponseHandler.ClaimOfferTimeoutEvent event) {
+        EventBus.getDefault().removeStickyEvent(ClaimOfferResponseHandler.ClaimOfferTimeoutEvent.class);
+
+        Timber.tag(TAG).d("claim offer TIMEOUT!");
+
+        EventBus.getDefault().postSticky(new OfferClaimAlerts.ShowClaimOfferTimeoutAlertEvent());
+        navigator.gotoActivityOffers(activity);
     }
 
 }

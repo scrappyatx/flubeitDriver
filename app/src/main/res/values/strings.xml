@@ -5,9 +5,13 @@
 <resources>
     <string name="app_name">flube.it Driver</string>
 
+    <!--
+
     <string name="new_message_notification_title_template">New message: %1$s</string>
 
-    <!-- TODO: remove this placeholder text -->
+    -->
+
+    <!-- TODO: remove this placeholder text
     <string name="new_message_notification_placeholder_text_template">You said %1$s and lorem ipsum
         dolor sit amet, consectetur adipiscing elit. Etiam non enim magna. Morbi dictum, velit vel
         semper venenatis, magna odio volutpat velit, at ullamcorper nulla lacus sed turpis.
@@ -21,7 +25,9 @@
     <string name="action_reply">Reply</string>
     <string name="title_activity_login">Sign in</string>
 
-    <!-- Strings related to login -->
+    -->
+
+    <!-- Strings related to login
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
     <string name="action_sign_in">Sign in or register</string>
@@ -32,6 +38,7 @@
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">Contacts permissions are needed for providing email completions.</string>
 
+    -->
 
     <!-- Strings related to foreground service -->
     <string name="rtm_and_loc_updates_fg_svc_notification_title">flube.it Driver</string>
@@ -66,7 +73,7 @@
 
     <!-- Strings related to login controller -->
     <string name="login_auth_failure_message">The email address or password is incorrect</string>
-
+    <string name="login_auth_user_not_a_driver_message">This user is not a Flube.it driver.  Please try signing in with another user ID.</string>
 
     <!-- Strings related to account activity layout  -->
     <string name="account_logout_caption">Sign Out</string>
@@ -96,9 +103,29 @@
 
     <!-- Strings related to offers activity layout -->
     <string name="offers_activity_title">Offers</string>
+    <string name="offers_activity_no_offers_available">There are no available offers</string>
+
+    <!-- Strings related to offer claim activity layout -->
+    <string name="offers_claim_activity_title">Claim Offer</string>
+    <string name="offers_claim_button_caption">Claim Offer</string>
+
+    <!-- Strings related to offer claim offer alerts -->
+    <string name="offer_claim_alert_success_title">SUCCESS</string>
+    <string name="offer_claim_alert_success_message">You claimed an offer!</string>
+    <string name="offer_claim_alert_failure_title">FAILURE</string>
+    <string name="offer_claim_alert_failure_message">Sorry, someone else claimed this offer</string>
+    <string name="offer_claim_alert_timeout_title">NO RESPONSE</string>
+    <string name="offer_claim_alert_timeout_message">Never received a response for your attempt to claim this offer</string>
 
     <!-- Strings related to scheduled batches activity layout -->
     <string name="scheduled_batches_activity_title">Scheduled Batches</string>
+    <string name="scheduled_batches_no_batches">You don\'t have any work scheduled.\n\nClaim available offers to schedule work on your calendar.</string>
+
+    <!-- Strings related to scheduled batches manage activity layout -->
+    <string name="batch_manage_activity_title">Batch Manage</string>
+
+    <!-- Strings related to scheduled batches map activity layout -->
+    <string name="batch_map_activity_title">Batch Location</string>
 
 
 </resources>

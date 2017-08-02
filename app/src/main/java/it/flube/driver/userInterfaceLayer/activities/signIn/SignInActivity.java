@@ -20,7 +20,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import it.flube.driver.R;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.SignInFromUserProfileResponseHandler;
+import it.flube.driver.dataLayer.useCaseResponseHandlers.signInAndSignOut.SignInFromUserProfileResponseHandler;
 import it.flube.driver.userInterfaceLayer.ActivityNavigator;
 import timber.log.Timber;
 
@@ -169,4 +169,18 @@ public class SignInActivity extends AppCompatActivity {
         mErrorText.setVisibility(View.VISIBLE);
 
     }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEvent(SignInFromUserProfileResponseHandler.UseCaseSignInFromUserProfileUserNotADriverFailureEvent event) {
+
+        EventBus.getDefault().removeStickyEvent(SignInFromUserProfileResponseHandler.UseCaseSignInFromUserProfileUserNotADriverFailureEvent.class);
+
+        Timber.tag(TAG).d("*** SignIn Failure --> User not a driver");
+        mLoadingAnimation.setVisibility(View.INVISIBLE);
+        mErrorText.setText(getResources().getString(R.string.login_auth_user_not_a_driver_message));
+        mErrorText.setVisibility(View.VISIBLE);
+
+    }
+
+
 }

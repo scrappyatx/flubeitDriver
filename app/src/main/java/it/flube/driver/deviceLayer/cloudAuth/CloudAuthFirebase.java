@@ -14,9 +14,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
-import it.flube.driver.modelLayer.Driver;
-import it.flube.driver.useCaseLayer.interfaces.AppRemoteConfigInterface;
-import it.flube.driver.useCaseLayer.interfaces.CloudAuthInterface;
+import it.flube.driver.modelLayer.entities.Driver;
+import it.flube.driver.modelLayer.interfaces.AppRemoteConfigInterface;
+import it.flube.driver.modelLayer.interfaces.CloudAuthInterface;
 import timber.log.Timber;
 
 /**

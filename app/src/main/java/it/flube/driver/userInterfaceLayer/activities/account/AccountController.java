@@ -9,10 +9,10 @@ import java.util.concurrent.Executors;
 
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.GetAccountDetailsResponseHandler;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.SignOutResponseHandler;
-import it.flube.driver.useCaseLayer.UseCaseGetAccountDetails;
-import it.flube.driver.useCaseLayer.interfaces.MobileDeviceInterface;
-import it.flube.driver.useCaseLayer.UseCaseSignOut;
+import it.flube.driver.dataLayer.useCaseResponseHandlers.signInAndSignOut.SignOutResponseHandler;
+import it.flube.driver.useCaseLayer.account.UseCaseGetAccountDetails;
+import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
+import it.flube.driver.useCaseLayer.signInAndSignOut.UseCaseSignOut;
 import timber.log.Timber;
 
 /**
