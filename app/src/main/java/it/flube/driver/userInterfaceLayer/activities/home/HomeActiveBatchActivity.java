@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.mikepenz.materialdrawer.Drawer;
 
+import org.greenrobot.eventbus.EventBus;
+
 import it.flube.driver.R;
 import it.flube.driver.userInterfaceLayer.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.DrawerMenu;
@@ -22,53 +24,41 @@ import timber.log.Timber;
 public class HomeActiveBatchActivity extends AppCompatActivity {
     private static final String TAG = "HomeActiveBatchActivity";
 
-    private HomeActiveBatchController mController;
+    private HomeActiveBatchController controller;
     private ActivityNavigator navigator;
-    private Drawer mDrawer;
+    private DrawerMenu drawer;
 
-     /* ------------------------------------------------------------------
-     Activity Lifecycle Overrides - onCreate
-
-     1.  Instantiate Rollbar (if required)
-     2.  Call superclass onCreate()
-     3.  Inflate the view associated with this activity
-     4.  Create toolbar & navigation menu
-     ------------------------------------------------------------------ */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_active_batch);
 
-        navigator = new ActivityNavigator();
-        mDrawer = new DrawerMenu(this, navigator, R.string.home_activity_title).getDrawer();
-
-        //instantiate controller for this activity
-        mController = new HomeActiveBatchController();
-
         Timber.tag(TAG).d("onCreate");
     }
 
-
-     /* ---------------------------------------------------------------------
-     Activity Lifecycle Overrides - onStart & onStop
-
-     1.  Instantiate Controller
-     2.  EventBus Registration & Unregistration
-     ------------------------------------------------------------------ */
-
-
     @Override
-    public void onStart() {
-        super.onStart();
-        Timber.tag(TAG).d("onStart");
+    public void onResume(){
+        super.onResume();
+        Timber.tag(TAG).d("onResume");
+
+        //EventBus.getDefault().register(this);
+
+        navigator = new ActivityNavigator();
+        drawer = new DrawerMenu(this, navigator, R.string.home_active_batch_activity_title);
+        controller = new HomeActiveBatchController();
+
     }
 
-    //unsubscribe to EventBus
     @Override
-    public void onStop() {
-        super.onStop();
-        Timber.tag(TAG).d("onStop");
+    public void onPause(){
+        super.onPause();
+        Timber.tag(TAG).d("onPause");
+
+        //EventBus.getDefault().unregister(this);
+
+        drawer.close();
     }
+
 
 }

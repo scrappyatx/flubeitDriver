@@ -12,12 +12,12 @@ import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
  * Project : Driver
  */
 
-public class UseCaseStartupSequence implements Runnable, UseCaseInitialization.Response {
+public class UseCaseThingsToDoWhenApplicationStarts implements Runnable, UseCaseInitialization.Response {
 
     private UseCaseInitialization initialization;
     private UseCaseSignInFromDeviceStorage signIn;
 
-    public UseCaseStartupSequence(MobileDeviceInterface device, UseCaseSignInFromDeviceStorage.Response response) {
+    public UseCaseThingsToDoWhenApplicationStarts(MobileDeviceInterface device, UseCaseSignInFromDeviceStorage.Response response) {
         initialization = new UseCaseInitialization(device, this);
         signIn = new UseCaseSignInFromDeviceStorage(device, response);
     }

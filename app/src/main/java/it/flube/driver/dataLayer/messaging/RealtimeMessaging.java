@@ -54,7 +54,7 @@ import it.flube.driver.dataLayer.messaging.messageReceivedCallbackHandlers.drive
 import it.flube.driver.deviceLayer.realtimeMessaging.messageBuilders.driverMessages.ClaimOfferRequestMessageBuilder;
 import it.flube.driver.deviceLayer.realtimeMessaging.messageBuilders.driverMessages.RequestCurrentOffersMessageBuilder;
 import it.flube.driver.deviceLayer.realtimeMessaging.messageBuilders.driverMessages.SendOnDutyMessageBuilder;
-import it.flube.driver.modelLayer.entities.Batch;
+import it.flube.driver.modelLayer.entities.batch.Batch;
 import it.flube.driver.modelLayer.entities.Offer;
 import it.flube.driver.modelLayer.interfaces.RealtimeMessagingInterface;
 import it.flube.driver.useCaseLayer.interfaces.realtimeMessaging.RtmReceiveMsgAssignedBatches;

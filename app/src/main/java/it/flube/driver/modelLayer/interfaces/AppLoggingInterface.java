@@ -4,6 +4,8 @@
 
 package it.flube.driver.modelLayer.interfaces;
 
+import it.flube.driver.modelLayer.entities.Driver;
+
 /**
  * Created on 6/24/2017
  * Project : Driver
@@ -19,4 +21,6 @@ public interface AppLoggingInterface {
 
         void initializeRemoteLoggingAndCrashReportingComplete();
     }
+
+    void setPersonData(Driver driver);
 }

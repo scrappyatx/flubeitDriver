@@ -9,6 +9,7 @@ import android.support.multidex.MultiDexApplication;
 import org.greenrobot.eventbus.EventBus;
 
 import it.flube.driver.dataLayer.AndroidDevice;
+import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 
 /**
  * Created on 6/28/2017
@@ -46,6 +47,10 @@ public class DriverApplication extends MultiDexApplication {
         EventBus.builder()
                 .throwSubscriberException(false)
                 .installDefaultEventBus();
+    }
+
+    public MobileDeviceInterface getMobileDevice() {
+        return AndroidDevice.getInstance();
     }
 
 }

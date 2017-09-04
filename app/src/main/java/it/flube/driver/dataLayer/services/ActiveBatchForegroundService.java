@@ -42,17 +42,13 @@ public class ActiveBatchForegroundService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        //register on eventbus
-        //EventBus.getDefault().register(this);
         Timber.tag(TAG).d("onCreate()");
     }
 
     @Override
     public void onDestroy() {
-        //unregister on eventbus
-        EventBus.getDefault().unregister(this);
-        Timber.tag(TAG).d("onDestroy()");
         super.onDestroy();
+        Timber.tag(TAG).d("onDestroy()");
     }
 
     @Override
@@ -93,8 +89,6 @@ public class ActiveBatchForegroundService extends Service {
                 case "start":
                     //start service in foreground
                     startForeground(SERVICE_ID, getNotification());
-
-
 
                     break;
                 case "shutdown":
@@ -150,12 +144,5 @@ public class ActiveBatchForegroundService extends Service {
         return n;
     }
 
-    /////
-    /////   Message Received Events
-    /////
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(OffersAvailableResponseHandler.AvailableOffersEvent msg) {
-        Timber.tag(TAG).d("received " + Integer.toString(msg.getOfferList().size()) + " offers");
-    }
 
 }

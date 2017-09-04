@@ -12,10 +12,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import it.flube.driver.dataLayer.AndroidDevice;
+import it.flube.driver.dataLayer.DemoBatchCreation.DemoBatchBuilder;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.scheduledBatches.ForfeitBatchResponseHandler;
-import it.flube.driver.modelLayer.entities.BatchCloudDB;
+import it.flube.driver.dataLayer.useCaseResponseHandlers.scheduledBatches.StartDemoBatchResponseHandler;
+import it.flube.driver.modelLayer.entities.batch.BatchCloudDB;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import it.flube.driver.useCaseLayer.manageBatch.UseCaseForfeitBatchRequest;
+import it.flube.driver.useCaseLayer.manageBatch.UseCaseStartBatchDemoRequest;
 import timber.log.Timber;
 
 /**
@@ -49,6 +52,10 @@ public class BatchManageController  {
 
         forfeitDialog = builder.create();
         forfeitDialog.show();
+    }
+
+    public void startDemoBatch(BatchCloudDB batch) {
+        useCaseExecutor.execute(new UseCaseStartBatchDemoRequest(device, new DemoBatchBuilder(), batch, new StartDemoBatchResponseHandler()));
     }
 
     public void forfeitDialogKeepBatch() {

@@ -4,6 +4,8 @@
 
 package it.flube.driver.modelLayer.interfaces;
 
+import it.flube.driver.modelLayer.entities.LatLonPosition;
+
 /**
  * Created on 7/29/2017
  * Project : Driver
@@ -27,5 +29,15 @@ public interface ServiceOrderStepInterface {
     void startStep();
 
     void completeStep();
+
+
+
+
+    interface NavigationOrderStepInterface {
+
+        LatLonPosition getDestination();
+
+
+    }
 
 }

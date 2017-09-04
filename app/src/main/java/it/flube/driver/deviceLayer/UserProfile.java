@@ -28,13 +28,18 @@ import timber.log.Timber;
 public class UserProfile implements UserProfileInterface, Callback {
     private static final String TAG = "UserProfile";
 
-    private OkHttpClient mClient;
-    private UserProfileInterface.Response mResponse;
+    private static final String PUBLIC_OFFERS_NODE = "offers";
+    private static final String PERSONAL_OFFERS_NODE = "personalOffers";
+    private static final String DEMO_OFFERS_NODE = "demoOffers";
+    private static final String SCHEDULED_BATCHES_NODE = "assignedBatches";
+    private static final String ACTIVE_BATCH_NODE = "activeBatch";
+
+    private UserProfileInterface.Response response;
 
     public UserProfile() {}
 
     public void getDriverRequest(@NonNull String profileUrl, @NonNull String username, @NonNull String password, @NonNull UserProfileInterface.Response response) {
-        mResponse = response;
+        this.response = response;
         try {
             //build the request
             HttpUrl.Builder uB = HttpUrl.parse(profileUrl).newBuilder();
@@ -55,69 +60,82 @@ public class UserProfile implements UserProfileInterface, Callback {
 
         } catch (Exception e) {
             Timber.tag(TAG).e(e);
-            mResponse.getDriverFailure(e.getMessage());
+            this.response.getDriverFailure(e.getMessage());
         }
     }
 
     @Override
     public void onFailure(@NonNull Call call, @NonNull final IOException e) {
         Timber.tag(TAG).e(e);
-        mResponse.getDriverFailure(e.getMessage());
+        this.response.getDriverFailure(e.getMessage());
     }
 
     @Override
-    public void onResponse(@NonNull Call call, @NonNull okhttp3.Response response) {
+    public void onResponse(@NonNull Call call, @NonNull okhttp3.Response httpResponse) {
         try {
-            String rB = response.body().string();
-            Timber.tag(TAG).d(TAG, "response.body().string() --> " + rB);
+            String responseBody = httpResponse.body().string();
+            Timber.tag(TAG).d(TAG, "httpResponse.body().string() --> " + responseBody);
 
-            if (response.isSuccessful()) {
+            if (httpResponse.isSuccessful()) {
                 // put result into driver
-                SuccessJSON rJ = new Gson().fromJson(rB, SuccessJSON.class);
-                userPropertiesJSON pJ = new Gson().fromJson(rJ.getProperties(), userPropertiesJSON.class);
+                SuccessJSON profileData = new Gson().fromJson(responseBody, SuccessJSON.class);
+                userPropertiesJSON propertyData = new Gson().fromJson(profileData.getProperties(), userPropertiesJSON.class);
 
-                Timber.tag(TAG).d("Client ID --> " + rJ.getClientId());
-                Timber.tag(TAG).d("First name -> " + rJ.getFirstName());
-                Timber.tag(TAG).d("Last name --> " + rJ.getLastName());
-                Timber.tag(TAG).d("Email ------> " + rJ.getEmail());
-                Timber.tag(TAG).d("Role -------> " + rJ.getRole());
-                Timber.tag(TAG).d("is Driver? -> " + pJ.isDriver());
-                Timber.tag(TAG).d("imageUrl ---> " + rJ.getImageUrl());
+                Timber.tag(TAG).d("Client ID -------------> " + profileData.getClientId());
+                Timber.tag(TAG).d("First name ------------> " + profileData.getFirstName());
+                Timber.tag(TAG).d("Last name -------------> " + profileData.getLastName());
+                Timber.tag(TAG).d("Email -----------------> " + profileData.getEmail());
+                Timber.tag(TAG).d("imageUrl --------------> " + profileData.getImageUrl());
 
-                Driver driver = new Driver();
-                driver.setClientId(rJ.getClientId());
-                driver.setFirstName(rJ.getFirstName());
-                driver.setLastName(rJ.getLastName());
-                //TODO should get display name from profile request response instead of building myself
-                driver.setDisplayName(rJ.getFirstName() + " " + rJ.getLastName());
+                Timber.tag(TAG).d("is Driver? ------------> " + propertyData.isDriver());
+                Timber.tag(TAG).d("is Dev? ---------------> " + propertyData.isDev());
+                Timber.tag(TAG).d("is QA? ----------------> " + propertyData.isQA());
+                Timber.tag(TAG).d("publicOffersNode ------> " + propertyData.getPublicOffersNode());
+                Timber.tag(TAG).d("personalOffersNode ----> " + propertyData.getPersonalOffersNode());
+                Timber.tag(TAG).d("demoOffersNode --------> " + propertyData.getDemoOffersNode());
+                Timber.tag(TAG).d("scheduledBatchesNode --> " + propertyData.getScheduledBatchesNode());
+                Timber.tag(TAG).d("activeBatchNode -------> " + propertyData.getActiveBatchNode());
 
-                driver.setEmail(rJ.getEmail());
-                driver.setRole(rJ.getRole());
-                driver.setPhotoUrl(rJ.getImageUrl());
+                if (propertyData.isDriver()) {
+                    Driver driver = new Driver();
 
-                if (pJ.isDriver()) {
-                    mResponse.getDriverSuccess(driver);
+                    driver.setClientId(profileData.getClientId());
+                    driver.setFirstName(profileData.getFirstName());
+                    driver.setLastName(profileData.getLastName());
+                    //TODO should get display name from profile request response instead of building myself
+                    driver.setDisplayName(profileData.getFirstName() + " " + profileData.getLastName());
+                    driver.setEmail(profileData.getEmail());
+                    driver.setPhotoUrl(profileData.getImageUrl());
+
+                    driver.setIsDev(propertyData.isDev());
+                    driver.setIsQA(propertyData.isQA());
+                    driver.setPublicOffersNode(propertyData.getPublicOffersNode());
+                    driver.setPersonalOffersNode(propertyData.getPersonalOffersNode());
+                    driver.setDemoOffersNode(propertyData.getDemoOffersNode());
+                    driver.setScheduledBatchesNode(propertyData.getScheduledBatchesNode());
+                    driver.setActiveBatchNode(propertyData.getActiveBatchNode());
+
+                    response.getDriverSuccess(driver);
                 } else {
-                    mResponse.getDriverUserNotADriverFailure();
+                    response.getDriverUserNotADriverFailure();
                 }
             } else {
                 //report failure
-                final FailureJSON rJ = new Gson().fromJson(rB, FailureJSON.class);
-                Timber.tag(TAG).d("Error Message --> " + rJ.getErrorMessage());
-                Timber.tag(TAG).d("Error Code --> " + rJ.getErrorCode());
-                Timber.tag(TAG).d("Documentation -> " + rJ.getDocumentation());
+                final FailureJSON failureData = new Gson().fromJson(responseBody, FailureJSON.class);
+                Timber.tag(TAG).d("Error Message --> " + failureData.getErrorMessage());
+                Timber.tag(TAG).d("Error Code --> " + failureData.getErrorCode());
+                Timber.tag(TAG).d("Documentation -> " + failureData.getDocumentation());
 
-
-                if (rJ.getErrorCode().equals("401")) {
-                    mResponse.getDriverAuthFailure(rJ.getErrorCode() + " : " + rJ.getErrorMessage());
+                if (failureData.getErrorCode().equals("401")) {
+                    response.getDriverAuthFailure(failureData.getErrorCode() + " : " + failureData.getErrorMessage());
                 } else {
-                    mResponse.getDriverFailure(rJ.getErrorCode() + " : " + rJ.getErrorMessage());
+                    response.getDriverFailure(failureData.getErrorCode() + " : " + failureData.getErrorMessage());
                 }
             }
         } catch (final Exception e) {
             //report failure
             Timber.tag(TAG).e(e);
-            mResponse.getDriverFailure(e.getMessage());
+            response.getDriverFailure(e.getMessage());
         }
     }
 
@@ -127,11 +145,9 @@ public class UserProfile implements UserProfileInterface, Callback {
         private String lastName;
         private String clientId;
         private String email;
-        private String role;
         private String imageUrl;
         private String properties;
         String getEmail() { return email;}
-        String getRole() { return role; }
         String getClientId() { return clientId; }
         String getFirstName() { return firstName; }
         String getLastName() { return lastName; }
@@ -150,7 +166,22 @@ public class UserProfile implements UserProfileInterface, Callback {
 
     private class userPropertiesJSON {
         private Boolean driver;
-        Boolean isDriver(){ return driver; }
+        private Boolean dev;
+        private Boolean qa;
+        private String publicOffersNode;
+        private String personalOffersNode;
+        private String demoOffersNode;
+        private String scheduledBatchesNode;
+        private String activeBatchNode;
+
+        Boolean isDriver(){ return (driver != null) ? driver : false; }
+        Boolean isDev() { return (dev != null) ? dev : false;}
+        Boolean isQA() { return (qa != null) ? qa : false; }
+        String getPublicOffersNode() { return (publicOffersNode != null) ? publicOffersNode : PUBLIC_OFFERS_NODE;}
+        String getPersonalOffersNode() {return (personalOffersNode != null) ? personalOffersNode : PERSONAL_OFFERS_NODE;}
+        String getScheduledBatchesNode() {return (scheduledBatchesNode != null) ? scheduledBatchesNode : SCHEDULED_BATCHES_NODE;}
+        String getActiveBatchNode() { return (activeBatchNode != null) ? activeBatchNode : ACTIVE_BATCH_NODE; }
+        String getDemoOffersNode() { return (demoOffersNode != null) ? demoOffersNode : DEMO_OFFERS_NODE; }
     }
 
 }

@@ -5,6 +5,7 @@
 package it.flube.driver.userInterfaceLayer.activities.splashScreen;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -17,7 +18,7 @@ import it.flube.driver.userInterfaceLayer.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.activities.PermissionsCheckActivity;
 import timber.log.Timber;
 
-public class SplashScreenActivity extends PermissionsCheckActivity implements DeviceCheck.Response {
+public class SplashScreenActivity extends AppCompatActivity implements DeviceCheck.Response {
 
     private static final String TAG = "SplashScreenActivity";
     private SplashScreenController controller;
@@ -30,16 +31,11 @@ public class SplashScreenActivity extends PermissionsCheckActivity implements De
         Timber.tag(TAG).d("onCreate");
     }
 
+
     @Override
     public void onResume(){
         super.onResume();
         Timber.tag(TAG).d("onResume");
-    }
-
-    @Override
-    public void onPermissionResume(){
-        super.onPermissionResume();
-        Timber.tag(TAG).d("onPermissionResume");
 
         EventBus.getDefault().register(this);
 
@@ -55,12 +51,6 @@ public class SplashScreenActivity extends PermissionsCheckActivity implements De
     @Override
     public void onPause(){
         super.onPause();
-        Timber.tag(TAG).d("onPause");
-    }
-
-    @Override
-    public void onPermissionPause(){
-        super.onPermissionPause();
         Timber.tag(TAG).d("onPermissionPause");
 
         EventBus.getDefault().unregister(this);

@@ -19,6 +19,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import it.flube.driver.R;
 import timber.log.Timber;
 
 /**
@@ -36,8 +37,8 @@ public class PermissionsCheck {
     private PermissionResponse response;
     private Boolean checkInProgress;
 
-    public PermissionsCheck(){
-        permissionsRequired = retrieveManifestPermissions() ;
+    public PermissionsCheck(AppCompatActivity activity){
+        permissionsRequired =  activity.getResources().getStringArray(R.array.permissions_check_required_dangerous_permissions);
         sentToSettings = false;
         checkInProgress = false;
     }
@@ -190,7 +191,10 @@ public class PermissionsCheck {
             dialog.cancel();
 
             Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addCategory(Intent.CATEGORY_DEFAULT);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
             Uri uri = Uri.fromParts("package", activity.getPackageName(), null);
             intent.setData(uri);
             activity.startActivityForResult(intent, REQUEST_PERMISSION_SETTING);

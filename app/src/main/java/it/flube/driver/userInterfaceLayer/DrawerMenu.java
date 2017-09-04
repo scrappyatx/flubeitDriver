@@ -35,6 +35,7 @@ import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.OffersAvailableResponseHandler;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.ClaimOfferResponseHandler;
+import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.PublicOffersAvailableResponseHandler;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.scheduledBatches.ScheduledBatchesAvailableResponseHandler;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import it.flube.driver.userInterfaceLayer.activities.offers.OfferClaimAlerts;
@@ -94,7 +95,7 @@ public class DrawerMenu {
                 .build();
 
         addStandardMenuItems();
-        if (device.getUser().isDeveloperToolsMenuEnabled()) {
+        if (device.getUser().getDriver().isDev()) {
             addDeveloperToolsMenuItems();
         }
 
@@ -155,14 +156,10 @@ public class DrawerMenu {
     public Drawer getDrawer(){ return drawer; }
 
     private AccountHeader buildAccountHeader() {
-        //create profile
-
         //String photoUrl = "http://lorempixel.com/60/60/people/";
-        //TODO should be AppUser.getInstance().getDriver().getDisplayName();
-        String photoUrl = device.getUser().getDriver().getPhotoUrl();
 
         IProfile profile = new ProfileDrawerItem().withName(device.getUser().getDriver().getDisplayName())
-                .withEmail(device.getUser().getDriver().getEmail()).withIcon(photoUrl);
+                .withEmail(device.getUser().getDriver().getEmail()).withIcon(device.getUser().getDriver().getPhotoUrl());
 
                 //.withIcon(R.drawable.demo_profile_pic)
         return new AccountHeaderBuilder()
@@ -284,7 +281,7 @@ public class DrawerMenu {
     }
 
     @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
-    public void onEvent(OffersAvailableResponseHandler.AvailableOffersEvent event) {
+    public void onEvent(PublicOffersAvailableResponseHandler.AvailablePublicOffersEvent event) {
         try {
             drawer.updateBadge(2, new StringHolder(Integer.toString(event.getOfferCount()) + ""));
             Timber.tag(TAG).d("received " + Integer.toString(event.getOfferCount()) + " offers");
@@ -294,7 +291,7 @@ public class DrawerMenu {
     }
 
     @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
-    public void onEvent(OffersAvailableResponseHandler.NoOffersEvent event) {
+    public void onEvent(PublicOffersAvailableResponseHandler.NoPublicOffersEvent event) {
         try {
             drawer.updateBadge(2, null);
             Timber.tag(TAG).d("received zero offers");

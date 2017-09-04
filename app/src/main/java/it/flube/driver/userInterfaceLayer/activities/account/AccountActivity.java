@@ -89,10 +89,16 @@ public class AccountActivity extends AppCompatActivity {
         Timber.tag(TAG).d("*** Profille Detail was updated event");
 
         String details = "Name --> " + event.getDriver().getDisplayName() + System.getProperty("line.separator")
-                + "Email --> " + event.getDriver().getEmail() + System.getProperty("line.separator")
-                + "Role --> " +  event.getDriver().getRole() + System.getProperty("line.separator")+ System.getProperty("line.separator")
+                + "Email --> " + event.getDriver().getEmail() + System.getProperty("line.separator")+ System.getProperty("line.separator")
                 + "Client ID --> "  + event.getDriver().getClientId() + System.getProperty("line.separator")+ System.getProperty("line.separator")
-                + "Photo Url --> "  + event.getDriver().getPhotoUrl();
+                + "Photo Url --> "  + event.getDriver().getPhotoUrl() + System.getProperty("line.separator")
+                + "isDev --> " + event.getDriver().isDev() + System.getProperty("line.separator")
+                + "isQA --> " + event.getDriver().isQA() + System.getProperty("line.separator")
+                + "publicOffersNode --> " + event.getDriver().getPublicOffersNode() + System.getProperty("line.separator")
+                + "personalOffersNode --> " + event.getDriver().getPersonalOffersNode() + System.getProperty("line.separator")
+                + "demoOffersNode --> " + event.getDriver().getDemoOffersNode() + System.getProperty("line.separator")
+                + "scheduledBatchesNode --> " + event.getDriver().getScheduledBatchesNode() + System.getProperty("line.separator")
+                + "activeBatchesNode --> " + event.getDriver().getActiveBatchNode() + System.getProperty("line.separator");
 
         Timber.tag(TAG).d("details -->" + details);
 

@@ -4,10 +4,8 @@
 
 package it.flube.driver.useCaseLayer.manageBatch;
 
-import it.flube.driver.modelLayer.entities.BatchCloudDB;
-import it.flube.driver.modelLayer.entities.Offer;
+import it.flube.driver.modelLayer.entities.batch.BatchCloudDB;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
-import it.flube.driver.useCaseLayer.claimOffer.UseCaseClaimOfferRequest;
 
 /**
  * Created on 7/26/2017

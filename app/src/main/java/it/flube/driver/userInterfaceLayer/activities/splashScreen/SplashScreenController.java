@@ -16,7 +16,7 @@ import it.flube.driver.dataLayer.DeviceCheck;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.signInAndSignOut.SignInFromDeviceStorageResponseHandler;
 
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
-import it.flube.driver.useCaseLayer.appInitialization.UseCaseStartupSequence;
+import it.flube.driver.useCaseLayer.appInitialization.UseCaseThingsToDoWhenApplicationStarts;
 import timber.log.Timber;
 
 /**
@@ -45,7 +45,7 @@ public class SplashScreenController  {
 
     public void doStartupSequence() {
         Timber.tag(TAG).d("doStartupSequence START");
-        useCaseExecutor.execute(new UseCaseStartupSequence(device, new SignInFromDeviceStorageResponseHandler()));
+        useCaseExecutor.execute(new UseCaseThingsToDoWhenApplicationStarts(device, new SignInFromDeviceStorageResponseHandler()));
     }
 
     public void close() {

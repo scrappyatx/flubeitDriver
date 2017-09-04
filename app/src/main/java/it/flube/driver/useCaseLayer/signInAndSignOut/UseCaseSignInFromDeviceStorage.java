@@ -14,7 +14,12 @@ import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
  * Project : Driver
  */
 
-public class UseCaseSignInFromDeviceStorage implements Runnable, DeviceStorageInterface.LoadResponse, UseCaseThingsToDoAfterSignIn.Response {
+public class UseCaseSignInFromDeviceStorage implements
+        Runnable,
+        DeviceStorageInterface.LoadResponse,
+        UseCaseThingsToDoAfterSignIn.Response {
+
+
     private final MobileDeviceInterface device;
     private final UseCaseSignInFromDeviceStorage.Response response;
 

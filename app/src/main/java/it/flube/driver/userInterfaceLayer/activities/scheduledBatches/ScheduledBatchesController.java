@@ -7,9 +7,8 @@ package it.flube.driver.userInterfaceLayer.activities.scheduledBatches;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.OfferSelectedResponseHandler;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.scheduledBatches.BatchSelectedResponseHandler;
-import it.flube.driver.modelLayer.entities.BatchCloudDB;
+import it.flube.driver.modelLayer.entities.batch.BatchCloudDB;
 import it.flube.driver.useCaseLayer.manageBatch.UseCaseBatchSelected;
 import timber.log.Timber;
 

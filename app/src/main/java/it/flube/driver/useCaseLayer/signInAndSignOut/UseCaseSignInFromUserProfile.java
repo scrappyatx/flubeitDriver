@@ -17,7 +17,8 @@ import it.flube.driver.modelLayer.interfaces.UserProfileInterface;
  * Project : Driver
  */
 
-public class UseCaseSignInFromUserProfile implements Runnable,
+public class UseCaseSignInFromUserProfile implements
+        Runnable,
         UserProfileInterface.Response,
         DeviceStorageInterface.SaveResponse,
         UseCaseThingsToDoAfterSignIn.Response {

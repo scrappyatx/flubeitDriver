@@ -5,11 +5,18 @@
 package it.flube.driver.dataLayer;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Build;
+
+import com.facebook.device.yearclass.YearClass;
+import com.jaredrummler.android.device.DeviceName;
+
+import java.util.UUID;
 
 import it.flube.driver.deviceLayer.AblyConnectionWrapper;
 import it.flube.driver.deviceLayer.AppRemoteConfig;
 import it.flube.driver.deviceLayer.AppUser;
-import it.flube.driver.deviceLayer.CloudDatabaseFirebase;
+import it.flube.driver.deviceLayer.cloudDatabase.CloudDatabaseFirebaseWrapper;
 import it.flube.driver.deviceLayer.DeviceStorageSharedPrefs;
 import it.flube.driver.deviceLayer.LocationEngineWrapper;
 import it.flube.driver.deviceLayer.UserProfile;
@@ -17,6 +24,7 @@ import it.flube.driver.deviceLayer.appLogging.AppLoggingTimber;
 import it.flube.driver.deviceLayer.cloudAuth.CloudAuthFirebase;
 import it.flube.driver.deviceLayer.realtimeMessaging.RealtimeBatchMessages;
 import it.flube.driver.deviceLayer.realtimeMessaging.RealtimeOfferMessages;
+import it.flube.driver.modelLayer.entities.DeviceInfo;
 import it.flube.driver.modelLayer.interfaces.AppLoggingInterface;
 import it.flube.driver.modelLayer.interfaces.AppRemoteConfigInterface;
 import it.flube.driver.modelLayer.interfaces.AppUserInterface;
@@ -29,12 +37,14 @@ import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import it.flube.driver.modelLayer.interfaces.RealtimeMessagingInterface;
 import it.flube.driver.modelLayer.interfaces.UserProfileInterface;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * Created on 7/3/2017
  * Project : Driver
  */
 
-public class AndroidDevice implements MobileDeviceInterface {
+public class AndroidDevice implements MobileDeviceInterface, DeviceName.Callback {
     ///  Singleton class using Initialization-on-demand holder idiom
     ///  ref: https://en.wikipedia.org/wiki/Initialization-on-demand_holder_idiom
 
@@ -55,7 +65,14 @@ public class AndroidDevice implements MobileDeviceInterface {
     }
 
     private static final String TAG = "AndroidDevice";
+
+    private static final String DEVICE_PREFS = "DevicePrefs";
+    private static final String DEVICE_GUID_FIELD_NAME = "guid";
+
     private Context applicationContext;
+
+    private MobileDeviceInterface.DeviceInfoRequestComplete deviceInfoResponse;
+
 
     private AppLoggingInterface logging;
     private DeviceStorageInterface localStorage;
@@ -87,7 +104,7 @@ public class AndroidDevice implements MobileDeviceInterface {
     }
 
     public CloudDatabaseInterface getCloudDatabase(){
-        return CloudDatabaseFirebase.getInstance();
+        return CloudDatabaseFirebaseWrapper.getInstance();
     }
 
     public CloudStorageInterface getCloudStorage() {
@@ -130,6 +147,49 @@ public class AndroidDevice implements MobileDeviceInterface {
         }
         return locationTelemetry;
     }
+
+
+    public void deviceInfoRequest(MobileDeviceInterface.DeviceInfoRequestComplete response){
+        deviceInfoResponse = response;
+        DeviceName.with(applicationContext).request(this);
+    }
+
+    public void onFinished(DeviceName.DeviceInfo info, Exception exception) {
+
+        if (exception == null) {
+            DeviceInfo thisDevice = new DeviceInfo();
+
+            thisDevice.setDeviceGUID(getDeviceGUID());
+            thisDevice.setManufacturer(info.manufacturer);
+            thisDevice.setMarketName(info.marketName);
+            thisDevice.setModel(info.model);
+            thisDevice.setCodeName(info.codename);
+            thisDevice.setYearWhenDeviceConsideredHighEnd(Integer.toString(YearClass.get(applicationContext)));
+            thisDevice.setVersionAPI(Integer.toString(Build.VERSION.SDK_INT));
+            thisDevice.setVersionReleaseAPI(Build.VERSION.RELEASE);
+
+            deviceInfoResponse.deviceInfoSuccess(thisDevice);
+
+        } else {
+            deviceInfoResponse.deviceInfoFailure(exception);
+        }
+
+    }
+
+    private String getDeviceGUID() {
+        //check to see if a device GUID has been saved to shared preferences on this device
+        // if NO, then create one and save it
+        // read device GUID from shared preferences and return it
+        SharedPreferences prefs = applicationContext.getSharedPreferences(DEVICE_PREFS, MODE_PRIVATE);
+        if (!prefs.contains(DEVICE_GUID_FIELD_NAME)) {
+            SharedPreferences.Editor editor;
+            editor = prefs.edit();
+            editor.putString(DEVICE_GUID_FIELD_NAME, UUID.randomUUID().toString());
+            editor.apply();
+        }
+        return prefs.getString(DEVICE_GUID_FIELD_NAME, null);
+    }
+
 
 
 }

@@ -5,13 +5,19 @@
 package it.flube.driver.userInterfaceLayer.activities.home;
 
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import it.flube.driver.R;
+import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.PublicOffersAvailableResponseHandler;
+import it.flube.driver.dataLayer.useCaseResponseHandlers.scheduledBatches.ScheduledBatchesAvailableResponseHandler;
 import it.flube.driver.userInterfaceLayer.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.DrawerMenu;
 import it.flube.driver.userInterfaceLayer.activities.PermissionsCheckActivity;
@@ -29,10 +35,62 @@ public class HomeNoActiveBatchActivity extends PermissionsCheckActivity {
     private ActivityNavigator navigator;
     private DrawerMenu drawer;
 
+    private ConstraintLayout activeBatchLayout;
+    private ConstraintLayout scheduledBatchesLayout;
+    private ConstraintLayout publicOffersLayout;
+    private ConstraintLayout personalOffersLayout;
+
+    private TextView activeBatchDetail;
+    private TextView scheduledBatchesDetail;
+    private TextView publicOffersDetail;
+    private TextView personalOffersDetail;
+
+    private Button activeBatchButton;
+    private Button scheduledBatchesButton;
+    private Button publicOffersButton;
+    private Button personalOffersButton;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_no_active_batch);
+
+        activeBatchLayout = (ConstraintLayout) findViewById(R.id.summary_active_batch_view);
+        scheduledBatchesLayout = (ConstraintLayout) findViewById(R.id.summary_scheduled_batches_view);
+        publicOffersLayout = (ConstraintLayout) findViewById(R.id.summary_public_offers_view);
+        personalOffersLayout = (ConstraintLayout) findViewById(R.id.summary_personal_offers_view);
+
+        activeBatchDetail = (TextView)findViewById(R.id.summary_active_batch_detail);
+        scheduledBatchesDetail = (TextView)findViewById(R.id.summary_scheduled_batches_detail);
+        publicOffersDetail = (TextView) findViewById(R.id.summary_public_offers_detail);
+        personalOffersDetail = (TextView) findViewById(R.id.summary_personal_offers_detail);
+
+        activeBatchLayout.setVisibility(View.GONE);
+        scheduledBatchesLayout.setVisibility(View.VISIBLE);
+        publicOffersLayout.setVisibility(View.VISIBLE);
+        personalOffersLayout.setVisibility(View.VISIBLE);
+
+        activeBatchButton = (Button) findViewById(R.id.summary_active_batch_button);
+
+        scheduledBatchesButton = (Button) findViewById(R.id.summary_scheduled_batches_button);
+        scheduledBatchesButton.setOnClickListener(new scheduledBatchesOnClickListener());
+
+        publicOffersButton = (Button) findViewById(R.id.summary_public_offers_button);
+        publicOffersButton.setOnClickListener(new publicOffersOnClickListener());
+
+        personalOffersButton = (Button) findViewById(R.id.summary_personal_offers_button);
+        personalOffersButton.setOnClickListener(new personalOffersOnClickListener());
+
+
+        activeBatchButton.setVisibility(View.GONE);
+        scheduledBatchesButton.setVisibility(View.GONE);
+        publicOffersButton.setVisibility(View.GONE);
+        personalOffersButton.setVisibility(View.GONE);
+
+        personalOffersDetail.setText("There are no personal offers available.");
+
+
         Timber.tag(TAG).d("onCreate");
     }
 
@@ -40,7 +98,7 @@ public class HomeNoActiveBatchActivity extends PermissionsCheckActivity {
     public void onPermissionResume(){
         super.onPermissionResume();
         Timber.tag(TAG).d("onPermissionResume");
-        //EventBus.getDefault().register(this);
+        EventBus.getDefault().register(this);
 
         navigator = new ActivityNavigator();
         drawer = new DrawerMenu(this, navigator, R.string.home_no_active_batch_activity_title);
@@ -54,9 +112,87 @@ public class HomeNoActiveBatchActivity extends PermissionsCheckActivity {
     public void onPermissionPause(){
         super.onPermissionPause();
         Timber.tag(TAG).d("onPermissionPause");
-        //EventBus.getDefault().unregister(this);
+        EventBus.getDefault().unregister(this);
 
         drawer.close();
+    }
+
+    /// scheduled batches button click handler
+
+    private class scheduledBatchesOnClickListener implements View.OnClickListener {
+        public void onClick(View v) {
+            navigator.gotoActivityScheduledBatches(HomeNoActiveBatchActivity.this);
+            Timber.tag(TAG).d("clicked scheduledBatches button");
+        }
+    }
+
+    /// public offers button click handler
+    private class publicOffersOnClickListener implements View.OnClickListener {
+        public void onClick(View v) {
+            navigator.gotoActivityOffers(HomeNoActiveBatchActivity.this);
+            Timber.tag(TAG).d("clicked publicOffers button");
+        }
+    }
+
+
+    /// personal offers button click hander
+    private class personalOffersOnClickListener implements View.OnClickListener {
+        public void onClick(View v) {
+            Timber.tag(TAG).d("clicked personalOffers button");
+        }
+    }
+
+    /// public offers events
+    @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
+    public void onEvent(PublicOffersAvailableResponseHandler.AvailablePublicOffersEvent event) {
+        try {
+            Timber.tag(TAG).d("received " + Integer.toString(event.getOfferCount()) + " offers");
+            if (event.getOfferList().size() > 0) {
+                publicOffersDetail.setText("There are " + event.getOfferCount() + " public offers available!");
+                publicOffersButton.setVisibility(View.VISIBLE);
+            } else {
+                publicOffersDetail.setText("There are no public offers available");
+                publicOffersButton.setVisibility(View.GONE);
+
+            }
+        } catch (Exception e) {
+            Timber.tag(TAG).e(e);
+            publicOffersDetail.setText("There are no public offers available");
+            publicOffersButton.setVisibility(View.GONE);
+        }
+    }
+
+    @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
+    public void onEvent(PublicOffersAvailableResponseHandler.NoPublicOffersEvent event) {
+        publicOffersDetail.setText("There are no public offers available");
+        publicOffersButton.setVisibility(View.GONE);
+    }
+
+    ///scheduled batches events
+
+    @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
+    public void onEvent(ScheduledBatchesAvailableResponseHandler.ScheduledBatchUpdateEvent event) {
+        try {
+            Timber.tag(TAG).d("received " + Integer.toString(event.getBatchCount()) + " batches");
+            if (event.getBatchList().size() > 0) {
+                scheduledBatchesDetail.setText("You have " + event.getBatchList().size() + " batches scheduled.");
+                scheduledBatchesButton.setVisibility(View.VISIBLE);
+            } else {
+                scheduledBatchesDetail.setText("You have no batches scheduled");
+                scheduledBatchesButton.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            Timber.tag(TAG).e(e);
+            scheduledBatchesDetail.setText("You have no batches scheduled");
+            scheduledBatchesButton.setVisibility(View.GONE);
+        }
+    }
+
+    @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
+    public void onEvent(ScheduledBatchesAvailableResponseHandler.NoScheduledBatchesEvent event) {
+        scheduledBatchesDetail.setText("You have no batches scheduled");
+        scheduledBatchesButton.setVisibility(View.GONE);
+        Timber.tag(TAG).d("No batches available");
     }
 
 }

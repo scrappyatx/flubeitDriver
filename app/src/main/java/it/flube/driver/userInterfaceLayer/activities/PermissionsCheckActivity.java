@@ -36,8 +36,9 @@ public class PermissionsCheckActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        permissionsCheck = new PermissionsCheck();
+        permissionsCheck = new PermissionsCheck(this);
         haveRequiredPermissions = false;
+        Timber.tag(TAG).d("onCreate");
     }
 
     @Override
@@ -72,6 +73,7 @@ public class PermissionsCheckActivity extends AppCompatActivity implements
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        Timber.tag(TAG).d("onRequestPermissionsResult START");
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         permissionsCheck.checkRequestPermissionResult(this, requestCode, permissions, grantResults);
@@ -80,6 +82,7 @@ public class PermissionsCheckActivity extends AppCompatActivity implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Timber.tag(TAG).d("GOT BACK FROM settings activity onActvityResult COMPLETE");
         super.onActivityResult(requestCode, resultCode, data);
         permissionsCheck.checkActivityResult(this,requestCode, resultCode, data );
         Timber.tag(TAG).d("onActvityResult COMPLETE");

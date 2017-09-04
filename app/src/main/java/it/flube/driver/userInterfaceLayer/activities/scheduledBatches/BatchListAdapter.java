@@ -13,7 +13,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import it.flube.driver.R;
-import it.flube.driver.modelLayer.entities.BatchCloudDB;
+import it.flube.driver.modelLayer.entities.batch.BatchCloudDB;
 import timber.log.Timber;
 
 /**

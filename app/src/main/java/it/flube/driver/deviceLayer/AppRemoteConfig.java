@@ -67,6 +67,13 @@ public class AppRemoteConfig implements AppRemoteConfigInterface {
     private static final String ABLY_CHANNEL_NAME_BATCH_ACTIVITY_KEY="ably_channel_name_batch_activity";
     private static final String ABLY_CHANNEL_NAME_LOOKING_FOR_OFFERS_DEMO_KEY="ably_channel_name_looking_for_offers_demo";
 
+    private static final String FIREBASE_DATABASE_BASE_NODE_PUBLIC_OFFERS = "firebase_database_base_node_public_offers";
+    private static final String FIREBASE_DATABASE_BASE_NODE_PERSONAL_OFFERS = "firebase_database_base_node_personal_offers";
+    private static final String FIREBASE_DATABASE_BASE_NODE_DEMO_OFFERS = "firebase_database_base_node_demo_offers";
+    private static final String FIREBASE_DATABASE_BASE_NODE_SCHEDULED_BATCHES = "firebase_database_base_node_scheduled_batches";
+    private static final String FIREBASE_DATABASE_BASE_NODE_ACTIVE_BATCH = "firebase_database_base_node_active_batch";
+
+
     private static final String APP_COLORS_COLOR_PRIMARY_KEY = "app_colors_colorPrimary";
     private static final String APP_COLORS_COLOR_PRIMARY_DARK_KEY = "app_colors_colorPrimaryDark";
     private static final String APP_COLORS_COLOR_ACCENT_KEY = "app_colors_colorAccent";
@@ -202,6 +209,26 @@ public class AppRemoteConfig implements AppRemoteConfigInterface {
 
     public String getRealtimeMessagingLookingForOffersDemoChannelName() {
         return FirebaseRemoteConfig.getInstance().getString(ABLY_CHANNEL_NAME_LOOKING_FOR_OFFERS_DEMO_KEY);
+    }
+
+    public String getCloudDatabaseBaseNodePublicOffers() {
+        return FirebaseRemoteConfig.getInstance().getString(FIREBASE_DATABASE_BASE_NODE_PUBLIC_OFFERS);
+    }
+
+    public String getCloudDatabaseBaseNodePersonalOffers(){
+        return FirebaseRemoteConfig.getInstance().getString(FIREBASE_DATABASE_BASE_NODE_PERSONAL_OFFERS);
+    }
+
+    public String getCloudDatabaseBaseNodeDemoOffers(){
+        return FirebaseRemoteConfig.getInstance().getString(FIREBASE_DATABASE_BASE_NODE_DEMO_OFFERS);
+    }
+
+    public String getCloudDatabaseBaseNodeScheduledBatches(){
+        return FirebaseRemoteConfig.getInstance().getString(FIREBASE_DATABASE_BASE_NODE_SCHEDULED_BATCHES);
+    }
+
+    public String getCloudDatabaseBaseNodeActiveBatch(){
+        return FirebaseRemoteConfig.getInstance().getString(FIREBASE_DATABASE_BASE_NODE_ACTIVE_BATCH);
     }
 
 }

@@ -4,7 +4,7 @@
 
 package it.flube.driver.modelLayer.interfaces;
 
-import it.flube.driver.modelLayer.entities.Batch;
+import it.flube.driver.modelLayer.entities.batch.Batch;
 import it.flube.driver.modelLayer.entities.Driver;
 
 /**
@@ -30,6 +30,6 @@ public interface AppUserInterface {
 
     void setActiveBatch(Batch batch);
 
-    Boolean isDeveloperToolsMenuEnabled();
+    void clearActiveBatch();
 
 }

@@ -18,6 +18,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.OffersAvailableResponseHandler;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.OfferSelectedResponseHandler;
+import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.PublicOffersAvailableResponseHandler;
 import it.flube.driver.userInterfaceLayer.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.DrawerMenu;
 import timber.log.Timber;
@@ -88,7 +89,7 @@ public class OffersActivity extends AppCompatActivity {
     // offers list whenever this activitity is created, started, or resumed.
 
     @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
-    public void onEvent(OffersAvailableResponseHandler.AvailableOffersEvent event) {
+    public void onEvent(PublicOffersAvailableResponseHandler.AvailablePublicOffersEvent event) {
         try {
             Timber.tag(TAG).d("received " + Integer.toString(event.getOfferCount()) + " offers");
             if (event.getOfferList().size() > 0) {
@@ -107,7 +108,7 @@ public class OffersActivity extends AppCompatActivity {
     }
 
     @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
-    public void onEvent(OffersAvailableResponseHandler.NoOffersEvent event) {
+    public void onEvent(PublicOffersAvailableResponseHandler.NoPublicOffersEvent event) {
         offersView.setVisibility(View.INVISIBLE);
         noOffersText.setVisibility(View.VISIBLE);
     }

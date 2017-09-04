@@ -6,7 +6,7 @@ package it.flube.driver.useCaseLayer.interfaces.realtimeMessaging;
 
 import java.util.ArrayList;
 
-import it.flube.driver.modelLayer.entities.Batch;
+import it.flube.driver.modelLayer.entities.batch.Batch;
 
 /**
  * Created on 5/18/2017

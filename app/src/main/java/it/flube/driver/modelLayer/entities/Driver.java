@@ -15,8 +15,15 @@ public class Driver {
     private String displayName;
     private String clientId;
     private String email;
-    private String role;
     private String photoUrl;
+
+    private Boolean isDev;
+    private Boolean isQA;
+    private String publicOffersNode;
+    private String personalOffersNode;
+    private String demoOffersNode;
+    private String scheduledBatchesNode;
+    private String activeBatchNode;
 
     public Driver() {}
 
@@ -52,14 +59,6 @@ public class Driver {
         this.email = email;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
     public String getDisplayName() { return displayName; }
 
     public void setDisplayName(String displayName) { this.displayName = displayName;}
@@ -67,5 +66,33 @@ public class Driver {
     public String getPhotoUrl() { return photoUrl; }
 
     public void setPhotoUrl(String photoUrl) { this.photoUrl = photoUrl;}
+
+    public void setIsDev(Boolean isDev) { this.isDev = isDev;}
+
+    public Boolean isDev(){return isDev;}
+
+    public void setIsQA(Boolean isQA){ this.isQA = isQA;}
+
+    public Boolean isQA(){ return isQA;}
+
+    public void setPublicOffersNode(String publicOffersNode) { this.publicOffersNode = publicOffersNode;}
+
+    public String getPublicOffersNode() { return publicOffersNode;}
+
+    public void setPersonalOffersNode(String personalOffersNode){ this.personalOffersNode = personalOffersNode;}
+
+    public String getPersonalOffersNode(){ return personalOffersNode; }
+
+    public void setDemoOffersNode(String demoOffersNode){ this.demoOffersNode = demoOffersNode;}
+
+    public String getDemoOffersNode(){ return demoOffersNode;}
+
+    public void setScheduledBatchesNode(String scheduledBatchesNode) { this.scheduledBatchesNode = scheduledBatchesNode;}
+
+    public String getScheduledBatchesNode(){ return scheduledBatchesNode;}
+
+    public void setActiveBatchNode(String activeBatchNode) { this.activeBatchNode = activeBatchNode;}
+
+    public String getActiveBatchNode(){ return activeBatchNode;}
 
 }

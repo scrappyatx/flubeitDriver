@@ -19,6 +19,16 @@ public interface AppRemoteConfigInterface {
 
     String getCloudStorageAuthTokenUrl();
 
+    String getCloudDatabaseBaseNodePublicOffers();
+
+    String getCloudDatabaseBaseNodePersonalOffers();
+
+    String getCloudDatabaseBaseNodeDemoOffers();
+
+    String getCloudDatabaseBaseNodeScheduledBatches();
+
+    String getCloudDatabaseBaseNodeActiveBatch();
+
     Boolean getLoggingDebugActive();
 
     Boolean getLoggingReleaseActive();

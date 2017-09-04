@@ -2,13 +2,13 @@
  * Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
  */
 
-package it.flube.driver.modelLayer.entities;
+package it.flube.driver.modelLayer.entities.asset;
 
 /**
  * Created by Bryan on 3/21/2017.
  */
 
-public class Vehicle {
+public class Vehicle extends AbstractAsset {
     private String make;
     private String model;
     private String year;
@@ -63,4 +63,36 @@ public class Vehicle {
     public void setLicenseState(String licenseState) {
         this.licenseState = licenseState;
     }
+
+    /// setters / getters for instance variables from abstract AbstractAsset class
+    @Override
+    public void setAssetGUID(String assetGUID){
+        super.setAssetGUID(assetGUID);
+    }
+
+    @Override
+    public String getAssetGUID(){
+        return super.getAssetGUID();
+    }
+
+    @Override
+    public void setAssetName(String assetName){
+        super.setAssetName(assetName);
+    }
+
+    @Override
+    public String getAssetName(){
+        return super.getAssetName();
+    }
+
+    @Override
+    public void setAssetDescription(String assetDescription){
+        super.setAssetDescription(assetDescription);
+    }
+
+    @Override
+    public String getAssetDescription(){
+        return super.getAssetDescription();
+    }
+
 }

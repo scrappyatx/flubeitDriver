@@ -39,6 +39,13 @@
     <string name="permission_rationale">Contacts permissions are needed for providing email completions.</string>
 
     -->
+    <!-- Strings related to PermissionsCheck activity -->
+    <string-array name="permissions_check_required_dangerous_permissions">
+        <item>android.permission.CAMERA</item>
+        <item>android.permission.ACCESS_FINE_LOCATION</item>
+        <item>android.permission.ACCESS_COARSE_LOCATION</item>
+    </string-array>
+
 
     <!-- Strings related to foreground service -->
     <string name="rtm_and_loc_updates_fg_svc_notification_title">flube.it Driver</string>
@@ -96,7 +103,12 @@
     <string name="home_activity_title">Home</string>
 
     <!-- Strings related to home no active batch activity layout -->
-    <string name="home_no_active_batch_activity_title">Home No Active Batch</string>
+    <string name="home_no_active_batch_activity_title">Home</string>
+
+
+    <!-- Strings related to home active batch activity layout -->
+    <string name="home_active_batch_activity_title">Active Batch</string>
+
 
     <!-- Strings related to messages activity layout -->
     <string name="messages_activity_title">Messages</string>

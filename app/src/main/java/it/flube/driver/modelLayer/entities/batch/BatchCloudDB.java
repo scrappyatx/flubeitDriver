@@ -2,7 +2,11 @@
  * Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
  */
 
-package it.flube.driver.modelLayer.entities;
+package it.flube.driver.modelLayer.entities.batch;
+
+import it.flube.driver.modelLayer.entities.Customer;
+import it.flube.driver.modelLayer.entities.Driver;
+import it.flube.driver.modelLayer.entities.Location;
 
 /**
  * Created on 7/25/2017

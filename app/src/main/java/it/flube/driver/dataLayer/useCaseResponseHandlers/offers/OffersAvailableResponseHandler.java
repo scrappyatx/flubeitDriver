@@ -18,13 +18,9 @@ import timber.log.Timber;
  * Project : Driver
  */
 
-public class OffersAvailableResponseHandler implements RealtimeMessagingInterface.Notifications.OffersReceived, CloudDatabaseInterface.OffersUpdated {
+public class OffersAvailableResponseHandler implements RealtimeMessagingInterface.Notifications.OffersReceived {
     private static final String TAG = "OffersAvailableResponseHandler";
 
-    public void cloudDatabaseAvailableOffersUpdated(ArrayList<Offer> offerList) {
-        Timber.tag(TAG).d("offers available from cloud database");
-        EventBus.getDefault().postSticky(new OffersAvailableResponseHandler.AvailableOffersEvent(offerList));
-    }
 
     public void receiveMsgCurrentOffers(ArrayList<Offer> offerList) {
         Timber.tag(TAG).d("offers available from realtime messaging");
@@ -49,18 +45,6 @@ public class OffersAvailableResponseHandler implements RealtimeMessagingInterfac
         }
 
     }
-
-    public void cloudDatabaseNoAvailableOffers() {
-        Timber.tag(TAG).d("no offers available from cloud database");
-        EventBus.getDefault().postSticky(new OffersAvailableResponseHandler.NoOffersEvent());
-    }
-
-    public static class NoOffersEvent {
-        public NoOffersEvent(){
-
-        }
-    }
-
 
 
 }

@@ -6,12 +6,10 @@ package it.flube.driver.deviceLayer;
 
 import android.support.annotation.NonNull;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import it.flube.driver.modelLayer.entities.Batch;
+import it.flube.driver.modelLayer.entities.batch.Batch;
 import it.flube.driver.modelLayer.entities.Driver;
 import it.flube.driver.modelLayer.interfaces.AppUserInterface;
+import timber.log.Timber;
 
 /**
  * Created on 6/24/2017
@@ -19,6 +17,7 @@ import it.flube.driver.modelLayer.interfaces.AppUserInterface;
  */
 
 public class AppUser implements AppUserInterface {
+    private static final String TAG = "AppUser";
 
     ///  Singleton class using Initialization-on-demand holder idiom
     ///  ref: https://en.wikipedia.org/wiki/Initialization-on-demand_holder_idiom
@@ -43,69 +42,57 @@ public class AppUser implements AppUserInterface {
     ///
     ///     all class variables are static so there is only one across all instances (and there will only be one instance)
     ///
-    private Driver mDriver;
-    private Batch mActiveBatch;
-    private Boolean mSignedIn;
-    private Boolean mHasActiveBatch;
-    private Boolean mActiveBatchOID;
-    private Boolean developerToolsMenuEnabled;
+    private Driver driver;
+    private Boolean signedIn;
+    private Batch activeBatch;
 
 
     public Driver getDriver() {
-        return mDriver;
+        Timber.tag(TAG).d("getDriver()");
+        return driver;
     }
 
     public void setDriver(@NonNull Driver driver) {
-        mDriver = driver;
-        mSignedIn = true;
-        developerToolsMenuEnabled = true;
-        mHasActiveBatch=false;
-        mActiveBatchOID=false;
+        this.driver = driver;
+        this.signedIn = true;
+        Timber.tag(TAG).d("setDriver : driver --> " + driver.getClientId() + " name --> " + driver.getDisplayName());
     }
 
     public Boolean isSignedIn() {
-        return mSignedIn;
+        Timber.tag(TAG).d("isSignedIn --> " + signedIn);
+        return signedIn;
     }
 
     public void setSignedIn(Boolean signedIn) {
-        mSignedIn = signedIn;
+        this.signedIn = signedIn;
+        Timber.tag(TAG).d("setSignedIn --> " + signedIn);
     }
 
     public Boolean hasActiveBatch() {
-        return mHasActiveBatch;
+        Timber.tag(TAG).d("hasActiveBatch --> " + (activeBatch != null));
+        return (activeBatch != null);
     }
 
-    public void setHasActiveBatch(Boolean hasActiveBatch) {
-        mHasActiveBatch = hasActiveBatch;
+    public Batch getActiveBatch() {
+        Timber.tag(TAG).d("getActiveBatch --> " + activeBatch.getBatchGUID());
+        return activeBatch;
     }
 
-    public Boolean getActiveBatchOID() {
-        return mActiveBatchOID;
+    public void setActiveBatch(@NonNull Batch batch) {
+        Timber.tag(TAG).d("setActiveBatch --> " + activeBatch.getBatchGUID());
+        activeBatch = batch;
     }
 
-    public void setActiveBatchOID(Boolean activeBatchOID) {
-        mActiveBatchOID = activeBatchOID;
-    }
-
-    public Batch getActiveBatch() { return mActiveBatch; }
-
-    public void setActiveBatch(Batch batch) { mActiveBatch = batch;}
-
-    public void setDeveloperToolsMenuEnabled(Boolean developerToolsMenuEnabled ) {
-        this.developerToolsMenuEnabled = developerToolsMenuEnabled;
-        //// TODO: 7/14/2017 Need to add logic to this method to set this value based on role returned from profile management server
-    }
-
-    public Boolean isDeveloperToolsMenuEnabled(){
-        return developerToolsMenuEnabled;
+    public void clearActiveBatch(){
+        Timber.tag(TAG).d("clearActiveBatch()");
+        activeBatch = null;
     }
 
 
     public void clear() {
-        mDriver = null;
-        mSignedIn=false;
-        mHasActiveBatch=false;
-        mActiveBatchOID=false;
-        developerToolsMenuEnabled = false;
+        driver = null;
+        signedIn=false;
+        activeBatch = null;
+        Timber.tag(TAG).d("clear()");
     }
 }

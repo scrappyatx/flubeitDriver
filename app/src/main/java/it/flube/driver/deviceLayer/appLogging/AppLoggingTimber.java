@@ -6,7 +6,10 @@ package it.flube.driver.deviceLayer.appLogging;
 
 import android.content.Context;
 
+import com.rollbar.android.Rollbar;
+
 import it.flube.driver.BuildConfig;
+import it.flube.driver.modelLayer.entities.Driver;
 import it.flube.driver.modelLayer.interfaces.AppLoggingInterface;
 import it.flube.driver.modelLayer.interfaces.AppRemoteConfigInterface;
 import timber.log.Timber;
@@ -18,9 +21,13 @@ import timber.log.Timber;
 
 public class AppLoggingTimber implements AppLoggingInterface {
     private Context mContext;
+    private Boolean isLogglyTreePlanted;
+    private Boolean isRollbarTreePlanted;
 
     public AppLoggingTimber(Context context) {
         mContext=context;
+        isLogglyTreePlanted = false;
+        isRollbarTreePlanted = false;
     }
 
     public void initializeDeviceLogging() {
@@ -48,26 +55,38 @@ public class AppLoggingTimber implements AppLoggingInterface {
         if (BuildConfig.DEBUG) {
             if (isLoggingRollbarDebug) {
                 Timber.plant(new RollbarCrashReporting(mContext));
+                isRollbarTreePlanted = true;
                 Timber.i("Timber --> Planted ROLLBAR tree for DEBUG build");
 
             }
 
             if (isLoggingLogglyDebug) {
                 Timber.plant(new LogglyRemoteLogging(mContext));
+                isLogglyTreePlanted = true;
                 Timber.i("Timber --> Planted LOGGLY tree for DEBUG build");
             }
         } else {
             if (isLoggingRollbarRelease) {
                 Timber.plant(new RollbarCrashReporting(mContext));
+                isRollbarTreePlanted = true;
                 Timber.i("Timber --> Planted ROLLBAR tree for RELEASE build");
             }
 
             if (isLoggingLogglyRelease) {
                 Timber.plant(new LogglyRemoteLogging(mContext));
+                isLogglyTreePlanted = true;
                 Timber.i("Timber --> Planted LOGGLY tree for RELEASE build");
             }
         }
         Timber.d("Remote Logging and Crash Reporting Initialized");
         response.initializeRemoteLoggingAndCrashReportingComplete();
     }
+
+    public void setPersonData(Driver driver) {
+        if (Rollbar.isInit()) {
+            Rollbar.setPersonData(driver.getClientId(), driver.getDisplayName(), driver.getEmail());
+        }
+    }
+
+
 }

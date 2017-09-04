@@ -34,12 +34,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service
-            android:name=".dataLayer.services.ActiveBatchForegroundService"
-            android:enabled="true"
-            android:exported="false"
-            android:stopWithTask="true" />
-        <activity android:name=".userInterfaceLayer.activities.signIn.SignInActivity" />
+        <activity android:name=".userInterfaceLayer.activities.signIn.SignInActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true"/>
         <activity android:name=".userInterfaceLayer.activities.account.AccountActivity" />
         <activity android:name=".userInterfaceLayer.activities.demo.DemoActivity" />
         <activity android:name=".userInterfaceLayer.activities.earnings.EarningsActivity" />
@@ -52,7 +49,11 @@
         <activity android:name=".userInterfaceLayer.activities.scheduledBatches.ScheduledBatchesActivity" />
         <activity android:name=".userInterfaceLayer.activities.scheduledBatches.BatchManageActivity" />
         <activity android:name=".userInterfaceLayer.activities.scheduledBatches.BatchMapActivity" />
-
+        <service
+            android:name=".dataLayer.services.ActiveBatchForegroundService"
+            android:enabled="true"
+            android:exported="false"
+            android:stopWithTask="true" />
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="446b6885663a7a64836334f6e17af7a0b5d6d7c9" />
