@@ -7,16 +7,9 @@ package it.flube.driver.userInterfaceLayer.activities.earnings;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.mikepenz.materialdrawer.Drawer;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import it.flube.driver.R;
 import it.flube.driver.userInterfaceLayer.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.DrawerMenu;
-import it.flube.driver.userInterfaceLayer.activities.demo.DemoController;
 import timber.log.Timber;
 
 /**

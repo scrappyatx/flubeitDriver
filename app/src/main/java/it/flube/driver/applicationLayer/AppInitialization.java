@@ -2,7 +2,7 @@
  * Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
  */
 
-package it.flube.driver.deviceLayer;
+package it.flube.driver.applicationLayer;
 
 import android.app.Application;
 import android.app.Dialog;

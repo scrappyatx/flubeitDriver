@@ -13,7 +13,7 @@ import java.util.Date;
 
 public class MapPing {
     private String guid;
-    private LatLonPosition latLonPosition;
+    private LatLonLocation latLonLocation;
     private Date timestamp;
 
     public String getGUID(){
@@ -24,12 +24,12 @@ public class MapPing {
         this.guid = guid;
     }
 
-    public LatLonPosition getLatLonPosition() {
-        return latLonPosition;
+    public LatLonLocation getLatLonLocation() {
+        return latLonLocation;
     }
 
-    public void setLatLonPosition(LatLonPosition latLonPosition){
-        this.latLonPosition = latLonPosition;
+    public void setLatLonLocation(LatLonLocation latLonLocation){
+        this.latLonLocation = latLonLocation;
     }
 
     public Date getTimestamp(){

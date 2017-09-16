@@ -11,6 +11,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import it.flube.driver.modelLayer.entities.Offer;
 import it.flube.driver.modelLayer.entities.batch.BatchCloudDB;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import timber.log.Timber;
@@ -23,35 +24,45 @@ import timber.log.Timber;
 public class FirebaseScheduledBatchEventListener implements ValueEventListener {
     private static final String TAG = "FirebaseScheduledBatchEventListener";
 
-    private CloudDatabaseInterface.BatchesUpdated update;
+    private CloudDatabaseInterface.ScheduledBatchesUpdated update;
 
-    public FirebaseScheduledBatchEventListener(CloudDatabaseInterface.BatchesUpdated update) {
+    public FirebaseScheduledBatchEventListener(CloudDatabaseInterface.ScheduledBatchesUpdated update) {
         this.update = update;
     }
 
     public void onDataChange(DataSnapshot dataSnapshot) {
-        Timber.tag(TAG).d("firebase database batch data CHANGED!");
+        Timber.tag(TAG).d("scheduled batch data CHANGED!");
 
-        try{
-            GenericTypeIndicator<ArrayList<BatchCloudDB>> t = new GenericTypeIndicator<ArrayList<BatchCloudDB>>() {};
+        ArrayList<BatchCloudDB> batchList = new ArrayList<BatchCloudDB>();
 
-            ArrayList<BatchCloudDB> batchList = dataSnapshot.getValue(t);
+        if (dataSnapshot.exists()) {
+            if (dataSnapshot.getChildrenCount() > 0) {
+                //dataSnapshot EXISTS & HAS CHILDREN
+                // each child node should be an OFFER
+                for (DataSnapshot batchSnapshot : dataSnapshot.getChildren()) {
+                    try {
+                        BatchCloudDB batch = batchSnapshot.getValue(BatchCloudDB.class);
+                        batchList.add(batch);
+                    } catch (Exception e) {
+                        Timber.tag(TAG).e(e);
+                    }
+                    Timber.tag(TAG).d("scheduled batch list has " + Integer.toString(batchList.size()) + " batches --> ");
+                }
 
-            if (batchList == null) {
-                Timber.tag(TAG).d("no batches in this list");
-                update.cloudDatabaseNoScheduledBatches();
             } else {
-                Timber.tag(TAG).d("assigned batch list has " + Integer.toString(batchList.size()) + " batches");
-                update.cloudDatabaseReceivedScheduledBatches(batchList);
+                //dataSnapshot has no children
+                Timber.tag(TAG).d("no scheduled batches in this list");
             }
-        } catch (Exception e) {
-            Timber.tag(TAG).e(e);
-            update.cloudDatabaseNoScheduledBatches();
+        } else {
+            // dataSnapshot DOES NOT EXIST
+            Timber.tag(TAG).w("dataSnapshot does not exist");
         }
+
+        update.cloudDatabaseScheduledBatchesUpdated(batchList);
     }
 
     public void onCancelled(DatabaseError databaseError) {
-        Timber.tag(TAG).e("firebase database read error in assigned batches : " + databaseError.getCode() + " --> " + databaseError.getMessage());
+        Timber.tag(TAG).e("firebase database read error in scheduled batches : " + databaseError.getCode() + " --> " + databaseError.getMessage());
     }
 
 }

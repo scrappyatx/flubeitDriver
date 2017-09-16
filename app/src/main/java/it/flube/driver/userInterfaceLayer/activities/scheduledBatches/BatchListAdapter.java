@@ -96,22 +96,41 @@ public class BatchListAdapter extends RecyclerView.Adapter<BatchListAdapter.Batc
             this.batch = batch;
 
             description.setText(batch.getOrderOID());
-            pickupStreet.setText(batch.getPickupLocation().getStreet1());
 
-            String pickupCSZ = batch.getPickupLocation().getCity() + ", " + batch.getPickupLocation().getState() + " " + batch.getPickupLocation().getZip();
-            pickupCityStateZip.setText(pickupCSZ);
+            String puStreet;
+            String puCSZ;
 
-            dropoffStreet.setText(batch.getReturnLocation().getStreet1());
 
-            String dropoffCSZ = batch.getPickupLocation().getCity() + ", " + batch.getPickupLocation().getState() + " " + batch.getPickupLocation().getZip();
-            dropOffCityStateZip.setText(dropoffCSZ);
+            if (batch.getPickupLocation()!= null) {
+                puStreet = batch.getPickupLocation().getStreet1();
+                puCSZ = batch.getPickupLocation().getCity() + ", " + batch.getPickupLocation().getState() + " " + batch.getPickupLocation().getZip();
+            } else {
+                puStreet = "no street";
+                puCSZ = "No city, state, zip";
+            }
+            pickupStreet.setText(puStreet);
+            pickupCityStateZip.setText(puCSZ);
+
+
+            String doStreet;
+            String doCSZ;
+
+            if (batch.getReturnLocation()!=null){
+                doStreet = batch.getReturnLocation().getStreet1();
+                doCSZ = batch.getPickupLocation().getCity() + ", " + batch.getPickupLocation().getState() + " " + batch.getPickupLocation().getZip();
+            } else {
+                doStreet = "no street";
+                doCSZ = "No city, state, zip";
+            }
+            dropoffStreet.setText(doStreet);
+            dropOffCityStateZip.setText(doCSZ);
 
             Timber.tag(TAG).d("bindBatch :");
             Timber.tag(TAG).d("---> Description    : " + batch.getOrderOID());
-            Timber.tag(TAG).d("---> Pickup Street  : " + batch.getPickupLocation().getStreet1());
-            Timber.tag(TAG).d("---> Pickup CSZ     : " + pickupCSZ);
-            Timber.tag(TAG).d("---> Dropoff Street : " + batch.getReturnLocation().getStreet1());
-            Timber.tag(TAG).d("---> Dropoff CSZ    : " + dropoffCSZ);
+            Timber.tag(TAG).d("---> Pickup Street  : " + puStreet);
+            Timber.tag(TAG).d("---> Pickup CSZ     : " + puCSZ);
+            Timber.tag(TAG).d("---> Dropoff Street : " + doStreet);
+            Timber.tag(TAG).d("---> Dropoff CSZ    : " + doCSZ);
 
         }
     }

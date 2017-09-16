@@ -7,8 +7,8 @@ package it.flube.driver.modelLayer.entities.serviceOrder;
 import java.util.ArrayList;
 
 import it.flube.driver.modelLayer.entities.ChatMessage;
-import it.flube.driver.modelLayer.entities.LatLonPosition;
 import it.flube.driver.modelLayer.entities.MapPing;
+import it.flube.driver.modelLayer.entities.Timestamp;
 
 /**
  * Created on 8/9/2017
@@ -16,64 +16,100 @@ import it.flube.driver.modelLayer.entities.MapPing;
  */
 
 public class ServiceOrder {
-    private String orderGUID;
-    private String orderTitle;
-    private String orderDescription;
+    public enum ServiceOrderStatus {
+        NOT_STARTED,
+        ACTIVE,
+        COMPLETED_SUCCESS,
+        COMPLETED_PROBLEM,
+    }
 
-    private Integer orderStepIndex;
-    private ArrayList<ServiceOrderAbstractStep> orderSteps;
+    private String guid;
+    private String title;
+    private String description;
 
-    private ArrayList<MapPing> mapPings;
+    private ServiceOrderStatus status;
+
+    private Timestamp startTime;
+    private Timestamp finishTime;
+
+    private Integer stepIndex;
+    private ArrayList<ServiceOrderAbstractStep> stepList;
+
+    private ArrayList<MapPing> mapPingList;
     private ArrayList<ChatMessage> driverChatHistory;
     private ArrayList<ChatMessage> serviceProviderChatHistory;
     private ArrayList<ChatMessage> customerChatHistory;
 
-    public String getOrderGUID() {
-        return orderGUID;
+    public String getGUID() {
+        return guid;
     }
 
-    public void setOrderGUID(String orderGUID) {
-        this.orderGUID = orderGUID;
+    public void setGUID(String guid) {
+        this.guid = guid;
     }
 
-    public String getOrderTitle() {
-        return orderTitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setOrderTitle(String orderTitle) {
-        this.orderTitle = orderTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getOrderDescription() {
-        return orderDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setOrderDescription(String orderDescription) {
-        this.orderDescription = orderDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public Integer getOrderStepIndex() {
-        return orderStepIndex;
+    public ServiceOrderStatus getStatus(){
+        return status;
     }
 
-    public void setOrderStepIndex(Integer currentStep) {
-        this.orderStepIndex = orderStepIndex;
+    public void setStatus(ServiceOrderStatus status) {
+        this.status = status;
     }
 
-    public ArrayList<ServiceOrderAbstractStep> getOrderSteps() {
-        return orderSteps;
+    public Timestamp getStartTime() {
+        return startTime;
     }
 
-    public void setOrderSteps(ArrayList<ServiceOrderAbstractStep> orderSteps) {
-        this.orderSteps = orderSteps;
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
     }
 
-    public ArrayList<MapPing> getMapPings() {
-        return mapPings;
+    public Timestamp getFinishTime() {
+        return finishTime;
     }
 
-    public void setMapPings(ArrayList<MapPing> mapPings) {
-        this.mapPings = mapPings;
+    public void setFinishTime(Timestamp finishTime) {
+        this.finishTime = finishTime;
+    }
+
+    public Integer getStepIndex() {
+        return stepIndex;
+    }
+
+    public void setStepIndex(Integer stepIndex) {
+        this.stepIndex = stepIndex;
+    }
+
+    public ArrayList<ServiceOrderAbstractStep> getStepList() {
+        return stepList;
+    }
+
+    public void setStepList(ArrayList<ServiceOrderAbstractStep> stepList) {
+        this.stepList = stepList;
+    }
+
+    public ArrayList<MapPing> getMapPingList() {
+        return mapPingList;
+    }
+
+    public void setMapPingList (ArrayList<MapPing> mapPingList) {
+        this.mapPingList = mapPingList;
     }
 
     public ArrayList<ChatMessage> getDriverChatHistory() {

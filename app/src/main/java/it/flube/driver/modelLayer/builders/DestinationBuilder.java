@@ -6,7 +6,9 @@ package it.flube.driver.modelLayer.builders;
 
 import android.support.annotation.NonNull;
 
+import it.flube.driver.modelLayer.entities.AddressLocation;
 import it.flube.driver.modelLayer.entities.Destination;
+import it.flube.driver.modelLayer.entities.LatLonLocation;
 
 /**
  * Created on 9/1/2017
@@ -27,15 +29,28 @@ public class DestinationBuilder {
     public static class Builder {
         private Destination destination;
 
-        public Builder(@NonNull Double latitude, @NonNull Double longitude, @NonNull Destination.DestinationType destinationType){
+        public Builder(){
             destination = new Destination();
-            destination.setTargetLatLon(new LatLonPositionBuilder.Builder(latitude, longitude).build());
-            destination.setTargetType(destinationType);
             destination.setTargetVerificationMethod(Destination.VerificationMethod.NO_VERIFICATION_PERFORMED);
         }
 
-        public Builder targetAddress(@NonNull String street1, @NonNull String city, @NonNull String state, @NonNull String zip){
-            this.destination.setTargetAddress(new AddressLocationBuilder.Builder(street1, city, state, zip).build());
+        public Builder targetLatLon(@NonNull LatLonLocation latLonLocation){
+            this.destination.setTargetLatLon(latLonLocation);
+            return this;
+        }
+
+        public Builder targetAddress(@NonNull AddressLocation addressLocation){
+            this.destination.setTargetAddress(addressLocation);
+            return this;
+        }
+
+        public Builder targetType(@NonNull Destination.DestinationType destinationType) {
+            this.destination.setTargetType(destinationType);
+            return this;
+        }
+
+        public Builder targetVerificationMethod(@NonNull Destination.VerificationMethod verificationMethod) {
+            this.destination.setTargetVerificationMethod(verificationMethod);
             return this;
         }
 

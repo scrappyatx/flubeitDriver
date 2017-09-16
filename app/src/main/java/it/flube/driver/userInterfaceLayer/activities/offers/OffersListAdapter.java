@@ -53,7 +53,7 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Of
     public void onBindViewHolder(OfferViewHolder holder, int position) {
         Offer itemOffer = offersList.get(position);
         holder.bindOffer(itemOffer);
-        Timber.tag(TAG).d("Binding offer " + itemOffer.getOfferOID() + " to position " + Integer.toString(position));
+        Timber.tag(TAG).d("Binding offer " + itemOffer.getGUID() + " to position " + Integer.toString(position));
     }
 
     @Override
@@ -99,7 +99,7 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Of
         @Override
         public void onClick(View v) {
             response.offerSelected(offer);
-            Timber.tag(TAG).d("offer selected --> " + offer.getOfferOID());
+            Timber.tag(TAG).d("offer selected --> " + offer.getGUID());
         }
 
         public void bindOffer(Offer offer) {
@@ -112,7 +112,7 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Of
             extraEarnings.setText(offer.getEstimatedEarningsExtra());
 
             Timber.tag(TAG).d("bindOffer :");
-            Timber.tag(TAG).d("---> OID:        : " + offer.getOfferOID());
+            Timber.tag(TAG).d("---> OID:        : " + offer.getGUID());
             Timber.tag(TAG).d("---> Description : " + offer.getServiceDescription());
             Timber.tag(TAG).d("---> Time        : " + offer.getOfferTime());
             Timber.tag(TAG).d("---> Duration    : " + offer.getOfferDuration());

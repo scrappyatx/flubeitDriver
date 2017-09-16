@@ -4,6 +4,7 @@
 
 package it.flube.driver.modelLayer.interfaces;
 
+import it.flube.driver.modelLayer.entities.Offer;
 import it.flube.driver.modelLayer.entities.batch.Batch;
 import it.flube.driver.modelLayer.entities.batch.BatchCloudDB;
 import it.flube.driver.modelLayer.entities.Driver;
@@ -13,7 +14,13 @@ import it.flube.driver.modelLayer.entities.Driver;
  * Project : Driver
  */
 
-public interface DemoBatchBuilderInterface {
+public interface DemoInterface {
 
-    Batch getSimpleBatch(Driver driver, BatchCloudDB batch);
+    Offer createDemoOffer(Driver driver);
+
+    Offer createDemoOffer(Driver driver, String offerGUID);
+
+    Batch createDemoBatch(Driver driver);
+
+    Batch createDemoBatch(Driver driver, String batchGUID);
 }

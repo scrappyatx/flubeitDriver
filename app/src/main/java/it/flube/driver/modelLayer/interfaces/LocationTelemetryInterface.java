@@ -4,9 +4,7 @@
 
 package it.flube.driver.modelLayer.interfaces;
 
-import android.location.Location;
-
-import it.flube.driver.modelLayer.entities.LatLonPosition;
+import it.flube.driver.modelLayer.entities.LatLonLocation;
 
 /**
  * Created on 7/27/2017
@@ -26,7 +24,7 @@ public interface LocationTelemetryInterface {
 
     interface LocationTrackingPositionChanged {
 
-        void positionChanged(LatLonPosition position);
+        void positionChanged(LatLonLocation position);
 
     }
 

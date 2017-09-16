@@ -7,10 +7,11 @@ package it.flube.driver.deviceLayer.cloudDatabase;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.DemoOffersAvailableResponseHandler;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.PersonalOffersAvailableResponseHandler;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.PublicOffersAvailableResponseHandler;
+import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.demoOffers.DemoOffersAvailableResponseHandler;
+import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.personalOffers.PersonalOffersAvailableResponseHandler;
+import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.publicOffers.PublicOffersAvailableResponseHandler;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.scheduledBatches.ScheduledBatchesAvailableResponseHandler;
+import it.flube.driver.modelLayer.entities.Offer;
 import it.flube.driver.modelLayer.entities.batch.Batch;
 import it.flube.driver.modelLayer.entities.DeviceInfo;
 import it.flube.driver.modelLayer.entities.Driver;
@@ -38,10 +39,6 @@ public class CloudDatabaseFirebaseWrapper implements CloudDatabaseInterface {
     }
 
     private static final String TAG = "CloudDatabaseFirebaseWrapper";
-
-    private static final String PUBLIC_OFFERS = "PublicOffers";
-    private static final String PERSONAL_OFFERS = "PersonalOffers";
-    private static final String DEMO_OFFERS = "DemoOffers";
 
     private FirebaseDatabase database;
     private DatabaseReference publicOffers;
@@ -83,9 +80,57 @@ public class CloudDatabaseFirebaseWrapper implements CloudDatabaseInterface {
         FirebaseActiveBatch firebaseActiveBatch = new FirebaseActiveBatch();
         firebaseActiveBatch.saveActiveBatchRequest(batchRef, driver, batch, response);
 
-        Timber.tag(TAG).d("saving ACTIVE BATCH ---> driver Id -> " + driver.getClientId() + " batchGUID --> " + batch.getBatchGUID());
+        Timber.tag(TAG).d("saving ACTIVE BATCH ---> driver Id -> " + driver.getClientId() + " batchGUID --> " + batch.getGUID());
     }
 
+    public void saveDemoOfferRequest(String baseNode, Driver driver, Offer offer, SaveDemoOfferResponse response) {
+        String targetNode = baseNode + "/" + driver.getClientId() + "/" + driver.getDemoOffersNode();
+
+        demoOffers = database.getReference(targetNode);
+        FirebaseDemoOffers firebaseDemoOffers = new FirebaseDemoOffers();
+        firebaseDemoOffers.saveDemoOfferRequest(demoOffers, offer, response);
+
+        Timber.tag(TAG).d("saving DEMO OFFER ---> driver Id -> " + driver.getClientId() + " offerOID--> " + offer.getGUID());
+    }
+
+    public void deleteDemoOfferRequest(String baseNode, Driver driver, Offer offer, DeleteDemoOfferResponse response) {
+        String targetNode = baseNode + "/" + driver.getClientId() + "/" + driver.getDemoOffersNode();
+
+        demoOffers = database.getReference(targetNode);
+        FirebaseDemoOffers firebaseDemoOffers = new FirebaseDemoOffers();
+
+        firebaseDemoOffers.deleteDemoOfferRequest(demoOffers, offer, response);
+    }
+
+    public void deleteAllDemoOffersRequest(String baseNode, Driver driver, DeleteAllDemoOfferResponse response) {
+        String targetNode = baseNode + "/" + driver.getClientId() + "/" + driver.getDemoOffersNode();
+
+        demoOffers = database.getReference(targetNode);
+        FirebaseDemoOffers firebaseDemoOffers = new FirebaseDemoOffers();
+        firebaseDemoOffers.deleteAllDemoOffersRequest(demoOffers, response);
+
+        Timber.tag(TAG).d("deleting all DEMO OFFERS ---> driver Id -> " + driver.getClientId());
+    }
+
+    public void saveDemoBatchRequest(String baseNode, Driver driver, Offer offer, SaveDemoBatchResponse response) {
+        String targetNode = baseNode + "/" + driver.getClientId() + "/" + driver.getScheduledBatchesNode();
+
+        DatabaseReference demoBatch = database.getReference(targetNode);
+        FirebaseDemoBatch firebaseDemoBatch = new FirebaseDemoBatch();
+        firebaseDemoBatch.saveDemoBatchRequest(demoBatch, offer, response);
+
+        Timber.tag(TAG).d("saving DEMO BATCH ---> offer GUID -> " + offer.getGUID());
+    }
+
+    public void deleteDemoBatchRequest(String baseNode, Driver driver, Offer offer, DeleteDemoBatchResponse response) {
+        String targetNode = baseNode + "/" + driver.getClientId() + "/" + driver.getScheduledBatchesNode();
+
+        DatabaseReference demoBatch = database.getReference(targetNode);
+        FirebaseDemoBatch firebaseDemoBatch = new FirebaseDemoBatch();
+        firebaseDemoBatch.deleteDemoBatchRequest(demoBatch, offer, response);
+
+        Timber.tag(TAG).d("deleting DEMO BATCH ---> offer GUID -> " + offer.getGUID());
+    }
 
     public void loadActiveBatchRequest(Driver driver, CloudDatabaseInterface.LoadActiveBatchResponse response) {
         DatabaseReference activeBatchRef = database.getReference("userOwned/users/" + driver.getClientId() + "/activeBatch");
@@ -101,7 +146,7 @@ public class CloudDatabaseFirebaseWrapper implements CloudDatabaseInterface {
         String targetNode = baseNode + "/" + driver.getPublicOffersNode();
 
         publicOffers = database.getReference(targetNode);
-        publicOffers.addValueEventListener(new FirebaseOffersEventListener(PUBLIC_OFFERS, new PublicOffersAvailableResponseHandler()));
+        publicOffers.addValueEventListener(new FirebasePublicOffersEventListener(new PublicOffersAvailableResponseHandler()));
 
         Timber.tag(TAG).d("listening for public offers at node --> " + targetNode);
     }
@@ -110,7 +155,7 @@ public class CloudDatabaseFirebaseWrapper implements CloudDatabaseInterface {
         String targetNode = baseNode + "/" + driver.getClientId() + "/" + driver.getPersonalOffersNode();
 
         personalOffers = database.getReference(targetNode);
-        personalOffers.addValueEventListener(new FirebaseOffersEventListener(PERSONAL_OFFERS, new PersonalOffersAvailableResponseHandler()));
+        personalOffers.addValueEventListener(new FirebasePersonalOffersEventListener(new PersonalOffersAvailableResponseHandler()));
 
         Timber.tag(TAG).d("listening for personal offers at node --> " + targetNode);
     }
@@ -119,7 +164,7 @@ public class CloudDatabaseFirebaseWrapper implements CloudDatabaseInterface {
         String targetNode = baseNode + "/" + driver.getClientId() + "/" + driver.getDemoOffersNode();
 
         demoOffers = database.getReference(targetNode);
-        demoOffers.addValueEventListener(new FirebaseOffersEventListener(DEMO_OFFERS, new DemoOffersAvailableResponseHandler()));
+        demoOffers.addValueEventListener(new FirebaseDemoOffersEventListener(new DemoOffersAvailableResponseHandler()));
 
         Timber.tag(TAG).d("listening for demo offers at node --> " + targetNode);
     }

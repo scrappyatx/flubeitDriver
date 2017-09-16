@@ -107,23 +107,23 @@ public class ServiceOrderGiveAssetStep extends ServiceOrderAbstractStep {
     }
 
     @Override
-    public void setStartTimestamp(Timestamp startTimestamp) {
-        super.setStartTimestamp(startTimestamp);
+    public void setStartTime(Timestamp startTime) {
+        super.setStartTime(startTime);
     }
 
     @Override
-    public Timestamp getStartTimestamp(){
-        return super.getStartTimestamp();
+    public Timestamp getStartTime(){
+        return super.getStartTime();
     }
 
     @Override
-    public void setFinishTimestamp(Timestamp finishTimestamp) {
-        super.setFinishTimestamp(finishTimestamp);
+    public void setFinishTime(Timestamp finishTime) {
+        super.setFinishTime(finishTime);
     }
 
     @Override
-    public Timestamp getFinishTimestamp(){
-        return super.getFinishTimestamp();
+    public Timestamp getFinishTime(){
+        return super.getFinishTime();
     }
 
     @Override

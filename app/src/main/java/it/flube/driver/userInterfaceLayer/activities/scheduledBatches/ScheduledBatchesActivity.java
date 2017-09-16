@@ -103,16 +103,11 @@ public class ScheduledBatchesActivity extends AppCompatActivity {
         }
     }
 
-    @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
-    public void onEvent(ScheduledBatchesAvailableResponseHandler.NoScheduledBatchesEvent event) {
-        batchesView.setVisibility(View.INVISIBLE);
-        noBatchesText.setVisibility(View.VISIBLE);
-        Timber.tag(TAG).d("No batches available");
-    }
 
     @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
     public void onEvent(BatchSelectedResponseHandler.UseCaseBatchSelectedEvent event) {
         Timber.tag(TAG).d("batch selected => " + event.getBatch().getOrderOID());
+        EventBus.getDefault().removeStickyEvent(event);
         navigator.gotoActivityBatchManage(this);
     }
 

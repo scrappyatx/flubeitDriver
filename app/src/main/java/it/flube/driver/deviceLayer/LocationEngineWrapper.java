@@ -12,7 +12,7 @@ import com.mapbox.services.android.telemetry.location.LocationEngine;
 import com.mapbox.services.android.telemetry.location.LocationEngineListener;
 import com.mapbox.services.android.telemetry.location.LocationEnginePriority;
 
-import it.flube.driver.modelLayer.entities.LatLonPosition;
+import it.flube.driver.modelLayer.entities.LatLonLocation;
 import it.flube.driver.modelLayer.interfaces.LocationTelemetryInterface;
 import timber.log.Timber;
 
@@ -65,7 +65,7 @@ public class LocationEngineWrapper implements LocationTelemetryInterface, Locati
         if (location != null) {
             Timber.tag(TAG).d("New location received: " + location.toString());
 
-            LatLonPosition position = new LatLonPosition();
+            LatLonLocation position = new LatLonLocation();
             position.setLatitude(location.getLatitude());
             position.setLongitude(location.getLongitude());
 

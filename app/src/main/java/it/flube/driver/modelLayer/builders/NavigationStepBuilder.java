@@ -6,6 +6,7 @@ package it.flube.driver.modelLayer.builders;
 
 import android.support.annotation.NonNull;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -18,10 +19,10 @@ import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrderNavigationSt
  * Project : Driver
  */
 
-public class NavStepBuilder {
+public class NavigationStepBuilder {
     private ServiceOrderNavigationStep navStep;
 
-    private NavStepBuilder(@NonNull Builder builder) {
+    private NavigationStepBuilder(@NonNull Builder builder) {
         this.navStep = builder.navStep;
     }
 
@@ -32,11 +33,9 @@ public class NavStepBuilder {
     public static class Builder {
         private ServiceOrderNavigationStep navStep;
 
-        public Builder(@NonNull String title, @NonNull String description){
+        public Builder(){
             navStep = new ServiceOrderNavigationStep();
             navStep.setGUID(UUID.randomUUID().toString());
-            navStep.setTitle(title);
-            navStep.setDescription(description);
             navStep.setAtDestination(false);
             navStep.setWorkStage(ServiceOrderAbstractStep.WorkStage.NOT_STARTED);
             navStep.setWorkTiming(ServiceOrderAbstractStep.WorkTiming.NOT_APPLICABLE);
@@ -44,18 +43,50 @@ public class NavStepBuilder {
             navStep.setCloseEnoughInFeet(300); //default value is 300 feet
         }
 
+        public Builder guid(@NonNull String guid) {
+            this.navStep.setGUID(guid);
+            return this;
+        }
+
+        public Builder title(@NonNull String title) {
+            this.navStep.setTitle(title);
+            return this;
+        }
+
+        public Builder description(@NonNull String description) {
+            this.navStep.setDescription(description);
+            return this;
+        }
+
         public Builder note(@NonNull String note) {
             this.navStep.setNote(note);
             return this;
         }
 
-        public Builder startScheduledTime(@NonNull Date startScheduledTime) {
-            this.navStep.setStartTimestamp(new TimestampBuilder.Builder(startScheduledTime).build());
+        private Date addMinutesToDate(@NonNull Date initialDate, @NonNull Integer minutesToAdd){
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(initialDate);
+            cal.add(Calendar.MINUTE, minutesToAdd);
+            return cal.getTime();
+        }
+
+        public Builder startTime(@NonNull Date startTime) {
+            this.navStep.setStartTime(new TimestampBuilder.Builder(startTime).build());
             return this;
         }
 
-        public Builder finishScheduledTime(@NonNull Date finishScheduledTime) {
-            this.navStep.setFinishTimestamp(new TimestampBuilder.Builder(finishScheduledTime).build());
+        public Builder startTime(@NonNull Date startTime, @NonNull Integer minutesToAdd) {
+            this.navStep.setStartTime(new TimestampBuilder.Builder(addMinutesToDate(startTime, minutesToAdd)).build());
+            return this;
+        }
+
+        public Builder finishTime(@NonNull Date finishTime) {
+            this.navStep.setFinishTime(new TimestampBuilder.Builder(finishTime).build());
+            return this;
+        }
+
+        public Builder finishTime(@NonNull Date finishTime, @NonNull Integer minutesToAdd) {
+            this.navStep.setStartTime(new TimestampBuilder.Builder(addMinutesToDate(finishTime, minutesToAdd)).build());
             return this;
         }
 
@@ -92,12 +123,12 @@ public class NavStepBuilder {
                 throw new IllegalStateException("destination is null");
             }
 
-            if (navStep.getStartTimestamp() == null) {
-                throw new IllegalStateException("startTimestamp is null");
+            if (navStep.getStartTime() == null) {
+                throw new IllegalStateException("startTime is null");
             }
 
-            if (navStep.getFinishTimestamp() == null) {
-                throw new IllegalStateException("finishTimestamp is null");
+            if (navStep.getFinishTime() == null) {
+                throw new IllegalStateException("finishTime is null");
             }
 
             if (navStep.getMilestoneWhenFinished() == null) {
@@ -132,7 +163,7 @@ public class NavStepBuilder {
         }
 
         public  ServiceOrderNavigationStep build(){
-            ServiceOrderNavigationStep navStep = new NavStepBuilder(this).getNavStep();
+            ServiceOrderNavigationStep navStep = new NavigationStepBuilder(this).getNavStep();
             validateNavigationStep(navStep);
             return navStep;
         }

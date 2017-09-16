@@ -116,6 +116,8 @@ public class BatchManageActivity extends AppCompatActivity {
     @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
     public void onEvent(BatchSelectedResponseHandler.UseCaseBatchSelectedEvent event) {
         batch = event.getBatch();
+
+
         String pickupCSZ = batch.getPickupLocation().getCity() + ", " + batch.getPickupLocation().getState() + " " + batch.getPickupLocation().getZip();
         String dropoffCSZ = batch.getPickupLocation().getCity() + ", " + batch.getPickupLocation().getState() + " " + batch.getPickupLocation().getZip();
 
@@ -147,7 +149,7 @@ public class BatchManageActivity extends AppCompatActivity {
 
     @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
     public void onEvent(StartDemoBatchResponseHandler.UseCaseStartDemoBatchEvent event) {
-        Timber.tag(TAG).d("UseCaseStartDemoBatchEvent received --> " + event.getBatch().getBatchGUID());
+        Timber.tag(TAG).d("UseCaseStartDemoBatchEvent received --> " + event.getBatch().getGUID());
         EventBus.getDefault().removeStickyEvent(event);
         EventBus.getDefault().postSticky(new BatchManageAlerts.ShowStartedBatchAlertEvent());
         navigator.gotoActivityBatchMap(this);

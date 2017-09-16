@@ -17,10 +17,10 @@ import timber.log.Timber;
  * Project : Driver
  */
 
-public class ScheduledBatchesAvailableResponseHandler implements CloudDatabaseInterface.BatchesUpdated {
+public class ScheduledBatchesAvailableResponseHandler implements CloudDatabaseInterface.ScheduledBatchesUpdated {
     private static final String TAG = "ScheduledBatchesAvailableResponseHandler";
 
-    public void cloudDatabaseReceivedScheduledBatches(ArrayList<BatchCloudDB> batchList) {
+    public void cloudDatabaseScheduledBatchesUpdated(ArrayList<BatchCloudDB> batchList) {
         Timber.tag(TAG).d("scheduled batches available from cloud database");
         EventBus.getDefault().postSticky(new ScheduledBatchesAvailableResponseHandler.ScheduledBatchUpdateEvent(batchList));
     }
@@ -42,17 +42,6 @@ public class ScheduledBatchesAvailableResponseHandler implements CloudDatabaseIn
             return batchCount;
         }
 
-    }
-
-    public void cloudDatabaseNoScheduledBatches() {
-        Timber.tag(TAG).d("no batches available from cloud database");
-        EventBus.getDefault().postSticky(new ScheduledBatchesAvailableResponseHandler.NoScheduledBatchesEvent());
-    }
-
-    public static class NoScheduledBatchesEvent {
-        public NoScheduledBatchesEvent(){
-
-        }
     }
 
 }

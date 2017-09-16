@@ -2,7 +2,7 @@
  * Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
  */
 
-package it.flube.driver.dataLayer.useCaseResponseHandlers.offers;
+package it.flube.driver.dataLayer.useCaseResponseHandlers.offers.publicOffers;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -17,10 +17,10 @@ import timber.log.Timber;
  * Project : Driver
  */
 
-public class PublicOffersAvailableResponseHandler implements CloudDatabaseInterface.OffersUpdated {
+public class PublicOffersAvailableResponseHandler implements CloudDatabaseInterface.PublicOffersUpdated {
     private static final String TAG = "PublicOffersAvailableResponseHandler";
 
-    public void cloudDatabaseAvailableOffersUpdated(ArrayList<Offer> offerList) {
+    public void cloudDatabasePublicOffersUpdated(ArrayList<Offer> offerList) {
         Timber.tag(TAG).d("public offers available from cloud database");
         EventBus.getDefault().postSticky(new PublicOffersAvailableResponseHandler.AvailablePublicOffersEvent(offerList));
     }
@@ -43,18 +43,5 @@ public class PublicOffersAvailableResponseHandler implements CloudDatabaseInterf
         }
 
     }
-
-    public void cloudDatabaseNoAvailableOffers() {
-        Timber.tag(TAG).d("no public offers available from cloud database");
-        EventBus.getDefault().postSticky(new PublicOffersAvailableResponseHandler.NoPublicOffersEvent());
-    }
-
-    public static class NoPublicOffersEvent {
-        public NoPublicOffersEvent(){
-
-        }
-    }
-
-
 
 }

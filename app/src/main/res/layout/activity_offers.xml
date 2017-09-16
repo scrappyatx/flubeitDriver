@@ -12,6 +12,8 @@
     <include layout="@layout/toolbar"
         android:id="@+id/toolbar" />
 
+    <include layout="@layout/guidelines" />
+
     <TextView
         android:id="@+id/noOffers"
         android:layout_width="wrap_content"

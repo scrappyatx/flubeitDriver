@@ -2,7 +2,7 @@
  * Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
  */
 
-package it.flube.driver.dataLayer.useCaseResponseHandlers.offers;
+package it.flube.driver.dataLayer.useCaseResponseHandlers.offers.personalOffers;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -17,10 +17,10 @@ import timber.log.Timber;
  * Project : Driver
  */
 
-public class PersonalOffersAvailableResponseHandler implements CloudDatabaseInterface.OffersUpdated {
+public class PersonalOffersAvailableResponseHandler implements CloudDatabaseInterface.PersonalOffersUpdated {
     private static final String TAG = "PersonalOffersAvailableResponseHandler";
 
-    public void cloudDatabaseAvailableOffersUpdated(ArrayList<Offer> offerList) {
+    public void cloudDatabasePersonalOffersUpdated(ArrayList<Offer> offerList) {
         Timber.tag(TAG).d("personal offers available from cloud database");
         EventBus.getDefault().postSticky(new PersonalOffersAvailableResponseHandler.AvailablePersonalOffersEvent(offerList));
     }
@@ -44,17 +44,5 @@ public class PersonalOffersAvailableResponseHandler implements CloudDatabaseInte
         }
 
     }
-
-    public void cloudDatabaseNoAvailableOffers() {
-        Timber.tag(TAG).d("no personal offers available from cloud database");
-        EventBus.getDefault().postSticky(new PersonalOffersAvailableResponseHandler.NoPersonalOffersEvent());
-    }
-
-    public static class NoPersonalOffersEvent {
-        public NoPersonalOffersEvent(){
-
-        }
-    }
-
 
 }

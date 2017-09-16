@@ -55,12 +55,10 @@ public abstract class ServiceOrderAbstractStep {
     private String description;
     private String note;
     private String milestoneWhenFinished;
-    private Timestamp startTimestamp;
-    private Timestamp finishTimestamp;
+    private Timestamp startTime;
+    private Timestamp finishTime;
 
-    protected ServiceOrderAbstractStep(){
-        guid = UUID.randomUUID().toString();
-    }
+    protected ServiceOrderAbstractStep(){}
 
     protected void setGUID(String guid){
         this.guid = guid;
@@ -124,20 +122,20 @@ public abstract class ServiceOrderAbstractStep {
         return workStage;
     }
 
-    protected void setStartTimestamp(Timestamp startTimestamp) {
-        this.startTimestamp = startTimestamp;
+    protected void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
     }
 
-    protected Timestamp getStartTimestamp(){
-        return startTimestamp;
+    protected Timestamp getStartTime(){
+        return startTime;
     }
 
-    protected void setFinishTimestamp(Timestamp finishTimestamp) {
-        this.finishTimestamp = finishTimestamp;
+    protected void setFinishTime(Timestamp finishTime) {
+        this.finishTime = finishTime;
     }
 
-    protected Timestamp getFinishTimestamp(){
-        return finishTimestamp;
+    protected Timestamp getFinishTime(){
+        return finishTime;
     }
 
     protected void setMilestoneWhenFinished(String milestoneWhenFinished){

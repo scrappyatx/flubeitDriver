@@ -13,7 +13,10 @@ import it.flube.driver.modelLayer.interfaces.RealtimeMessagingInterface;
  * Project : Driver
  */
 
-public class UseCaseClaimOfferRequest implements Runnable, RealtimeMessagingInterface.OfferChannel.ClaimOfferResponse {
+public class UseCaseClaimOfferRequest implements
+        Runnable,
+        RealtimeMessagingInterface.OfferChannel.ClaimOfferResponse {
+
     private final MobileDeviceInterface device;
     private final UseCaseClaimOfferRequest.Response response;
     private final String offerOID;
@@ -22,7 +25,7 @@ public class UseCaseClaimOfferRequest implements Runnable, RealtimeMessagingInte
     public UseCaseClaimOfferRequest(MobileDeviceInterface device, Offer offer, UseCaseClaimOfferRequest.Response response ){
         this.device = device;
         this.response = response;
-        this.offerOID = offer.getOfferOID();
+        this.offerOID = offer.getGUID();
         responseSeenForThisRequest = false;
     }
 

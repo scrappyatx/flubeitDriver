@@ -33,7 +33,7 @@ public class MapPingBuilder {
         public Builder(@NonNull Double latitude, @NonNull Double longitude, @NonNull Date timestamp){
             mapPing = new MapPing();
             mapPing.setGUID(UUID.randomUUID().toString());
-            mapPing.setLatLonPosition(new LatLonPositionBuilder.Builder(latitude, longitude).build());
+            mapPing.setLatLonLocation(new LatLonLocationBuilder.Builder().location(latitude, longitude).build());
             mapPing.setTimestamp(timestamp);
         }
 
@@ -45,7 +45,7 @@ public class MapPingBuilder {
             if (mapPing.getTimestamp() == null){
                 throw new IllegalStateException("timestamp is null");
             }
-            if (mapPing.getLatLonPosition() == null){
+            if (mapPing.getLatLonLocation() == null){
                 throw new IllegalStateException("latLonPosition is null");
             }
         }

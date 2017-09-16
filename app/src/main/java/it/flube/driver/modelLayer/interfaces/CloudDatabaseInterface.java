@@ -37,6 +37,36 @@ public interface CloudDatabaseInterface {
         void cloudDatabaseActiveBatchSaveComplete();
     }
 
+    void saveDemoOfferRequest(String baseNode, Driver driver, Offer offer, SaveDemoOfferResponse response);
+
+    interface SaveDemoOfferResponse {
+        void cloudDatabaseDemoOfferSaveComplete();
+    }
+
+    void deleteAllDemoOffersRequest(String baseNode, Driver driver, DeleteAllDemoOfferResponse response);
+
+    interface DeleteAllDemoOfferResponse {
+        void cloudDatabaseDemoOfferDeleteAllComplete();
+    }
+
+    void deleteDemoOfferRequest(String baseNode, Driver driver, Offer offer, DeleteDemoOfferResponse response);
+
+    interface DeleteDemoOfferResponse {
+        void cloudDatabaseDemoOfferDeleteComplete();
+    }
+
+    void saveDemoBatchRequest(String baseNode, Driver driver, Offer offer, SaveDemoBatchResponse response);
+
+    interface SaveDemoBatchResponse {
+        void cloudDatabaseDemoBatchSaveComplete();
+    }
+
+    void deleteDemoBatchRequest(String baseNode, Driver driver, Offer offer, DeleteDemoBatchResponse response);
+
+    interface DeleteDemoBatchResponse {
+        void cloudDatabaseDemoBatchDeleteComplete();
+    }
+
     void loadActiveBatchRequest(Driver driver, LoadActiveBatchResponse response);
 
     interface LoadActiveBatchResponse {
@@ -48,22 +78,26 @@ public interface CloudDatabaseInterface {
 
     void listenForPublicOffers(String baseNode, Driver driver);
 
+    interface PublicOffersUpdated {
+        void cloudDatabasePublicOffersUpdated(ArrayList<Offer> offerList);
+    }
+
     void listenForPersonalOffers(String baseNode, Driver driver);
+
+    interface PersonalOffersUpdated {
+        void cloudDatabasePersonalOffersUpdated(ArrayList<Offer> offerList);
+    }
 
     void listenForDemoOffers(String baseNode, Driver driver);
 
-    interface OffersUpdated {
-        void cloudDatabaseAvailableOffersUpdated(ArrayList<Offer> offerList);
-
-        void cloudDatabaseNoAvailableOffers();
+    interface DemoOffersUpdated {
+        void cloudDatabaseDemoOffersUpdated(ArrayList<Offer> offerList);
     }
 
     void listenForScheduledBatches(String baseNode, Driver driver);
 
-    interface BatchesUpdated {
-        void cloudDatabaseReceivedScheduledBatches(ArrayList<BatchCloudDB> batchList);
-
-        void cloudDatabaseNoScheduledBatches();
+    interface ScheduledBatchesUpdated {
+        void cloudDatabaseScheduledBatchesUpdated(ArrayList<BatchCloudDB> batchList);
     }
 
 

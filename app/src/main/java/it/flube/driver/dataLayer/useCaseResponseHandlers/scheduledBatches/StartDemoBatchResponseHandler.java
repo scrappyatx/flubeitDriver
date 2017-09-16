@@ -19,7 +19,7 @@ public class StartDemoBatchResponseHandler implements UseCaseStartBatchDemoReque
     private final static String TAG = "StartDemoBatchResponseHandler";
 
     public void startBatchDemoComplete(Batch activeBatch) {
-        Timber.tag(TAG).d("startBatchDemoComplete -> " + activeBatch.getBatchGUID());
+        Timber.tag(TAG).d("startBatchDemoComplete -> " + activeBatch.getGUID());
         EventBus.getDefault().postSticky(new StartDemoBatchResponseHandler.UseCaseStartDemoBatchEvent(activeBatch));
     }
 

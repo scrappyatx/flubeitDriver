@@ -11,12 +11,14 @@ import android.os.Parcelable;
  * Created by Bryan on 3/21/2017.
  */
 
-public class ServiceProvider implements Parcelable {
+public class ServiceProvider {
     private String name;
-    private String icon;
+    private String iconURL;
     private String contactPhone;
     private String contactText;
     private String contactName;
+
+    public ServiceProvider() {}
 
     public String getName() {
         return name;
@@ -26,12 +28,12 @@ public class ServiceProvider implements Parcelable {
         this.name = name;
     }
 
-    public String getIcon() {
-        return icon;
+    public String getIconURL() {
+        return iconURL;
     }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
+    public void setIconURL(String iconURL) {
+        this.iconURL = iconURL;
     }
 
     public String getContactPhone() {
@@ -58,41 +60,4 @@ public class ServiceProvider implements Parcelable {
         this.contactName = contactName;
     }
 
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.name);
-        dest.writeString(this.icon);
-        dest.writeString(this.contactPhone);
-        dest.writeString(this.contactText);
-        dest.writeString(this.contactName);
-    }
-
-    public ServiceProvider() {
-    }
-
-    protected ServiceProvider(Parcel in) {
-        this.name = in.readString();
-        this.icon = in.readString();
-        this.contactPhone = in.readString();
-        this.contactText = in.readString();
-        this.contactName = in.readString();
-    }
-
-    public static final Creator<ServiceProvider> CREATOR = new Creator<ServiceProvider>() {
-        @Override
-        public ServiceProvider createFromParcel(Parcel source) {
-            return new ServiceProvider(source);
-        }
-
-        @Override
-        public ServiceProvider[] newArray(int size) {
-            return new ServiceProvider[size];
-        }
-    };
 }

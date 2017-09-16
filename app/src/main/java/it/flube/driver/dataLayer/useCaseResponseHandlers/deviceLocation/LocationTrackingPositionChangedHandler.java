@@ -4,11 +4,9 @@
 
 package it.flube.driver.dataLayer.useCaseResponseHandlers.deviceLocation;
 
-import android.location.Location;
-
 import org.greenrobot.eventbus.EventBus;
 
-import it.flube.driver.modelLayer.entities.LatLonPosition;
+import it.flube.driver.modelLayer.entities.LatLonLocation;
 import it.flube.driver.modelLayer.interfaces.LocationTelemetryInterface;
 import timber.log.Timber;
 
@@ -20,17 +18,17 @@ import timber.log.Timber;
 public class LocationTrackingPositionChangedHandler implements LocationTelemetryInterface.LocationTrackingPositionChanged {
     private final static String TAG = "LocationTrackingPositionChangedHandler";
 
-    public void positionChanged(LatLonPosition position) {
+    public void positionChanged(LatLonLocation position) {
             Timber.tag(TAG).d("position changed latitude -> " + position.getLatitude() + " longitude -> " + position.getLongitude());
             EventBus.getDefault().postSticky(new LocationTrackingPositionChangedEvent(position));
     }
 
     public static class LocationTrackingPositionChangedEvent {
-        private LatLonPosition position;
+        private LatLonLocation position;
 
-        public LocationTrackingPositionChangedEvent(LatLonPosition position){
+        public LocationTrackingPositionChangedEvent(LatLonLocation position){
             this.position = position;
         }
-        public LatLonPosition getPosition(){ return position; }
+        public LatLonLocation getPosition(){ return position; }
     }
 }

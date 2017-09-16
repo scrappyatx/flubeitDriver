@@ -55,13 +55,14 @@
 
     <!-- Strings related to navigation drawer menu -->
     <string name="nav_menu_home">Home</string>
-    <string name="nav_menu_offers">Offers</string>
-    <string name="nav_menu_scheduled_batches">Calendar</string>
+    <string name="nav_menu_offers">Public Offers</string>
+    <string name="nav_menu_personal_offers">Personal Offers</string>"
+    <string name="nav_menu_scheduled_batches">Scheduled Work</string>
     <string name="nav_menu_messages">Messages</string>
     <string name="nav_menu_earnings">Earnings</string>
     <string name="nav_menu_account">Account</string>
     <string name="nav_menu_help">Help</string>
-    <string name="nav_menu_demo">Demo Service Orders</string>
+    <string name="nav_menu_demo">Demo Offers</string>
 
     <!-- Strings related to toolbar -->
     <string name="toolbar_switch_looking_for_work_OFF">Search for Offers</string>
@@ -89,9 +90,19 @@
 
     <!-- Strings related to account activity layout  -->
     <string name="account_activity_title">Account</string>
+    <string name="account_activity_software_version">software version</string>
 
-    <!-- Strings related to demo activity layout -->
-    <string name="demo_activity_title">Demo</string>
+
+    <!-- Strings related to demo offers activity layout -->
+    <string name="demo_offers_title">Demo Offers</string>
+    <string name="demo_offers_no_offers_available">There are no demo offers</string>
+    <string name="demo_offers_instructions">Demo offers let you practice claiming offers and performing the tasks in a batch of service orders\n\nYou will NOT BE PAID for completing demo offers, they are just for practice</string>
+    <string name="demo_offers_generate_caption">Make a new demo offer</string>
+    <string name="demo_offers_generate_confirmation">Are you sure you want to make a new demo offer?\n\nThe existing demo offer will be replaced</string>
+
+    <!-- Strings related to demo offer alerts -->
+    <string name="demo_offers_alert_created_title">SUCCESS</string>
+    <string name="demo_offers_alert_created_message">You created a demo offer!</string>
 
     <!-- Strings related to earnings activity layout -->
     <string name="earnings_activity_title">Earnings</string>
@@ -113,9 +124,9 @@
     <!-- Strings related to messages activity layout -->
     <string name="messages_activity_title">Messages</string>
 
-    <!-- Strings related to offers activity layout -->
-    <string name="offers_activity_title">Offers</string>
-    <string name="offers_activity_no_offers_available">There are no available offers</string>
+    <!-- Strings related to public offers activity layout -->
+    <string name="offers_activity_title">Public Offers</string>
+    <string name="offers_activity_no_offers_available">There are no available public offers</string>
 
     <!-- Strings related to offer claim activity layout -->
     <string name="offers_claim_activity_title">Claim Offer</string>

@@ -9,17 +9,17 @@ import android.content.Intent;
 
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.userInterfaceLayer.activities.account.AccountActivity;
-import it.flube.driver.userInterfaceLayer.activities.demo.DemoActivity;
+import it.flube.driver.userInterfaceLayer.activities.offers.demoOffers.DemoOffersActivity;
 import it.flube.driver.userInterfaceLayer.activities.earnings.EarningsActivity;
 import it.flube.driver.userInterfaceLayer.activities.help.HelpActivity;
 import it.flube.driver.userInterfaceLayer.activities.home.HomeActiveBatchActivity;
 import it.flube.driver.userInterfaceLayer.activities.home.HomeNoActiveBatchActivity;
-import it.flube.driver.userInterfaceLayer.activities.offers.OfferClaimActivity;
+import it.flube.driver.userInterfaceLayer.activities.offers.claimOffer.OfferClaimActivity;
+import it.flube.driver.userInterfaceLayer.activities.offers.publicOffers.PublicOffersActivity;
 import it.flube.driver.userInterfaceLayer.activities.scheduledBatches.BatchManageActivity;
 import it.flube.driver.userInterfaceLayer.activities.scheduledBatches.BatchMapActivity;
 import it.flube.driver.userInterfaceLayer.activities.signIn.SignInActivity;
 import it.flube.driver.userInterfaceLayer.activities.messages.MessagesActivity;
-import it.flube.driver.userInterfaceLayer.activities.offers.OffersActivity;
 import it.flube.driver.userInterfaceLayer.activities.scheduledBatches.ScheduledBatchesActivity;
 import it.flube.driver.userInterfaceLayer.activities.splashScreen.SplashScreenActivity;
 import timber.log.Timber;
@@ -52,8 +52,8 @@ public class ActivityNavigator {
     }
 
     public void gotoActivityDemo(Context context) {
-        context.startActivity(new Intent(context, DemoActivity.class));
-        Timber.tag(TAG).d("starting activity DemoActivity.class");
+        context.startActivity(new Intent(context, DemoOffersActivity.class));
+        Timber.tag(TAG).d("starting activity DemoOffersActivity.class");
     }
 
     public void gotoActivityEarnings(Context context) {
@@ -77,8 +77,8 @@ public class ActivityNavigator {
     }
 
     public void gotoActivityOffers(Context context) {
-        context.startActivity(new Intent(context, OffersActivity.class));
-        Timber.tag(TAG).d("starting activity OffersActivity.class");
+        context.startActivity(new Intent(context, PublicOffersActivity.class));
+        Timber.tag(TAG).d("starting activity PublicOffersActivity.class");
     }
 
     public void gotoActivityOfferClaim(Context context) {

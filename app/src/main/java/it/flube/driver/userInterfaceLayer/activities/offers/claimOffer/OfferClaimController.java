@@ -2,14 +2,16 @@
  * Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
  */
 
-package it.flube.driver.userInterfaceLayer.activities.offers;
+package it.flube.driver.userInterfaceLayer.activities.offers.claimOffer;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.ClaimOfferResponseHandler;
+import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.demoOffers.ClaimDemoOfferResponseHandler;
 import it.flube.driver.modelLayer.entities.Offer;
+import it.flube.driver.useCaseLayer.claimOffer.UseCaseClaimDemoOfferRequest;
 import it.flube.driver.useCaseLayer.claimOffer.UseCaseClaimOfferRequest;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import timber.log.Timber;
@@ -31,7 +33,17 @@ public class OfferClaimController {
 
     public void claimOfferRequest(Offer offer) {
         Timber.tag(TAG).d("claimOfferRequest STARTED");
-        useCaseExecutor.execute(new UseCaseClaimOfferRequest(device, offer, new ClaimOfferResponseHandler()));
+
+        switch (offer.getOfferType()) {
+            case MOBILE_DEMO:
+                useCaseExecutor.execute(new UseCaseClaimDemoOfferRequest(device, offer, new ClaimDemoOfferResponseHandler()));
+                break;
+            case PRODUCTION:
+            case PRODUCTION_TEST:
+            default:
+                useCaseExecutor.execute(new UseCaseClaimOfferRequest(device, offer, new ClaimOfferResponseHandler()));
+                break;
+        }
     }
 
     public void close(){

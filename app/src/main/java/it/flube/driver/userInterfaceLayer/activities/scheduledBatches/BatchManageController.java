@@ -12,7 +12,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.dataLayer.DemoBatchCreation.DemoBatchBuilder;
+import it.flube.driver.dataLayer.DemoBatchCreation.DemoNearbyPhotos;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.scheduledBatches.ForfeitBatchResponseHandler;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.scheduledBatches.StartDemoBatchResponseHandler;
 import it.flube.driver.modelLayer.entities.batch.BatchCloudDB;
@@ -55,7 +55,7 @@ public class BatchManageController  {
     }
 
     public void startDemoBatch(BatchCloudDB batch) {
-        useCaseExecutor.execute(new UseCaseStartBatchDemoRequest(device, new DemoBatchBuilder(), batch, new StartDemoBatchResponseHandler()));
+        useCaseExecutor.execute(new UseCaseStartBatchDemoRequest(device, new DemoNearbyPhotos(), batch, new StartDemoBatchResponseHandler()));
     }
 
     public void forfeitDialogKeepBatch() {

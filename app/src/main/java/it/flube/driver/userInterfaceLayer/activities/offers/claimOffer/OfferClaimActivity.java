@@ -2,7 +2,7 @@
  * Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
  */
 
-package it.flube.driver.userInterfaceLayer.activities.offers;
+package it.flube.driver.userInterfaceLayer.activities.offers.claimOffer;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

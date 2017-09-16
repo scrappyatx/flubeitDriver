@@ -27,12 +27,28 @@ public class AddressLocationBuilder {
     public static class Builder {
         private AddressLocation addressLocation;
 
-        public Builder(@NonNull String street1, @NonNull String city, @NonNull String state, @NonNull String zip){
+        public Builder(){
             addressLocation = new AddressLocation();
-            addressLocation.setStreet1(street1);
-            addressLocation.setCity(city);
-            addressLocation.setState(state);
-            addressLocation.setZip(zip);
+        }
+
+        public Builder street(@NonNull String street) {
+            this.addressLocation.setStreet1(street);
+            return this;
+        }
+
+        public Builder city(@NonNull String city){
+            this.addressLocation.setCity(city);
+            return this;
+        }
+
+        public Builder state(@NonNull String state){
+            this.addressLocation.setState(state);
+            return this;
+        }
+
+        public Builder zip(@NonNull String zip){
+            this.addressLocation.setZip(zip);
+            return this;
         }
 
         public Builder streetSecondLine(@NonNull String street2) {

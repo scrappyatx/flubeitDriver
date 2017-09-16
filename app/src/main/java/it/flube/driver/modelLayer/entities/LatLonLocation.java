@@ -9,7 +9,7 @@ package it.flube.driver.modelLayer.entities;
  * Project : Driver
  */
 
-public class LatLonPosition {
+public class LatLonLocation {
     private double latitude;
     private double longitude;
 

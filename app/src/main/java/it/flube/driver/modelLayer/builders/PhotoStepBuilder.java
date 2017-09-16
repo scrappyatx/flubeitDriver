@@ -7,6 +7,7 @@ package it.flube.driver.modelLayer.builders;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -33,39 +34,74 @@ public class PhotoStepBuilder {
     public static class Builder {
         private ServiceOrderPhotoStep photoStep;
 
-        public Builder(@NonNull String title, @NonNull String description){
+        public Builder(){
             photoStep = new ServiceOrderPhotoStep();
             photoStep.setGUID(UUID.randomUUID().toString());
-            photoStep.setTitle(title);
-            photoStep.setDescription(description);
             photoStep.setWorkStage(ServiceOrderAbstractStep.WorkStage.NOT_STARTED);
             photoStep.setWorkTiming(ServiceOrderAbstractStep.WorkTiming.NOT_APPLICABLE);
             photoStep.setWorkStatus(ServiceOrderAbstractStep.WorkStatus.NOT_APPLICABLE);
             photoStep.setPhotoList(new ArrayList<Photo>());
         }
 
-        public PhotoStepBuilder.Builder note(@NonNull String note) {
+        public Builder guid(String guid){
+            this.photoStep.setGUID(guid);
+            return this;
+        }
+
+        public Builder title(String title){
+            this.photoStep.setTitle(title);
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.photoStep.setDescription(description);
+            return this;
+        }
+
+        public Builder note(@NonNull String note) {
             this.photoStep.setNote(note);
             return this;
         }
 
-        public PhotoStepBuilder.Builder startScheduledTime(@NonNull Date startScheduledTime) {
-            this.photoStep.setStartTimestamp(new TimestampBuilder.Builder(startScheduledTime).build());
+        private Date addMinutesToDate(@NonNull Date initialDate, @NonNull Integer minutesToAdd){
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(initialDate);
+            cal.add(Calendar.MINUTE, minutesToAdd);
+            return cal.getTime();
+        }
+
+        public Builder startTime(@NonNull Date startTime) {
+            this.photoStep.setStartTime(new TimestampBuilder.Builder(startTime).build());
             return this;
         }
 
-        public PhotoStepBuilder.Builder finishScheduledTime(@NonNull Date finishScheduledTime) {
-            this.photoStep.setFinishTimestamp(new TimestampBuilder.Builder(finishScheduledTime).build());
+        public Builder startTime(@NonNull Date startTime, @NonNull Integer minutesToAdd) {
+            this.photoStep.setStartTime(new TimestampBuilder.Builder(addMinutesToDate(startTime, minutesToAdd)).build());
             return this;
         }
 
-        public PhotoStepBuilder.Builder milestoneWhenFinished(@NonNull String milestoneWhenFinished) {
+        public Builder finishTime(@NonNull Date finishTime) {
+            this.photoStep.setFinishTime(new TimestampBuilder.Builder(finishTime).build());
+            return this;
+        }
+
+        public Builder finishTime(@NonNull Date finishTime, @NonNull Integer minutesToAdd) {
+            this.photoStep.setStartTime(new TimestampBuilder.Builder(addMinutesToDate(finishTime, minutesToAdd)).build());
+            return this;
+        }
+
+        public Builder milestoneWhenFinished(@NonNull String milestoneWhenFinished) {
             this.photoStep.setMilestoneWhenFinished(milestoneWhenFinished);
             return this;
         }
 
-        public PhotoStepBuilder.Builder photo(@NonNull String title, @NonNull String description){
-            this.photoStep.getPhotoList().add(new PhotoBuilder.Builder(title, description).build());
+        public Builder addPhoto(@NonNull Photo photo){
+            this.photoStep.getPhotoList().add(photo);
+            return this;
+        }
+
+        public Builder addPhoto(@NonNull Integer index, @NonNull Photo photo){
+            this.photoStep.getPhotoList().add(index, photo);
             return this;
         }
 
@@ -83,12 +119,12 @@ public class PhotoStepBuilder {
                 throw new IllegalStateException("description is null");
             }
 
-            if (photoStep.getStartTimestamp() == null) {
-                throw new IllegalStateException("startTimestamp is null");
+            if (photoStep.getStartTime() == null) {
+                throw new IllegalStateException("startTime is null");
             }
 
-            if (photoStep.getFinishTimestamp() == null) {
-                throw new IllegalStateException("finishTimestamp is null");
+            if (photoStep.getFinishTime() == null) {
+                throw new IllegalStateException("finishTime is null");
             }
 
             if (photoStep.getMilestoneWhenFinished() == null) {

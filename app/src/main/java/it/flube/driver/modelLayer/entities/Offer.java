@@ -7,47 +7,59 @@ package it.flube.driver.modelLayer.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 /**
  * Created by Bryan on 3/21/2017.
  */
 
 public class Offer {
-    private String offerOID;
-    private ServiceProvider mServiceProvider;
-    private String serviceProviderImage;
+
+    public enum OfferType {
+        PRODUCTION,
+        PRODUCTION_TEST,
+        MOBILE_DEMO
+    }
+
+    private String guid;
+    private OfferType offerType;
+    private ServiceProvider serviceProvider;
+
     private String offerDate;
     private String offerTime;
     private String offerDuration;
-    private Location pickupLocation;
-    private Location serviceLocation;
-    private Location returnLocation;
+
+    private ArrayList<RoutingStop> routeList;
+
     private String serviceDescription;
+
     private String estimatedEarnings;
     private String estimatedEarningsExtra;
 
-    public String getOfferOID() {
-        return offerOID;
+    public String getGUID() {
+        return guid;
     }
 
-    public void setOfferOID(String offerOID) {
-        this.offerOID = offerOID;
+    public void setGUID(String guid) {
+        this.guid = guid;
+    }
+
+    public OfferType getOfferType() {
+        return offerType;
+    }
+
+    public void setOfferType(OfferType offerType) {
+        this.offerType = offerType;
     }
 
     public ServiceProvider getServiceProvider() {
-        return mServiceProvider;
+        return serviceProvider;
     }
 
-    public void setServiceProvider(ServiceProvider mServiceProvider) {
-        this.mServiceProvider = mServiceProvider;
+    public void setServiceProvider(ServiceProvider serviceProvider) {
+        this.serviceProvider = serviceProvider;
     }
 
-    public String getServiceProviderImage() {
-        return serviceProviderImage;
-    }
-
-    public void setServiceProviderImage(String serviceProviderImage) {
-        this.serviceProviderImage = serviceProviderImage;
-    }
 
     public String getOfferDate() {
         return offerDate;
@@ -73,28 +85,12 @@ public class Offer {
         this.offerDuration = offerDuration;
     }
 
-    public Location getPickupLocation() {
-        return pickupLocation;
+    public ArrayList<RoutingStop> getRouteList() {
+        return routeList;
     }
 
-    public void setPickupLocation(Location pickupLocation) {
-        this.pickupLocation = pickupLocation;
-    }
-
-    public Location getServiceLocation() {
-        return serviceLocation;
-    }
-
-    public void setServiceLocation(Location serviceLocation) {
-        this.serviceLocation = serviceLocation;
-    }
-
-    public Location getReturnLocation() {
-        return returnLocation;
-    }
-
-    public void setReturnLocation(Location returnLocation) {
-        this.returnLocation = returnLocation;
+    public void setRouteList(ArrayList<RoutingStop> routeList) {
+        this.routeList = routeList;
     }
 
     public String getServiceDescription() {

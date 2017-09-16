@@ -2,7 +2,7 @@
  * Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
  */
 
-package it.flube.driver.userInterfaceLayer.activities.offers;
+package it.flube.driver.userInterfaceLayer.activities.offers.publicOffers;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,11 +16,12 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import it.flube.driver.R;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.OffersAvailableResponseHandler;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.OfferSelectedResponseHandler;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.PublicOffersAvailableResponseHandler;
+import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.publicOffers.PublicOffersAvailableResponseHandler;
 import it.flube.driver.userInterfaceLayer.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.DrawerMenu;
+import it.flube.driver.userInterfaceLayer.activities.offers.OffersListAdapter;
+import it.flube.driver.userInterfaceLayer.activities.offers.claimOffer.OfferClaimAlerts;
 import timber.log.Timber;
 
 /**
@@ -28,10 +29,10 @@ import timber.log.Timber;
  * Project : Driver
  */
 
-public class OffersActivity extends AppCompatActivity {
-    private static final String TAG = "OffersActivity";
+public class PublicOffersActivity extends AppCompatActivity {
+    private static final String TAG = "PublicOffersActivity";
 
-    private OffersController controller;
+    private PublicOffersController controller;
     private ActivityNavigator navigator;
     private DrawerMenu drawer;
 
@@ -58,7 +59,7 @@ public class OffersActivity extends AppCompatActivity {
 
         navigator = new ActivityNavigator();
         drawer = new DrawerMenu(this, navigator, R.string.offers_activity_title);
-        controller = new OffersController();
+        controller = new PublicOffersController();
 
         offersAdapter = new OffersListAdapter(controller);
 
@@ -93,10 +94,12 @@ public class OffersActivity extends AppCompatActivity {
         try {
             Timber.tag(TAG).d("received " + Integer.toString(event.getOfferCount()) + " offers");
             if (event.getOfferList().size() > 0) {
+                Timber.tag(TAG).d("updating list!");
                 offersAdapter.updateList(event.getOfferList());
                 offersView.setVisibility(View.VISIBLE);
                 noOffersText.setVisibility(View.INVISIBLE);
             } else {
+                Timber.tag(TAG).d("making list invisible!");
                 offersView.setVisibility(View.INVISIBLE);
                 noOffersText.setVisibility(View.VISIBLE);
             }
@@ -107,17 +110,10 @@ public class OffersActivity extends AppCompatActivity {
         }
     }
 
-    @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
-    public void onEvent(PublicOffersAvailableResponseHandler.NoPublicOffersEvent event) {
-        offersView.setVisibility(View.INVISIBLE);
-        noOffersText.setVisibility(View.VISIBLE);
-    }
-
-
-
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEvent(OfferSelectedResponseHandler.UseCaseOfferSelectedEvent event) {
         Timber.tag(TAG).d("*** Offer was selected event");
+
         navigator.gotoActivityOfferClaim(this);
     }
 

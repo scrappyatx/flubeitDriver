@@ -13,6 +13,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import it.flube.driver.BuildConfig;
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.GetAccountDetailsResponseHandler;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.signInAndSignOut.SignOutResponseHandler;
@@ -36,6 +37,7 @@ public class AccountActivity extends AppCompatActivity {
     private DrawerMenu drawer;
 
     private TextView profileDetail;
+    private TextView softwareVersion;
 
 
     @Override
@@ -45,6 +47,12 @@ public class AccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_account);
         profileDetail = (TextView) findViewById(R.id.account_profile_details);
         profileDetail.setVisibility(View.INVISIBLE);
+
+        softwareVersion = (TextView) findViewById(R.id.account_software_version);
+        softwareVersion.setText("Version : " + BuildConfig.VERSION_NAME);
+        softwareVersion.setVisibility(View.VISIBLE);
+        Timber.tag(TAG).d("software version = " + BuildConfig.VERSION_NAME);
+
 
         Timber.tag(TAG).d("onCreate");
     }
@@ -91,9 +99,9 @@ public class AccountActivity extends AppCompatActivity {
         String details = "Name --> " + event.getDriver().getDisplayName() + System.getProperty("line.separator")
                 + "Email --> " + event.getDriver().getEmail() + System.getProperty("line.separator")+ System.getProperty("line.separator")
                 + "Client ID --> "  + event.getDriver().getClientId() + System.getProperty("line.separator")+ System.getProperty("line.separator")
-                + "Photo Url --> "  + event.getDriver().getPhotoUrl() + System.getProperty("line.separator")
+                + "Photo Url --> "  + event.getDriver().getPhotoUrl() + System.getProperty("line.separator")+ System.getProperty("line.separator")
                 + "isDev --> " + event.getDriver().isDev() + System.getProperty("line.separator")
-                + "isQA --> " + event.getDriver().isQA() + System.getProperty("line.separator")
+                + "isQA --> " + event.getDriver().isQA() + System.getProperty("line.separator")+ System.getProperty("line.separator")
                 + "publicOffersNode --> " + event.getDriver().getPublicOffersNode() + System.getProperty("line.separator")
                 + "personalOffersNode --> " + event.getDriver().getPersonalOffersNode() + System.getProperty("line.separator")
                 + "demoOffersNode --> " + event.getDriver().getDemoOffersNode() + System.getProperty("line.separator")

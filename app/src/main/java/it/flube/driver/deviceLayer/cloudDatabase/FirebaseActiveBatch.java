@@ -32,8 +32,8 @@ public class FirebaseActiveBatch {
     }
 
     public void saveActiveBatchRequest(DatabaseReference reference, Driver driver, Batch batch, CloudDatabaseInterface.SaveActiveBatchResponse response) {
-        reference.child(batch.getBatchGUID()).setValue(batch).addOnCompleteListener(new SaveActiveBatchCompleteListener(response));
-        Timber.tag(TAG).d("saving ACTIVE BATCH ---> driver Id -> " + driver.getClientId() + " batchGUID --> " + batch.getBatchGUID());
+        reference.child(batch.getGUID()).setValue(batch).addOnCompleteListener(new SaveActiveBatchCompleteListener(response));
+        Timber.tag(TAG).d("saving ACTIVE BATCH ---> driver Id -> " + driver.getClientId() + " batchGUID --> " + batch.getGUID());
     }
 
     private class SaveActiveBatchCompleteListener implements OnCompleteListener<Void> {
@@ -84,7 +84,7 @@ public class FirebaseActiveBatch {
                     Timber.tag(TAG).d("no active batch");
                     response.cloudDatabaseNoActiveBatchAvailable();
                 } else {
-                    Timber.tag(TAG).d("active batch GUID --> " + activeBatch.getBatchGUID());
+                    Timber.tag(TAG).d("active batch GUID --> " + activeBatch.getGUID());
                     response.cloudDatabaseActiveBatchLoaded(activeBatch);
                 }
             } catch (Exception e) {

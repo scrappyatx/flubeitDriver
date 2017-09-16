@@ -2,7 +2,7 @@
  * Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
  */
 
-package it.flube.driver.deviceLayer;
+package it.flube.driver.applicationLayer;
 
 import android.support.multidex.MultiDexApplication;
 
@@ -40,7 +40,7 @@ public class DriverApplication extends MultiDexApplication {
         appInitialization.setThreadPolicy();
         appInitialization.setVMPolicy();
         appInitialization.initializeAndCreateImageLoaderLogic();
-        //appInitialization.initializeBugReporting(this);
+        appInitialization.initializeBugReporting(this);
     }
 
     private void setupEventBus(){
