@@ -22,6 +22,10 @@ public interface MobileDeviceInterface {
     }
 
 
+    ActiveBatchInterface getActiveBatch();
+
+    OffersInterface getOfferLists();
+
     AppLoggingInterface getAppLogging();
 
     AppRemoteConfigInterface getAppRemoteConfig();
@@ -33,6 +37,8 @@ public interface MobileDeviceInterface {
     CloudDatabaseInterface getCloudDatabase();
 
     DeviceStorageInterface getDeviceStorage();
+
+    UseCaseInterface getUseCaseEngine();
 
     UserProfileInterface getUserProfile();
 

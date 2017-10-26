@@ -143,7 +143,7 @@ public class RealtimeMessaging implements RealtimeMessagingInterface, AblyConnec
         mAblyRealtime.disconnect();
     }
 
-    //attach to ActiveBatch channel
+    //attach to ActiveBatchInterface channel
     public void createActiveBatchChannel(String name) {
         mActiveBatch = mAblyRealtime.createChannel(name, this);
     }

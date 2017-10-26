@@ -6,7 +6,8 @@ package it.flube.driver.dataLayer.useCaseResponseHandlers.offers.demoOffers;
 
 import org.greenrobot.eventbus.EventBus;
 
-import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.ClaimOfferResponseHandler;
+import it.flube.driver.dataLayer.userInterfaceEvents.offerClaim.demoOffers.ClaimDemoOfferFailureEvent;
+import it.flube.driver.dataLayer.userInterfaceEvents.offerClaim.demoOffers.ClaimDemoOfferSuccessEvent;
 import it.flube.driver.useCaseLayer.claimOffer.UseCaseClaimDemoOfferRequest;
 import timber.log.Timber;
 
@@ -23,28 +24,13 @@ public class ClaimDemoOfferResponseHandler implements
     // SUCCESS - Driver got offer
     public void useCaseClaimDemoOfferRequestSuccess(String offerGUID) {
         Timber.tag(TAG).d("user claim demo offer SUCCESS");
-        EventBus.getDefault().postSticky(new ClaimDemoOfferResponseHandler.ClaimDemoOfferSuccessEvent(offerGUID));
-    }
-
-    public static class ClaimDemoOfferSuccessEvent {
-        private String offerGUID;
-        public ClaimDemoOfferSuccessEvent(String offerGUID){
-            this.offerGUID = offerGUID;
-        }
-        public String getOfferGUID(){ return offerGUID; }
+        EventBus.getDefault().postSticky(new ClaimDemoOfferSuccessEvent(offerGUID));
     }
 
     // FAILURE - Someone else got offer
     public void useCaseClaimDemoOfferRequestFailure(String offerGUID) {
         Timber.tag(TAG).d("user claim demo offer FAILURE");
-        EventBus.getDefault().postSticky(new ClaimDemoOfferResponseHandler.ClaimDemoOfferFailureEvent(offerGUID));
+        EventBus.getDefault().postSticky(new ClaimDemoOfferFailureEvent(offerGUID));
     }
 
-    public static class ClaimDemoOfferFailureEvent {
-        private String offerGUID;
-        public ClaimDemoOfferFailureEvent(String offerGUID){
-            this.offerGUID = offerGUID;
-        }
-        public String getOfferGUID(){ return offerGUID; }
-    }
 }

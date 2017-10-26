@@ -6,11 +6,15 @@ package it.flube.driver.modelLayer.interfaces;
 
 import java.util.ArrayList;
 
+import it.flube.driver.modelLayer.entities.RouteStop;
 import it.flube.driver.modelLayer.entities.batch.Batch;
 import it.flube.driver.modelLayer.entities.batch.BatchCloudDB;
 import it.flube.driver.modelLayer.entities.DeviceInfo;
 import it.flube.driver.modelLayer.entities.Driver;
 import it.flube.driver.modelLayer.entities.Offer;
+import it.flube.driver.modelLayer.entities.batch.BatchDetail;
+import it.flube.driver.modelLayer.entities.batch.BatchHolder;
+import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
 
 /**
  * Created on 7/5/2017
@@ -19,86 +23,188 @@ import it.flube.driver.modelLayer.entities.Offer;
 
 public interface CloudDatabaseInterface {
 
-    void saveUserRequest(Driver driver, SaveResponse response);
+    ///
+    /// CONNECT & DISCONNECT
+    ///
+    void connectRequest(AppRemoteConfigInterface remoteConfig, Driver driver, ConnectResponse response);
+
+    interface ConnectResponse {
+        void cloudDatabaseConnectComplete();
+    }
+
+    void disconnect();
+
+    ///
+    ///  START & STOP MONITORING
+    ///
+
+    void startMonitoring();
+
+    void stopMonitoring();
+
+
+
+    //
+    //  USER INFO
+    //
+    void saveUserRequest(SaveResponse response);
 
     interface SaveResponse {
         void cloudDatabaseUserSaveComplete();
     }
 
-    void saveDeviceInfoRequest(Driver driver, DeviceInfo deviceInfo, SaveDeviceInfoResponse response);
+
+    //
+    //  DEVICE INFO
+    //
+    void saveDeviceInfoRequest(DeviceInfo deviceInfo, SaveDeviceInfoResponse response);
 
     interface SaveDeviceInfoResponse {
         void cloudDatabaseDeviceInfoSaveComplete();
     }
 
-    void saveActiveBatchRequest(Driver driver, Batch batch, SaveActiveBatchResponse response);
 
-    interface SaveActiveBatchResponse {
-        void cloudDatabaseActiveBatchSaveComplete();
+    ///
+    ///  DEMO OFFERS
+    ///
+    void addDemoOfferToOfferListRequest(String batchGuid, AddDemoOfferToOfferListResponse response);
+
+    interface AddDemoOfferToOfferListResponse {
+        void cloudDatabaseAddDemoOfferToOfferListComplete();
     }
 
-    void saveDemoOfferRequest(String baseNode, Driver driver, Offer offer, SaveDemoOfferResponse response);
+    void removeDemoOfferFromOfferListRequest(String batchGuid, RemoveDemoOfferFromOfferListResponse response);
 
-    interface SaveDemoOfferResponse {
-        void cloudDatabaseDemoOfferSaveComplete();
+    interface RemoveDemoOfferFromOfferListResponse {
+        void cloudDatabaseRemoveDemoOfferFromOfferListComplete();
     }
 
-    void deleteAllDemoOffersRequest(String baseNode, Driver driver, DeleteAllDemoOfferResponse response);
+    ///
+    ///  DEMO BATCHES
+    ///
+    void addDemoBatchToScheduledBatchListRequest(String batchGuid, AddDemoBatchToScheduledBatchListResponse response);
 
-    interface DeleteAllDemoOfferResponse {
-        void cloudDatabaseDemoOfferDeleteAllComplete();
+    interface AddDemoBatchToScheduledBatchListResponse {
+        void cloudDatabaseAddDemoBatchToScheduledBatchListComplete();
     }
 
-    void deleteDemoOfferRequest(String baseNode, Driver driver, Offer offer, DeleteDemoOfferResponse response);
+    void removeDemoBatchFromScheduledBatchListRequest(String batchGuid, RemoveDemoBatchFromScheduledBatchListResponse response);
 
-    interface DeleteDemoOfferResponse {
-        void cloudDatabaseDemoOfferDeleteComplete();
+    interface RemoveDemoBatchFromScheduledBatchListResponse {
+        void cloudDatabaseRemoveDemoBatchFromScheduledBatchListComplete();
     }
 
-    void saveDemoBatchRequest(String baseNode, Driver driver, Offer offer, SaveDemoBatchResponse response);
+    void startDemoBatchRequest(String batchGuid, StartDemoBatchComplete response);
 
-    interface SaveDemoBatchResponse {
-        void cloudDatabaseDemoBatchSaveComplete();
-    }
-
-    void deleteDemoBatchRequest(String baseNode, Driver driver, Offer offer, DeleteDemoBatchResponse response);
-
-    interface DeleteDemoBatchResponse {
-        void cloudDatabaseDemoBatchDeleteComplete();
-    }
-
-    void loadActiveBatchRequest(Driver driver, LoadActiveBatchResponse response);
-
-    interface LoadActiveBatchResponse {
-        void cloudDatabaseActiveBatchLoaded(Batch activeBatch);
-
-        void cloudDatabaseNoActiveBatchAvailable();
+    interface StartDemoBatchComplete {
+        void cloudDatabaseStartDemoBatchComplete();
     }
 
 
-    void listenForPublicOffers(String baseNode, Driver driver);
+    ///
+    ///  DEMO BATCH DATA
+    ///
+
+    void saveDemoBatchDataRequest(BatchHolder batchHolder, SaveDemoBatchDataResponse response);
+
+    interface SaveDemoBatchDataResponse {
+        void cloudDatabaseDemoBatchDataSaveComplete();
+    }
+
+    void deleteDemoBatchDataRequest(String batchGuid, DeleteDemoBatchDataResponse response);
+
+    interface DeleteDemoBatchDataResponse {
+        void cloudDatabaseDemoBatchDataDeleteComplete();
+    }
+
+
+    ///
+    ///  GET BATCH INFORMATION
+    ///
+    void getBatchDetailRequest(String batchGuid, GetBatchDetailResponse response);
+
+    interface GetBatchDetailResponse {
+        void cloudDatabaseGetBatchDetailSuccess(BatchDetail batchDetail);
+
+        void cloudDatabaseGetBatchDetailFailure();
+    }
+
+    void getServiceOrderListRequest(String batchGuid, GetServiceOrderListResponse response);
+
+    interface GetServiceOrderListResponse {
+        void cloudDatabaseGetServiceOrderListSuccess(ArrayList<ServiceOrder> orderList);
+
+        void cloudDatabaseGetServiceOrderListFailure();
+    }
+
+    void getRouteStopListRequest(String batchGuid, GetRouteStopListResponse response);
+
+    interface GetRouteStopListResponse {
+        void cloudDatabaseGetRouteStopListSuccess(ArrayList<RouteStop> stopList);
+
+        void cloudDatabaseGetRouteStopListFailure();
+    }
+
+    void getOrderStepListRequest(String batchGuid, String serviceOrderGuid, GetOrderStepListResponse response);
+
+    interface GetOrderStepListResponse {
+        void cloudDatabaseGetOrderStepListSuccess(ArrayList<OrderStepInterface> stepList);
+
+        void cloudDatabaseGetOrderStepListFailure();
+    }
+
+
+
+
+
+
+    ///
+    ///  OFFERS UPDATED
+    ///
 
     interface PublicOffersUpdated {
-        void cloudDatabasePublicOffersUpdated(ArrayList<Offer> offerList);
+        void cloudDatabasePublicOffersUpdated(ArrayList<Batch> offerList);
     }
-
-    void listenForPersonalOffers(String baseNode, Driver driver);
 
     interface PersonalOffersUpdated {
-        void cloudDatabasePersonalOffersUpdated(ArrayList<Offer> offerList);
+        void cloudDatabasePersonalOffersUpdated(ArrayList<Batch> offerList);
     }
-
-    void listenForDemoOffers(String baseNode, Driver driver);
 
     interface DemoOffersUpdated {
-        void cloudDatabaseDemoOffersUpdated(ArrayList<Offer> offerList);
+        void cloudDatabaseDemoOffersUpdated(ArrayList<Batch> offerList);
     }
 
-    void listenForScheduledBatches(String baseNode, Driver driver);
 
+    ///
+    ///   SCHEDULED BATCHES UPDATED
+    ///
     interface ScheduledBatchesUpdated {
-        void cloudDatabaseScheduledBatchesUpdated(ArrayList<BatchCloudDB> batchList);
+        void cloudDatabaseScheduledBatchesUpdated(ArrayList<Batch> batchList);
     }
 
+    ///
+    ///   ACTIVE BATCH UPDATED
+    ///
+
+    interface ActiveBatchUpdated {
+        void cloudDatabaseActiveBatchUpdated(BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface orderStep);
+
+        void cloudDatabaseNoActiveBatch();
+    }
+
+
+    /// Save Current Active Batch DATA
+    void saveCurrentActiveBatchData(BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface orderStep, SaveCurrentActiveBatchDataResponse response);
+
+    interface SaveCurrentActiveBatchDataResponse {
+        void cloudDatabaseSaveCurrentActiveBatchDataComplete();
+    }
+
+    /// Get Next Step
+    void gotoNextStepRequest(GotoNextStepResponse response);
+
+    interface GotoNextStepResponse {
+        void cloudDatabaseGotoNextStepComplete();
+    }
 
 }

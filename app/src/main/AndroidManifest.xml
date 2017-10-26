@@ -16,6 +16,7 @@
     -->
 
     <application
+        android:largeHeap="true"
         android:name=".applicationLayer.DriverApplication"
         android:allowBackup="true"
         android:icon="@drawable/app_logo_round"
@@ -45,10 +46,14 @@
         <activity android:name=".userInterfaceLayer.activities.home.HomeNoActiveBatchActivity" />
         <activity android:name=".userInterfaceLayer.activities.messages.MessagesActivity" />
         <activity android:name=".userInterfaceLayer.activities.offers.publicOffers.PublicOffersActivity" />
+        <activity android:name=".userInterfaceLayer.activities.offers.personalOffers.PersonalOffersActivity" />
         <activity android:name=".userInterfaceLayer.activities.offers.claimOffer.OfferClaimActivity" />
-        <activity android:name=".userInterfaceLayer.activities.scheduledBatches.ScheduledBatchesActivity" />
-        <activity android:name=".userInterfaceLayer.activities.scheduledBatches.BatchManageActivity" />
+        <activity android:name=".userInterfaceLayer.activities.scheduledBatches.scheduledBatchList.ScheduledBatchesActivity" />
+        <activity android:name=".userInterfaceLayer.activities.scheduledBatches.manageBatch.BatchManageActivity" />
         <activity android:name=".userInterfaceLayer.activities.scheduledBatches.BatchMapActivity" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.NavigationActivity" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.batchItinerary.BatchItineraryActivity" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderItinerary.OrderItineraryActivity" />
         <service
             android:name=".dataLayer.services.ActiveBatchForegroundService"
             android:enabled="true"

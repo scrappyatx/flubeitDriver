@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
+  -->
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:orientation="vertical"
+
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+
+    android:elevation="8dp"
+    tools:targetApi="lollipop">
+
+    <TextView
+        android:id="@+id/manual_user_has_arrived"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        tools:text="I've arrived at the location, but GPS isn't working"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:textStyle="normal"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/confirm_manual_user_has_arrived_button"
+
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp" />
+
+    <Button
+        android:id="@+id/confirm_manual_user_has_arrived_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        tools:text="OK"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+        android:textStyle="normal"
+        android:onClick="clickConfirmManualUserHasArrivedButton"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="4dp" />
+
+</android.support.constraint.ConstraintLayout>

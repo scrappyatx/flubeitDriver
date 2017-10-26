@@ -32,10 +32,9 @@ public class SplashScreenController  {
     private DeviceCheck deviceCheck;
 
     public SplashScreenController(Context applicationContext, AppCompatActivity activity) {
-        useCaseExecutor = Executors.newSingleThreadExecutor();
         device = AndroidDevice.getInstance();
+        useCaseExecutor = device.getUseCaseEngine().getUseCaseExecutor();
         deviceCheck = new DeviceCheck(applicationContext, activity);
-
         Timber.tag(TAG).d("created splash screen controlller");
     }
 
@@ -51,7 +50,7 @@ public class SplashScreenController  {
     public void close() {
         deviceCheck.close();
         device = null;
-        useCaseExecutor.shutdown();
+        useCaseExecutor=null;
     }
 
 

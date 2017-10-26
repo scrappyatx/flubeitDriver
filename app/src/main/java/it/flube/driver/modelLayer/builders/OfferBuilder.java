@@ -7,9 +7,8 @@ package it.flube.driver.modelLayer.builders;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import it.flube.driver.modelLayer.entities.Location;
 import it.flube.driver.modelLayer.entities.Offer;
-import it.flube.driver.modelLayer.entities.RoutingStop;
+import it.flube.driver.modelLayer.entities.RouteStop;
 import it.flube.driver.modelLayer.entities.ServiceProvider;
 
 /**
@@ -33,8 +32,8 @@ public class OfferBuilder {
 
         public Builder(){
             offer = new Offer();
-            offer.setGUID(UUID.randomUUID().toString());
-            offer.setRouteList(new ArrayList<RoutingStop>());
+            offer.setGUID(BuilderUtilities.generateGuid());
+            offer.setRouteList(new ArrayList<RouteStop>());
         }
 
         public Builder offerOID(String offerOID){
@@ -82,13 +81,13 @@ public class OfferBuilder {
             return this;
         }
 
-        public Builder addStopToRoute(Integer index, RoutingStop routingStop){
-            this.offer.getRouteList().add(index, routingStop);
+        public Builder addStopToRoute(Integer index, RouteStop routeStop){
+            this.offer.getRouteList().add(index, routeStop);
             return this;
         }
 
-        public Builder addStopToRoute(RoutingStop routingStop){
-            this.offer.getRouteList().add(routingStop);
+        public Builder addStopToRoute(RouteStop routeStop){
+            this.offer.getRouteList().add(routeStop);
             return this;
         }
 

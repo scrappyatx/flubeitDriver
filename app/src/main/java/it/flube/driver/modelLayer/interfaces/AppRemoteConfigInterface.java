@@ -29,6 +29,12 @@ public interface AppRemoteConfigInterface {
 
     String getCloudDatabaseBaseNodeActiveBatch();
 
+    String getCloudDatabaseBaseNodeBatchData();
+
+    String getCloudDatabaseBaseNodeUserData();
+
+    String getCloudDatabaseBaseNodeDeviceData();
+
     Boolean getLoggingDebugActive();
 
     Boolean getLoggingReleaseActive();

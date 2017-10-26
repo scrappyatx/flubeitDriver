@@ -31,12 +31,42 @@ public class ChatMessageBuilder {
         private ChatMessage chatMessage;
 
         public Builder(){
-            chatMessage = new ChatMessage();
-            chatMessage.setGUID(UUID.randomUUID().toString());
+            this.chatMessage = new ChatMessage();
+            this.chatMessage.setGuid(BuilderUtilities.generateGuid());
+        }
+
+        public Builder guid(String guid){
+            this.chatMessage.setGuid(guid);
+            return this;
+        }
+
+        public Builder batchGuid(String guid){
+            this.chatMessage.setBatchGuid(guid);
+            return this;
+        }
+
+        public Builder batchDetailGuid(String guid){
+            this.chatMessage.setBatchDetailGuid(guid);
+            return this;
+        }
+
+        public Builder serviceOrderGuid(String guid){
+            this.chatMessage.setServiceOrderGuid(guid);
+            return this;
+        }
+
+        public Builder chatHistoryGuid(String guid){
+            this.chatMessage.setChatHistoryGuid(guid);
+            return this;
         }
 
         public Builder senderDisplayName(@NonNull String senderDisplayName){
             this.chatMessage.setSenderDisplayName(senderDisplayName);
+            return this;
+        }
+
+        public Builder senderRole(@NonNull ChatMessage.SenderRole senderRole){
+            this.chatMessage.setSenderRole(senderRole);
             return this;
         }
 
@@ -45,21 +75,21 @@ public class ChatMessageBuilder {
             return this;
         }
 
-        public Builder timestamp(@NonNull Date timestamp){
-            this.chatMessage.setTimestamp(timestamp);
+        public Builder sendTime(@NonNull Date sendTime){
+            this.chatMessage.setSendTime(sendTime);
             return this;
         }
 
         private void validate(@NonNull ChatMessage chatMessage){
             // required PRESENT (must not be null)
-            if (chatMessage.getGUID() == null){
-                throw new IllegalStateException("GUID is null");
+            if (chatMessage.getGuid() == null){
+                throw new IllegalStateException("chatmessage guid is null");
             }
-            if (chatMessage.getTimestamp() == null){
-                throw new IllegalStateException("timestamp is null");
+            if (chatMessage.getSendTime() == null){
+                throw new IllegalStateException("chatmessage timestamp is null");
             }
             if (chatMessage.getSenderDisplayName() == null) {
-                throw new IllegalStateException("senderDisplayName is null");
+                throw new IllegalStateException("chatmessage senderDisplayName is null");
             }
         }
 

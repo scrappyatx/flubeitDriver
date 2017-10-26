@@ -5,26 +5,46 @@
 package it.flube.driver.useCaseLayer.claimOffer;
 
 import it.flube.driver.modelLayer.entities.Offer;
+import it.flube.driver.modelLayer.entities.batch.Batch;
+import it.flube.driver.modelLayer.entities.batch.BatchDetail;
+import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
+import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 
 /**
  * Created on 7/23/2017
  * Project : Driver
  */
 
-public class UseCaseOfferSelected implements Runnable {
-    private final UseCaseOfferSelected.Response response;
-    private final Offer offer;
+public class UseCaseOfferSelected implements
+        Runnable,
+        CloudDatabaseInterface.GetBatchDetailResponse {
 
-    public UseCaseOfferSelected(Offer offer, UseCaseOfferSelected.Response response) {
+    private final MobileDeviceInterface device;
+    private final UseCaseOfferSelected.Response response;
+    private final Batch offer;
+
+    public UseCaseOfferSelected(MobileDeviceInterface device, Batch offer, UseCaseOfferSelected.Response response) {
+        this.device = device;
         this.response = response;
         this.offer = offer;
     }
 
     public void run() {
-        response.offerSelected(offer);
+        // get the batch detail that corresponse to this offer
+        device.getCloudDatabase().getBatchDetailRequest(offer.getGuid(), this);
+    }
+
+    public void cloudDatabaseGetBatchDetailSuccess(BatchDetail batchDetail){
+        response.offerSelectedSuccess(batchDetail);
+    }
+
+    public void cloudDatabaseGetBatchDetailFailure() {
+        response.offerSelectedFailure();
     }
 
     public interface Response {
-        void offerSelected(Offer offer);
+        void offerSelectedSuccess(BatchDetail offerDetail);
+
+        void offerSelectedFailure();
     }
 }

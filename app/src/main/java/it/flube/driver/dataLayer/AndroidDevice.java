@@ -14,8 +14,11 @@ import com.jaredrummler.android.device.DeviceName;
 import java.util.UUID;
 
 import it.flube.driver.deviceLayer.AblyConnectionWrapper;
+import it.flube.driver.deviceLayer.ActiveBatch;
 import it.flube.driver.deviceLayer.AppRemoteConfig;
 import it.flube.driver.deviceLayer.AppUser;
+import it.flube.driver.deviceLayer.OfferLists;
+import it.flube.driver.deviceLayer.UseCaseEngine;
 import it.flube.driver.deviceLayer.cloudDatabase.CloudDatabaseFirebaseWrapper;
 import it.flube.driver.deviceLayer.DeviceStorageSharedPrefs;
 import it.flube.driver.deviceLayer.LocationEngineWrapper;
@@ -25,6 +28,7 @@ import it.flube.driver.deviceLayer.cloudAuth.CloudAuthFirebase;
 import it.flube.driver.deviceLayer.realtimeMessaging.RealtimeBatchMessages;
 import it.flube.driver.deviceLayer.realtimeMessaging.RealtimeOfferMessages;
 import it.flube.driver.modelLayer.entities.DeviceInfo;
+import it.flube.driver.modelLayer.interfaces.ActiveBatchInterface;
 import it.flube.driver.modelLayer.interfaces.AppLoggingInterface;
 import it.flube.driver.modelLayer.interfaces.AppRemoteConfigInterface;
 import it.flube.driver.modelLayer.interfaces.AppUserInterface;
@@ -34,7 +38,9 @@ import it.flube.driver.modelLayer.interfaces.CloudStorageInterface;
 import it.flube.driver.modelLayer.interfaces.DeviceStorageInterface;
 import it.flube.driver.modelLayer.interfaces.LocationTelemetryInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
+import it.flube.driver.modelLayer.interfaces.OffersInterface;
 import it.flube.driver.modelLayer.interfaces.RealtimeMessagingInterface;
+import it.flube.driver.modelLayer.interfaces.UseCaseInterface;
 import it.flube.driver.modelLayer.interfaces.UserProfileInterface;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -49,7 +55,7 @@ public class AndroidDevice implements MobileDeviceInterface, DeviceName.Callback
     ///  ref: https://en.wikipedia.org/wiki/Initialization-on-demand_holder_idiom
 
     private static class Loader {
-        static volatile AndroidDevice mInstance = new AndroidDevice();
+        static volatile AndroidDevice instance = new AndroidDevice();
     }
 
     ///
@@ -61,7 +67,7 @@ public class AndroidDevice implements MobileDeviceInterface, DeviceName.Callback
     ///  getInstance() provides access to the singleton instance outside the class
     ///
     public static AndroidDevice getInstance() {
-        return AndroidDevice.Loader.mInstance;
+        return AndroidDevice.Loader.instance;
     }
 
     private static final String TAG = "AndroidDevice";
@@ -86,6 +92,14 @@ public class AndroidDevice implements MobileDeviceInterface, DeviceName.Callback
 
     public Context getApplicationContext(){
         return applicationContext;
+    }
+
+    public ActiveBatchInterface getActiveBatch() {
+        return ActiveBatch.getInstance();
+    }
+
+    public OffersInterface getOfferLists() {
+        return OfferLists.getInstance();
     }
 
     public AppLoggingInterface getAppLogging(){
@@ -123,6 +137,10 @@ public class AndroidDevice implements MobileDeviceInterface, DeviceName.Callback
             userProfile = new UserProfile();
         }
         return userProfile;
+    }
+
+    public UseCaseInterface getUseCaseEngine(){
+        return UseCaseEngine.getInstance();
     }
 
     public RealtimeMessagingInterface.Connection getRealtimeConnection() {

@@ -18,8 +18,10 @@ import it.flube.driver.R;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.personalOffers.PersonalOffersAvailableResponseHandler;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.publicOffers.PublicOffersAvailableResponseHandler;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.scheduledBatches.ScheduledBatchesAvailableResponseHandler;
+import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.PersonalOffersUpdatedEvent;
+import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.PublicOffersUpdatedEvent;
 import it.flube.driver.userInterfaceLayer.ActivityNavigator;
-import it.flube.driver.userInterfaceLayer.DrawerMenu;
+import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import it.flube.driver.userInterfaceLayer.activities.PermissionsCheckActivity;
 import timber.log.Timber;
 
@@ -129,7 +131,7 @@ public class HomeNoActiveBatchActivity extends PermissionsCheckActivity {
     /// public offers button click handler
     private class publicOffersOnClickListener implements View.OnClickListener {
         public void onClick(View v) {
-            navigator.gotoActivityOffers(HomeNoActiveBatchActivity.this);
+            navigator.gotoActivityPublicOffers(HomeNoActiveBatchActivity.this);
             Timber.tag(TAG).d("clicked publicOffers button");
         }
     }
@@ -144,7 +146,7 @@ public class HomeNoActiveBatchActivity extends PermissionsCheckActivity {
 
     /// public offers events
     @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
-    public void onEvent(PublicOffersAvailableResponseHandler.AvailablePublicOffersEvent event) {
+    public void onEvent(PublicOffersUpdatedEvent event) {
         try {
             Timber.tag(TAG).d("received " + Integer.toString(event.getOfferCount()) + " offers");
             if (event.getOfferList().size() > 0) {
@@ -164,7 +166,7 @@ public class HomeNoActiveBatchActivity extends PermissionsCheckActivity {
 
     // personal offers events
     @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
-    public void onEvent(PersonalOffersAvailableResponseHandler.AvailablePersonalOffersEvent event) {
+    public void onEvent(PersonalOffersUpdatedEvent event) {
         try {
             Timber.tag(TAG).d("received " + Integer.toString(event.getOfferCount()) + " offers");
             if (event.getOfferList().size() > 0) {
@@ -183,7 +185,7 @@ public class HomeNoActiveBatchActivity extends PermissionsCheckActivity {
     }
 
     ///scheduled batches events
-
+   /*
     @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
     public void onEvent(ScheduledBatchesAvailableResponseHandler.ScheduledBatchUpdateEvent event) {
         try {
@@ -201,5 +203,6 @@ public class HomeNoActiveBatchActivity extends PermissionsCheckActivity {
             scheduledBatchesButton.setVisibility(View.GONE);
         }
     }
+    */
 
 }

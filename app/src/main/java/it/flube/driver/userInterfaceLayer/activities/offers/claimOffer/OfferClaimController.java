@@ -8,11 +8,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.ClaimOfferResponseHandler;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.demoOffers.ClaimDemoOfferResponseHandler;
-import it.flube.driver.modelLayer.entities.Offer;
+import it.flube.driver.modelLayer.entities.batch.BatchDetail;
 import it.flube.driver.useCaseLayer.claimOffer.UseCaseClaimDemoOfferRequest;
-import it.flube.driver.useCaseLayer.claimOffer.UseCaseClaimOfferRequest;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import timber.log.Timber;
 
@@ -31,19 +29,22 @@ public class OfferClaimController {
         device = AndroidDevice.getInstance();
     }
 
-    public void claimOfferRequest(Offer offer) {
+    public void claimOfferRequest(BatchDetail batchDetail) {
         Timber.tag(TAG).d("claimOfferRequest STARTED");
 
-        switch (offer.getOfferType()) {
+
+        switch (batchDetail.getBatchType()) {
             case MOBILE_DEMO:
-                useCaseExecutor.execute(new UseCaseClaimDemoOfferRequest(device, offer, new ClaimDemoOfferResponseHandler()));
+                useCaseExecutor.execute(new UseCaseClaimDemoOfferRequest(device, batchDetail.getBatchGuid(), new ClaimDemoOfferResponseHandler()));
                 break;
             case PRODUCTION:
             case PRODUCTION_TEST:
             default:
-                useCaseExecutor.execute(new UseCaseClaimOfferRequest(device, offer, new ClaimOfferResponseHandler()));
+                //useCaseExecutor.execute(new UseCaseClaimOfferRequest(device, batchDetail.getBatchGuid(), new ClaimPublicOfferResponseHandler()));
                 break;
         }
+
+
     }
 
     public void close(){

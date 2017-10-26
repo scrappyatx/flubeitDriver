@@ -12,6 +12,18 @@
     <color name="colorBackground">@color/offwhite</color>
     <color name="colorControlActivated">@color/yellow</color>
 
+    <color name="colorTextPrimaryLight">@color/white</color>
+    <color name="colorTextPrimaryDark">@color/colorPrimaryDark</color>
+    <color name="colorTextPrimary">@color/colorPrimary</color>
+
+    <color name="colorOrderActive">@color/colorPrimary</color>
+    <color name="colorOrderNotActive">@color/translucentMedBlue</color>
+    <color name="colorOrderComplete">@color/alerterGREEN</color>
+
+    <color name="colorStepActive">@color/colorPrimary</color>
+    <color name="colorStepNotActive">@color/translucentMedBlue</color>
+    <color name="colorStepComplete">@color/alerterGREEN</color>
+
     <color name="grey">#788FA0</color>
     <color name="lightblue">#77CEE7</color>
     <color name="mediumblue">#009CC8</color>

@@ -32,17 +32,17 @@ public class MapPingBuilder {
 
         public Builder(@NonNull Double latitude, @NonNull Double longitude, @NonNull Date timestamp){
             mapPing = new MapPing();
-            mapPing.setGUID(UUID.randomUUID().toString());
+            mapPing.setGuid(BuilderUtilities.generateGuid());
             mapPing.setLatLonLocation(new LatLonLocationBuilder.Builder().location(latitude, longitude).build());
-            mapPing.setTimestamp(timestamp);
+            mapPing.setPingTime(timestamp);
         }
 
         private void validate(@NonNull MapPing mapPing) {
             // required PRESENT (must not be null)
-            if (mapPing.getGUID() == null){
+            if (mapPing.getGuid() == null){
                 throw new IllegalStateException("GUID is null");
             }
-            if (mapPing.getTimestamp() == null){
+            if (mapPing.getPingTime() == null){
                 throw new IllegalStateException("timestamp is null");
             }
             if (mapPing.getLatLonLocation() == null){

@@ -10,110 +10,137 @@
     android:layout_height="match_parent">
 
     <include layout="@layout/toolbar"
-        android:id="@+id/toolbar" />
+        android:id="@+id/toolbar"
+
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
     <include layout="@layout/guidelines"/>
 
-    <TextView
-        android:id="@+id/batch_manage_description"
-        android:layout_width="wrap_content"
+    <include layout="@layout/batch_detail_title"
+        android:id="@+id/batch_detail_title_viewgroup"
+
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="BatchOID"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:elevation="8dp"
+
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
-
-    <TextView
-        android:id="@+id/batch_manage_pickup_street1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:text="123 Anywhere Street"
-        android:textSize="14sp"
-        android:textStyle = "normal"
-        android:typeface = "sans"
-        app:layout_constraintTop_toBottomOf="@+id/batch_manage_description"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop = "8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp" />
+        app:layout_constraintRight_toRightOf="parent"/>
 
-    <TextView
-        android:id="@+id/batch_manage_pickup_city_state_zip"
-        android:layout_width="wrap_content"
+    <include layout="@layout/batch_detail_display_timing"
+        android:id="@+id/batch_detail_timing_viewgroup"
+
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Austin, TX 78683"
-        android:textSize="14sp"
-        android:textStyle = "normal"
-        android:typeface = "sans"
-        app:layout_constraintTop_toBottomOf="@+id/batch_manage_pickup_street1"
+        android:elevation="8dp"
+
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+
+        app:layout_constraintTop_toBottomOf="@+id/batch_detail_title_viewgroup"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop = "8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp" />
+        app:layout_constraintRight_toRightOf="parent"/>
 
-    <TextView
-        android:id="@+id/batch_manage_return_street1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="456 Somewhere Lane"
-        android:textSize="14sp"
-        android:textStyle = "normal"
-        android:typeface = "sans"
-        app:layout_constraintTop_toBottomOf="@+id/batch_manage_description"
-        app:layout_constraintLeft_toRightOf="@+id/vGuideline50"
-        android:layout_marginTop = "8dp" />
+    <include layout="@layout/batch_detail_display_earnings"
+        android:id="@+id/batch_detail_earnings_viewgroup"
 
-    <TextView
-        android:id="@+id/batch_manage_return_city_state_zip"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Round Rock, TX 78681"
-        android:textSize="14sp"
-        android:textStyle = "normal"
-        android:typeface = "sans"
-        app:layout_constraintTop_toBottomOf="@+id/batch_manage_return_street1"
-        app:layout_constraintLeft_toRightOf="@+id/vGuideline50"
-        android:layout_marginTop = "8dp" />
+        android:elevation="8dp"
+
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+
+        app:layout_constraintTop_toBottomOf="@+id/batch_detail_timing_viewgroup"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <include layout="@layout/batch_detail_display_distance"
+        android:id="@+id/batch_detail_distance_viewgroup"
+
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:elevation="8dp"
+
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+
+        app:layout_constraintTop_toBottomOf="@+id/batch_detail_earnings_viewgroup"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <include layout="@layout/batch_detail_orders_and_stops"
+        android:id="@+id/batch_detail_orders_stops_viewgroup"
+
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:elevation="8dp"
+
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+
+        app:layout_constraintTop_toBottomOf="@+id/batch_detail_distance_viewgroup"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+
 
     <TextView
         android:id="@+id/batch_manage_forfeit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="8dp"
-        android:text="Forfeit Batch"
+
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="14sp"
         android:textStyle="normal"
-        android:typeface="sans"
+        android:text="Forfeit Batch"
+
         android:onClick="onForfeitClicked"
         android:clickable="true"
+
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/hGuideline75" />
+        app:layout_constraintTop_toBottomOf="@+id/batch_detail_orders_stops_viewgroup" />
 
     <ng.max.slideview.SlideView
         android:id="@+id/batch_manage_start"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginBottom="8dp"
+
         app:buttonBackgroundColor="@color/colorButton"
         app:slideBackgroundColor="@color/colorAccent"
         app:slideTextColor="@color/black"
-        app:slideText="Swipe to Start"
+        app:slideText="SWIPE TO START THIS BATCH"
         app:slideTextSize="16sp"
         app:animateSlideText="true"
-        app:reverseSlide="false" />
+        app:reverseSlide="false"
+
+        android:layout_marginBottom="8dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
 
 

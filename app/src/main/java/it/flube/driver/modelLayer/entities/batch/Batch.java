@@ -5,7 +5,9 @@
 package it.flube.driver.modelLayer.entities.batch;
 
 import java.util.ArrayList;
+import java.util.Date;
 
+import it.flube.driver.modelLayer.entities.DisplayDistance;
 import it.flube.driver.modelLayer.entities.DisplayTiming;
 import it.flube.driver.modelLayer.entities.Earnings;
 import it.flube.driver.modelLayer.entities.PotentialEarnings;
@@ -20,73 +22,25 @@ import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
  */
 
 public class Batch {
-    public enum ClaimStatus {
-        CLAIMED,
-        NOT_CLAIMED
-    }
-
-    public enum WorkStatus {
-        NOT_STARTED,
-        ACTIVE,
-        PAUSED,
-        COMPLETED_SUCCESS,
-        COMPLETED_PROBLEM,
-    }
-
-    public enum BatchType {
-        PRODUCTION,
-        PRODUCTION_TEST,
-        MOBILE_DEMO
-    }
-
-    private ClaimStatus claimStatus;
-    private WorkStatus workStatus;
-    private BatchType type;
 
     private String guid;
+
     private String title;
-    private String description;
-
-    private String assignedClientId;
-
-    private Timestamp startTime;
-    private Timestamp finishTime;
+    private String iconUrl;
 
     private DisplayTiming displayTiming;
+    private DisplayDistance displayDistance;
     private PotentialEarnings potentialEarnings;
 
-    private ArrayList<ServiceOrder> serviceOrderList;
-    private Integer serviceOrderIndex;
+    private Date expectedStartTime;
+    private Date expectedFinishTime;
 
-    public WorkStatus getWorkStatus() {
-        return workStatus;
-    }
 
-    public void setWorkStatus(WorkStatus workStatus) {
-        this.workStatus = workStatus;
-    }
-
-    public ClaimStatus getClaimStatus() {
-        return claimStatus;
-    }
-
-    public void setClaimStatus(ClaimStatus claimStatus) {
-        this.claimStatus = claimStatus;
-    }
-
-    public BatchType getType() {
-        return type;
-    }
-
-    public void setType(BatchType type) {
-        this.type = type;
-    }
-
-    public void setGUID(String guid) {
+    public void setGuid(String guid) {
         this.guid = guid;
     }
 
-    public String getGUID() {
+    public String getGuid() {
         return guid;
     }
 
@@ -98,45 +52,30 @@ public class Batch {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getIconUrl() {
+        return iconUrl;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getAssignedClientId() {
-        return assignedClientId;
-    }
-
-    public void setAssignedClientId(String assignedClientId) {
-        this.assignedClientId = assignedClientId;
+    public void setIconUrl(String iconURL) {
+        this.iconUrl = iconURL;
     }
 
     public void setDisplayTiming(DisplayTiming displayTiming) {
         this.displayTiming = displayTiming;
     }
 
+    public DisplayDistance getDisplayDistance() {
+        return displayDistance;
+    }
+
+    public void setDisplayDistance(DisplayDistance displayDistance) {
+        this.displayDistance = displayDistance;
+    }
+
     public DisplayTiming getDisplayTiming() {
         return displayTiming;
     }
 
-    public Timestamp getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Timestamp startTime) {
-        this.startTime = startTime;
-    }
-
-    public Timestamp getFinishTime() {
-        return finishTime;
-    }
-
-    public void setFinishTime(Timestamp finishTime) {
-        this.finishTime = finishTime;
-    }
 
     public PotentialEarnings getPotentialEarnings() {
         return potentialEarnings;
@@ -146,19 +85,19 @@ public class Batch {
         this.potentialEarnings = potentialEarnings;
     }
 
-    public ArrayList<ServiceOrder> getServiceOrderList() {
-        return serviceOrderList;
+    public Date getExpectedStartTime() {
+        return expectedStartTime;
     }
 
-    public void setServiceOrderList(ArrayList<ServiceOrder> serviceOrderList) {
-        this.serviceOrderList = serviceOrderList;
+    public void setExpectedStartTime(Date expectedStartTime) {
+        this.expectedStartTime = expectedStartTime;
     }
 
-    public Integer getServiceOrderIndex() {
-        return serviceOrderIndex;
+    public Date getExpectedFinishTime() {
+        return expectedFinishTime;
     }
 
-    public void setServiceOrderIndex(Integer serviceOrderIndex) {
-        this.serviceOrderIndex = serviceOrderIndex;
+    public void setExpectedFinishTime(Date expectedFinishTime) {
+        this.expectedFinishTime = expectedFinishTime;
     }
 }

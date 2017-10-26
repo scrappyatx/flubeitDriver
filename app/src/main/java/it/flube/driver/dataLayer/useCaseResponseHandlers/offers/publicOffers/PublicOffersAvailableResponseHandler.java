@@ -8,7 +8,12 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
+import it.flube.driver.dataLayer.AndroidDevice;
+import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.PersonalOfferCountUpdatedEvent;
+import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.PersonalOfferListUpdatedEvent;
+import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.PublicOffersUpdatedEvent;
 import it.flube.driver.modelLayer.entities.Offer;
+import it.flube.driver.modelLayer.entities.batch.Batch;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import timber.log.Timber;
 
@@ -20,28 +25,14 @@ import timber.log.Timber;
 public class PublicOffersAvailableResponseHandler implements CloudDatabaseInterface.PublicOffersUpdated {
     private static final String TAG = "PublicOffersAvailableResponseHandler";
 
-    public void cloudDatabasePublicOffersUpdated(ArrayList<Offer> offerList) {
+    public void cloudDatabasePublicOffersUpdated(ArrayList<Batch> offerList) {
         Timber.tag(TAG).d("public offers available from cloud database");
-        EventBus.getDefault().postSticky(new PublicOffersAvailableResponseHandler.AvailablePublicOffersEvent(offerList));
-    }
 
-    public static class AvailablePublicOffersEvent {
-        private ArrayList<Offer> offerList;
-        private int offerCount;
+        AndroidDevice.getInstance().getOfferLists().setPersonalOffers(offerList);
+        EventBus.getDefault().post(new PersonalOfferCountUpdatedEvent());
+        EventBus.getDefault().post(new PersonalOfferListUpdatedEvent());
 
-        public AvailablePublicOffersEvent(ArrayList<Offer> offerList){
-            this.offerList = offerList;
-            this.offerCount = offerList.size();
-        }
-
-        public ArrayList<Offer> getOfferList() {
-            return offerList;
-        }
-
-        public int getOfferCount() {
-            return offerCount;
-        }
-
+        //EventBus.getDefault().postSticky(new PublicOffersUpdatedEvent(offerList));
     }
 
 }

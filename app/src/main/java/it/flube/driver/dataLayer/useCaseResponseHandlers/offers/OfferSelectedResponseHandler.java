@@ -7,6 +7,8 @@ package it.flube.driver.dataLayer.useCaseResponseHandlers.offers;
 import org.greenrobot.eventbus.EventBus;
 
 import it.flube.driver.modelLayer.entities.Offer;
+import it.flube.driver.modelLayer.entities.batch.Batch;
+import it.flube.driver.modelLayer.entities.batch.BatchDetail;
 import it.flube.driver.useCaseLayer.claimOffer.UseCaseOfferSelected;
 import timber.log.Timber;
 
@@ -18,20 +20,24 @@ import timber.log.Timber;
 public class OfferSelectedResponseHandler implements UseCaseOfferSelected.Response {
     private final static String TAG = "OfferSelectedResponseHandler";
 
-    public void offerSelected(Offer offer) {
+    public void offerSelectedSuccess(BatchDetail batchDetail) {
         Timber.tag(TAG).d("offer Selected");
-        EventBus.getDefault().postSticky(new OfferSelectedResponseHandler.UseCaseOfferSelectedEvent(offer));
+        EventBus.getDefault().postSticky(new OfferSelectedResponseHandler.UseCaseOfferSelectedEvent(batchDetail));
     }
 
+    public void offerSelectedFailure(){
+        //TODO post an event for an alert to tell user that "no detail is available for this offer
+        // should never happen
+    }
 
     public static class UseCaseOfferSelectedEvent {
-        private Offer offer;
-        public UseCaseOfferSelectedEvent(Offer offer){
-            this.offer = offer;
+        private BatchDetail batchDetail;
+        public UseCaseOfferSelectedEvent(BatchDetail batchDetail){
+            this.batchDetail = batchDetail;
         }
 
-        public Offer getOffer(){
-            return offer;
+        public BatchDetail getBatchDetail(){
+            return batchDetail;
         }
     }
 }

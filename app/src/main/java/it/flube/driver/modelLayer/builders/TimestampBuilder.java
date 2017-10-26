@@ -29,9 +29,13 @@ public class TimestampBuilder {
     public static class Builder {
         private Timestamp timestamp;
 
-        public Builder(@NonNull Date scheduledTime){
+        public Builder(){
             timestamp = new Timestamp();
-            timestamp.setScheduledTime(scheduledTime);
+        }
+
+        public Builder scheduledTime(@NonNull Date scheduledTime){
+            this.timestamp.setScheduledTime(scheduledTime);
+            return this;
         }
 
         private void validate(@NonNull Timestamp timestamp){

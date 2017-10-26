@@ -26,7 +26,7 @@ public class UseCaseThingsToDoAfterSignIn implements
         RealtimeMessagingInterface.Connection.ConnectResponse,
         MobileDeviceInterface.DeviceInfoRequestComplete,
         CloudDatabaseInterface.SaveDeviceInfoResponse,
-        CloudDatabaseInterface.LoadActiveBatchResponse {
+        CloudDatabaseInterface.ConnectResponse {
 
     private final MobileDeviceInterface device;
     private final UseCaseThingsToDoAfterSignIn.Response response;
@@ -38,31 +38,29 @@ public class UseCaseThingsToDoAfterSignIn implements
 
     public void run(){
 
-        //Step 0 --> set person data for app logging
+        //Step 1 --> set person data for app logging
         device.getAppLogging().setPersonData(device.getUser().getDriver());
 
-        //Step 1 --> sign in the driver on cloud auth
+        //Step 2 --> sign in the driver on cloud auth
         device.getCloudAuth().signInRequest(device.getUser().getDriver(), device.getAppRemoteConfig(), this);
     }
 
     public void signInUserCloudAuthComplete(){
-        //Step 4 --> save this user to cloud database
-        device.getCloudDatabase().saveUserRequest(device.getUser().getDriver(), this);
+        //Step 3 --> startup the cloud database
+        device.getCloudDatabase().connectRequest(device.getAppRemoteConfig(), device.getUser().getDriver(), this);
+    }
+
+    public void cloudDatabaseConnectComplete(){
+        //step 4 --> save the user to the cloud database
+        device.getCloudDatabase().saveUserRequest(this);
 
         //get device data
         device.deviceInfoRequest(this);
     }
 
     public void cloudDatabaseUserSaveComplete(){
-        device.getCloudDatabase().listenForPublicOffers(device.getAppRemoteConfig().getCloudDatabaseBaseNodePublicOffers(), device.getUser().getDriver());
 
-        device.getCloudDatabase().listenForPersonalOffers(device.getAppRemoteConfig().getCloudDatabaseBaseNodePersonalOffers(), device.getUser().getDriver());
-
-        device.getCloudDatabase().listenForDemoOffers(device.getAppRemoteConfig().getCloudDatabaseBaseNodeDemoOffers(), device.getUser().getDriver());
-
-        device.getCloudDatabase().listenForScheduledBatches(device.getAppRemoteConfig().getCloudDatabaseBaseNodeScheduledBatches(), device.getUser().getDriver());
-
-        device.getCloudDatabase().loadActiveBatchRequest(device.getUser().getDriver(), this);
+        //device.getCloudDatabase().loadActiveBatchRequest(device.getUser().getDriver(), this);
 
         device.getRealtimeConnection().messageServerConnectRequest(device.getUser().getDriver(), this);
 
@@ -72,17 +70,11 @@ public class UseCaseThingsToDoAfterSignIn implements
 
         device.getLocationTelemetry().locationTrackingStartRequest(this, new LocationTrackingPositionChangedHandler());
 
+        device.getCloudDatabase().startMonitoring();
 
         response.useCaseThingsToDoAfterSignInComplete();
     }
 
-    public void cloudDatabaseNoActiveBatchAvailable(){
-        device.getUser().clearActiveBatch();
-    }
-
-    public void cloudDatabaseActiveBatchLoaded(Batch activeBatch) {
-        device.getUser().setActiveBatch(activeBatch);
-    }
 
     public void locationTrackingStartSuccess() {
 
@@ -105,7 +97,7 @@ public class UseCaseThingsToDoAfterSignIn implements
     }
 
     public void deviceInfoSuccess(DeviceInfo deviceInfo) {
-        device.getCloudDatabase().saveDeviceInfoRequest(device.getUser().getDriver(), deviceInfo, this);
+        device.getCloudDatabase().saveDeviceInfoRequest(deviceInfo, this);
     }
 
     public void cloudDatabaseDeviceInfoSaveComplete() {

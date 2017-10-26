@@ -36,4 +36,8 @@ public interface LocationTelemetryInterface {
 
     }
 
+    Boolean hasLastGoodPosition();
+
+    LatLonLocation getLastGoodPosition();
+
 }

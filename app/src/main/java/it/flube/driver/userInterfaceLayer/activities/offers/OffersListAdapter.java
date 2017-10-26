@@ -8,6 +8,7 @@ package it.flube.driver.userInterfaceLayer.activities.offers;
  * Created by Bryan on 3/25/2017.
  */
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,30 +16,41 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import it.flube.driver.R;
 import it.flube.driver.modelLayer.entities.Offer;
+import it.flube.driver.modelLayer.entities.batch.Batch;
 import timber.log.Timber;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
-
+import java.util.Locale;
 
 
 public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.OfferViewHolder> {
     private static final String TAG = "OffersListAdapter";
 
-    private ArrayList<Offer> offersList;
+    private Context activityContext;
+    private ArrayList<Batch> offersList;
     private OffersListAdapter.Response response;
 
 
-    public OffersListAdapter(OffersListAdapter.Response response ) {
-        offersList = new ArrayList<Offer>();
+    public OffersListAdapter(Context activityContext, OffersListAdapter.Response response ) {
         this.response = response;
+        this.activityContext = activityContext;
+        offersList = new ArrayList<Batch>();
+
     }
 
-    public void updateList(ArrayList<Offer> offersList) {
-        this.offersList = offersList;
+    public void updateList(ArrayList<Batch> offersList) {
+        Timber.tag(TAG).d("starting update list...");
+        Timber.tag(TAG).d("    parameter offersList --> " + offersList.size() + " items");
+        this.offersList.clear();
+        this.offersList.addAll(offersList);
+        Timber.tag(TAG).d("    class offersList     --> " + offersList.size() + " items");
         notifyDataSetChanged();
-        Timber.tag(TAG).d("updateList");
+        Timber.tag(TAG).d("updateList  --> " + this.offersList.size() + " items");
     }
 
     @Override
@@ -51,19 +63,23 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Of
 
     @Override
     public void onBindViewHolder(OfferViewHolder holder, int position) {
-        Offer itemOffer = offersList.get(position);
+        Batch itemOffer = offersList.get(position);
         holder.bindOffer(itemOffer);
-        Timber.tag(TAG).d("Binding offer " + itemOffer.getGUID() + " to position " + Integer.toString(position));
+        Timber.tag(TAG).d("Binding offer " + itemOffer.getGuid() + " to position " + Integer.toString(position));
     }
 
     @Override
     public int getItemCount() {
-        Timber.tag(TAG).d("getItemCount");
+        Timber.tag(TAG).d("getItemCount --> " + offersList.size() + " items");
         return offersList.size();
     }
 
+    public void close(){
+        activityContext = null;
+    }
 
-    public static class OfferViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+    public class OfferViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageView serviceProviderImage;
         private TextView offerTime;
@@ -74,7 +90,7 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Of
         private ImageView distanceImage;
         private TextView distance;
 
-        private Offer offer;
+        private Batch offer;
 
         private OffersListAdapter.Response response;
 
@@ -99,32 +115,60 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Of
         @Override
         public void onClick(View v) {
             response.offerSelected(offer);
-            Timber.tag(TAG).d("offer selected --> " + offer.getGUID());
+            Timber.tag(TAG).d("offer selected --> " + offer.getGuid());
         }
 
-        public void bindOffer(Offer offer) {
+        public void bindOffer(Batch offer) {
             this.offer = offer;
 
-            offerDescription.setText(offer.getServiceDescription());
-            offerTime.setText(offer.getOfferTime());
-            offerDuration.setText(offer.getOfferDuration());
-            baseEarnings.setText(offer.getEstimatedEarnings());
-            extraEarnings.setText(offer.getEstimatedEarningsExtra());
+            String displayDescription = offer.getTitle();
+            String displayTime = offer.getDisplayTiming().getHours();
+            String displayDuration = offer.getDisplayTiming().getDuration();
+            String displayBaseEarnings = NumberFormat.getCurrencyInstance(new Locale("en", "US"))
+                    .format(offer.getPotentialEarnings().getPayRateInCents()/100);
+            String displayExtraEarnings = "";
+            if (offer.getPotentialEarnings().getPlusTips()) {
+                displayExtraEarnings = "+ Tips";
+            }
+            String serviceProviderUrl = offer.getIconUrl();
+            String distanceUrl = offer.getDisplayDistance().getDistanceIndicatorUrl();
+            String displayDistance = offer.getDisplayDistance().getDistanceToTravel();
 
-            Timber.tag(TAG).d("bindOffer :");
-            Timber.tag(TAG).d("---> OID:        : " + offer.getGUID());
-            Timber.tag(TAG).d("---> Description : " + offer.getServiceDescription());
-            Timber.tag(TAG).d("---> Time        : " + offer.getOfferTime());
-            Timber.tag(TAG).d("---> Duration    : " + offer.getOfferDuration());
-            Timber.tag(TAG).d("---> Base Earnings : " + offer.getEstimatedEarnings());
-            Timber.tag(TAG).d("---> Extra Earnings : " + offer.getEstimatedEarningsExtra());
+
+            offerDescription.setText(displayDescription);
+            offerTime.setText(displayTime);
+            offerDuration.setText(displayDuration);
+            baseEarnings.setText(displayBaseEarnings);
+            extraEarnings.setText(displayExtraEarnings);
+            distance.setText(displayDistance);
+
+            Picasso.with(activityContext)
+                    .load(serviceProviderUrl)
+                    .into(serviceProviderImage);
+
+            Picasso.with(activityContext)
+                    .load(distanceUrl)
+                    .into(distanceImage);
+
+
+            Timber.tag(TAG).d("bindOffer --->");
+            Timber.tag(TAG).d("---> OID:               : " + offer.getGuid());
+            Timber.tag(TAG).d("---> Description        : " + displayDescription);
+            Timber.tag(TAG).d("---> Time               : " + displayTime);
+            Timber.tag(TAG).d("---> Duration           : " + displayDuration);
+            Timber.tag(TAG).d("---> Base Earnings      : " + displayBaseEarnings);
+            Timber.tag(TAG).d("---> Extra Earnings     : " + displayExtraEarnings);
+            Timber.tag(TAG).d("---> serviceProviderUrl : " + serviceProviderUrl);
+            Timber.tag(TAG).d("---> distanceUrl        : " + distanceUrl);
+            Timber.tag(TAG).d("---> distance           : " + displayDistance);
 
         }
+
 
     }
 
     public interface Response {
-        void offerSelected(Offer offer);
+        void offerSelected(Batch batch);
     }
 
 }

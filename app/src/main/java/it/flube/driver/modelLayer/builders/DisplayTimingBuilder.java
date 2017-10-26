@@ -4,6 +4,8 @@
 
 package it.flube.driver.modelLayer.builders;
 
+import android.support.annotation.NonNull;
+
 import it.flube.driver.modelLayer.entities.DisplayTiming;
 
 /**
@@ -14,7 +16,7 @@ import it.flube.driver.modelLayer.entities.DisplayTiming;
 public class DisplayTimingBuilder {
     private DisplayTiming displayTiming;
 
-    private DisplayTimingBuilder(Builder builder){
+    private DisplayTimingBuilder(@NonNull Builder builder){
         this.displayTiming = builder.displayTiming;
     }
 
@@ -29,7 +31,27 @@ public class DisplayTimingBuilder {
             displayTiming = new DisplayTiming();
         }
 
-        private void validate(DisplayTiming displayTiming){
+        public Builder date(@NonNull String date){
+            this.displayTiming.setDate(date);
+            return this;
+        }
+
+        public Builder duration(@NonNull String duration){
+            this.displayTiming.setDuration(duration);
+            return this;
+        }
+
+        public Builder hours(@NonNull String hours){
+            this.displayTiming.setHours(hours);
+            return this;
+        }
+
+        public Builder offerExpiryDate(@NonNull String offerExpiryDate) {
+            this.displayTiming.setOfferExpiryDate(offerExpiryDate);
+            return this;
+        }
+
+        private void validate(@NonNull DisplayTiming displayTiming){
 
         }
 

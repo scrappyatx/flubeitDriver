@@ -28,11 +28,12 @@ import timber.log.Timber;
 public class UserProfile implements UserProfileInterface, Callback {
     private static final String TAG = "UserProfile";
 
-    private static final String PUBLIC_OFFERS_NODE = "offers";
+    private static final String PUBLIC_OFFERS_NODE = "publicOffers";
     private static final String PERSONAL_OFFERS_NODE = "personalOffers";
     private static final String DEMO_OFFERS_NODE = "demoOffers";
     private static final String SCHEDULED_BATCHES_NODE = "assignedBatches";
     private static final String ACTIVE_BATCH_NODE = "activeBatch";
+    private static final String BATCH_DATA_NODE = "batchData";
 
     private UserProfileInterface.Response response;
 
@@ -66,15 +67,18 @@ public class UserProfile implements UserProfileInterface, Callback {
 
     @Override
     public void onFailure(@NonNull Call call, @NonNull final IOException e) {
+        Timber.tag(TAG).d("onFailure!");
         Timber.tag(TAG).e(e);
         this.response.getDriverFailure(e.getMessage());
     }
 
     @Override
     public void onResponse(@NonNull Call call, @NonNull okhttp3.Response httpResponse) {
+        Timber.tag(TAG).d("onResponse!");
         try {
+            Timber.tag(TAG).d("gonna print the response body");
             String responseBody = httpResponse.body().string();
-            Timber.tag(TAG).d(TAG, "httpResponse.body().string() --> " + responseBody);
+            Timber.tag(TAG).d("httpResponse.body().string() --> " + responseBody);
 
             if (httpResponse.isSuccessful()) {
                 // put result into driver
@@ -95,6 +99,7 @@ public class UserProfile implements UserProfileInterface, Callback {
                 Timber.tag(TAG).d("demoOffersNode --------> " + propertyData.getDemoOffersNode());
                 Timber.tag(TAG).d("scheduledBatchesNode --> " + propertyData.getScheduledBatchesNode());
                 Timber.tag(TAG).d("activeBatchNode -------> " + propertyData.getActiveBatchNode());
+                Timber.tag(TAG).d("batchDataNode ---------> " + propertyData.getBatchDataNode());
 
                 if (propertyData.isDriver()) {
                     Driver driver = new Driver();
@@ -114,6 +119,7 @@ public class UserProfile implements UserProfileInterface, Callback {
                     driver.setDemoOffersNode(propertyData.getDemoOffersNode());
                     driver.setScheduledBatchesNode(propertyData.getScheduledBatchesNode());
                     driver.setActiveBatchNode(propertyData.getActiveBatchNode());
+                    driver.setBatchDataNode(propertyData.getBatchDataNode());
 
                     response.getDriverSuccess(driver);
                 } else {
@@ -121,21 +127,32 @@ public class UserProfile implements UserProfileInterface, Callback {
                 }
             } else {
                 //report failure
-                final FailureJSON failureData = new Gson().fromJson(responseBody, FailureJSON.class);
-                Timber.tag(TAG).d("Error Message --> " + failureData.getErrorMessage());
-                Timber.tag(TAG).d("Error Code --> " + failureData.getErrorCode());
-                Timber.tag(TAG).d("Documentation -> " + failureData.getDocumentation());
 
-                if (failureData.getErrorCode().equals("401")) {
-                    response.getDriverAuthFailure(failureData.getErrorCode() + " : " + failureData.getErrorMessage());
-                } else {
-                    response.getDriverFailure(failureData.getErrorCode() + " : " + failureData.getErrorMessage());
-                }
+                Timber.tag(TAG).d("gonna print the failure");
+                    try {
+                        final FailureJSON failureData = new Gson().fromJson(responseBody, FailureJSON.class);
+                        Timber.tag(TAG).d("Error Message --> " + failureData.getErrorMessage());
+                        Timber.tag(TAG).d("Error Code --> " + failureData.getErrorCode());
+                        Timber.tag(TAG).d("Documentation -> " + failureData.getDocumentation());
+
+                        // error returned from the profile server
+                        Timber.tag(TAG).d("Profile Management Server error");
+                        if (failureData.getErrorCode().equals("401")) {
+                            response.getDriverAuthFailure(failureData.getErrorCode() + " : " + failureData.getErrorMessage());
+                        } else {
+                            response.getDriverFailure(failureData.getErrorCode() + " : " + failureData.getErrorMessage());
+                        }
+                    } catch (Exception e) {
+                        // some other network error
+                        Timber.tag(TAG).d("General network error  --> " + Integer.toString(httpResponse.code()));
+                        Timber.tag(TAG).e(e);
+                        response.getDriverFailure("Could not connect.  Try again later");
+                    }
             }
         } catch (final Exception e) {
             //report failure
             Timber.tag(TAG).e(e);
-            response.getDriverFailure(e.getMessage());
+            response.getDriverFailure("Could not connect.  Try again later");
         }
     }
 
@@ -173,6 +190,7 @@ public class UserProfile implements UserProfileInterface, Callback {
         private String demoOffersNode;
         private String scheduledBatchesNode;
         private String activeBatchNode;
+        private String batchDataNode;
 
         Boolean isDriver(){ return (driver != null) ? driver : false; }
         Boolean isDev() { return (dev != null) ? dev : false;}
@@ -182,6 +200,7 @@ public class UserProfile implements UserProfileInterface, Callback {
         String getScheduledBatchesNode() {return (scheduledBatchesNode != null) ? scheduledBatchesNode : SCHEDULED_BATCHES_NODE;}
         String getActiveBatchNode() { return (activeBatchNode != null) ? activeBatchNode : ACTIVE_BATCH_NODE; }
         String getDemoOffersNode() { return (demoOffersNode != null) ? demoOffersNode : DEMO_OFFERS_NODE; }
+        String getBatchDataNode() { return (batchDataNode != null) ? batchDataNode : BATCH_DATA_NODE; }
     }
 
 }

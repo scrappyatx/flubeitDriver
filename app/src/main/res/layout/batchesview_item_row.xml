@@ -7,86 +7,216 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+    android:elevation="8dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
     android:background="@drawable/offer_border">
 
-    <include layout="@layout/guidelines" />
+    <ImageView
+        android:id="@+id/serviceProvider_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"
+        android:scaleType="fitCenter"
+        tools:src="@mipmap/jiffylube"
+
+        app:layout_constraintBottom_toTopOf="@+id/guidelineBottom"
+        app:layout_constraintLeft_toRightOf="@+id/guideline05"
+        app:layout_constraintRight_toLeftOf="@+id/guideline20"
+        app:layout_constraintTop_toBottomOf="@+id/guidelineTop"
+
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintVertical_bias="0.4" />
 
     <TextView
-        android:id="@+id/batch_row_description"
+        android:id="@+id/item_time"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="BatchOID"
+
+        tools:text="1:30 PM - 2:30 PM"
+
+        android:textSize="14sp"
+        android:textStyle = "normal"
+        android:typeface = "sans"
+
+        app:layout_constraintBottom_toTopOf="@+id/guidelineBottom"
+        app:layout_constraintLeft_toRightOf="@+id/guideline20"
+        app:layout_constraintRight_toLeftOf="@+id/guideline50"
+        app:layout_constraintTop_toBottomOf="@+id/item_duration"
+
+        android:layout_marginTop = "8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp" />
+
+    <TextView
+        android:id="@+id/item_duration"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_gravity="top|start"
+        android:layout_weight="1"
+
+        tools:text="2 Hours"
+        android:textSize="18sp"
+        android:textStyle="normal"
+        android:typeface="sans"
+
+        app:layout_constraintBottom_toTopOf="@+id/item_time"
+        app:layout_constraintLeft_toRightOf="@+id/guideline20"
+        app:layout_constraintRight_toLeftOf="@+id/guideline50"
+        app:layout_constraintTop_toBottomOf="@+id/item_description"
+
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp" />
+
+    <TextView
+        android:id="@+id/item_description"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|start"
+        android:layout_weight="1"
+
+        tools:text="Oil Change"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/guideline20"
+        app:layout_constraintRight_toLeftOf="@+id/guideline50"
+        app:layout_constraintTop_toBottomOf="@+id/guidelineTop"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp" />
 
     <TextView
-        android:id="@+id/batch_row_pickup_street1"
+        android:id="@+id/item_earnings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:text="123 Anywhere Street"
-        android:textSize="14sp"
-        android:textStyle = "normal"
-        android:typeface = "sans"
-        app:layout_constraintTop_toBottomOf="@+id/batch_row_description"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop = "8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="0dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp" />
-
-    <TextView
-        android:id="@+id/batch_row_pickup_city_state_zip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Austin, TX 78683"
-        android:textSize="14sp"
-        android:textStyle = "normal"
-        android:typeface = "sans"
-        app:layout_constraintTop_toBottomOf="@+id/batch_row_pickup_street1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop = "8dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp" />
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        tools:text="$28"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/item_earnings_extra"
+        app:layout_constraintHorizontal_bias="0.777"
+        app:layout_constraintLeft_toRightOf="@+id/guideline50"
+        app:layout_constraintRight_toLeftOf="@+id/guideline80"
+        app:layout_constraintTop_toBottomOf="@+id/guidelineTop" />
 
     <TextView
-        android:id="@+id/batch_row_return_street1"
+        android:id="@+id/item_earnings_extra"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="456 Somewhere Lane"
-        android:textSize="14sp"
-        android:textStyle = "normal"
-        android:typeface = "sans"
-        app:layout_constraintTop_toBottomOf="@+id/batch_row_description"
-        app:layout_constraintLeft_toLeftOf="@+id/vGuideline50"
-        android:layout_marginTop = "8dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp" />
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="0dp"
+        tools:text="+ Tips"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineBottom"
+        app:layout_constraintHorizontal_bias="0.705"
+        app:layout_constraintLeft_toRightOf="@+id/guideline50"
+        app:layout_constraintRight_toLeftOf="@+id/guideline80"
+        app:layout_constraintTop_toBottomOf="@+id/item_earnings" />
+
+    <ImageView
+        android:id="@+id/distance_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"
+        android:scaleType="fitCenter"
+        tools:src="@mipmap/distance_far"
+        app:layout_constraintBottom_toTopOf="@+id/item_distance"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toRightOf="@+id/guideline80"
+        app:layout_constraintRight_toLeftOf="@+id/guideline95"
+        app:layout_constraintTop_toBottomOf="@+id/guidelineTop"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
-        android:id="@+id/batch_row_return_city_state_zip"
+        android:id="@+id/item_distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Round Rock, TX 78681"
-        android:textSize="14sp"
-        android:textStyle = "normal"
-        android:typeface = "sans"
-        app:layout_constraintTop_toBottomOf="@+id/batch_row_return_street1"
-        app:layout_constraintLeft_toLeftOf="@+id/vGuideline50"
-        android:layout_marginTop = "8dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp" />
+        android:layout_marginTop="8dp"
+        tools:text="10.4 miles"
+        android:textSize="12sp"
+        android:textStyle="italic"
+        android:typeface="sans"
+        app:layout_constraintBottom_toTopOf="@id/guidelineBottom"
+        app:layout_constraintLeft_toRightOf="@+id/guideline80"
+        app:layout_constraintRight_toLeftOf="@+id/guideline95" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guideline05"
+        app:layout_constraintGuide_percent="0.01"
+        android:orientation="vertical" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guideline20"
+        app:layout_constraintGuide_percent="0.2"
+        android:orientation="vertical" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guideline50"
+        app:layout_constraintGuide_percent="0.5"
+        android:orientation="vertical" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guideline80"
+        app:layout_constraintGuide_percent="0.8"
+        android:orientation="vertical" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guideline95"
+        app:layout_constraintGuide_percent="0.95"
+        android:orientation="vertical" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guidelineTop"
+        app:layout_constraintGuide_percent="0.05"
+        android:orientation="horizontal" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guidelineBottom"
+        app:layout_constraintGuide_percent="0.95"
+        android:orientation="horizontal" />
+
 
 
 </android.support.constraint.ConstraintLayout>

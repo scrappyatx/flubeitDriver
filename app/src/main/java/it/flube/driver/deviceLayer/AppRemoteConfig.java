@@ -72,6 +72,9 @@ public class AppRemoteConfig implements AppRemoteConfigInterface {
     private static final String FIREBASE_DATABASE_BASE_NODE_DEMO_OFFERS = "firebase_database_base_node_demo_offers";
     private static final String FIREBASE_DATABASE_BASE_NODE_SCHEDULED_BATCHES = "firebase_database_base_node_scheduled_batches";
     private static final String FIREBASE_DATABASE_BASE_NODE_ACTIVE_BATCH = "firebase_database_base_node_active_batch";
+    private static final String FIREBASE_DATABASE_BASE_NODE_BATCH_DATA = "firebase_database_base_node_batch_data";
+    private static final String FIREBASE_DATABASE_BASE_NODE_USER_DATA = "firebase_database_base_node_user_data";
+    private static final String FIREBASE_DATABASE_BASE_NODE_DEVICE_DATA = "firebase_database_base_node_device_data";
 
 
     private static final String APP_COLORS_COLOR_PRIMARY_KEY = "app_colors_colorPrimary";
@@ -229,6 +232,18 @@ public class AppRemoteConfig implements AppRemoteConfigInterface {
 
     public String getCloudDatabaseBaseNodeActiveBatch(){
         return FirebaseRemoteConfig.getInstance().getString(FIREBASE_DATABASE_BASE_NODE_ACTIVE_BATCH);
+    }
+
+    public String getCloudDatabaseBaseNodeBatchData() {
+        return FirebaseRemoteConfig.getInstance().getString(FIREBASE_DATABASE_BASE_NODE_BATCH_DATA);
+    }
+
+    public String getCloudDatabaseBaseNodeUserData() {
+        return FirebaseRemoteConfig.getInstance().getString(FIREBASE_DATABASE_BASE_NODE_USER_DATA);
+    }
+
+    public String getCloudDatabaseBaseNodeDeviceData() {
+        return FirebaseRemoteConfig.getInstance().getString(FIREBASE_DATABASE_BASE_NODE_DEVICE_DATA);
     }
 
 }

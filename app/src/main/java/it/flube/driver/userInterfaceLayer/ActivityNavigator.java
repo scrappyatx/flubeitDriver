@@ -8,19 +8,24 @@ import android.content.Context;
 import android.content.Intent;
 
 import it.flube.driver.dataLayer.AndroidDevice;
+import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
 import it.flube.driver.userInterfaceLayer.activities.account.AccountActivity;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.batchItinerary.BatchItineraryActivity;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderItinerary.OrderItineraryActivity;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.NavigationActivity;
 import it.flube.driver.userInterfaceLayer.activities.offers.demoOffers.DemoOffersActivity;
 import it.flube.driver.userInterfaceLayer.activities.earnings.EarningsActivity;
 import it.flube.driver.userInterfaceLayer.activities.help.HelpActivity;
 import it.flube.driver.userInterfaceLayer.activities.home.HomeActiveBatchActivity;
 import it.flube.driver.userInterfaceLayer.activities.home.HomeNoActiveBatchActivity;
 import it.flube.driver.userInterfaceLayer.activities.offers.claimOffer.OfferClaimActivity;
+import it.flube.driver.userInterfaceLayer.activities.offers.personalOffers.PersonalOffersActivity;
 import it.flube.driver.userInterfaceLayer.activities.offers.publicOffers.PublicOffersActivity;
-import it.flube.driver.userInterfaceLayer.activities.scheduledBatches.BatchManageActivity;
+import it.flube.driver.userInterfaceLayer.activities.scheduledBatches.manageBatch.BatchManageActivity;
 import it.flube.driver.userInterfaceLayer.activities.scheduledBatches.BatchMapActivity;
 import it.flube.driver.userInterfaceLayer.activities.signIn.SignInActivity;
 import it.flube.driver.userInterfaceLayer.activities.messages.MessagesActivity;
-import it.flube.driver.userInterfaceLayer.activities.scheduledBatches.ScheduledBatchesActivity;
+import it.flube.driver.userInterfaceLayer.activities.scheduledBatches.scheduledBatchList.ScheduledBatchesActivity;
 import it.flube.driver.userInterfaceLayer.activities.splashScreen.SplashScreenActivity;
 import timber.log.Timber;
 
@@ -34,24 +39,37 @@ public class ActivityNavigator {
 
     public ActivityNavigator(){}
 
+    public void gotoActivityHome(Context context){
+        context.startActivity(new Intent(context, HomeNoActiveBatchActivity.class));
+        Timber.tag(TAG).d("starting activity HomeNoActiveBatchActivity.class");
+    }
+
+    public void gotoBatchItinerary(Context context){
+        context.startActivity(new Intent(context, BatchItineraryActivity.class));
+        Timber.tag(TAG).d("starting activity BatchItineraryActivity.class");
+    }
+
+    public void gotoOrderItinerary(Context context){
+        context.startActivity(new Intent(context, OrderItineraryActivity.class));
+        Timber.tag(TAG).d("starting activity OrderItineraryActivity.class");
+    }
+
     public void gotoActivityAccount(Context context) {
         context.startActivity(new Intent(context, AccountActivity.class));
         Timber.tag(TAG).d("starting activity AccountActivity.class");
     }
 
-    public void gotoActivityHome(Context context){
-        //TODO need to add logic to determine which home activity to go to, home active batch or home no active batch
-        //
-        if (AndroidDevice.getInstance().getUser().hasActiveBatch()) {
-            context.startActivity(new Intent(context, HomeActiveBatchActivity.class));
-            Timber.tag(TAG).d("starting activity HomeActiveBatchActivity.class");
-        } else {
-            context.startActivity(new Intent(context, HomeNoActiveBatchActivity.class));
-            Timber.tag(TAG).d("starting activity HomeNoActiveBatchActivity.class");
+    public void gotoActiveBatchStep(Context context, OrderStepInterface.TaskType taskType){
+        Timber.tag(TAG).d("gotoActiveBatchStep...");
+        switch (taskType){
+            case NAVIGATION:
+                Timber.tag(TAG).d("  ...starting NavigationActivity.class");
+                context.startActivity(new Intent(context, NavigationActivity.class));
+                break;
         }
     }
 
-    public void gotoActivityDemo(Context context) {
+    public void gotoActivityDemoOffers(Context context) {
         context.startActivity(new Intent(context, DemoOffersActivity.class));
         Timber.tag(TAG).d("starting activity DemoOffersActivity.class");
     }
@@ -76,7 +94,12 @@ public class ActivityNavigator {
         Timber.tag(TAG).d("starting activity MessagesActivity.class");
     }
 
-    public void gotoActivityOffers(Context context) {
+    public void gotoActivityPersonalOffers(Context context){
+        context.startActivity(new Intent(context, PersonalOffersActivity.class));
+        Timber.tag(TAG).d("starting activity PersonalOffersActivity.class");
+    }
+
+    public void gotoActivityPublicOffers(Context context) {
         context.startActivity(new Intent(context, PublicOffersActivity.class));
         Timber.tag(TAG).d("starting activity PublicOffersActivity.class");
     }

@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import it.flube.driver.R;
 import it.flube.driver.userInterfaceLayer.ActivityNavigator;
-import it.flube.driver.userInterfaceLayer.DrawerMenu;
+import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import timber.log.Timber;
 
 /**

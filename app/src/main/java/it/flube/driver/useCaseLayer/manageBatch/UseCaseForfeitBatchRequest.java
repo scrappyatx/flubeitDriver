@@ -14,21 +14,21 @@ import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 
 public class UseCaseForfeitBatchRequest implements Runnable {
     private final MobileDeviceInterface device;
-    private final BatchCloudDB batch;
+    private final String batchGuid;
     private final UseCaseForfeitBatchRequest.Response response;
 
-    public UseCaseForfeitBatchRequest(MobileDeviceInterface device, BatchCloudDB batch, UseCaseForfeitBatchRequest.Response response){
+    public UseCaseForfeitBatchRequest(MobileDeviceInterface device, String batchGuid, UseCaseForfeitBatchRequest.Response response){
         this.device = device;
         this.response = response;
-        this.batch = batch;
+        this.batchGuid = batchGuid;
     }
 
     public void run(){
-        device.getRealtimeBatchMessages().sendMsgForfeitBatch(batch.getOrderOID());
-        response.forfeitBatchComplete(batch);
+        device.getRealtimeBatchMessages().sendMsgForfeitBatch(batchGuid);
+        response.forfeitBatchComplete(batchGuid);
     }
 
     public interface Response {
-        void forfeitBatchComplete(BatchCloudDB batch);
+        void forfeitBatchComplete(String batchGuid);
     }
 }

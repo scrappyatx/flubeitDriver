@@ -19,33 +19,40 @@ public class ServiceOrder {
     public enum ServiceOrderStatus {
         NOT_STARTED,
         ACTIVE,
+        PAUSED,
         COMPLETED_SUCCESS,
         COMPLETED_PROBLEM,
     }
 
     private String guid;
+    private String batchGuid;
+    private String batchDetailGuid;
+
     private String title;
     private String description;
 
+    private Integer sequence;
+    private Integer totalSteps;
     private ServiceOrderStatus status;
 
     private Timestamp startTime;
     private Timestamp finishTime;
 
-    private Integer stepIndex;
-    private ArrayList<ServiceOrderAbstractStep> stepList;
 
-    private ArrayList<MapPing> mapPingList;
-    private ArrayList<ChatMessage> driverChatHistory;
-    private ArrayList<ChatMessage> serviceProviderChatHistory;
-    private ArrayList<ChatMessage> customerChatHistory;
-
-    public String getGUID() {
-        return guid;
+    public String getBatchGuid() {
+        return batchGuid;
     }
 
-    public void setGUID(String guid) {
-        this.guid = guid;
+    public void setBatchGuid(String batchGuid) {
+        this.batchGuid = batchGuid;
+    }
+
+    public String getBatchDetailGuid() {
+        return batchDetailGuid;
+    }
+
+    public void setBatchDetailGuid(String batchDetailGuid) {
+        this.batchDetailGuid = batchDetailGuid;
     }
 
     public String getTitle() {
@@ -72,6 +79,22 @@ public class ServiceOrder {
         this.status = status;
     }
 
+    public Integer getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Integer sequence) {
+        this.sequence = sequence;
+    }
+
+    public Integer getTotalSteps() {
+        return totalSteps;
+    }
+
+    public void setTotalSteps(Integer totalSteps) {
+        this.totalSteps = totalSteps;
+    }
+
     public Timestamp getStartTime() {
         return startTime;
     }
@@ -88,51 +111,12 @@ public class ServiceOrder {
         this.finishTime = finishTime;
     }
 
-    public Integer getStepIndex() {
-        return stepIndex;
+    public String getGuid() {
+        return guid;
     }
 
-    public void setStepIndex(Integer stepIndex) {
-        this.stepIndex = stepIndex;
+    public void setGuid(String guid) {
+        this.guid = guid;
     }
 
-    public ArrayList<ServiceOrderAbstractStep> getStepList() {
-        return stepList;
-    }
-
-    public void setStepList(ArrayList<ServiceOrderAbstractStep> stepList) {
-        this.stepList = stepList;
-    }
-
-    public ArrayList<MapPing> getMapPingList() {
-        return mapPingList;
-    }
-
-    public void setMapPingList (ArrayList<MapPing> mapPingList) {
-        this.mapPingList = mapPingList;
-    }
-
-    public ArrayList<ChatMessage> getDriverChatHistory() {
-        return driverChatHistory;
-    }
-
-    public void setDriverChatHistory(ArrayList<ChatMessage> driverChatHistory) {
-        this.driverChatHistory = driverChatHistory;
-    }
-
-    public ArrayList<ChatMessage> getServiceProviderChatHistory() {
-        return serviceProviderChatHistory;
-    }
-
-    public void setServiceProviderChatHistory(ArrayList<ChatMessage> serviceProviderChatHistory) {
-        this.serviceProviderChatHistory = serviceProviderChatHistory;
-    }
-
-    public ArrayList<ChatMessage> getCustomerChatHistory() {
-        return customerChatHistory;
-    }
-
-    public void setCustomerChatHistory(ArrayList<ChatMessage> customerChatHistory) {
-        this.customerChatHistory = customerChatHistory;
-    }
 }

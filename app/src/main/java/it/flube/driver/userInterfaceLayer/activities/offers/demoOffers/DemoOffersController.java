@@ -4,21 +4,22 @@
 
 package it.flube.driver.userInterfaceLayer.activities.offers.demoOffers;
 
-import android.util.Log;
-
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.dataLayer.DemoBatchCreation.DemoNearbyPhotos;
+import it.flube.driver.dataLayer.DemoBatchCreation.DemoBatchNearbyPhotos;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.OfferSelectedResponseHandler;
+import it.flube.driver.dataLayer.userInterfaceEvents.batchAlerts.ShowDemoOfferCreatedAlertEvent;
 import it.flube.driver.modelLayer.entities.Offer;
+import it.flube.driver.modelLayer.entities.batch.Batch;
+import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import it.flube.driver.useCaseLayer.claimOffer.UseCaseOfferSelected;
-import it.flube.driver.useCaseLayer.generateOffer.UseCaseMakeDemoOfferRequest;
+import it.flube.driver.useCaseLayer.generateDemoBatch.UseCaseMakeDemoBatchRequest;
+import it.flube.driver.useCaseLayer.listenForOffers.UseCaseListenForOffers;
 import it.flube.driver.userInterfaceLayer.activities.offers.OffersListAdapter;
-import it.flube.driver.userInterfaceLayer.activities.offers.claimOffer.OfferClaimAlerts;
 import timber.log.Timber;
 
 /**
@@ -28,31 +29,39 @@ import timber.log.Timber;
 
 public class DemoOffersController implements
         OffersListAdapter.Response,
-        UseCaseMakeDemoOfferRequest.Response {
+        UseCaseMakeDemoBatchRequest.Response {
     private final String TAG = "DemoOffersController";
     private ExecutorService useCaseExecutor;
+    private MobileDeviceInterface device;
 
     public DemoOffersController() {
-        useCaseExecutor = Executors.newSingleThreadExecutor();
+        device = AndroidDevice.getInstance();
+        useCaseExecutor = device.getUseCaseEngine().getUseCaseExecutor();
+
         Timber.tag(TAG).d("DemoOffersController CREATED");
     }
 
+    public void listenForOffers(){
+        useCaseExecutor.execute(new UseCaseListenForOffers(device));
+    }
+
     public void doMakeDemoOffer(){
-        useCaseExecutor.execute(new UseCaseMakeDemoOfferRequest(AndroidDevice.getInstance(), new DemoNearbyPhotos(), this));
+        useCaseExecutor.execute(new UseCaseMakeDemoBatchRequest(device, new DemoBatchNearbyPhotos(), this));
         Timber.tag(TAG).d("make demo offer REQUEST...");
     }
 
-    public void makeDemoOfferComplete(){
-        Timber.tag(TAG).d("...make demo offer COMPLETE!");
-        EventBus.getDefault().postSticky(new DemoOfferAlerts.ShowDemoOfferCreatedAlertEvent());
+    public void makeDemoBatchComplete(){
+        Timber.tag(TAG).d("...make demo batch COMPLETE!");
+        EventBus.getDefault().postSticky(new ShowDemoOfferCreatedAlertEvent());
     }
 
-    public void offerSelected(Offer offer) {
-        Timber.tag(TAG).d("offer Selected --> " + offer.getGUID());
-        useCaseExecutor.execute(new UseCaseOfferSelected(offer, new OfferSelectedResponseHandler()));
+    public void offerSelected(Batch offer) {
+        Timber.tag(TAG).d("offer Selected --> " + offer.getGuid());
+        useCaseExecutor.execute(new UseCaseOfferSelected(device, offer, new OfferSelectedResponseHandler()));
     }
 
     public void close(){
-        useCaseExecutor.shutdown();
+        device = null;
+        useCaseExecutor = null;
     }
 }

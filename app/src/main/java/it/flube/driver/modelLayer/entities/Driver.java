@@ -24,6 +24,7 @@ public class Driver {
     private String demoOffersNode;
     private String scheduledBatchesNode;
     private String activeBatchNode;
+    private String batchDataNode;
 
     public Driver() {}
 
@@ -95,4 +96,11 @@ public class Driver {
 
     public String getActiveBatchNode(){ return activeBatchNode;}
 
+    public String getBatchDataNode() {
+        return batchDataNode;
+    }
+
+    public void setBatchDataNode(String batchDataNode) {
+        this.batchDataNode = batchDataNode;
+    }
 }

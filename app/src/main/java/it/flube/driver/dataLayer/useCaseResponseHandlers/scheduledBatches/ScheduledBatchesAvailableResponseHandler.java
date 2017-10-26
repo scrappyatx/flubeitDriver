@@ -8,6 +8,12 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
+import it.flube.driver.dataLayer.AndroidDevice;
+import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.PersonalOfferCountUpdatedEvent;
+import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.PersonalOfferListUpdatedEvent;
+import it.flube.driver.dataLayer.userInterfaceEvents.scheduledBatchListUpdates.ScheduledBatchCountUpdateEvent;
+import it.flube.driver.dataLayer.userInterfaceEvents.scheduledBatchListUpdates.ScheduledBatchListUpdateEvent;
+import it.flube.driver.modelLayer.entities.batch.Batch;
 import it.flube.driver.modelLayer.entities.batch.BatchCloudDB;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import timber.log.Timber;
@@ -20,28 +26,15 @@ import timber.log.Timber;
 public class ScheduledBatchesAvailableResponseHandler implements CloudDatabaseInterface.ScheduledBatchesUpdated {
     private static final String TAG = "ScheduledBatchesAvailableResponseHandler";
 
-    public void cloudDatabaseScheduledBatchesUpdated(ArrayList<BatchCloudDB> batchList) {
+    public void cloudDatabaseScheduledBatchesUpdated(ArrayList<Batch> batchList) {
         Timber.tag(TAG).d("scheduled batches available from cloud database");
-        EventBus.getDefault().postSticky(new ScheduledBatchesAvailableResponseHandler.ScheduledBatchUpdateEvent(batchList));
+
+        AndroidDevice.getInstance().getOfferLists().setScheduledBatches(batchList);
+        EventBus.getDefault().post(new ScheduledBatchCountUpdateEvent());
+        EventBus.getDefault().post(new ScheduledBatchListUpdateEvent());
+
+        //EventBus.getDefault().postSticky(new ScheduledBatchesAvailableResponseHandler.ScheduledBatchUpdateEvent(batchList));
     }
 
-    public static class ScheduledBatchUpdateEvent {
-        private ArrayList<BatchCloudDB> batchList;
-        private int batchCount;
-
-        public ScheduledBatchUpdateEvent(ArrayList<BatchCloudDB> batchList){
-            this.batchList = batchList;
-            this.batchCount = batchList.size();
-        }
-
-        public ArrayList<BatchCloudDB> getBatchList() {
-            return batchList;
-        }
-
-        public int getBatchCount() {
-            return batchCount;
-        }
-
-    }
 
 }

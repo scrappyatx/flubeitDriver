@@ -27,9 +27,13 @@ public class LocationEngineWrapper implements LocationTelemetryInterface, Locati
     private LocationTrackingStartResponse response;
     private LocationTrackingPositionChanged update;
 
+    private Boolean lastGoodPositionSaved;
+    private LatLonLocation lastGoodPosition;
+
     public LocationEngineWrapper(Context appContext){
         //locationEngine = LostLocationEngine.getLocationEngine(appContext);
         locationEngine = AndroidLocationEngine.getLocationEngine(appContext);
+        lastGoodPositionSaved = false;
     }
 
     public void locationTrackingStartRequest(LocationTrackingStartResponse response, LocationTrackingPositionChanged update) {
@@ -69,8 +73,19 @@ public class LocationEngineWrapper implements LocationTelemetryInterface, Locati
             position.setLatitude(location.getLatitude());
             position.setLongitude(location.getLongitude());
 
+            lastGoodPositionSaved = true;
+            lastGoodPosition = position;
+
             update.positionChanged(position);
         }
+    }
+
+    public Boolean hasLastGoodPosition(){
+        return lastGoodPositionSaved;
+    }
+
+    public LatLonLocation getLastGoodPosition(){
+        return lastGoodPosition;
     }
 
 }

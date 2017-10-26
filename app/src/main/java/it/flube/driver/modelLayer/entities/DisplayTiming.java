@@ -13,6 +13,7 @@ public class DisplayTiming {
     private String date;
     private String duration;
     private String hours;
+    private String offerExpiryDate;
 
     public String getDate() {
         return date;
@@ -36,5 +37,13 @@ public class DisplayTiming {
 
     public void setHours(String hours) {
         this.hours = hours;
+    }
+
+    public String getOfferExpiryDate() {
+        return offerExpiryDate;
+    }
+
+    public void setOfferExpiryDate(String offerExpiryDate) {
+        this.offerExpiryDate = offerExpiryDate;
     }
 }

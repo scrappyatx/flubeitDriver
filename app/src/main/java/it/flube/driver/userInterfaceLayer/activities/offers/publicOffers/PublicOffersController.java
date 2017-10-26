@@ -9,6 +9,7 @@ import java.util.concurrent.Executors;
 
 import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.OfferSelectedResponseHandler;
 import it.flube.driver.modelLayer.entities.Offer;
+import it.flube.driver.modelLayer.entities.batch.Batch;
 import it.flube.driver.useCaseLayer.claimOffer.UseCaseOfferSelected;
 import it.flube.driver.userInterfaceLayer.activities.offers.OffersListAdapter;
 import timber.log.Timber;
@@ -26,9 +27,9 @@ public class PublicOffersController implements OffersListAdapter.Response {
         useCaseExecutor = Executors.newSingleThreadExecutor();
     }
 
-    public void offerSelected(Offer offer) {
-        Timber.tag(TAG).d("offer Selected --> " + offer.getGUID());
-        useCaseExecutor.execute(new UseCaseOfferSelected(offer, new OfferSelectedResponseHandler()));
+    public void offerSelected(Batch offer) {
+        Timber.tag(TAG).d("offer Selected --> " + offer.getGuid());
+        //useCaseExecutor.execute(new UseCaseOfferSelected(offer, new OfferSelectedResponseHandler()));
     }
 
     public void close(){

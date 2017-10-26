@@ -10,4 +10,6 @@ package it.flube.driver.useCaseLayer.manageBatch;
  */
 
 public class UseCaseStartBatchRequest {
+
+    
 }

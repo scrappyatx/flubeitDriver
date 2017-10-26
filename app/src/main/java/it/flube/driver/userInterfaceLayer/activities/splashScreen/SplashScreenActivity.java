@@ -15,6 +15,7 @@ import it.flube.driver.R;
 import it.flube.driver.dataLayer.DeviceCheck;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.signInAndSignOut.SignInFromDeviceStorageResponseHandler;
 import it.flube.driver.userInterfaceLayer.ActivityNavigator;
+import it.flube.driver.userInterfaceLayer.UserInterfaceEventHandler;
 import it.flube.driver.userInterfaceLayer.activities.PermissionsCheckActivity;
 import timber.log.Timber;
 
@@ -23,6 +24,7 @@ public class SplashScreenActivity extends AppCompatActivity implements DeviceChe
     private static final String TAG = "SplashScreenActivity";
     private SplashScreenController controller;
     private ActivityNavigator navigator;
+    private UserInterfaceEventHandler eventHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class SplashScreenActivity extends AppCompatActivity implements DeviceChe
         EventBus.getDefault().register(this);
 
         navigator = new ActivityNavigator();
+        eventHandler = new UserInterfaceEventHandler(this, navigator);
         controller = new SplashScreenController(getApplicationContext(), this);
 
         Timber.tag(TAG).d("about to check for google play services");
@@ -54,6 +57,7 @@ public class SplashScreenActivity extends AppCompatActivity implements DeviceChe
         Timber.tag(TAG).d("onPermissionPause");
 
         EventBus.getDefault().unregister(this);
+        eventHandler.close();
         controller.close();
     }
 

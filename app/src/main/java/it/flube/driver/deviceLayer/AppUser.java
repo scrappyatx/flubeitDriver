@@ -74,12 +74,12 @@ public class AppUser implements AppUserInterface {
     }
 
     public Batch getActiveBatch() {
-        Timber.tag(TAG).d("getActiveBatch --> " + activeBatch.getGUID());
+        Timber.tag(TAG).d("getActiveBatch --> " + activeBatch.getGuid());
         return activeBatch;
     }
 
     public void setActiveBatch(@NonNull Batch batch) {
-        Timber.tag(TAG).d("setActiveBatch --> " + activeBatch.getGUID());
+        Timber.tag(TAG).d("setActiveBatch --> " + activeBatch.getGuid());
         activeBatch = batch;
     }
 

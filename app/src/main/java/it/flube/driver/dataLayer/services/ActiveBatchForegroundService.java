@@ -13,18 +13,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
-
-import com.rollbar.android.Rollbar;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 
 import it.flube.driver.R;
-import it.flube.driver.dataLayer.messaging.RealtimeMessaging;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.OffersAvailableResponseHandler;
 import timber.log.Timber;
 
 

@@ -8,7 +8,14 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
+import it.flube.driver.dataLayer.AndroidDevice;
+import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.DemoOfferCountUpdatedEvent;
+import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.DemoOfferOfferListUpdatedEvent;
+import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.PersonalOfferCountUpdatedEvent;
+import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.PersonalOfferListUpdatedEvent;
+import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.PersonalOffersUpdatedEvent;
 import it.flube.driver.modelLayer.entities.Offer;
+import it.flube.driver.modelLayer.entities.batch.Batch;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import timber.log.Timber;
 
@@ -20,29 +27,13 @@ import timber.log.Timber;
 public class PersonalOffersAvailableResponseHandler implements CloudDatabaseInterface.PersonalOffersUpdated {
     private static final String TAG = "PersonalOffersAvailableResponseHandler";
 
-    public void cloudDatabasePersonalOffersUpdated(ArrayList<Offer> offerList) {
+    public void cloudDatabasePersonalOffersUpdated(ArrayList<Batch> offerList) {
         Timber.tag(TAG).d("personal offers available from cloud database");
-        EventBus.getDefault().postSticky(new PersonalOffersAvailableResponseHandler.AvailablePersonalOffersEvent(offerList));
-    }
 
-
-    public static class AvailablePersonalOffersEvent {
-        private ArrayList<Offer> offerList;
-        private int offerCount;
-
-        public AvailablePersonalOffersEvent(ArrayList<Offer> offerList){
-            this.offerList = offerList;
-            this.offerCount = offerList.size();
-        }
-
-        public ArrayList<Offer> getOfferList() {
-            return offerList;
-        }
-
-        public int getOfferCount() {
-            return offerCount;
-        }
-
+        AndroidDevice.getInstance().getOfferLists().setPersonalOffers(offerList);
+        EventBus.getDefault().post(new PersonalOfferCountUpdatedEvent());
+        EventBus.getDefault().post(new PersonalOfferListUpdatedEvent());
+        //EventBus.getDefault().postSticky(new PersonalOffersUpdatedEvent(offerList));
     }
 
 }

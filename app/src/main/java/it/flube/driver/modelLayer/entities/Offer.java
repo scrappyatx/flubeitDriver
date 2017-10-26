@@ -4,9 +4,6 @@
 
 package it.flube.driver.modelLayer.entities;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.util.ArrayList;
 
 /**
@@ -29,7 +26,7 @@ public class Offer {
     private String offerTime;
     private String offerDuration;
 
-    private ArrayList<RoutingStop> routeList;
+    private ArrayList<RouteStop> routeList;
 
     private String serviceDescription;
 
@@ -85,11 +82,11 @@ public class Offer {
         this.offerDuration = offerDuration;
     }
 
-    public ArrayList<RoutingStop> getRouteList() {
+    public ArrayList<RouteStop> getRouteList() {
         return routeList;
     }
 
-    public void setRouteList(ArrayList<RoutingStop> routeList) {
+    public void setRouteList(ArrayList<RouteStop> routeList) {
         this.routeList = routeList;
     }
 

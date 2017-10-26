@@ -8,11 +8,11 @@ import android.support.annotation.NonNull;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.UUID;
 
 import it.flube.driver.modelLayer.entities.Destination;
-import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrderAbstractStep;
-import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrderNavigationStep;
+import it.flube.driver.modelLayer.entities.orderStep.ServiceOrderAbstractStep;
+import it.flube.driver.modelLayer.entities.orderStep.ServiceOrderNavigationStep;
+import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
 
 /**
  * Created on 8/24/2017
@@ -35,16 +35,36 @@ public class NavigationStepBuilder {
 
         public Builder(){
             navStep = new ServiceOrderNavigationStep();
-            navStep.setGUID(UUID.randomUUID().toString());
+            navStep.setGuid(BuilderUtilities.generateGuid());
             navStep.setAtDestination(false);
-            navStep.setWorkStage(ServiceOrderAbstractStep.WorkStage.NOT_STARTED);
-            navStep.setWorkTiming(ServiceOrderAbstractStep.WorkTiming.NOT_APPLICABLE);
-            navStep.setWorkStatus(ServiceOrderAbstractStep.WorkStatus.NOT_APPLICABLE);
+            navStep.setWorkStage(OrderStepInterface.WorkStage.NOT_STARTED);
+            navStep.setWorkTiming(OrderStepInterface.WorkTiming.NOT_APPLICABLE);
+            navStep.setWorkStatus(OrderStepInterface.WorkStatus.NOT_APPLICABLE);
             navStep.setCloseEnoughInFeet(300); //default value is 300 feet
         }
 
         public Builder guid(@NonNull String guid) {
-            this.navStep.setGUID(guid);
+            this.navStep.setGuid(guid);
+            return this;
+        }
+
+        public Builder batchGuid(@NonNull String guid){
+            this.navStep.setBatchGuid(guid);
+            return this;
+        }
+
+        public Builder batchDetailGuid(@NonNull String guid){
+            this.navStep.setBatchDetailGuid(guid);
+            return this;
+        }
+
+        public Builder serviceOrderGuid(@NonNull String guid){
+            this.navStep.setGuid(guid);
+            return this;
+        }
+
+        public Builder sequence(@NonNull Integer sequence){
+            this.navStep.setSequence(sequence);
             return this;
         }
 
@@ -63,30 +83,31 @@ public class NavigationStepBuilder {
             return this;
         }
 
-        private Date addMinutesToDate(@NonNull Date initialDate, @NonNull Integer minutesToAdd){
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(initialDate);
-            cal.add(Calendar.MINUTE, minutesToAdd);
-            return cal.getTime();
-        }
-
         public Builder startTime(@NonNull Date startTime) {
-            this.navStep.setStartTime(new TimestampBuilder.Builder(startTime).build());
+            this.navStep.setStartTime(new TimestampBuilder.Builder()
+                    .scheduledTime(startTime)
+                    .build());
             return this;
         }
 
         public Builder startTime(@NonNull Date startTime, @NonNull Integer minutesToAdd) {
-            this.navStep.setStartTime(new TimestampBuilder.Builder(addMinutesToDate(startTime, minutesToAdd)).build());
+            this.navStep.setStartTime(new TimestampBuilder.Builder()
+                    .scheduledTime(BuilderUtilities.addMinutesToDate(startTime, minutesToAdd))
+                    .build());
             return this;
         }
 
         public Builder finishTime(@NonNull Date finishTime) {
-            this.navStep.setFinishTime(new TimestampBuilder.Builder(finishTime).build());
+            this.navStep.setFinishTime(new TimestampBuilder.Builder()
+                    .scheduledTime(finishTime)
+                    .build());
             return this;
         }
 
         public Builder finishTime(@NonNull Date finishTime, @NonNull Integer minutesToAdd) {
-            this.navStep.setStartTime(new TimestampBuilder.Builder(addMinutesToDate(finishTime, minutesToAdd)).build());
+            this.navStep.setFinishTime(new TimestampBuilder.Builder()
+                    .scheduledTime(BuilderUtilities.addMinutesToDate(finishTime, minutesToAdd))
+                    .build());
             return this;
         }
 
@@ -107,39 +128,39 @@ public class NavigationStepBuilder {
 
         private void validateNavigationStep(@NonNull ServiceOrderNavigationStep navStep) {
             // required PRESENT (must not be null)
-            if (navStep.getGUID() == null) {
-                throw new IllegalStateException("GUID is null");
+            if (navStep.getGuid() == null) {
+                throw new IllegalStateException("navigation step GUID is null");
             }
 
             if (navStep.getTitle() == null) {
-                throw new IllegalStateException("title is null");
+                throw new IllegalStateException("navigation step title is null");
             }
 
             if (navStep.getDescription() == null) {
-                throw new IllegalStateException("description is null");
+                throw new IllegalStateException("navigation step description is null");
             }
 
             if (navStep.getDestination() == null) {
-                throw new IllegalStateException("destination is null");
+                throw new IllegalStateException("navigation step destination is null");
             }
 
             if (navStep.getStartTime() == null) {
-                throw new IllegalStateException("startTime is null");
+                throw new IllegalStateException("navigation step startTime is null");
             }
 
             if (navStep.getFinishTime() == null) {
-                throw new IllegalStateException("finishTime is null");
+                throw new IllegalStateException("navigation step finishTime is null");
             }
 
             if (navStep.getMilestoneWhenFinished() == null) {
-                throw new IllegalStateException("milestoneWhenFinished is null");
+                throw new IllegalStateException("navigation step milestoneWhenFinished is null");
             }
 
             //required ABSENT (must be null)
 
 
             //required SPECIFIC VALUE
-            if (navStep.getTaskType() != ServiceOrderAbstractStep.TaskType.NAVIGATION) {
+            if (navStep.getTaskType() != OrderStepInterface.TaskType.NAVIGATION) {
                 throw new IllegalStateException("taskType is not NAVIGATION");
             }
 
@@ -147,15 +168,15 @@ public class NavigationStepBuilder {
                 throw new IllegalStateException("atDestination is not FALSE");
             }
 
-            if (navStep.getWorkStage() != ServiceOrderAbstractStep.WorkStage.NOT_STARTED) {
+            if (navStep.getWorkStage() != OrderStepInterface.WorkStage.NOT_STARTED) {
                 throw new IllegalStateException("workStage is not NOT_STARTED");
             }
 
-            if (navStep.getWorkTiming() != ServiceOrderAbstractStep.WorkTiming.NOT_APPLICABLE) {
+            if (navStep.getWorkTiming() != OrderStepInterface.WorkTiming.NOT_APPLICABLE) {
                 throw new IllegalStateException("workTiming is not NOT_APPLICABLE");
             }
 
-            if (navStep.getWorkStatus() != ServiceOrderAbstractStep.WorkStatus.NOT_APPLICABLE) {
+            if (navStep.getWorkStatus() != OrderStepInterface.WorkStatus.NOT_APPLICABLE) {
                 throw new IllegalStateException("workStatus is not NOT_APPLICABLE");
             }
 

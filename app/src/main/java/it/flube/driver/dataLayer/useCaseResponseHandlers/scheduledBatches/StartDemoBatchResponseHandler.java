@@ -6,8 +6,9 @@ package it.flube.driver.dataLayer.useCaseResponseHandlers.scheduledBatches;
 
 import org.greenrobot.eventbus.EventBus;
 
+import it.flube.driver.dataLayer.userInterfaceEvents.demoBatch.DemoBatchStartedEvent;
 import it.flube.driver.modelLayer.entities.batch.Batch;
-import it.flube.driver.useCaseLayer.manageBatch.UseCaseStartBatchDemoRequest;
+import it.flube.driver.useCaseLayer.manageBatch.UseCaseStartDemoBatchRequest;
 import timber.log.Timber;
 
 /**
@@ -15,24 +16,11 @@ import timber.log.Timber;
  * Project : Driver
  */
 
-public class StartDemoBatchResponseHandler implements UseCaseStartBatchDemoRequest.Response {
+public class StartDemoBatchResponseHandler implements UseCaseStartDemoBatchRequest.Response {
     private final static String TAG = "StartDemoBatchResponseHandler";
 
-    public void startBatchDemoComplete(Batch activeBatch) {
-        Timber.tag(TAG).d("startBatchDemoComplete -> " + activeBatch.getGUID());
-        EventBus.getDefault().postSticky(new StartDemoBatchResponseHandler.UseCaseStartDemoBatchEvent(activeBatch));
+    public void startDemoBatchComplete(String batchGuid) {
+        Timber.tag(TAG).d("startBatchDemoComplete -> " + batchGuid);
+        EventBus.getDefault().postSticky(new DemoBatchStartedEvent());
     }
-
-    public static class UseCaseStartDemoBatchEvent {
-        private Batch batch;
-
-        public UseCaseStartDemoBatchEvent(Batch batch){
-            this.batch = batch;
-        }
-
-        public Batch getBatch(){
-            return batch;
-        }
-    }
-
 }

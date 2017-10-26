@@ -36,6 +36,7 @@ public class DeviceStorageSharedPrefs implements DeviceStorageInterface {
     private static final String FIELD_DEMO_OFFERS_NODE = "demoOffersNode";
     private static final String FIELD_SCHEDULED_BATCHES_NODE = "scheduledBatchesNode";
     private static final String FIELD_ACTIVE_BATCH_NODE = "activeBatchNode";
+    private static final String FIELD_BATCH_DATA_NODE = "batchDataNode";
 
     private SharedPreferences prefs;
 
@@ -50,7 +51,7 @@ public class DeviceStorageSharedPrefs implements DeviceStorageInterface {
                && prefs.contains(FIELD_IS_DEV) && prefs.contains(FIELD_IS_QA)
                && prefs.contains(FIELD_PUBLIC_OFFERS_NODE) && prefs.contains(FIELD_PERSONAL_OFFERS_NODE)
                && prefs.contains(FIELD_DEMO_OFFERS_NODE) && prefs.contains(FIELD_SCHEDULED_BATCHES_NODE)
-               && prefs.contains(FIELD_ACTIVE_BATCH_NODE);
+               && prefs.contains(FIELD_ACTIVE_BATCH_NODE) && prefs.contains(FIELD_BATCH_DATA_NODE);
     }
 
     public void loadRequest(DeviceStorageInterface.LoadResponse response) {
@@ -69,6 +70,7 @@ public class DeviceStorageSharedPrefs implements DeviceStorageInterface {
             driver.setDemoOffersNode(prefs.getString(FIELD_DEMO_OFFERS_NODE,null));
             driver.setScheduledBatchesNode(prefs.getString(FIELD_SCHEDULED_BATCHES_NODE,null));
             driver.setActiveBatchNode(prefs.getString(FIELD_ACTIVE_BATCH_NODE,null));
+            driver.setBatchDataNode(prefs.getString(FIELD_BATCH_DATA_NODE,null));
 
             Timber.tag(TAG).d("loadRequest -> Success");
             Timber.tag(TAG).d("     displayName -> " + driver.getDisplayName());
@@ -83,6 +85,7 @@ public class DeviceStorageSharedPrefs implements DeviceStorageInterface {
             Timber.tag(TAG).d("     demoOffersNode       -> " + driver.getDemoOffersNode());
             Timber.tag(TAG).d("     scheduledBatchesNode -> " + driver.getScheduledBatchesNode());
             Timber.tag(TAG).d("     activeBatchNode      -> " + driver.getActiveBatchNode());
+            Timber.tag(TAG).d("     batchDataNode        -> " + driver.getBatchDataNode());
 
             response.deviceStorageLoadSuccess(driver);
         } else {
@@ -110,6 +113,7 @@ public class DeviceStorageSharedPrefs implements DeviceStorageInterface {
         editor.putString(FIELD_DEMO_OFFERS_NODE, driver.getDemoOffersNode());
         editor.putString(FIELD_SCHEDULED_BATCHES_NODE, driver.getScheduledBatchesNode());
         editor.putString(FIELD_ACTIVE_BATCH_NODE, driver.getActiveBatchNode());
+        editor.putString(FIELD_BATCH_DATA_NODE, driver.getBatchDataNode());
 
         editor.apply();
 
@@ -126,6 +130,7 @@ public class DeviceStorageSharedPrefs implements DeviceStorageInterface {
         Timber.tag(TAG).d("     demoOffersNode       -> " + driver.getDemoOffersNode());
         Timber.tag(TAG).d("     scheduledBatchesNode -> " + driver.getScheduledBatchesNode());
         Timber.tag(TAG).d("     activeBatchNode      -> " + driver.getActiveBatchNode());
+        Timber.tag(TAG).d("     batchDataNode        -> " + driver.getBatchDataNode());
 
         response.deviceStorageSaveComplete();
     }
@@ -147,6 +152,7 @@ public class DeviceStorageSharedPrefs implements DeviceStorageInterface {
         editor.remove(FIELD_DEMO_OFFERS_NODE);
         editor.remove(FIELD_SCHEDULED_BATCHES_NODE);
         editor.remove(FIELD_ACTIVE_BATCH_NODE);
+        editor.remove(FIELD_BATCH_DATA_NODE);
 
         editor.apply();
 

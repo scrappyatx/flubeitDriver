@@ -39,6 +39,9 @@
     <string name="permission_rationale">Contacts permissions are needed for providing email completions.</string>
 
     -->
+    <!-- Strings related to MapBox access token -->
+    <string name="mapbox_access_token" translatable="false">pk.eyJ1Ijoic2NyYXBweWF0eCIsImEiOiJjajViNjNjNHUwdTNxMzNwMWg4ZWMwN2thIn0.olrIh8570OamyDRxCaHBuA</string>
+
     <!-- Strings related to PermissionsCheck activity -->
     <string-array name="permissions_check_required_dangerous_permissions">
         <item>android.permission.CAMERA</item>
@@ -55,6 +58,9 @@
 
     <!-- Strings related to navigation drawer menu -->
     <string name="nav_menu_home">Home</string>
+    <string name="nav_menu_batch_itinerary">Active Batch Itinerary</string>
+    <string name="nav_menu_order_itinerary">Active Order Itinerary</string>
+    <string name="nav_menu_current_step">Current Step</string>
     <string name="nav_menu_offers">Public Offers</string>
     <string name="nav_menu_personal_offers">Personal Offers</string>"
     <string name="nav_menu_scheduled_batches">Scheduled Work</string>
@@ -149,6 +155,24 @@
 
     <!-- Strings related to scheduled batches map activity layout -->
     <string name="batch_map_activity_title">Batch Location</string>
+
+    <!-- Strings related to navigation step activity layout -->
+
+    <string name="navigation_step_activity_title">Navigation Map</string>
+    <string name="navigation_step_start_navigation_button_caption">Start Navigation</string>
+    <string name="navigation_step_calculate_route_button_caption">Calculate Route</string>
+    <string name="navigation_step_user_has_arrived_button_caption">I\'ve arrived</string>
+
+    <!-- Strings related to batch itinerary activity layout -->
+    <string name="batch_itinerary_activity_title">Batch Itinerary</string>
+    <string name="batch_itinerary_tab_zero_caption">Orders</string>
+    <string name="batch_itinerary_tab_one_caption">Locations</string>
+
+    <!-- Strings related to order itinerary activity layout -->
+    <string name="order_itinerary_activity_title">Order Itinerary</string>
+    <string name="order_itinerary_tab_zero_caption">Tasks</string>
+    <string name="order_itinerary_tab_one_caption">Locations</string>
+
 
 
 </resources>

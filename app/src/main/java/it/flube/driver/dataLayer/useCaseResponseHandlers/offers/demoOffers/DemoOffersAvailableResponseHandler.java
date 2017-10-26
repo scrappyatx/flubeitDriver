@@ -8,7 +8,12 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
+import it.flube.driver.dataLayer.AndroidDevice;
+import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.DemoOfferCountUpdatedEvent;
+import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.DemoOfferOfferListUpdatedEvent;
+import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.DemoOffersUpdatedEvent;
 import it.flube.driver.modelLayer.entities.Offer;
+import it.flube.driver.modelLayer.entities.batch.Batch;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import timber.log.Timber;
 
@@ -20,29 +25,14 @@ import timber.log.Timber;
 public class DemoOffersAvailableResponseHandler implements CloudDatabaseInterface.DemoOffersUpdated {
     private static final String TAG = "DemoOffersAvailableReponseHandler";
 
-    public void cloudDatabaseDemoOffersUpdated(ArrayList<Offer> offerList) {
+    public void cloudDatabaseDemoOffersUpdated(ArrayList<Batch> offerList) {
+
         Timber.tag(TAG).d("demo offers available from cloud database");
-        EventBus.getDefault().postSticky(new DemoOffersAvailableResponseHandler.AvailableDemoOffersEvent(offerList));
-    }
+        AndroidDevice.getInstance().getOfferLists().setDemoOffers(offerList);
+        EventBus.getDefault().post(new DemoOfferCountUpdatedEvent());
+        EventBus.getDefault().post(new DemoOfferOfferListUpdatedEvent());
 
-
-    public static class AvailableDemoOffersEvent {
-        private ArrayList<Offer> offerList;
-        private int offerCount;
-
-        public AvailableDemoOffersEvent(ArrayList<Offer> offerList){
-            this.offerList = offerList;
-            this.offerCount = offerList.size();
-        }
-
-        public ArrayList<Offer> getOfferList() {
-            return offerList;
-        }
-
-        public int getOfferCount() {
-            return offerCount;
-        }
+        //EventBus.getDefault().post(new DemoOffersUpdatedEvent(offerList));
 
     }
-
 }

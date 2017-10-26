@@ -4,18 +4,39 @@
 
 package it.flube.driver.deviceLayer.cloudDatabase;
 
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.demoOffers.DemoOffersAvailableResponseHandler;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.personalOffers.PersonalOffersAvailableResponseHandler;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.publicOffers.PublicOffersAvailableResponseHandler;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.scheduledBatches.ScheduledBatchesAvailableResponseHandler;
-import it.flube.driver.modelLayer.entities.Offer;
-import it.flube.driver.modelLayer.entities.batch.Batch;
+import java.util.ArrayList;
+
+import it.flube.driver.deviceLayer.cloudDatabase.activeBatch.FirebaseActiveBatchSaveCurrentData;
+import it.flube.driver.deviceLayer.cloudDatabase.activeBatch.activeBatchMonitor.FirebaseActiveBatchMonitor;
+import it.flube.driver.deviceLayer.cloudDatabase.batchData.FirebaseBatchDataDelete;
+import it.flube.driver.deviceLayer.cloudDatabase.batchData.FirebaseBatchDataSave;
+import it.flube.driver.deviceLayer.cloudDatabase.batchData.batchDetail.FirebaseBatchDetailGet;
+import it.flube.driver.deviceLayer.cloudDatabase.batchData.routeStops.FirebaseRouteStopListGet;
+import it.flube.driver.deviceLayer.cloudDatabase.batchData.serviceOrders.FirebaseServiceOrderGet;
+import it.flube.driver.deviceLayer.cloudDatabase.batchData.serviceOrders.FirebaseServiceOrderListGet;
+import it.flube.driver.deviceLayer.cloudDatabase.batchData.steps.FirebaseOrderStepListGet;
+import it.flube.driver.deviceLayer.cloudDatabase.offers.demoOffers.FirebaseDemoOffersAdd;
+import it.flube.driver.deviceLayer.cloudDatabase.offers.demoOffers.FirebaseDemoOffersMonitor;
+import it.flube.driver.deviceLayer.cloudDatabase.deviceAndUser.FirebaseDevice;
+import it.flube.driver.deviceLayer.cloudDatabase.deviceAndUser.FirebaseUser;
+import it.flube.driver.deviceLayer.cloudDatabase.offers.demoOffers.FirebaseDemoOffersRemove;
+import it.flube.driver.deviceLayer.cloudDatabase.offers.personalOffers.FirebasePersonalOffersMonitor;
+import it.flube.driver.deviceLayer.cloudDatabase.offers.publicOffers.FirebasePublicOffersMonitor;
+import it.flube.driver.deviceLayer.cloudDatabase.scheduledBatches.FirebaseScheduledBatchStart;
+import it.flube.driver.deviceLayer.cloudDatabase.scheduledBatches.FirebaseScheduledBatchesAdd;
+import it.flube.driver.deviceLayer.cloudDatabase.scheduledBatches.FirebaseScheduledBatchesMonitor;
+import it.flube.driver.deviceLayer.cloudDatabase.scheduledBatches.FirebaseScheduledBatchesRemove;
 import it.flube.driver.modelLayer.entities.DeviceInfo;
 import it.flube.driver.modelLayer.entities.Driver;
+import it.flube.driver.modelLayer.entities.RouteStop;
+import it.flube.driver.modelLayer.entities.batch.BatchDetail;
+import it.flube.driver.modelLayer.entities.batch.BatchHolder;
+import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
+import it.flube.driver.modelLayer.interfaces.AppRemoteConfigInterface;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
+import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
 import timber.log.Timber;
 
 /**
@@ -23,160 +44,239 @@ import timber.log.Timber;
  * Project : Driver
  */
 
-public class CloudDatabaseFirebaseWrapper implements CloudDatabaseInterface {
+public class CloudDatabaseFirebaseWrapper implements
+        CloudDatabaseInterface {
+
     ///  Singleton class using Initialization-on-demand holder idiom
     ///  ref: https://en.wikipedia.org/wiki/Initialization-on-demand_holder_idiom
     private static class Loader {
-        static volatile CloudDatabaseFirebaseWrapper mInstance = new CloudDatabaseFirebaseWrapper();
+        static volatile CloudDatabaseFirebaseWrapper instance = new CloudDatabaseFirebaseWrapper();
     }
 
-    private CloudDatabaseFirebaseWrapper() {
-        setupFirebaseDatabaseForOfflinePersistence();
-    }
+    private CloudDatabaseFirebaseWrapper() {}
 
     public static CloudDatabaseFirebaseWrapper getInstance() {
-        return CloudDatabaseFirebaseWrapper.Loader.mInstance;
+        return CloudDatabaseFirebaseWrapper.Loader.instance;
     }
 
     private static final String TAG = "CloudDatabaseFirebaseWrapper";
 
     private FirebaseDatabase database;
-    private DatabaseReference publicOffers;
-    private DatabaseReference personalOffers;
-    private DatabaseReference demoOffers;
-    private DatabaseReference scheduledBatches;
+    private Driver driver;
 
-    private CloudDatabaseInterface.SaveActiveBatchResponse saveActiveBatchResponse;
+    private String demoOffersNode;
+    private String userNode;
+    private String deviceNode;
+    private String batchDataNode;
+    private String scheduledBatchesNode;
+    private String personalOffersNode;
+    private String publicOffersNode;
+    private String activeBatchNode;
 
-    private void setupFirebaseDatabaseForOfflinePersistence(){
+    private String syncNodeForUserOwnedData;
+    private String syncNodeForPublicOffers;
+    private String syncNodeForPersonalOffers;
+
+    private FirebaseDemoOffersMonitor firebaseDemoOffersMonitor;
+    private FirebasePublicOffersMonitor firebasePublicOffersMonitor;
+    private FirebasePersonalOffersMonitor firebasePersonalOffersMonitor;
+    private FirebaseScheduledBatchesMonitor firebaseScheduledBatchesMonitor;
+    private FirebaseActiveBatchMonitor firebaseActiveBatchMonitor;
+
+    public void connectRequest(AppRemoteConfigInterface remoteConfig, Driver driver, ConnectResponse response){
         database = FirebaseDatabase.getInstance();
         database.setPersistenceEnabled(true);
-        Timber.tag(TAG).d("FirebaseDatabase --> setPersistenceEnabled TRUE for OFFLINE persistence");
+        database.goOnline();
+        Timber.tag(TAG).d("setPersistenceEnabled TRUE for OFFLINE persistence");
+
+        this.driver = driver;
+
+        setupNodeStrings(remoteConfig, driver);
+
+        //setup database to sync mobile with backend on the sync nodes
+        database.getReference(syncNodeForUserOwnedData).keepSynced(true);
+        database.getReference(syncNodeForPublicOffers).keepSynced(true);
+        database.getReference(syncNodeForPersonalOffers).keepSynced(true);
+
+        //setup persistent objects for monitors
+        firebaseDemoOffersMonitor = new FirebaseDemoOffersMonitor(database.getReference(demoOffersNode), database.getReference(batchDataNode));
+        firebasePublicOffersMonitor = new FirebasePublicOffersMonitor(database.getReference(publicOffersNode), database.getReference(batchDataNode));
+        firebasePersonalOffersMonitor = new FirebasePersonalOffersMonitor(database.getReference(personalOffersNode), database.getReference(batchDataNode));
+        firebaseScheduledBatchesMonitor = new FirebaseScheduledBatchesMonitor(database.getReference(scheduledBatchesNode), database.getReference(batchDataNode));
+        firebaseActiveBatchMonitor = new FirebaseActiveBatchMonitor(database.getReference(activeBatchNode), database.getReference(batchDataNode));
+
+        response.cloudDatabaseConnectComplete();
     }
 
-    public void saveUserRequest(Driver driver, CloudDatabaseInterface.SaveResponse response) {
-        DatabaseReference usersRef = database.getReference("users");
+    private void setupNodeStrings(AppRemoteConfigInterface remoteConfig, Driver driver){
+        userNode = remoteConfig.getCloudDatabaseBaseNodeUserData();
+        Timber.tag(TAG).d("userNode = " + userNode);
 
-        FirebaseUser firebaseUser = new FirebaseUser();
-        firebaseUser.saveUserRequest(usersRef, driver, response);
+        deviceNode = remoteConfig.getCloudDatabaseBaseNodeDeviceData();
+        Timber.tag(TAG).d("deviceNode = " + deviceNode);
 
+        demoOffersNode = remoteConfig.getCloudDatabaseBaseNodeDemoOffers() + "/" + driver.getClientId() + "/" + driver.getDemoOffersNode();
+        Timber.tag(TAG).d("demoOffersNode = " + demoOffersNode);
+
+        publicOffersNode = remoteConfig.getCloudDatabaseBaseNodePublicOffers()+ "/" + driver.getClientId() + "/" + driver.getPublicOffersNode();
+        Timber.tag(TAG).d("publicOffersNode = " + publicOffersNode);
+
+        personalOffersNode = remoteConfig.getCloudDatabaseBaseNodePersonalOffers()+ "/" + driver.getClientId() + "/" + driver.getPersonalOffersNode();
+        Timber.tag(TAG).d("personalOffersNode = " + personalOffersNode);
+
+        batchDataNode = remoteConfig.getCloudDatabaseBaseNodeBatchData() + "/" + driver.getClientId() + "/" + driver.getBatchDataNode();
+        Timber.tag(TAG).d("batchDataNode = " + batchDataNode);
+
+        scheduledBatchesNode = remoteConfig.getCloudDatabaseBaseNodeScheduledBatches()+ "/" + driver.getClientId() + "/" + driver.getScheduledBatchesNode();
+        Timber.tag(TAG).d("scheduledBatchesNode = " + scheduledBatchesNode);
+
+        activeBatchNode = remoteConfig.getCloudDatabaseBaseNodeActiveBatch()+ "/" + driver.getClientId() + "/" + driver.getActiveBatchNode();
+        Timber.tag(TAG).d("activeBatchNode = " + activeBatchNode);
+
+        syncNodeForUserOwnedData = "userOwned/users" + "/" + driver.getClientId();
+        syncNodeForPublicOffers = "userReadable/publicOffers";
+        syncNodeForPersonalOffers = "userReadable/users" + "/" + driver.getClientId();
+    }
+
+    public void disconnect(){
+
+        firebaseDemoOffersMonitor = null;
+        firebaseDemoOffersMonitor = null;
+        firebasePersonalOffersMonitor = null;
+        firebaseScheduledBatchesMonitor = null;
+        firebaseActiveBatchMonitor = null;
+
+        database.goOffline();
+        database = null;
+    }
+
+    ///
+    ///     LISTENING FOR OFFERS
+    ///
+
+    public void startMonitoring(){
+        firebaseDemoOffersMonitor.startListening();
+        firebasePublicOffersMonitor.startListening();
+        firebasePersonalOffersMonitor.startListening();
+
+        firebaseScheduledBatchesMonitor.startListening();
+        firebaseActiveBatchMonitor.startListening();
+    }
+
+    public void stopMonitoring() {
+        firebaseDemoOffersMonitor.stopListening();
+        firebasePublicOffersMonitor.stopListening();
+        firebasePersonalOffersMonitor.stopListening();
+
+        firebaseScheduledBatchesMonitor.stopListening();
+        firebaseActiveBatchMonitor.stopListening();
+    }
+
+
+    ///
+    ///     USER METHODS
+    ///
+    public void saveUserRequest(CloudDatabaseInterface.SaveResponse response) {
+        FirebaseUser firebaseUser = new FirebaseUser(database, userNode);
+        firebaseUser.saveUserRequest(driver, response);
         Timber.tag(TAG).d("saving DRIVER object --> clientId : " + driver.getClientId() + " name : " + driver.getDisplayName());
+
+        firebaseUser.saveUserLastLogin(driver);
+        Timber.tag(TAG).d("saving DRIVER lastLogin --> clientId " + driver.getClientId() + " name : " + driver.getDisplayName());
     }
 
+    ///
+    ///    DEVICE INFO METHODS
+    ///
 
-    public void saveDeviceInfoRequest(Driver driver, DeviceInfo deviceInfo, SaveDeviceInfoResponse response) {
-        DatabaseReference deviceRef = database.getReference("userOwned/devices");
-
-        FirebaseDevice firebaseDevice = new FirebaseDevice();
-        firebaseDevice.saveDeviceInfoRequest(deviceRef, driver, deviceInfo, response);
-
+    public void saveDeviceInfoRequest(DeviceInfo deviceInfo, SaveDeviceInfoResponse response) {
+        FirebaseDevice firebaseDevice = new FirebaseDevice(database, deviceNode);
+        firebaseDevice.saveDeviceInfoRequest(driver, deviceInfo, response);
         Timber.tag(TAG).d("saving DEVICE INFO object --> device GUID : " + deviceInfo.getDeviceGUID());
     }
 
+    ///
+    ///     DEMO OFFER METHODS
+    ///
 
-    public void saveActiveBatchRequest(Driver driver, Batch batch, SaveActiveBatchResponse response) {
-        DatabaseReference batchRef = database.getReference("userOwned/users/" + driver.getClientId() + "/activeBatch");
-
-        FirebaseActiveBatch firebaseActiveBatch = new FirebaseActiveBatch();
-        firebaseActiveBatch.saveActiveBatchRequest(batchRef, driver, batch, response);
-
-        Timber.tag(TAG).d("saving ACTIVE BATCH ---> driver Id -> " + driver.getClientId() + " batchGUID --> " + batch.getGUID());
+    public void addDemoOfferToOfferListRequest(String batchGuid, CloudDatabaseInterface.AddDemoOfferToOfferListResponse response) {
+        new FirebaseDemoOffersAdd().addDemoOfferToOfferListRequest(database.getReference(demoOffersNode),batchGuid, response);
+        Timber.tag(TAG).d("add DEMO OFFER to offer list : batchGuid --> " + batchGuid);
     }
 
-    public void saveDemoOfferRequest(String baseNode, Driver driver, Offer offer, SaveDemoOfferResponse response) {
-        String targetNode = baseNode + "/" + driver.getClientId() + "/" + driver.getDemoOffersNode();
-
-        demoOffers = database.getReference(targetNode);
-        FirebaseDemoOffers firebaseDemoOffers = new FirebaseDemoOffers();
-        firebaseDemoOffers.saveDemoOfferRequest(demoOffers, offer, response);
-
-        Timber.tag(TAG).d("saving DEMO OFFER ---> driver Id -> " + driver.getClientId() + " offerOID--> " + offer.getGUID());
+    public void removeDemoOfferFromOfferListRequest(String batchGuid, RemoveDemoOfferFromOfferListResponse response) {
+        new FirebaseDemoOffersRemove().removeDemoOfferFromOfferListRequest(database.getReference(demoOffersNode), batchGuid, response);
+        Timber.tag(TAG).d("removing DEMO OFFER from offer list : batchGuid --> " + batchGuid);
     }
 
-    public void deleteDemoOfferRequest(String baseNode, Driver driver, Offer offer, DeleteDemoOfferResponse response) {
-        String targetNode = baseNode + "/" + driver.getClientId() + "/" + driver.getDemoOffersNode();
-
-        demoOffers = database.getReference(targetNode);
-        FirebaseDemoOffers firebaseDemoOffers = new FirebaseDemoOffers();
-
-        firebaseDemoOffers.deleteDemoOfferRequest(demoOffers, offer, response);
+    ///
+    ///    DEMO BATCH DATA METHODS
+    ///
+    public void saveDemoBatchDataRequest(BatchHolder batchHolder, SaveDemoBatchDataResponse response) {
+        new FirebaseBatchDataSave().saveDemoBatchDataRequest(database.getReference(batchDataNode), batchHolder, response);
+        Timber.tag(TAG).d("saving DEMO BATCH DATA ---> batch Guid -> " +  batchHolder.getBatch().getGuid());
     }
 
-    public void deleteAllDemoOffersRequest(String baseNode, Driver driver, DeleteAllDemoOfferResponse response) {
-        String targetNode = baseNode + "/" + driver.getClientId() + "/" + driver.getDemoOffersNode();
-
-        demoOffers = database.getReference(targetNode);
-        FirebaseDemoOffers firebaseDemoOffers = new FirebaseDemoOffers();
-        firebaseDemoOffers.deleteAllDemoOffersRequest(demoOffers, response);
-
-        Timber.tag(TAG).d("deleting all DEMO OFFERS ---> driver Id -> " + driver.getClientId());
-    }
-
-    public void saveDemoBatchRequest(String baseNode, Driver driver, Offer offer, SaveDemoBatchResponse response) {
-        String targetNode = baseNode + "/" + driver.getClientId() + "/" + driver.getScheduledBatchesNode();
-
-        DatabaseReference demoBatch = database.getReference(targetNode);
-        FirebaseDemoBatch firebaseDemoBatch = new FirebaseDemoBatch();
-        firebaseDemoBatch.saveDemoBatchRequest(demoBatch, offer, response);
-
-        Timber.tag(TAG).d("saving DEMO BATCH ---> offer GUID -> " + offer.getGUID());
-    }
-
-    public void deleteDemoBatchRequest(String baseNode, Driver driver, Offer offer, DeleteDemoBatchResponse response) {
-        String targetNode = baseNode + "/" + driver.getClientId() + "/" + driver.getScheduledBatchesNode();
-
-        DatabaseReference demoBatch = database.getReference(targetNode);
-        FirebaseDemoBatch firebaseDemoBatch = new FirebaseDemoBatch();
-        firebaseDemoBatch.deleteDemoBatchRequest(demoBatch, offer, response);
-
-        Timber.tag(TAG).d("deleting DEMO BATCH ---> offer GUID -> " + offer.getGUID());
-    }
-
-    public void loadActiveBatchRequest(Driver driver, CloudDatabaseInterface.LoadActiveBatchResponse response) {
-        DatabaseReference activeBatchRef = database.getReference("userOwned/users/" + driver.getClientId() + "/activeBatch");
-
-        FirebaseActiveBatch firebaseActiveBatch = new FirebaseActiveBatch();
-        firebaseActiveBatch.loadActiveBatchRequest(activeBatchRef, driver, response);
-
-        Timber.tag(TAG).d("loading ACTIVE BATCH ---> driver Id -> " + driver.getClientId());
+    public void deleteDemoBatchDataRequest(String batchGuid, DeleteDemoBatchDataResponse response) {
+        new FirebaseBatchDataDelete().deleteDemoBatchDataRequest(database.getReference(batchDataNode), batchGuid, response);
+        Timber.tag(TAG).d("deleting DEMO BATCH DATA ---> batch Guid -> " + batchGuid);
     }
 
 
-    public void listenForPublicOffers(String baseNode, Driver driver) {
-        String targetNode = baseNode + "/" + driver.getPublicOffersNode();
-
-        publicOffers = database.getReference(targetNode);
-        publicOffers.addValueEventListener(new FirebasePublicOffersEventListener(new PublicOffersAvailableResponseHandler()));
-
-        Timber.tag(TAG).d("listening for public offers at node --> " + targetNode);
+    public void addDemoBatchToScheduledBatchListRequest(String batchGuid, AddDemoBatchToScheduledBatchListResponse response) {
+        new FirebaseScheduledBatchesAdd().addDemoBatchToScheduledBatchListRequest(database.getReference(scheduledBatchesNode), batchGuid, response);
+        Timber.tag(TAG).d("adding batch to scheduled batch list : batch guid --> " + batchGuid);
     }
 
-    public void listenForPersonalOffers(String baseNode, Driver driver){
-        String targetNode = baseNode + "/" + driver.getClientId() + "/" + driver.getPersonalOffersNode();
-
-        personalOffers = database.getReference(targetNode);
-        personalOffers.addValueEventListener(new FirebasePersonalOffersEventListener(new PersonalOffersAvailableResponseHandler()));
-
-        Timber.tag(TAG).d("listening for personal offers at node --> " + targetNode);
+    public void removeDemoBatchFromScheduledBatchListRequest(String batchGuid, RemoveDemoBatchFromScheduledBatchListResponse response) {
+        new FirebaseScheduledBatchesRemove().removeDemoBatchFromScheduledBatchListRequest(database.getReference(scheduledBatchesNode), batchGuid, response);
+        Timber.tag(TAG).d("removing batch from scheduled batch list : batch guid --> " + batchGuid);
     }
 
-    public void listenForDemoOffers(String baseNode, Driver driver) {
-        String targetNode = baseNode + "/" + driver.getClientId() + "/" + driver.getDemoOffersNode();
-
-        demoOffers = database.getReference(targetNode);
-        demoOffers.addValueEventListener(new FirebaseDemoOffersEventListener(new DemoOffersAvailableResponseHandler()));
-
-        Timber.tag(TAG).d("listening for demo offers at node --> " + targetNode);
+    public void startDemoBatchRequest(String batchGuid, StartDemoBatchComplete response) {
+        new FirebaseScheduledBatchStart().startBatchRequest(database.getReference(activeBatchNode), batchGuid, response);
+        Timber.tag(TAG).d("starting demo batch : batchGuid " + batchGuid);
     }
 
 
-    public void listenForScheduledBatches(String baseNode, Driver driver) {
-        String targetNode = baseNode + "/" + driver.getClientId() + "/" + driver.getScheduledBatchesNode();
+    ///
+    ///  BATCH DETAIL METHODS
+    ///
+    public void getBatchDetailRequest(String batchGuid, GetBatchDetailResponse response) {
+        new FirebaseBatchDetailGet().getBatchDetailRequest(database.getReference(batchDataNode), batchGuid, response);
+        Timber.tag(TAG).d("getting batch detail for batch guid : " + batchGuid);
+    }
 
-        scheduledBatches = database.getReference(targetNode);
-        scheduledBatches.addValueEventListener(new FirebaseScheduledBatchEventListener(new ScheduledBatchesAvailableResponseHandler()));
+    /// ACTIVE BATCH METHODS
+    public void saveCurrentActiveBatchData(BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface orderStep, SaveCurrentActiveBatchDataResponse response) {
+        new FirebaseActiveBatchSaveCurrentData().saveCurrentActiveBatchData(database.getReference(batchDataNode),
+                batchDetail, serviceOrder, orderStep, response);
+        Timber.tag(TAG).d("saving current active batch data");
+    }
 
-        Timber.tag(TAG).d("listening for scheduled batches at node --> " + targetNode);
+    public  void gotoNextStepRequest(GotoNextStepResponse response){
+
+    }
+
+    /// BATCH INFORMATION METHODS
+
+    public void getServiceOrderListRequest(String batchGuid, CloudDatabaseInterface.GetServiceOrderListResponse response){
+        new FirebaseServiceOrderListGet().getServiceOrderListRequest(database.getReference(batchDataNode), batchGuid, response);
+        Timber.tag(TAG).d("getting service order list for batch guid : " + batchGuid);
+    }
+
+
+
+    public void getRouteStopListRequest(String batchGuid, CloudDatabaseInterface.GetRouteStopListResponse response){
+        new FirebaseRouteStopListGet().getRouteStopListRequest(database.getReference(batchDataNode), batchGuid, response);
+        Timber.tag(TAG).d("getting route stop list for batch guid : " + batchGuid);
+    }
+
+
+
+    public void getOrderStepListRequest(String batchGuid, String serviceOrderGuid, CloudDatabaseInterface.GetOrderStepListResponse response){
+        new FirebaseOrderStepListGet().getOrderStepList(database.getReference(batchDataNode), batchGuid, serviceOrderGuid, response);
+        Timber.tag(TAG).d("getting step list for batch guid : " + batchGuid + " service order guid " + serviceOrderGuid);
     }
 
 

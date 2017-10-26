@@ -7,6 +7,7 @@ package it.flube.driver.dataLayer.useCaseResponseHandlers.scheduledBatches;
 import org.greenrobot.eventbus.EventBus;
 
 import it.flube.driver.modelLayer.entities.batch.BatchCloudDB;
+import it.flube.driver.modelLayer.entities.batch.BatchDetail;
 import it.flube.driver.useCaseLayer.manageBatch.UseCaseBatchSelected;
 import timber.log.Timber;
 
@@ -18,20 +19,24 @@ import timber.log.Timber;
 public class BatchSelectedResponseHandler implements UseCaseBatchSelected.Response {
     private final static String TAG = "BatchSelectedResponseHandler";
 
-    public void batchSelected(BatchCloudDB batch) {
-        Timber.tag(TAG).d("offer Selected");
-        EventBus.getDefault().postSticky(new BatchSelectedResponseHandler.UseCaseBatchSelectedEvent(batch));
+    public void batchSelectedSuccess(BatchDetail batchDetail) {
+        Timber.tag(TAG).d("got batch detail data for batch : " + batchDetail.getBatchGuid());
+        EventBus.getDefault().postSticky(new BatchSelectedResponseHandler.UseCaseBatchSelectedEvent(batchDetail));
     }
 
+    public void batchSelectedFailure(){
+        Timber.tag(TAG).w("couldn't find batchDetail for the selected batch");
+        //TODO show user an alert that the batch detail can't be shown, that some non-fixable error occured
+    }
 
     public static class UseCaseBatchSelectedEvent {
-        private BatchCloudDB batch;
-        public UseCaseBatchSelectedEvent(BatchCloudDB batch){
-            this.batch = batch;
+        private BatchDetail batchDetail;
+        public UseCaseBatchSelectedEvent(BatchDetail batchDetail){
+            this.batchDetail = batchDetail;
         }
 
-        public BatchCloudDB getBatch(){
-            return batch;
+        public BatchDetail getBatchDetail(){
+            return batchDetail;
         }
     }
 }

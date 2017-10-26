@@ -18,20 +18,20 @@ import timber.log.Timber;
 public class ForfeitBatchResponseHandler implements UseCaseForfeitBatchRequest.Response {
     private final static String TAG = "ForfeitBatchResponseHandler";
 
-    public void forfeitBatchComplete(BatchCloudDB batch) {
-        Timber.tag(TAG).d("forfeitBatchComplete -> " + batch.getOrderOID());
-        EventBus.getDefault().postSticky(new UseCaseForfeitBatchEvent(batch));
+    public void forfeitBatchComplete(String batchGuid) {
+        Timber.tag(TAG).d("forfeitBatchComplete -> " + batchGuid);
+        EventBus.getDefault().postSticky(new UseCaseForfeitBatchEvent(batchGuid));
     }
 
     public static class UseCaseForfeitBatchEvent {
-        private BatchCloudDB batch;
+        private String batchGuid;
 
-        public UseCaseForfeitBatchEvent(BatchCloudDB batch){
-            this.batch = batch;
+        public UseCaseForfeitBatchEvent(String batchGuid){
+            this.batchGuid = batchGuid;
         }
 
-        public BatchCloudDB getBatch(){
-            return batch;
+        public String getBatchGuid(){
+            return batchGuid;
         }
     }
 
