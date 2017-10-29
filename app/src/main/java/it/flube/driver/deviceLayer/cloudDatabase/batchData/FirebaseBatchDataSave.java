@@ -62,6 +62,7 @@ public class FirebaseBatchDataSave implements OnCompleteListener<Void> {
         thisBatchRef.child(STEP_IDS).setValue(batchHolder.getStepIds())
                 .addOnCompleteListener(this);
 
+
         thisBatchRef.child(STEPS).setValue(batchHolder.getSteps())
                 .addOnCompleteListener(this);
 

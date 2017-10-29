@@ -52,6 +52,7 @@
         <activity android:name=".userInterfaceLayer.activities.scheduledBatches.manageBatch.BatchManageActivity" />
         <activity android:name=".userInterfaceLayer.activities.scheduledBatches.BatchMapActivity" />
         <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.NavigationActivity" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.PhotoActivity" />
         <activity android:name=".userInterfaceLayer.activities.activeBatch.batchItinerary.BatchItineraryActivity" />
         <activity android:name=".userInterfaceLayer.activities.activeBatch.orderItinerary.OrderItineraryActivity" />
         <service

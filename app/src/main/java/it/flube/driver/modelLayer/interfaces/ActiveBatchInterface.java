@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import it.flube.driver.modelLayer.entities.RouteStop;
 import it.flube.driver.modelLayer.entities.batch.BatchDetail;
 import it.flube.driver.modelLayer.entities.orderStep.ServiceOrderNavigationStep;
+import it.flube.driver.modelLayer.entities.orderStep.ServiceOrderPhotoStep;
 import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
 
 /**
@@ -37,6 +38,8 @@ public interface ActiveBatchInterface {
     OrderStepInterface.TaskType getTaskType();
 
     ServiceOrderNavigationStep getNavigationStep();
+
+    ServiceOrderPhotoStep getPhotoStep();
 
     // SERVICE ORDER LIST
 

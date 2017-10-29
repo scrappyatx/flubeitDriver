@@ -5,6 +5,8 @@
 package it.flube.driver.modelLayer.entities.orderStep;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import it.flube.driver.modelLayer.entities.PhotoRequest;
 import it.flube.driver.modelLayer.entities.Timestamp;
@@ -17,7 +19,6 @@ import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
 
 public class ServiceOrderPhotoStep implements OrderStepInterface {
     private static final OrderStepInterface.TaskType TASK_TYPE = TaskType.TAKE_PHOTOS;
-    private static final String STEP_CLASS_NAME = "ServiceOrderPhotoStep.class";
 
     private String guid;
     private String batchGuid;
@@ -25,9 +26,16 @@ public class ServiceOrderPhotoStep implements OrderStepInterface {
     private String serviceOrderGuid;
     private Integer sequence;
 
+    private String taskTypeIconText;
+
     private OrderStepInterface.WorkTiming workTiming;
+    private Map<String, String> workTimingIconTextMap;
+
     private OrderStepInterface.WorkStatus workStatus;
+    private Map<String, String> workStatusIconTextMap;
+
     private OrderStepInterface.WorkStage workStage;
+    private Map<String, String> workStageIconTextMap;
 
     private String title;
     private String description;
@@ -42,8 +50,43 @@ public class ServiceOrderPhotoStep implements OrderStepInterface {
         return TASK_TYPE;
     }
 
-    public String getStepClassName(){
-        return STEP_CLASS_NAME;
+
+    public String getTaskTypeIconText() {
+        return taskTypeIconText;
+    }
+
+    public void setTaskTypeIconText(String taskTypeIconText) {
+        this.taskTypeIconText = taskTypeIconText;
+    }
+
+
+    public Map<String, String> getWorkTimingIconTextMap() {
+        return workTimingIconTextMap;
+    }
+
+
+    public void setWorkTimingIconTextMap(Map<String, String> workTimingIconTextMap) {
+        this.workTimingIconTextMap = workTimingIconTextMap;
+    }
+
+
+    public Map<String, String> getWorkStatusIconTextMap() {
+        return workStatusIconTextMap;
+    }
+
+
+    public void setWorkStatusIconTextMap(Map<String, String> workStatusIconTextMap) {
+        this.workStatusIconTextMap = workStatusIconTextMap;
+    }
+
+
+    public Map<String, String> getWorkStageIconTextMap() {
+        return workStageIconTextMap;
+    }
+
+
+    public void setWorkStageIconTextMap(Map<String, String> workStageIconTextMap) {
+        this.workStageIconTextMap = workStageIconTextMap;
     }
 
     public void setGuid(String guid) {

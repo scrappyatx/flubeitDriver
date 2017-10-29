@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
+  -->
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:orientation="vertical"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+
+    android:elevation="8dp"
+    tools:targetApi="lollipop">
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/step_detail_workTiming"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:textAppearance="@style/StepWorkTimingStyle.onTime"
+        tools:text="X"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/step_detail_complete_by_caption"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:textAppearance="@style/StepCompleteByStyle"
+        tools:text="Due by :"
+        android:text="@string/step_detail_due_by_caption"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/step_detail_workTiming"
+
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/step_detail_complete_by_value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:textAppearance="@style/StepCompleteByStyle"
+        tools:text="10:27 am"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/step_detail_complete_by_caption"
+
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp" />
+
+
+</android.support.constraint.ConstraintLayout>

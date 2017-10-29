@@ -114,7 +114,6 @@ public class ServiceOrderScaffoldBuilder {
                     .stepGuid(step.getGuid())
                     .sequence(this.serviceOrderScaffold.getSteps().size()+1)
                     .taskType(step.getTaskType())
-                    .stepClassName(step.getStepClassName())
                     .build();
 
             //add the sequence to the step

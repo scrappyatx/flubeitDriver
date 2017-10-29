@@ -100,6 +100,8 @@ public class ScheduledBatchesActivity extends AppCompatActivity implements
         Integer batchCount = batchList.size();
 
         if (batchCount > 0) {
+
+
             Timber.tag(TAG).d("updating list!");
             batchesAdapter.updateList(batchList);
             batchesView.setVisibility(View.VISIBLE);

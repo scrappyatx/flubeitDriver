@@ -37,9 +37,15 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.dataLayer.deviceEvents.LocationTrackingPositionChangedEvent;
+import it.flube.driver.dataLayer.userInterfaceEvents.batchAlerts.ShowCompletedBatchAlertEvent;
+import it.flube.driver.dataLayer.userInterfaceEvents.batchAlerts.ShowCompletedServiceOrderAlertEvent;
 import it.flube.driver.modelLayer.entities.AddressLocation;
 import it.flube.driver.modelLayer.entities.LatLonLocation;
 import it.flube.driver.modelLayer.entities.batch.BatchDetail;
@@ -49,6 +55,7 @@ import it.flube.driver.modelLayer.interfaces.ActiveBatchInterface;
 import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
 import it.flube.driver.userInterfaceLayer.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.UserInterfaceUtilities;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.ActiveBatchAlerts;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import timber.log.Timber;
 
@@ -61,7 +68,8 @@ import static android.view.View.VISIBLE;
  */
 
 public class NavigationActivity extends AppCompatActivity implements
-        OnMapReadyCallback {
+        OnMapReadyCallback,
+        ActiveBatchAlerts.ServiceOrderCompletedAlertHidden {
 
     private static final String TAG = "NavigationActivity";
 
@@ -69,24 +77,30 @@ public class NavigationActivity extends AppCompatActivity implements
     private NavigationController controller;
     private DrawerMenu drawer;
 
-    private ImageView stepCountImage;
+    //step detail title viewgroup
+    private TextView stepSequence;
     private TextView stepTitle;
-    private TextView dueByText;
-    private TextView destinationAddressText;
+    private TextView stepDescription;
+    private TextView stepWorkStage;
 
+    //step detail due by viewgroup
+    private TextView stepWorkTiming;
+    private TextView stepDueByCaption;
+    private TextView stepDueByValue;
+
+    //navigation detail address viewgroup
+    private TextView stepDestinationCaption;
+    private TextView stepDestinationAddress;
+
+    //buttons
+    private Button calcRouteButton;
+    private Button userHasArrivedButton;
     private Button startNavigationButton;
 
+    private DateFormat dateFormat;
+
     private MapView mapView;
-    private InstructionView instructionView;
     private MapboxMap map;
-
-    private BatchDetail batchDetail;
-    private ServiceOrder serviceOrder;
-    private ServiceOrderNavigationStep step;
-    private Boolean hasActiveBatch;
-
-    private LatLonLocation devicePosition;
-    private Boolean hasDevicePosition;
 
     private LocationLayerPlugin locationPlugin;
 
@@ -111,26 +125,27 @@ public class NavigationActivity extends AppCompatActivity implements
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
-        //instructionView = (InstructionView) findViewById(R.id.instructionView);
-
-        stepCountImage = (ImageView) findViewById(R.id.step_count_icon);
+        //step detail title viewgroup
+        stepSequence = (TextView) findViewById(R.id.step_sequence);
         stepTitle = (TextView) findViewById(R.id.step_title);
-        destinationAddressText = (TextView) findViewById(R.id.nav_detail_destination_address);
+        stepDescription = (TextView) findViewById(R.id.step_description);
+        stepWorkStage = (TextView) findViewById(R.id.step_workStage);
 
-        dueByText = (TextView) findViewById(R.id.due_by_text);
-        dueByText.setVisibility(VISIBLE);
+        //step due by viewgroup
+        stepWorkTiming = (TextView) findViewById(R.id.step_detail_workTiming);
+        stepDueByCaption = (TextView) findViewById(R.id.step_detail_complete_by_caption);;
+        stepDueByValue = (TextView) findViewById(R.id.step_detail_complete_by_value);;
 
+        //navigation detail address viewgroup
+        stepDestinationCaption = (TextView) findViewById(R.id.nav_detail_destination_caption);
+        stepDestinationAddress= (TextView) findViewById(R.id.nav_detail_destination_address);
+
+        //buttons
+        calcRouteButton = (Button) findViewById(R.id.calculate_route_button);
+        userHasArrivedButton = (Button) findViewById(R.id.user_has_arrived_button);
         startNavigationButton = (Button) findViewById(R.id.start_navigation_button);
 
-        hasActiveBatch = false;
-        hasDevicePosition = false;
-
-        navigator = new ActivityNavigator();
-        drawer = new DrawerMenu(this, navigator, R.string.navigation_step_activity_title);
-        controller = new NavigationController(this, Mapbox.getAccessToken());
-
-
-        EventBus.getDefault().register(this);
+        dateFormat = new SimpleDateFormat("h:mm aa", Locale.US);
 
     }
 
@@ -148,50 +163,79 @@ public class NavigationActivity extends AppCompatActivity implements
     }
 
 
+    private void updateStepTitleViewGroup(){
+        Timber.tag(TAG).d("updating stepTitleViewgroup...");
+        if (AndroidDevice.getInstance().getActiveBatch().hasActiveBatch()) {
+            ServiceOrderNavigationStep step = AndroidDevice.getInstance().getActiveBatch().getNavigationStep();
 
-    private void updateActiveBatchInfo(){
-        ActiveBatchInterface activeBatch = AndroidDevice.getInstance().getActiveBatch();
-        Timber.tag(TAG).d("   updating active batch info...");
+            stepSequence.setText(step.getSequence().toString());
+            stepSequence.setVisibility(View.VISIBLE);
 
-        if (activeBatch.hasActiveBatch()){
-            Timber.tag(TAG).d("      ...hasActiveBatch = TRUE");
-            if (activeBatch.getTaskType() == OrderStepInterface.TaskType.NAVIGATION) {
-                Timber.tag(TAG).d("      ...taskType = NAVIGATION");
-                hasActiveBatch = true;
-                batchDetail = activeBatch.getBatchDetail();
-                serviceOrder = activeBatch.getServiceOrder();
-                step = activeBatch.getNavigationStep();
-            } else {
-                Timber.tag(TAG).d("      ...taskType not NAVIGATION");
-                hasActiveBatch = false;
-                batchDetail = null;
-                serviceOrder = null;
-                step = null;
-            }
+            stepTitle.setText(step.getTitle());
+            stepTitle.setVisibility(View.VISIBLE);
+
+            stepDescription.setText(step.getDescription());
+            stepDescription.setVisibility(View.VISIBLE);
+
+            stepWorkStage.setText(step.getWorkStageIconTextMap().get(step.getWorkStage().toString()));
+            stepWorkStage.setTextColor(getResources().getColor(R.color.colorStepStageActive));
+            stepWorkStage.setVisibility(View.VISIBLE);
+
         } else {
-            Timber.tag(TAG).d("      ...hasActiveBatch = FALSE");
-            hasActiveBatch = false;
-            batchDetail = null;
-            serviceOrder = null;
-            step = null;
+            stepSequence.setVisibility(View.INVISIBLE);
+            stepTitle.setVisibility(View.INVISIBLE);
+            stepDescription.setVisibility(View.INVISIBLE);
+            stepWorkStage.setVisibility(View.INVISIBLE);
+            Timber.tag(TAG).d("...can't update stepTitleViewgroup, no active batch");
         }
     }
 
-    private void updateScreenInfo(){
-        if (hasActiveBatch){
+    private void updateStepDueByViewGroup(){
+        Timber.tag(TAG).d("updating stepDueByViewgroup...");
+        if (AndroidDevice.getInstance().getActiveBatch().hasActiveBatch()) {
 
-            //TODO put "sequence" property into step interface, so that each step knows what sequence it is
-            Picasso.with(this)
-                    .load(UserInterfaceUtilities.getCountIconUrl(1))
-                    .into(stepCountImage);
-            stepCountImage.setVisibility(VISIBLE);
+            ServiceOrderNavigationStep step = AndroidDevice.getInstance().getActiveBatch().getNavigationStep();
 
-            stepTitle.setText(step.getTitle());
-            stepTitle.setVisibility(VISIBLE);
+            stepWorkTiming.setText(step.getWorkTimingIconTextMap().get(step.getWorkTiming().toString()));
+            switch (step.getWorkTiming()){
+                case ON_TIME:
+                    stepWorkTiming.setTextColor(getResources().getColor(R.color.colorStepTimingOnTime));
+                    break;
+                case LATE:
+                    stepWorkTiming.setTextColor(getResources().getColor(R.color.colorStepTimingLate));
+                    break;
+                case VERY_LATE:
+                    stepWorkTiming.setTextColor(getResources().getColor(R.color.colorStepTimingVeryLate));
+                    break;
+                default:
+                    stepWorkTiming.setTextColor(getResources().getColor(R.color.colorStepTimingOnTime));
+                    break;
+            }
+            stepWorkTiming.setTextColor(getResources().getColor(R.color.colorStepTimingOnTime));
+            stepWorkTiming.setVisibility(View.VISIBLE);
 
-            String dueByCaption = "Arrive on or before : " + step.getFinishTime().getScheduledTime().toString();
-            dueByText.setText(dueByCaption);
-            dueByText.setVisibility(VISIBLE);
+            stepDueByCaption.setVisibility(View.VISIBLE);
+
+            String dueTime = dateFormat.format(step.getFinishTime().getScheduledTime());
+            Timber.tag(TAG).d("---> Formatted due by   : " + dueTime);
+
+            stepDueByValue.setText(dueTime);
+            stepDueByValue.setVisibility(View.VISIBLE);
+
+        } else {
+            stepWorkTiming.setVisibility(View.INVISIBLE);
+            stepDueByCaption.setVisibility(View.INVISIBLE);
+            stepDueByValue.setVisibility(View.INVISIBLE);
+            Timber.tag(TAG).d("...can't update stepDueByViewgroup, no active batch");
+        }
+    }
+
+    private void updateDestinationViewGroup(){
+        Timber.tag(TAG).d("updating destinationViewgroup...");
+        if (AndroidDevice.getInstance().getActiveBatch().hasActiveBatch()) {
+
+            ServiceOrderNavigationStep step = AndroidDevice.getInstance().getActiveBatch().getNavigationStep();
+            stepDestinationCaption.setVisibility(View.VISIBLE);
 
             AddressLocation destAddress = step.getDestination().getTargetAddress();
 
@@ -204,23 +248,16 @@ public class NavigationActivity extends AppCompatActivity implements
                         + destAddress.getStreet2() + System.getProperty("line.separator")
                         + destAddress.getCity() + ", " + destAddress.getState() + " " + destAddress.getZip();
             }
-            destinationAddressText.setText(addressText);
-            destinationAddressText.setVisibility(VISIBLE);
+
+            stepDestinationAddress.setText(addressText);
+            stepDestinationAddress.setVisibility(View.VISIBLE);
 
         } else {
-            stepCountImage.setVisibility(INVISIBLE);
-            stepTitle.setVisibility(INVISIBLE);
-            dueByText.setVisibility(INVISIBLE);
-            destinationAddressText.setVisibility(INVISIBLE);
-        }
 
-        if (!hasDevicePosition){
-            hasDevicePosition = true;
-            devicePosition = new LatLonLocation();
-            //2001 summercrest cove, round rock tx 78681
-            // lat lon = (30.545792, -97.757828)
-            devicePosition.setLatitude(30.545792);
-            devicePosition.setLongitude(-97.757828);
+            stepDestinationCaption.setVisibility(View.INVISIBLE);
+            stepDestinationAddress.setVisibility(View.INVISIBLE);
+
+            Timber.tag(TAG).d("...can't update destinationViewgroup, no active batch");
         }
     }
 
@@ -233,10 +270,17 @@ public class NavigationActivity extends AppCompatActivity implements
     @Override
     public void onResume() {
         super.onResume();
-
         mapView.onResume();
-        updateActiveBatchInfo();
-        updateScreenInfo();
+
+        navigator = new ActivityNavigator();
+        drawer = new DrawerMenu(this, navigator, R.string.navigation_step_activity_title);
+        controller = new NavigationController(this, Mapbox.getAccessToken());
+
+        EventBus.getDefault().register(this);
+
+        updateStepTitleViewGroup();
+        updateStepDueByViewGroup();
+        updateDestinationViewGroup();
 
         Timber.tag(TAG).d("onResume");
     }
@@ -246,6 +290,11 @@ public class NavigationActivity extends AppCompatActivity implements
         Timber.tag(TAG).d(TAG, "onPause");
         super.onPause();
         mapView.onPause();
+
+        EventBus.getDefault().unregister(this);
+
+        drawer.close();
+        controller.close();
     }
 
     @Override
@@ -273,10 +322,7 @@ public class NavigationActivity extends AppCompatActivity implements
         super.onDestroy();
 
 
-        EventBus.getDefault().unregister(this);
 
-        drawer.close();
-        controller.close();
 
         mapView.onDestroy();
         Timber.tag(TAG).d("onDestroy");
@@ -285,18 +331,6 @@ public class NavigationActivity extends AppCompatActivity implements
     public void clickStartNavigationButton(View v){
         //start navigation button clicked
         Timber.tag(TAG).d("clicked start navigation");
-        if (hasDevicePosition) {
-
-            String awsPool = null;
-
-            Boolean simulateRoute = true;
-
-            controller.startNavigation(this, devicePosition, step.getDestination().getTargetLatLon());
-        } else {
-            Timber.tag(TAG).d("   ...no device position");
-        }
-
-
     }
 
     public void clickCalculateRouteButton(View v){
@@ -305,6 +339,7 @@ public class NavigationActivity extends AppCompatActivity implements
 
     public void clickUserHasArrivedButton(View v){
         Timber.tag(TAG).d("cliced I've arrived");
+        controller.finishStep();
     }
 
     public void clickOverflowMenuUserHasArrived(MenuItem item){
@@ -320,7 +355,8 @@ public class NavigationActivity extends AppCompatActivity implements
         // Customize map with markers, polylines, etc.
         Timber.tag(TAG).d("adding markers to map...");
 
-        if (hasDevicePosition) {
+        if (AndroidDevice.getInstance().getLocationTelemetry().hasLastGoodPosition()) {
+            LatLonLocation devicePosition = AndroidDevice.getInstance().getLocationTelemetry().getLastGoodPosition();
             Timber.tag(TAG).d("...adding device location marker");
 
             MarkerViewOptions markerViewOptions = new MarkerViewOptions()
@@ -333,31 +369,36 @@ public class NavigationActivity extends AppCompatActivity implements
             Timber.tag(TAG).d("...no device location");
         }
 
-        if (hasActiveBatch) {
-            Timber.tag(TAG).d("...adding destination location marker");
+        if (AndroidDevice.getInstance().getActiveBatch().hasActiveBatch()) {
+            if (AndroidDevice.getInstance().getActiveBatch().getTaskType() == OrderStepInterface.TaskType.NAVIGATION) {
 
-            MarkerViewOptions markerViewOptions = new MarkerViewOptions()
-                    .position(new LatLng(step.getDestination().getTargetLatLon().getLatitude(), step.getDestination().getTargetLatLon().getLongitude()))
-                    .title("destination")
-                    .snippet(step.getDestination().getTargetAddress().getStreet1());
+                ServiceOrderNavigationStep step = AndroidDevice.getInstance().getActiveBatch().getNavigationStep();
 
-            mapboxMap.addMarker(markerViewOptions);
+                Timber.tag(TAG).d("...adding destination location marker");
 
-            Timber.tag(TAG).d("...animating camera");
-            CameraPosition position = new CameraPosition.Builder()
-                    .target(new LatLng(step.getDestination().getTargetLatLon().getLatitude(), step.getDestination().getTargetLatLon().getLongitude()))
-                    .zoom(17)
-                    .bearing(180)
-                    .tilt(30)
-                    .build();
+                MarkerViewOptions markerViewOptions = new MarkerViewOptions()
+                        .position(new LatLng(step.getDestination().getTargetLatLon().getLatitude(), step.getDestination().getTargetLatLon().getLongitude()))
+                        .title("destination")
+                        .snippet(step.getDestination().getTargetAddress().getStreet1());
 
-            mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position),7000);
+                mapboxMap.addMarker(markerViewOptions);
+
+                Timber.tag(TAG).d("...animating camera");
+                CameraPosition position = new CameraPosition.Builder()
+                        .target(new LatLng(step.getDestination().getTargetLatLon().getLatitude(), step.getDestination().getTargetLatLon().getLongitude()))
+                        .zoom(17)
+                        .bearing(180)
+                        .tilt(0)
+                        .build();
+
+                mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 7000);
+            } else {
+                Timber.tag(TAG).d("...no destination -> current step is not Navigation step");
+            }
 
         } else {
-            Timber.tag(TAG).d("...no destination");
+            Timber.tag(TAG).d("...no destination -> no active batch");
         }
-
-
 
     }
 
@@ -365,11 +406,25 @@ public class NavigationActivity extends AppCompatActivity implements
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(LocationTrackingPositionChangedEvent event) {
         Timber.tag(TAG).d("last know device position updated");
-        devicePosition = new LatLonLocation();
-        devicePosition.setLatitude(event.getPosition().getLatitude());
-        devicePosition.setLongitude(event.getPosition().getLongitude());
-        hasDevicePosition = true;
+        //devicePosition = new LatLonLocation();
+        //devicePosition.setLatitude(event.getPosition().getLatitude());
+        //devicePosition.setLongitude(event.getPosition().getLongitude());
+        //hasDevicePosition = true;
         //mapView.getMapAsync(this);
+    }
+
+    @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
+    public void onEvent(ShowCompletedServiceOrderAlertEvent event) {
+        EventBus.getDefault().removeStickyEvent(event);
+
+        Timber.tag(TAG).d("active batch -> service order completed!");
+
+        ActiveBatchAlerts alert = new ActiveBatchAlerts();
+        alert.showServiceOrderCompletedAlert(this, this);
+    }
+
+    public void serviceOrderCompletedAlertHidden() {
+        Timber.tag(TAG).d("service order completed alert hidden");
     }
 
 }

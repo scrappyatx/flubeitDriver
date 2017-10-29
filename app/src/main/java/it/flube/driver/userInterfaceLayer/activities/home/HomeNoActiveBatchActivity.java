@@ -18,9 +18,13 @@ import it.flube.driver.R;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.personalOffers.PersonalOffersAvailableResponseHandler;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.publicOffers.PublicOffersAvailableResponseHandler;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.scheduledBatches.ScheduledBatchesAvailableResponseHandler;
+import it.flube.driver.dataLayer.userInterfaceEvents.batchAlerts.ShowCompletedBatchAlertEvent;
+import it.flube.driver.dataLayer.userInterfaceEvents.offerAlerts.ShowClaimOfferFailureAlertEvent;
 import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.PersonalOffersUpdatedEvent;
 import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.PublicOffersUpdatedEvent;
 import it.flube.driver.userInterfaceLayer.ActivityNavigator;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.ActiveBatchAlerts;
+import it.flube.driver.userInterfaceLayer.activities.offers.claimOffer.OfferClaimAlerts;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import it.flube.driver.userInterfaceLayer.activities.PermissionsCheckActivity;
 import timber.log.Timber;
@@ -30,7 +34,9 @@ import timber.log.Timber;
  * Project : Driver
  */
 
-public class HomeNoActiveBatchActivity extends PermissionsCheckActivity {
+public class HomeNoActiveBatchActivity extends PermissionsCheckActivity implements
+        ActiveBatchAlerts.BatchCompletedAlertHidden {
+
     private static final String TAG = "HomeNabActivity";
 
     private HomeNoActiveBatchController controller;
@@ -184,25 +190,19 @@ public class HomeNoActiveBatchActivity extends PermissionsCheckActivity {
         }
     }
 
-    ///scheduled batches events
-   /*
     @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
-    public void onEvent(ScheduledBatchesAvailableResponseHandler.ScheduledBatchUpdateEvent event) {
-        try {
-            Timber.tag(TAG).d("received " + Integer.toString(event.getBatchCount()) + " batches");
-            if (event.getBatchList().size() > 0) {
-                scheduledBatchesDetail.setText("You have " + event.getBatchList().size() + " batches scheduled.");
-                scheduledBatchesButton.setVisibility(View.VISIBLE);
-            } else {
-                scheduledBatchesDetail.setText("You have no batches scheduled");
-                scheduledBatchesButton.setVisibility(View.GONE);
-            }
-        } catch (Exception e) {
-            Timber.tag(TAG).e(e);
-            scheduledBatchesDetail.setText("You have no batches scheduled");
-            scheduledBatchesButton.setVisibility(View.GONE);
-        }
+    public void onEvent(ShowCompletedBatchAlertEvent event) {
+        EventBus.getDefault().removeStickyEvent(event);
+
+        Timber.tag(TAG).d("active batch -> batch completed!");
+
+        ActiveBatchAlerts alert = new ActiveBatchAlerts();
+        alert.showBatchCompletedAlert(this, this);
     }
-    */
+
+    public void batchCompletedAlertHidden() {
+        Timber.tag(TAG).d("batch completed alert hidden");
+    }
+
 
 }

@@ -10,6 +10,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.HashMap;
+
 import it.flube.driver.deviceLayer.cloudDatabase.activeBatch.activeBatchMonitor.FirebaseActiveBatchMonitor;
 import it.flube.driver.modelLayer.entities.ResponseCounter;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;

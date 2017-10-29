@@ -79,5 +79,99 @@
         <item name="routeScale">1.0</item>
     </style>
 
+    <!-- BATCH DETAIL styles -->
+    <style name="BatchDetailStyleTitle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorBatchDetailTitle</item>
+    </style>
+
+    <style name="BatchDetailStyleDescription" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorBatchDetailDescription</item>
+    </style>
+
+
+    <!-- STEP sequence styles   -->
+    <style name="StepSequenceStyle" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorTextPrimaryLight</item>
+    </style>
+
+    <!-- STEP Title style -->
+    <style name="StepTitleStyle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorStepTitle</item>
+    </style>
+
+    <!-- STEP description style -->
+    <style name="StepDescriptionStyle" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorStepDescription</item>
+    </style>
+
+    <!-- STEP complete by style -->
+    <style name="StepCompleteByStyle" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorStepCompleteBy</item>
+    </style>
+
+
+
+    <!-- STEP WorkTiming styles -->
+    <style name="StepWorkTimingStyle" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="StepWorkTimingStyle.onTime">
+        <item name="android:textColor">@color/colorStepTimingOnTime</item>
+    </style>
+
+    <style name="StepWorkTimingStyle.late">
+        <item name="android:textColor">@color/colorStepTimingLate</item>
+    </style>
+
+    <style name="StepWorkTimingStyle.veryLate">
+        <item name="android:textColor">@color/colorStepTimingVeryLate</item>
+    </style>
+
+    <!-- STEP WorkStage styles -->
+    <style name="StepWorkStageStyle" parent="TextAppearance.AppCompat.Display1">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="StepWorkStageStyle.notStarted">
+        <item name="android:textColor">@color/colorStepStageNotStarted</item>
+    </style>
+
+    <style name="StepWorkStageStyle.active">
+        <item name="android:textColor">@color/colorStepStageActive</item>
+    </style>
+
+    <style name="StepWorkStageStyle.completed">
+        <item name="android:textColor">@color/colorStepStageComplete</item>
+    </style>
+
+    <!-- NAVIGATION STEP styles -->
+    <style name="NavigationStepDestinationCaption" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorNavStepDestinationCaption</item>
+    </style>
+
+    <style name="NavigationStepDestinationAddress" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorNavStepDestinationAddress</item>
+    </style>
+
 
 </resources>

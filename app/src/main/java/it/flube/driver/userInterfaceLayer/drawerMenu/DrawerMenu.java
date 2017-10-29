@@ -347,14 +347,7 @@ public class DrawerMenu {
 
             Timber.tag(TAG).d("clicked on CURRENT STEP menu item");
             // do something with the clicked item :D
-            ActiveBatchInterface activeBatch = AndroidDevice.getInstance().getActiveBatch();
-            if (activeBatch.hasActiveBatch()) {
-                Timber.tag(TAG).d("    taskType : " + activeBatch.getTaskType());
-                navigator.gotoActiveBatchStep(activity, activeBatch.getTaskType());
-            } else {
-                Timber.tag(TAG).d("    no active batch");
-            }
-
+            navigator.gotoActiveBatchStep(activity);
             return false;
         }
     }
@@ -458,14 +451,7 @@ public class DrawerMenu {
     @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
     public void onEvent(ActiveBatchUpdatedEvent event) {
         Timber.tag(TAG).d("active batch current step changed!");
-
-        ActiveBatchInterface activeBatch = AndroidDevice.getInstance().getActiveBatch();
-        if (activeBatch.hasActiveBatch()) {
-            Timber.tag(TAG).d("    taskType : " + activeBatch.getTaskType());
-            navigator.gotoActiveBatchStep(activity, activeBatch.getTaskType());
-        } else {
-            Timber.tag(TAG).d("    no active batch");
-        }
+        navigator.gotoActiveBatchStep(activity);
     }
 
     //// UI update events - offer & batch counts

@@ -4,6 +4,10 @@
 
 package it.flube.driver.modelLayer.interfaces;
 
+import java.util.HashMap;
+import java.util.HashMap;
+import java.util.Map;
+
 import it.flube.driver.modelLayer.entities.Timestamp;
 import it.flube.driver.modelLayer.entities.orderStep.ServiceOrderAbstractStep;
 
@@ -25,30 +29,43 @@ public interface OrderStepInterface {
         WAIT_FOR_SERVICE_ON_ASSET
     }
 
+    TaskType getTaskType();
+
+    String getTaskTypeIconText();
+
     enum WorkTiming {
         ON_TIME,
         LATE,
-        VERY_LATE,
-        NOT_APPLICABLE
+        VERY_LATE
     }
+    void setWorkTiming(WorkTiming workTiming);
+    WorkTiming getWorkTiming();
+
+    void setWorkTimingIconTextMap(Map<String, String> workTimingIconTextMap);
+    Map<String, String> getWorkTimingIconTextMap();
 
     enum WorkStatus {
         NORMAL,
-        CUSTOMER_SUPPORT,
-        NOT_APPLICABLE
+        CUSTOMER_SUPPORT
     }
+
+    void setWorkStatus(WorkStatus workStatus);
+    WorkStatus getWorkStatus();
+
+    void setWorkStatusIconTextMap(Map<String, String> workStatusIconTextMap);
+    Map<String, String> getWorkStatusIconTextMap();
 
     enum WorkStage {
         NOT_STARTED,
-        BEING_WORKED,
-        COMPLETED,
-        NOT_APPLICABLE
+        ACTIVE,
+        COMPLETED
     }
 
+    void setWorkStage(WorkStage workStage);
+    WorkStage getWorkStage();
 
-    TaskType getTaskType();
-
-    String getStepClassName();
+    void setWorkStageIconTextMap(Map<String, String> workStageIconTextMap);
+    Map<String, String> getWorkStageIconTextMap();
 
     void setGuid(String guid);
     String getGuid();
@@ -64,15 +81,6 @@ public interface OrderStepInterface {
 
     void setSequence(Integer sequence);
     Integer getSequence();
-
-    void setWorkTiming(WorkTiming workTiming);
-    WorkTiming getWorkTiming();
-
-    void setWorkStatus(WorkStatus workStatus);
-    WorkStatus getWorkStatus();
-
-    void setWorkStage(WorkStage workStage);
-    WorkStage getWorkStage();
 
     void setTitle(String title);
     String getTitle();

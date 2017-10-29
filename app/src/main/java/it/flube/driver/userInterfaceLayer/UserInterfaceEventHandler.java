@@ -14,6 +14,11 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import it.flube.driver.dataLayer.useCaseResponseHandlers.scheduledBatches.ScheduledBatchesAvailableResponseHandler;
+import it.flube.driver.dataLayer.userInterfaceEvents.activeBatch.ActiveBatchCompletedBatchEvent;
+import it.flube.driver.dataLayer.userInterfaceEvents.activeBatch.ActiveBatchCompletedServiceOrderEvent;
+import it.flube.driver.dataLayer.userInterfaceEvents.activeBatch.ActiveBatchCompletedStepEvent;
+import it.flube.driver.dataLayer.userInterfaceEvents.batchAlerts.ShowCompletedBatchAlertEvent;
+import it.flube.driver.dataLayer.userInterfaceEvents.batchAlerts.ShowCompletedServiceOrderAlertEvent;
 import it.flube.driver.dataLayer.userInterfaceEvents.batchAlerts.ShowForfeitBatchAlertEvent;
 import it.flube.driver.dataLayer.userInterfaceEvents.offerAlerts.ShowClaimOfferFailureAlertEvent;
 import it.flube.driver.dataLayer.userInterfaceEvents.offerAlerts.ShowClaimOfferSuccessAlertEvent;
@@ -161,4 +166,30 @@ public class UserInterfaceEventHandler {
 
     }
 
+    /// ACTIVE BATCH EVENTS
+    @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
+    public void onEvent(ActiveBatchCompletedStepEvent event){
+        EventBus.getDefault().removeStickyEvent(ActiveBatchCompletedStepEvent.class);
+
+        Timber.tag(TAG).d("active batch -> step completed!");
+        navigator.gotoActiveBatchStep(activity);
+    }
+
+    @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
+    public void onEvent(ActiveBatchCompletedServiceOrderEvent event){
+        EventBus.getDefault().removeStickyEvent(ActiveBatchCompletedServiceOrderEvent.class);
+
+        Timber.tag(TAG).d("active batch -> service order completed!");
+        EventBus.getDefault().postSticky(new ShowCompletedServiceOrderAlertEvent());
+        navigator.gotoActiveBatchStep(activity);
+    }
+
+    @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
+    public void onEvent(ActiveBatchCompletedBatchEvent event){
+        EventBus.getDefault().removeStickyEvent(ActiveBatchCompletedBatchEvent.class);
+
+        Timber.tag(TAG).d("active batch -> batch completed!");
+        EventBus.getDefault().postSticky(new ShowCompletedBatchAlertEvent());
+        navigator.gotoActivityHome(activity);
+    }
 }

@@ -9,7 +9,7 @@
     <color name="colorAccent">@color/yellow</color>
     <color name="colorButton">@color/yellow</color>
     <color name="colorErrorText">@color/lightred</color>
-    <color name="colorBackground">@color/offwhite</color>
+    <color name="colorBackground">@color/translucentLightBlue</color>
     <color name="colorControlActivated">@color/yellow</color>
 
     <color name="colorTextPrimaryLight">@color/white</color>
@@ -20,9 +20,25 @@
     <color name="colorOrderNotActive">@color/translucentMedBlue</color>
     <color name="colorOrderComplete">@color/alerterGREEN</color>
 
-    <color name="colorStepActive">@color/colorPrimary</color>
-    <color name="colorStepNotActive">@color/translucentMedBlue</color>
-    <color name="colorStepComplete">@color/alerterGREEN</color>
+    <color name="colorStepTitle">@color/translucentBlackCC</color>
+    <color name="colorStepDescription">@color/translucentBlackAA</color>
+    <color name="colorStepCompleteBy">@color/translucentBlackCC</color>
+
+    <color name="colorStepStageNotStarted">@color/colorPrimary</color>
+    <color name="colorStepStageActive">@color/alerterGREEN</color>
+    <color name="colorStepStageComplete">@color/alerterGREEN</color>
+
+    <color name="colorStepTimingOnTime">@color/alerterGREEN</color>
+    <color name="colorStepTimingLate">@color/yellow</color>
+    <color name="colorStepTimingVeryLate">@color/alerterRED</color>
+
+    <color name="colorBatchDetailTitle">@color/translucentBlackCC</color>
+    <color name="colorBatchDetailDescription">@color/translucentBlackAA</color>
+
+    <color name="colorNavStepDestinationCaption">@color/colorTextPrimaryDark</color>
+    <color name="colorNavStepDestinationAddress">@color/translucentBlackCC</color>
+
+
 
     <color name="grey">#788FA0</color>
     <color name="lightblue">#77CEE7</color>
@@ -38,6 +54,8 @@
     <color name="translucentDarkBlue">#88005989</color>
     <color name="translucentYellow">#88FACF00</color>
     <color name="translucentLightRed">#88EF5350</color>
+    <color name="translucentBlackCC">#CC000000</color>
+    <color name="translucentBlackAA">#AA000000</color>
     <color name="alerterRED">#FFCC0000</color>
     <color name="alerterGREEN">#FF009900</color>
 </resources>

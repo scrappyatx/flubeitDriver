@@ -16,6 +16,7 @@ import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseGetOrderStepList;
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseGetRouteStopList;
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseGetServiceOrderList;
+import it.flube.driver.useCaseLayer.activeBatch.UseCaseStartCurrentStepRequest;
 import timber.log.Timber;
 
 /**
@@ -24,7 +25,8 @@ import timber.log.Timber;
  */
 
 public class ActiveBatchUpdatedResponseHandler implements
-        CloudDatabaseInterface.ActiveBatchUpdated {
+        CloudDatabaseInterface.ActiveBatchUpdated,
+        UseCaseStartCurrentStepRequest.Response {
 
     private static final String TAG = "ActiveBatchUpdatedResponseHandler";
 
@@ -40,6 +42,7 @@ public class ActiveBatchUpdatedResponseHandler implements
 
     private MobileDeviceInterface device;
 
+    /// There is a step
     public void cloudDatabaseActiveBatchUpdated(BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface orderStep) {
         Timber.tag(TAG).d("got an active batch!");
 
@@ -49,9 +52,15 @@ public class ActiveBatchUpdatedResponseHandler implements
         device.getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseGetServiceOrderList(device, batchDetail.getBatchGuid()));
         device.getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseGetRouteStopList(device, batchDetail.getBatchGuid()));
         device.getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseGetOrderStepList(device, batchDetail.getBatchGuid(), serviceOrder.getGuid()));
+        device.getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseStartCurrentStepRequest(device,this));
 
+    }
+
+    public void startCurrentStepComplete(){
         EventBus.getDefault().post(new ActiveBatchUpdatedEvent());
     }
+
+    // There isn't a step
 
     public void cloudDatabaseNoActiveBatch(){
         Timber.tag(TAG).d("no active batch!");

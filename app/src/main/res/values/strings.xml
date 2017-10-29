@@ -74,6 +74,8 @@
     <string name="toolbar_switch_looking_for_work_OFF">Search for Offers</string>
     <string name="toolbar_switch_looking_for_work_ON">Searching for Offers</string>
 
+    <!-- Strings related to STEP DETAIL DUE BY -->
+    <string name="step_detail_due_by_caption">Due by: </string>
 
     <!-- Strings related to splashscreen activity layout  -->
     <string name="splashscreen_title">flube.it Driver</string>
@@ -146,6 +148,12 @@
     <string name="offer_claim_alert_timeout_title">NO RESPONSE</string>
     <string name="offer_claim_alert_timeout_message">Never received a response for your attempt to claim this offer</string>
 
+    <!-- Strings related to active batch alerts -->
+    <string name="active_batch_completed_service_order_alert_title">Order Complete</string>
+    <string name="active_batch_completed_service_order_alert_message">You completed an order!</string>
+    <string name="active_batch_completed_batch_alert_title">Batch Complete</string>
+    <string name="active_batch_completed_batch_alert_message">You completed a batch!</string>
+
     <!-- Strings related to scheduled batches activity layout -->
     <string name="scheduled_batches_activity_title">Scheduled Batches</string>
     <string name="scheduled_batches_no_batches">You don\'t have any work scheduled.\n\nClaim available offers to schedule work on your calendar.</string>
@@ -157,8 +165,8 @@
     <string name="batch_map_activity_title">Batch Location</string>
 
     <!-- Strings related to navigation step activity layout -->
-
     <string name="navigation_step_activity_title">Navigation Map</string>
+    <string name="navigation_step_destination_caption">Destination: </string>
     <string name="navigation_step_start_navigation_button_caption">Start Navigation</string>
     <string name="navigation_step_calculate_route_button_caption">Calculate Route</string>
     <string name="navigation_step_user_has_arrived_button_caption">I\'ve arrived</string>
@@ -172,6 +180,10 @@
     <string name="order_itinerary_activity_title">Order Itinerary</string>
     <string name="order_itinerary_tab_zero_caption">Tasks</string>
     <string name="order_itinerary_tab_one_caption">Locations</string>
+
+    <!-- Strings related to photo step activity layout -->
+    <string name="photo_step_activity_title">Photos</string>
+    <string name="photo_step_completed_step_button_caption">I\'m finished</string>
 
 
 

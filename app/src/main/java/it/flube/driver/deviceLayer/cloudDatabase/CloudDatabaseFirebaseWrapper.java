@@ -6,17 +6,18 @@ package it.flube.driver.deviceLayer.cloudDatabase;
 
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
-
-import it.flube.driver.deviceLayer.cloudDatabase.activeBatch.FirebaseActiveBatchSaveCurrentData;
+import it.flube.driver.deviceLayer.cloudDatabase.activeBatch.FirebaseActiveBatchServerNode;
+import it.flube.driver.deviceLayer.cloudDatabase.activeBatch.FirebaseActiveBatchSetData;
 import it.flube.driver.deviceLayer.cloudDatabase.activeBatch.activeBatchMonitor.FirebaseActiveBatchMonitor;
 import it.flube.driver.deviceLayer.cloudDatabase.batchData.FirebaseBatchDataDelete;
-import it.flube.driver.deviceLayer.cloudDatabase.batchData.FirebaseBatchDataSave;
+import it.flube.driver.deviceLayer.cloudDatabase.batchData.FirebaseBatchDataSaveBlob;
+import it.flube.driver.deviceLayer.cloudDatabase.batchData.batchDetail.FireBatchDetailSetStatus;
 import it.flube.driver.deviceLayer.cloudDatabase.batchData.batchDetail.FirebaseBatchDetailGet;
 import it.flube.driver.deviceLayer.cloudDatabase.batchData.routeStops.FirebaseRouteStopListGet;
-import it.flube.driver.deviceLayer.cloudDatabase.batchData.serviceOrders.FirebaseServiceOrderGet;
 import it.flube.driver.deviceLayer.cloudDatabase.batchData.serviceOrders.FirebaseServiceOrderListGet;
+import it.flube.driver.deviceLayer.cloudDatabase.batchData.serviceOrders.FirebaseServiceOrderSetStatus;
 import it.flube.driver.deviceLayer.cloudDatabase.batchData.steps.FirebaseOrderStepListGet;
+import it.flube.driver.deviceLayer.cloudDatabase.batchData.steps.FirebaseOrderStepSetWorkStage;
 import it.flube.driver.deviceLayer.cloudDatabase.offers.demoOffers.FirebaseDemoOffersAdd;
 import it.flube.driver.deviceLayer.cloudDatabase.offers.demoOffers.FirebaseDemoOffersMonitor;
 import it.flube.driver.deviceLayer.cloudDatabase.deviceAndUser.FirebaseDevice;
@@ -30,7 +31,6 @@ import it.flube.driver.deviceLayer.cloudDatabase.scheduledBatches.FirebaseSchedu
 import it.flube.driver.deviceLayer.cloudDatabase.scheduledBatches.FirebaseScheduledBatchesRemove;
 import it.flube.driver.modelLayer.entities.DeviceInfo;
 import it.flube.driver.modelLayer.entities.Driver;
-import it.flube.driver.modelLayer.entities.RouteStop;
 import it.flube.driver.modelLayer.entities.batch.BatchDetail;
 import it.flube.driver.modelLayer.entities.batch.BatchHolder;
 import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
@@ -213,7 +213,7 @@ public class CloudDatabaseFirebaseWrapper implements
     ///    DEMO BATCH DATA METHODS
     ///
     public void saveDemoBatchDataRequest(BatchHolder batchHolder, SaveDemoBatchDataResponse response) {
-        new FirebaseBatchDataSave().saveDemoBatchDataRequest(database.getReference(batchDataNode), batchHolder, response);
+        new FirebaseBatchDataSaveBlob().saveDemoBatchDataRequest(database.getReference(batchDataNode), batchHolder, response);
         Timber.tag(TAG).d("saving DEMO BATCH DATA ---> batch Guid -> " +  batchHolder.getBatch().getGuid());
     }
 
@@ -247,15 +247,44 @@ public class CloudDatabaseFirebaseWrapper implements
         Timber.tag(TAG).d("getting batch detail for batch guid : " + batchGuid);
     }
 
-    /// ACTIVE BATCH METHODS
-    public void saveCurrentActiveBatchData(BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface orderStep, SaveCurrentActiveBatchDataResponse response) {
-        new FirebaseActiveBatchSaveCurrentData().saveCurrentActiveBatchData(database.getReference(batchDataNode),
-                batchDetail, serviceOrder, orderStep, response);
-        Timber.tag(TAG).d("saving current active batch data");
+
+
+    ///
+    ///  ACTIVE BATCH MANAGEMENT METHODS
+    ///
+    public void setActiveBatchNodesRequest(String batchGuid, Integer serviceOrderSequence, Integer stepSequence, CloudDatabaseInterface.ActiveBatchNodesUpdated response){
+        Timber.tag(TAG).d("set Active Batch node Request");
+        new FirebaseActiveBatchSetData().setDataRequest(database.getReference(activeBatchNode), batchGuid, serviceOrderSequence, stepSequence, response);
     }
 
-    public  void gotoNextStepRequest(GotoNextStepResponse response){
+    public void setActiveBatchNodesNullRequest(CloudDatabaseInterface.ActiveBatchNodesUpdated response){
+        Timber.tag(TAG).d("set active batch nodes null request");
+        new FirebaseActiveBatchSetData().setDataNullRequest(database.getReference(activeBatchNode), response);
+    }
 
+    public void setBatchDetailStatusRequest(BatchDetail batchDetail, BatchDetail.WorkStatus status, BatchDetailStatusUpdated response) {
+        Timber.tag(TAG).d("set batch detail status request");
+        new FireBatchDetailSetStatus().setBatchDetailStatusRequest(database.getReference(batchDataNode), batchDetail, status, response);
+    }
+
+    public void setServiceOrderStatusRequest(ServiceOrder serviceOrder, ServiceOrder.ServiceOrderStatus status, CloudDatabaseInterface.ServiceOrderStatusUpdated response){
+        Timber.tag(TAG).d("set service order status request");
+        new FirebaseServiceOrderSetStatus().setServiceOrderStatusRequest(database.getReference(batchDataNode), serviceOrder, status, response);
+    }
+
+    public void setOrderStepWorkStageRequest(OrderStepInterface step, OrderStepInterface.WorkStage workStage, OrderStepWorkStageUpdated response){
+        Timber.tag(TAG).d("set order step work stage request");
+        new FirebaseOrderStepSetWorkStage().setOrderStepSetWorkStageRequest(database.getReference(batchDataNode), step, workStage, response);
+    }
+
+    public void setActiveBatchStartedServerNode(String batchGuid){
+        Timber.tag(TAG).d("started active batch, putting notification on server node");
+        new FirebaseActiveBatchServerNode().activeBatchStartRequest(database.getReference(), batchGuid, driver);
+    }
+
+    public void setActiveBatchFinishedServerNode(String batchGuid){
+        Timber.tag(TAG).d("stopping active batch, putting notification on server node");
+        new FirebaseActiveBatchServerNode().activeBatchFinishRequest(database.getReference(), batchGuid);
     }
 
     /// BATCH INFORMATION METHODS

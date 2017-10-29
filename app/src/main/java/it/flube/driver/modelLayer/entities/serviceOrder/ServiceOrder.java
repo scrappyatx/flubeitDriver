@@ -20,8 +20,7 @@ public class ServiceOrder {
         NOT_STARTED,
         ACTIVE,
         PAUSED,
-        COMPLETED_SUCCESS,
-        COMPLETED_PROBLEM,
+        COMPLETED
     }
 
     private String guid;

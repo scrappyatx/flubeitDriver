@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
+  -->
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:orientation="vertical"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+
+    android:elevation="8dp"
+    tools:targetApi="lollipop">
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/vGuideline10"
+        app:layout_constraintGuide_percent="0.10"
+        android:orientation="vertical" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/vGuideline70"
+        app:layout_constraintGuide_percent="0.70"
+        android:orientation="vertical" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/vGuideline90"
+        app:layout_constraintGuide_percent="0.90"
+        android:orientation="vertical" />
+
+
+    <TextView
+        android:id="@+id/photo_list_sequence"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+
+        tools:text="1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textStyle="normal"
+        android:background="@drawable/step_work_stage_circle_not_started"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textColor="@color/colorTextPrimaryLight"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="@+id/vGuideline10"
+
+
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/photo_list_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        tools:text="Front of Car"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textStyle="normal"
+        android:fontFamily="sans-serif-condensed"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/photo_list_description"
+        app:layout_constraintLeft_toRightOf="@+id/vGuideline10"
+
+
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/photo_list_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        tools:text="This is the front of car photo"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:textStyle="normal"
+        android:fontFamily="sans-serif-condensed"
+
+        app:layout_constraintTop_toBottomOf="@+id/photo_list_title"
+        app:layout_constraintLeft_toRightOf="@+id/vGuideline10"
+
+
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp" />
+
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/photo_list_photoStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        tools:text="X"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textStyle="normal"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/vGuideline90"
+        app:layout_constraintRight_toRightOf="parent"
+
+
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp" />
+
+
+
+</android.support.constraint.ConstraintLayout>

@@ -12,7 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import it.flube.driver.R;
 import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
@@ -29,6 +32,7 @@ public class OrderStepListAdapter extends RecyclerView.Adapter<OrderStepListAdap
 
     private Context activityContext;
     private Integer activeSequence;
+    private DateFormat dateFormat;
     private ArrayList<OrderStepInterface> stepList;
     private Response response;
 
@@ -36,6 +40,7 @@ public class OrderStepListAdapter extends RecyclerView.Adapter<OrderStepListAdap
     public OrderStepListAdapter(Context activityContext, Response response ) {
         this.response = response;
         this.activityContext = activityContext;
+        this.dateFormat = new SimpleDateFormat("h:mm aa", Locale.US);
         stepList = new ArrayList<OrderStepInterface>();
 
     }
@@ -124,15 +129,20 @@ public class OrderStepListAdapter extends RecyclerView.Adapter<OrderStepListAdap
             sequence.setText(orderStep.getSequence().toString());
             title.setText(orderStep.getTitle());
             description.setText(orderStep.getDescription());
+
             String caption = "Due by :";
             completeByCaption.setText(caption);
-            completeByValue.setText(orderStep.getFinishTime().getScheduledTime().toString());
+
+            String dueTime = dateFormat.format(orderStep.getFinishTime().getScheduledTime());
+            Timber.tag(TAG).d("---> Formatted due by   : " + dueTime);
+
+            completeByValue.setText(dueTime);
             stepType.setText(UserInterfaceUtilities.getStepTaskTypeIcon(orderStep.getTaskType()));
 
             //if (orderStep.getSequence() == activeSequence) {
-            //    stepType.setBackground(ResourcesCompat.getDrawable(activityContext.getResources(), R.drawable.step_circle_active, null));
+            //    stepType.setBackground(ResourcesCompat.getDrawable(activityContext.getResources(), R.drawable.step_work_stage_circle_active, null));
             //} else {
-            //    stepType.setBackground(ResourcesCompat.getDrawable(activityContext.getResources(), R.drawable.step_circle_active, null));
+            //    stepType.setBackground(ResourcesCompat.getDrawable(activityContext.getResources(), R.drawable.step_work_stage_circle_active, null));
             //}
         }
     }

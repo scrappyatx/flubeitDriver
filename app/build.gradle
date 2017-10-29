@@ -24,7 +24,7 @@ repositories {
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "it.flube.driver"
         minSdkVersion 18
@@ -49,16 +49,19 @@ android {
     }
 
     applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            output.outputFile = new File(
-                    output.outputFile.parent,
-                    output.outputFile.name.replace(".apk", "-${variant.versionName}.apk"))
+        variant.outputs.all { output ->
+            outputFileName = new File(outputFileName.replace(".apk", "-${variant.versionName}.apk"))
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    annotationProcessor "android.arch.lifecycle:compiler:1.0.0-alpha9-1"
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -80,49 +83,37 @@ dependencies {
     androidTestCompile('com.android.support:support-annotations:26.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
-    compile 'com.android.support:design:26.0.2'
-    compile 'com.android.support:appcompat-v7:26.0.2'
-    compile 'com.android.support:recyclerview-v7:26.0.2'
-    compile 'com.android.support:design:26.0.2'
-    compile 'com.android.support:support-compat:26.0.2'
+    compile 'com.android.support:design:26.1.0'
+    compile 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.android.support:recyclerview-v7:26.1.0'
+    compile 'com.android.support:design:26.1.0'
+    compile 'com.android.support:support-compat:26.1.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:multidex:1.0.1'
-
+    compile 'com.android.support:multidex:1.0.2'
     compile 'com.google.firebase:firebase-config:10.2.6'
     compile 'com.google.firebase:firebase-auth:10.2.6'
     compile 'com.google.firebase:firebase-database:10.2.6'
     compile 'com.google.firebase:firebase-storage:10.2.6'
     compile 'com.google.android.gms:play-services-location:10.2.6'
-
     compile 'com.google.code.gson:gson:2.8.0'
-
-    compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.2' // (v4.5)
+    compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.2'
+    // (v4.5)
     compile 'com.mikepenz:fontawesome-typeface:4.7.0.1@aar'
     compile('com.mikepenz:materialdrawer:5.9.5@aar') {
         transitive = true
     }
-
     compile 'com.rollbar:rollbar-android:0.2.1'
-
     compile 'io.ably:ably-android:1.0.0'
-
     compile 'org.greenrobot:eventbus:3.0.0'
-
-    compile 'com.squareup.okhttp3:okhttp:3.8.1'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.7.0'
-    compile 'com.squareup.picasso:picasso:2.5.1'
+    compile 'com.squareup.okhttp3:okhttp:3.9.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.9.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
-
     compile 'com.airbnb.android:lottie:2.0.0-rc2'
-
     compile 'com.tapadoo.android:alerter:2.0.1'
-
     compile 'com.instabug.library:instabug:4.2.2'
-
-
     //compile('com.mapbox.mapboxsdk:mapbox-android-sdk:5.1.1@aar') {
     //    transitive = true
     //}
@@ -130,46 +121,32 @@ dependencies {
     compile('com.mapbox.mapboxsdk:mapbox-android-sdk:5.2.0-beta.2@aar') {
         transitive = true
     }
-
-    compile ('com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.7.0-SNAPSHOT') {
+    compile('com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.7.0-SNAPSHOT') {
         transitive = true
     }
     compile 'com.mapbox.mapboxsdk:mapbox-android-navigation:0.7.0-SNAPSHOT'
     compile 'com.mapbox.mapboxsdk:mapbox-android-services:2.2.6'
-
     // Mapbox plugins
     compile 'com.mapbox.mapboxsdk:mapbox-android-plugin-locationlayer:0.1.0'
     compile 'com.mapbox.mapboxsdk:mapbox-android-plugin-building:0.1.0'
     compile 'com.mapbox.mapboxsdk:mapbox-android-plugin-traffic:0.3.0'
     compile 'com.mapbox.mapboxsdk:mapbox-android-plugin-geojson:0.1.0'
-
     // Mapbox Android UI
     compile 'com.mapbox.mapboxsdk:mapbox-android-ui:2.2.6'
-
-
     compile 'com.facebook.device.yearclass:yearclass:2.0.0'
     compile 'com.jaredrummler:android-device-names:1.1.4'
-
     compile 'com.jakewharton.timber:timber:4.5.1'
     compile 'com.jakewharton:butterknife:8.7.0'
-
     compile 'com.inrista.loggliest:loggliest:0.2'
-
     compile 'com.github.halysongoncalves:pugnotification:1.8.1'
-
     compile 'com.github.MAXDeliveryNG:slideview:1.0.2'
-
     compile 'com.jaredrummler:android-device-names:1.1.4'
-
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
-
     testCompile 'junit:junit:4.12'
     testCompile 'org.json:json:20140107'
-
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true;
     }
-
     apply plugin: 'com.google.gms.google-services'
 }
 

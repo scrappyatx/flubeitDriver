@@ -51,7 +51,7 @@
         tools:text="1"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         android:textStyle="normal"
-        android:background="@drawable/step_circle_not_active"
+        android:background="@drawable/step_work_stage_circle_not_started"
         android:textAlignment="center"
         android:gravity="center"
         android:textColor="@color/colorTextPrimaryLight"
@@ -72,9 +72,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        tools:text="This is the service order title"
+        tools:text="step title"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textStyle="normal"
+        android:fontFamily="sans-serif-condensed"
 
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/step_list_description"
@@ -92,11 +93,11 @@
         android:layout_height="wrap_content"
 
         tools:text="This is the service order description"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
         android:textStyle="normal"
+        android:fontFamily="sans-serif-condensed"
 
         app:layout_constraintTop_toBottomOf="@+id/step_list_title"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/vGuideline10"
 
 
@@ -110,13 +111,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        tools:text="Complete by:"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        tools:text="Due by:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textStyle="normal"
+        android:fontFamily="sans-serif-condensed"
 
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/vGuideline70"
+        app:layout_constraintBottom_toTopOf="@+id/step_list_complete_by_value"
+        app:layout_constraintLeft_toRightOf="@+id/vGuideline70"
 
 
         android:layout_marginTop="4dp"
@@ -130,11 +132,11 @@
         android:layout_height="wrap_content"
 
         tools:text="4:30 pm"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textStyle="normal"
+        android:fontFamily="sans-serif-condensed"
 
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/step_list_complete_by_caption"
         app:layout_constraintLeft_toRightOf="@+id/vGuideline70"
 
 
@@ -148,7 +150,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        tools:text="{fa-car}"
+        tools:text="X"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textStyle="normal"
 

@@ -10,7 +10,7 @@
 
     android:orientation="vertical"
 
-    android:layout_width="0dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <android.support.constraint.Guideline
@@ -47,8 +47,7 @@
         android:layout_height="wrap_content"
 
         tools:text="Oil Change"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:textStyle="bold"
+        android:textAppearance="@style/BatchDetailStyleTitle"
 
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/batch_detail_description"
@@ -66,8 +65,7 @@
         android:layout_height="wrap_content"
 
         tools:text="description text"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textStyle="normal"
+        android:textAppearance="@style/BatchDetailStyleDescription"
 
         app:layout_constraintTop_toBottomOf="@+id/batch_detail_title"
         app:layout_constraintBottom_toBottomOf="parent"

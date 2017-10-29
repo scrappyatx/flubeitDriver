@@ -193,18 +193,39 @@ public interface CloudDatabaseInterface {
     }
 
 
-    /// Save Current Active Batch DATA
-    void saveCurrentActiveBatchData(BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface orderStep, SaveCurrentActiveBatchDataResponse response);
+    ///
+    ///   ACTIVE BATCH COMMANDS
+    ///
 
-    interface SaveCurrentActiveBatchDataResponse {
-        void cloudDatabaseSaveCurrentActiveBatchDataComplete();
+    void setActiveBatchNodesRequest(String batchGuid, Integer serviceOrderSequence, Integer stepSequence, ActiveBatchNodesUpdated response);
+
+    void setActiveBatchNodesNullRequest(ActiveBatchNodesUpdated response);
+
+    interface ActiveBatchNodesUpdated{
+        void cloudDatabaseActiveBatchNodeSetComplete();
     }
 
-    /// Get Next Step
-    void gotoNextStepRequest(GotoNextStepResponse response);
+    void setBatchDetailStatusRequest(BatchDetail batchDetail, BatchDetail.WorkStatus status, BatchDetailStatusUpdated response);
 
-    interface GotoNextStepResponse {
-        void cloudDatabaseGotoNextStepComplete();
+    interface BatchDetailStatusUpdated {
+        void cloudDatabaseBatchDetailStatusSetComplete();
     }
+
+    void setServiceOrderStatusRequest(ServiceOrder serviceOrder, ServiceOrder.ServiceOrderStatus status, ServiceOrderStatusUpdated response);
+
+    interface ServiceOrderStatusUpdated {
+        void cloudDatabaseServiceOrderStatusSetComplete();
+    }
+
+    void setOrderStepWorkStageRequest(OrderStepInterface step, OrderStepInterface.WorkStage workStage, OrderStepWorkStageUpdated response);
+
+    interface OrderStepWorkStageUpdated {
+        void cloudDatabaseOrderStepWorkStageSetComplete();
+    }
+
+    void setActiveBatchStartedServerNode(String batchGuid);
+
+    void setActiveBatchFinishedServerNode(String batchGuid);
+
 
 }

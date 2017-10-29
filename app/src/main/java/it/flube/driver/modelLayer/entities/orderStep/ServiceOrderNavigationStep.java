@@ -4,6 +4,9 @@
 
 package it.flube.driver.modelLayer.entities.orderStep;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import it.flube.driver.modelLayer.entities.Destination;
 import it.flube.driver.modelLayer.entities.Timestamp;
 import it.flube.driver.modelLayer.entities.orderStep.ServiceOrderAbstractStep;
@@ -16,7 +19,8 @@ import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
 
 public class ServiceOrderNavigationStep implements OrderStepInterface {
     private static final OrderStepInterface.TaskType TASK_TYPE = TaskType.NAVIGATION;
-    private static final String STEP_CLASS_NAME = "ServiceOrderNavigationStep.class";
+
+    private String taskTypeIconText;
 
     private String guid;
     private String batchGuid;
@@ -25,8 +29,13 @@ public class ServiceOrderNavigationStep implements OrderStepInterface {
     private Integer sequence;
 
     private OrderStepInterface.WorkTiming workTiming;
+    private Map<String, String> workTimingIconTextMap;
+
     private OrderStepInterface.WorkStatus workStatus;
+    private Map<String, String> workStatusIconTextMap;
+
     private OrderStepInterface.WorkStage workStage;
+    private Map<String, String> workStageIconTextMap;
 
     private String title;
     private String description;
@@ -43,8 +52,12 @@ public class ServiceOrderNavigationStep implements OrderStepInterface {
         return TASK_TYPE;
     }
 
-    public String getStepClassName(){
-        return STEP_CLASS_NAME;
+    public String getTaskTypeIconText() {
+        return taskTypeIconText;
+    }
+
+    public void setTaskTypeIconText(String taskTypeIconText) {
+        this.taskTypeIconText = taskTypeIconText;
     }
 
     public void setGuid(String guid) {
@@ -55,12 +68,9 @@ public class ServiceOrderNavigationStep implements OrderStepInterface {
         return guid;
     }
 
-
-
     public String getBatchGuid() {
         return batchGuid;
     }
-
 
     public void setBatchGuid(String batchGuid) {
         this.batchGuid = batchGuid;
@@ -83,7 +93,6 @@ public class ServiceOrderNavigationStep implements OrderStepInterface {
         this.serviceOrderGuid = serviceOrderGuid;
     }
 
-
     public Integer getSequence() {
         return sequence;
     }
@@ -100,6 +109,15 @@ public class ServiceOrderNavigationStep implements OrderStepInterface {
         this.workTiming = workTiming;
     }
 
+
+    public Map<String, String> getWorkTimingIconTextMap() {
+        return workTimingIconTextMap;
+    }
+
+    public void setWorkTimingIconTextMap(Map<String, String> workTimingIconTextMap) {
+        this.workTimingIconTextMap = workTimingIconTextMap;
+    }
+
     public WorkStatus getWorkStatus() {
         return workStatus;
     }
@@ -108,12 +126,28 @@ public class ServiceOrderNavigationStep implements OrderStepInterface {
         this.workStatus = workStatus;
     }
 
+    public Map<String, String> getWorkStatusIconTextMap() {
+        return workStatusIconTextMap;
+    }
+
+    public void setWorkStatusIconTextMap(Map<String, String> workStatusIconTextMap) {
+        this.workStatusIconTextMap = workStatusIconTextMap;
+    }
+
     public WorkStage getWorkStage() {
         return workStage;
     }
 
     public void setWorkStage(WorkStage workStage) {
         this.workStage = workStage;
+    }
+
+    public Map<String, String> getWorkStageIconTextMap() {
+        return workStageIconTextMap;
+    }
+
+    public void setWorkStageIconTextMap(Map<String, String> workStageIconTextMap) {
+       this.workStageIconTextMap = workStageIconTextMap;
     }
 
     public String getTitle() {

@@ -70,10 +70,12 @@ public class FirebaseScheduledBatchEventListener implements
             } else {
                 //dataSnapshot has no children
                 Timber.tag(TAG).d("no scheduled batches in this list");
+                update.cloudDatabaseScheduledBatchesUpdated(batchList);
             }
         } else {
             // dataSnapshot DOES NOT EXIST
             Timber.tag(TAG).w("dataSnapshot does not exist");
+            update.cloudDatabaseScheduledBatchesUpdated(batchList);
         }
     }
 
