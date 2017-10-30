@@ -34,13 +34,13 @@ public class FirebaseActiveBatchCurrentBatchListener implements
     }
 
     public void onDataChange(DataSnapshot dataSnapshot) {
-        Timber.tag(TAG).d("data changed!");
+        Timber.tag(TAG).d("onDataChange...");
 
         if (dataSnapshot.exists()) {
-            Timber.tag(TAG).w("dataSnapshot exists!");
+            Timber.tag(TAG).d("   ...dataSnapshot exists!");
             try {
                 String batchGuid = dataSnapshot.getValue(String.class);
-                Timber.tag(TAG).d("...looking for offer data for guid : " + batchGuid);
+                Timber.tag(TAG).d("      ...looking for offer data for guid : " + batchGuid);
                 new FirebaseBatchDetailGet().getBatchDetailRequest(batchDataRef, batchGuid, this);
             } catch (Exception e) {
                 Timber.tag(TAG).e(e);
@@ -48,23 +48,23 @@ public class FirebaseActiveBatchCurrentBatchListener implements
             }
         } else {
             // dataSnapshot DOES NOT EXIST
-            Timber.tag(TAG).w("dataSnapshot does not exist");
+            Timber.tag(TAG).d("   ...dataSnapshot does not exist");
             response.currentBatchFailure();
         }
     }
 
     public void onCancelled(DatabaseError databaseError){
-        Timber.tag(TAG).e("firebase database read error : " + databaseError.getCode() + " --> " + databaseError.getMessage());
+        Timber.tag(TAG).e("onCancelled - > firebase database read error : " + databaseError.getCode() + " --> " + databaseError.getMessage());
         response.currentBatchFailure();
     }
 
     public void cloudDatabaseGetBatchDetailSuccess(BatchDetail batchDetail) {
-        Timber.tag(TAG).w("got batchDetail!");
+        Timber.tag(TAG).d("      ...got batchDetail!");
         response.currentBatchSuccess(batchDetail);
     }
 
     public void cloudDatabaseGetBatchDetailFailure() {
-        Timber.tag(TAG).w("could not get batchDetail");
+        Timber.tag(TAG).w("      ...could not get batchDetail");
         response.currentBatchFailure();
     }
 

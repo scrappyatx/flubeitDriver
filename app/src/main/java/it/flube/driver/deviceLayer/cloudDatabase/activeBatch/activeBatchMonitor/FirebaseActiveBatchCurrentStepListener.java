@@ -57,7 +57,7 @@ public class FirebaseActiveBatchCurrentStepListener implements
             }
         } else {
             // dataSnapshot DOES NOT EXIST
-            Timber.tag(TAG).w("   ...dataSnapshot does not exist");
+            Timber.tag(TAG).d("   ...dataSnapshot does not exist");
             response.currentStepFailure();
         }
     }
@@ -74,7 +74,7 @@ public class FirebaseActiveBatchCurrentStepListener implements
     }
 
     public void stepIdFailure() {
-        Timber.tag(TAG).d("         ...couldn't find a stepId");
+        Timber.tag(TAG).w("         ...couldn't find a stepId");
         response.currentStepFailure();
     }
 
@@ -84,7 +84,7 @@ public class FirebaseActiveBatchCurrentStepListener implements
     }
 
     public void getOrderStepFailure() {
-        Timber.tag(TAG).d("             ...couldn't find the step!");
+        Timber.tag(TAG).w("             ...couldn't find the step!");
         response.currentStepFailure();
     }
 

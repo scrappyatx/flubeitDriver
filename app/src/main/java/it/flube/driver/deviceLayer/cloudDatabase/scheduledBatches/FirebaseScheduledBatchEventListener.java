@@ -74,7 +74,7 @@ public class FirebaseScheduledBatchEventListener implements
             }
         } else {
             // dataSnapshot DOES NOT EXIST
-            Timber.tag(TAG).w("dataSnapshot does not exist");
+            Timber.tag(TAG).d("dataSnapshot does not exist");
             update.cloudDatabaseScheduledBatchesUpdated(batchList);
         }
     }

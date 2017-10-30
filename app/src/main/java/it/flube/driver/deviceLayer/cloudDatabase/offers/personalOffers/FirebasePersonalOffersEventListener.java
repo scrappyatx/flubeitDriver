@@ -75,7 +75,7 @@ public class FirebasePersonalOffersEventListener  implements
             }
         } else {
             // dataSnapshot DOES NOT EXIST
-            Timber.tag(TAG).w("   ...dataSnapshot does not exist");
+            Timber.tag(TAG).d("   ...dataSnapshot does not exist");
             update.cloudDatabasePersonalOffersUpdated(offerList);
         }
     }
