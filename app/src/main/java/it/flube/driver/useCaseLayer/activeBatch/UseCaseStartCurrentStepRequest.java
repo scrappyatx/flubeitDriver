@@ -4,6 +4,7 @@
 
 package it.flube.driver.useCaseLayer.activeBatch;
 
+import it.flube.driver.modelLayer.entities.LatLonLocation;
 import it.flube.driver.modelLayer.entities.batch.BatchDetail;
 import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
@@ -37,7 +38,7 @@ public class UseCaseStartCurrentStepRequest implements
 
         if (batchDetail.getWorkStatus() != BatchDetail.WorkStatus.ACTIVE) {
             device.getCloudDatabase().setBatchDetailStatusRequest(batchDetail, BatchDetail.WorkStatus.ACTIVE, this);
-            device.getCloudDatabase().setActiveBatchStartedServerNode(batchDetail.getBatchGuid());
+            //device.getCloudDatabase().setActiveBatchStartedServerNode(batchDetail.getBatchGuid());
         }
 
         if (serviceOrder.getStatus() != ServiceOrder.ServiceOrderStatus.ACTIVE) {
@@ -46,6 +47,13 @@ public class UseCaseStartCurrentStepRequest implements
 
         if (step.getWorkStage() != OrderStepInterface.WorkStage.ACTIVE) {
             device.getCloudDatabase().setOrderStepWorkStageRequest(step, OrderStepInterface.WorkStage.ACTIVE, this);
+        }
+
+        if (device.getLocationTelemetry().hasLastGoodPosition()){
+            LatLonLocation driverPosition = device.getLocationTelemetry().getLastGoodPosition();
+            device.getCloudDatabase().setActiveBatchStartedServerNode(batchDetail, serviceOrder, step, driverPosition);
+        } else {
+            device.getCloudDatabase().setActiveBatchStartedServerNode(batchDetail, serviceOrder, step);
         }
 
         response.startCurrentStepComplete();

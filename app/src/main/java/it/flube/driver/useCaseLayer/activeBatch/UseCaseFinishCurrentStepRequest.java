@@ -81,6 +81,7 @@ public class UseCaseFinishCurrentStepRequest implements
             device.getCloudDatabase().setActiveBatchFinishedServerNode(batchDetail.getBatchGuid());
 
             device.getCloudDatabase().setActiveBatchNodesNullRequest(this);
+            device.getCloudDatabase().setBatchCompletedServerNode(batchDetail);
         }
     }
 

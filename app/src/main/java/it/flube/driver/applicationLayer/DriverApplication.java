@@ -22,7 +22,9 @@ import timber.log.Timber;
  * Project : Driver
  */
 
-public class DriverApplication extends MultiDexApplication {
+public class DriverApplication extends MultiDexApplication implements
+        ActivityLifecycleHandler.LifecycleListener {
+
     private static final String TAG = "DriverApplication";
 
     @Override
@@ -34,6 +36,37 @@ public class DriverApplication extends MultiDexApplication {
         setupEventBus();
         setupMapBox();
         setupIconify();
+
+        // Register a lifecycle handler to track the foreground/background state
+        registerActivityLifecycleCallbacks(new ActivityLifecycleHandler(this));
+    }
+
+    /**
+     * Called right before the application is stopped.
+     */
+    public void onApplicationStopped(){
+        Timber.tag(TAG).d("onApplicationStopped");
+    }
+
+    /**
+     * Called right after the application has been started.
+     */
+    public void onApplicationStarted(){
+        Timber.tag(TAG).d("onApplicationStarted");
+    }
+
+    /**
+     * Called when the application is paused (but still awake).
+     */
+    public void onApplicationPaused(){
+        Timber.tag(TAG).d("onApplicationPaused");
+    }
+
+    /**
+     * Called right after the application has been resumed (come to the foreground).
+     */
+    public void onApplicationResumed(){
+        Timber.tag(TAG).d("onApplicationResumed");
     }
 
 
@@ -45,11 +78,12 @@ public class DriverApplication extends MultiDexApplication {
     private void setupMemoryLeakDetectionAndThreadAndVmPolicies(){
         AppInitialization appInitialization = new AppInitialization(getApplicationContext());
 
+        appInitialization.initializeBugReporting(this);
         appInitialization.initializeLeakDetection(this, getApplicationContext());
         appInitialization.setThreadPolicy();
         appInitialization.setVMPolicy();
         appInitialization.initializeAndCreateImageLoaderLogic();
-        appInitialization.initializeBugReporting(this);
+
     }
 
     private void setupEventBus(){

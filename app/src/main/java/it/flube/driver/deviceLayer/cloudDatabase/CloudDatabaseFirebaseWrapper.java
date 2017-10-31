@@ -18,6 +18,7 @@ import it.flube.driver.deviceLayer.cloudDatabase.batchData.serviceOrders.Firebas
 import it.flube.driver.deviceLayer.cloudDatabase.batchData.serviceOrders.FirebaseServiceOrderSetStatus;
 import it.flube.driver.deviceLayer.cloudDatabase.batchData.steps.FirebaseOrderStepListGet;
 import it.flube.driver.deviceLayer.cloudDatabase.batchData.steps.FirebaseOrderStepSetWorkStage;
+import it.flube.driver.deviceLayer.cloudDatabase.completedBatches.FirebaseCompletedBatchesServerNode;
 import it.flube.driver.deviceLayer.cloudDatabase.offers.demoOffers.FirebaseDemoOffersAdd;
 import it.flube.driver.deviceLayer.cloudDatabase.offers.demoOffers.FirebaseDemoOffersMonitor;
 import it.flube.driver.deviceLayer.cloudDatabase.deviceAndUser.FirebaseDevice;
@@ -31,6 +32,7 @@ import it.flube.driver.deviceLayer.cloudDatabase.scheduledBatches.FirebaseSchedu
 import it.flube.driver.deviceLayer.cloudDatabase.scheduledBatches.FirebaseScheduledBatchesRemove;
 import it.flube.driver.modelLayer.entities.DeviceInfo;
 import it.flube.driver.modelLayer.entities.Driver;
+import it.flube.driver.modelLayer.entities.LatLonLocation;
 import it.flube.driver.modelLayer.entities.batch.BatchDetail;
 import it.flube.driver.modelLayer.entities.batch.BatchHolder;
 import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
@@ -277,10 +279,25 @@ public class CloudDatabaseFirebaseWrapper implements
         new FirebaseOrderStepSetWorkStage().setOrderStepSetWorkStageRequest(database.getReference(batchDataNode), step, workStage, response);
     }
 
-    public void setActiveBatchStartedServerNode(String batchGuid){
+    public void setActiveBatchStartedServerNode(BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step){
         Timber.tag(TAG).d("started active batch, putting notification on server node");
-        new FirebaseActiveBatchServerNode().activeBatchStartRequest(database.getReference(), batchGuid, driver);
+        new FirebaseActiveBatchServerNode().activeBatchStartRequest(database.getReference(), driver, batchDetail, serviceOrder, step);
     }
+
+    public void setActiveBatchStartedServerNode(BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step, LatLonLocation driverLocation){
+        Timber.tag(TAG).d("started active batch, putting notification on server node");
+        new FirebaseActiveBatchServerNode().activeBatchStartRequest(database.getReference(), driver, batchDetail, serviceOrder, step, driverLocation);
+    }
+
+    public void setBatchCompletedServerNode(BatchDetail batchDetail){
+        Timber.tag(TAG).d("batch complete, putting notification on server node");
+        new FirebaseCompletedBatchesServerNode().setCompletedBatchRequest(database.getReference(), driver, batchDetail);
+    }
+
+    //public void setActiveBatchStartedServerNode(String batchGuid){
+    //    Timber.tag(TAG).d("started active batch, putting notification on server node");
+    //    new FirebaseActiveBatchServerNode().activeBatchStartRequest(database.getReference(), batchGuid, driver);
+    //}
 
     public void setActiveBatchFinishedServerNode(String batchGuid){
         Timber.tag(TAG).d("stopping active batch, putting notification on server node");

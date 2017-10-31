@@ -6,6 +6,7 @@ package it.flube.driver.modelLayer.interfaces;
 
 import java.util.ArrayList;
 
+import it.flube.driver.modelLayer.entities.LatLonLocation;
 import it.flube.driver.modelLayer.entities.RouteStop;
 import it.flube.driver.modelLayer.entities.batch.Batch;
 import it.flube.driver.modelLayer.entities.batch.BatchCloudDB;
@@ -223,9 +224,12 @@ public interface CloudDatabaseInterface {
         void cloudDatabaseOrderStepWorkStageSetComplete();
     }
 
-    void setActiveBatchStartedServerNode(String batchGuid);
+    void setActiveBatchStartedServerNode(BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step);
+
+    void setActiveBatchStartedServerNode(BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step, LatLonLocation driverLocation);
 
     void setActiveBatchFinishedServerNode(String batchGuid);
 
+    void setBatchCompletedServerNode(BatchDetail batchDetail);
 
 }
