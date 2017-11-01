@@ -20,6 +20,7 @@ import it.flube.driver.modelLayer.interfaces.RealtimeMessagingInterface;
 
 public class UseCaseThingsToDoAfterSignIn implements
         Runnable,
+        CloudAuthInterface.ConnectResponse,
         CloudAuthInterface.SignInResponse,
         CloudDatabaseInterface.SaveResponse,
         LocationTelemetryInterface.LocationTrackingStartResponse,
@@ -41,17 +42,27 @@ public class UseCaseThingsToDoAfterSignIn implements
         //Step 1 --> set person data for app logging
         device.getAppLogging().setPersonData(device.getUser().getDriver());
 
-        //Step 2 --> sign in the driver on cloud auth
-        device.getCloudAuth().signInRequest(device.getUser().getDriver(), device.getAppRemoteConfig(), this);
+        //step 2 --> connect to cloud auth
+        device.getCloudAuth().connectRequest(device.getAppRemoteConfig(), this);
+
     }
 
-    public void signInUserCloudAuthComplete(){
-        //Step 3 --> startup the cloud database
+    public void cloudAuthConnectComplete() {
+        //Step 3 --> sign in the driver on cloud auth
+        device.getCloudAuth().signInRequest(device.getUser().getDriver(), this);
+    }
+
+    public void signInUserCloudAuthSuccess(){
+        //Step 4 --> startup the cloud database
         device.getCloudDatabase().connectRequest(device.getAppRemoteConfig(), device.getUser().getDriver(), this);
     }
 
+    public void signInUserCloudAuthFailure(){
+        //TODO what do we do if we can't get an auth from firebase?
+    }
+
     public void cloudDatabaseConnectComplete(){
-        //step 4 --> save the user to the cloud database
+        //step 5 --> save the user to the cloud database
         device.getCloudDatabase().saveUserRequest(this);
 
         //get device data
@@ -64,9 +75,9 @@ public class UseCaseThingsToDoAfterSignIn implements
 
         device.getRealtimeConnection().messageServerConnectRequest(device.getUser().getDriver(), this);
 
-        device.getRealtimeOfferMessages().attach(device.getUser().getDriver().getClientId());
+        //device.getRealtimeOfferMessages().attach(device.getUser().getDriver().getClientId());
 
-        device.getRealtimeBatchMessages().connect(device.getUser().getDriver().getClientId());
+        //device.getRealtimeBatchMessages().connect(device.getUser().getDriver().getClientId());
 
         device.getLocationTelemetry().locationTrackingStartRequest(this, new LocationTrackingPositionChangedHandler());
 

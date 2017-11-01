@@ -38,23 +38,36 @@
         <activity android:name=".userInterfaceLayer.activities.signIn.SignInActivity"
             android:launchMode="singleTask"
             android:noHistory="true"/>
-        <activity android:name=".userInterfaceLayer.activities.account.AccountActivity" />
-        <activity android:name=".userInterfaceLayer.activities.offers.demoOffers.DemoOffersActivity" />
-        <activity android:name=".userInterfaceLayer.activities.earnings.EarningsActivity" />
-        <activity android:name=".userInterfaceLayer.activities.help.HelpActivity" />
+
         <activity android:name=".userInterfaceLayer.activities.home.HomeActiveBatchActivity" />
         <activity android:name=".userInterfaceLayer.activities.home.HomeNoActiveBatchActivity" />
+
         <activity android:name=".userInterfaceLayer.activities.messages.MessagesActivity" />
         <activity android:name=".userInterfaceLayer.activities.offers.publicOffers.PublicOffersActivity" />
         <activity android:name=".userInterfaceLayer.activities.offers.personalOffers.PersonalOffersActivity" />
-        <activity android:name=".userInterfaceLayer.activities.offers.claimOffer.OfferClaimActivity" />
+        <activity android:name=".userInterfaceLayer.activities.offers.demoOffers.DemoOffersActivity" />
+
         <activity android:name=".userInterfaceLayer.activities.scheduledBatches.scheduledBatchList.ScheduledBatchesActivity" />
-        <activity android:name=".userInterfaceLayer.activities.scheduledBatches.manageBatch.BatchManageActivity" />
-        <activity android:name=".userInterfaceLayer.activities.scheduledBatches.BatchMapActivity" />
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.NavigationActivity" />
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.PhotoActivity" />
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.batchItinerary.BatchItineraryActivity" />
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderItinerary.OrderItineraryActivity" />
+
+        <activity android:name=".userInterfaceLayer.activities.account.AccountActivity" />
+        <activity android:name=".userInterfaceLayer.activities.earnings.EarningsActivity" />
+        <activity android:name=".userInterfaceLayer.activities.help.HelpActivity" />
+
+
+        <activity android:name=".userInterfaceLayer.activities.offers.claimOffer.OfferClaimActivity"
+            android:noHistory="true" />
+        <activity android:name=".userInterfaceLayer.activities.scheduledBatches.manageBatch.BatchManageActivity"
+            android:noHistory="true" />
+        <activity android:name=".userInterfaceLayer.activities.scheduledBatches.BatchMapActivity"
+            android:noHistory="true" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.NavigationActivity"
+            android:noHistory="true" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.PhotoActivity"
+            android:noHistory="true" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.batchItinerary.BatchItineraryActivity"
+            android:noHistory="true" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderItinerary.OrderItineraryActivity"
+            android:noHistory="true" />
         <service
             android:name=".dataLayer.services.ActiveBatchForegroundService"
             android:enabled="true"

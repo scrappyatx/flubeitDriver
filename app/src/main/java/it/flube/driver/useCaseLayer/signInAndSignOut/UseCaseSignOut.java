@@ -6,6 +6,7 @@ package it.flube.driver.useCaseLayer.signInAndSignOut;
 
 import it.flube.driver.modelLayer.interfaces.CloudAuthInterface;
 import it.flube.driver.modelLayer.interfaces.DeviceStorageInterface;
+import it.flube.driver.modelLayer.interfaces.LocationTelemetryInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import it.flube.driver.modelLayer.interfaces.RealtimeMessagingInterface;
 
@@ -18,7 +19,8 @@ public class UseCaseSignOut implements
         Runnable,
         DeviceStorageInterface.DeleteResponse,
         CloudAuthInterface.SignOutResponse,
-        RealtimeMessagingInterface.Connection.DisconnectResponse {
+        RealtimeMessagingInterface.Connection.DisconnectResponse,
+        LocationTelemetryInterface.LocationTrackingStopResponse {
 
     private final MobileDeviceInterface mDevice;
     private final UseCaseSignOut.Response mResponse;
@@ -35,6 +37,7 @@ public class UseCaseSignOut implements
         mDevice.getRealtimeConnection().messageServerDisconnectRequest(this);
         mDevice.getRealtimeOfferMessages().detach();
         mDevice.getRealtimeBatchMessages().disconnect();
+        mDevice.getLocationTelemetry().locationTrackingStopRequest(this);
     }
 
     public void signOutUserCloudAuthComplete(){
@@ -48,6 +51,10 @@ public class UseCaseSignOut implements
     }
 
     public void messageServerDisconnectComplete() {
+
+    }
+
+    public void locationTrackingStopComplete(){
 
     }
 

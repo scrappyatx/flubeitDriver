@@ -13,12 +13,22 @@ import it.flube.driver.modelLayer.entities.Driver;
 
 public interface CloudAuthInterface {
 
-    void signInRequest(Driver driver, AppRemoteConfigInterface appConfig, SignInResponse response);
+    void connectRequest(AppRemoteConfigInterface appConfig, ConnectResponse response);
+
+    interface ConnectResponse {
+        void cloudAuthConnectComplete();
+    }
+
+    void disconnect();
+
+    void signInRequest(Driver driver, SignInResponse response);
 
     void signOutRequest(SignOutResponse response);
 
     interface SignInResponse {
-        void signInUserCloudAuthComplete();
+        void signInUserCloudAuthSuccess();
+
+        void signInUserCloudAuthFailure();
     }
 
     interface SignOutResponse {

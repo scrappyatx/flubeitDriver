@@ -24,7 +24,7 @@ import it.flube.driver.deviceLayer.DeviceStorageSharedPrefs;
 import it.flube.driver.deviceLayer.LocationEngineWrapper;
 import it.flube.driver.deviceLayer.UserProfile;
 import it.flube.driver.deviceLayer.appLogging.AppLoggingTimber;
-import it.flube.driver.deviceLayer.cloudAuth.CloudAuthFirebase;
+import it.flube.driver.deviceLayer.cloudAuth.CloudAuthFirebaseWrapper;
 import it.flube.driver.deviceLayer.realtimeMessaging.RealtimeBatchMessages;
 import it.flube.driver.deviceLayer.realtimeMessaging.RealtimeOfferMessages;
 import it.flube.driver.modelLayer.entities.DeviceInfo;
@@ -114,7 +114,7 @@ public class AndroidDevice implements MobileDeviceInterface, DeviceName.Callback
     }
 
     public CloudAuthInterface getCloudAuth() {
-        return CloudAuthFirebase.getInstance();
+        return CloudAuthFirebaseWrapper.getInstance();
     }
 
     public CloudDatabaseInterface getCloudDatabase(){

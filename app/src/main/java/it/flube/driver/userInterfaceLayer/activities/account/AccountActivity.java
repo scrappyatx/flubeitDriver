@@ -7,6 +7,7 @@ package it.flube.driver.userInterfaceLayer.activities.account;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -15,6 +16,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import it.flube.driver.BuildConfig;
 import it.flube.driver.R;
+import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.GetAccountDetailsResponseHandler;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.signInAndSignOut.SignOutResponseHandler;
 import it.flube.driver.userInterfaceLayer.ActivityNavigator;
@@ -39,6 +41,8 @@ public class AccountActivity extends AppCompatActivity {
     private TextView profileDetail;
     private TextView softwareVersion;
 
+    private Button logoutButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +57,7 @@ public class AccountActivity extends AppCompatActivity {
         softwareVersion.setVisibility(View.VISIBLE);
         Timber.tag(TAG).d("software version = " + BuildConfig.VERSION_NAME);
 
+        logoutButton = (Button) findViewById(R.id.account_logout_button);
 
         Timber.tag(TAG).d("onCreate");
     }
@@ -67,6 +72,12 @@ public class AccountActivity extends AppCompatActivity {
         drawer = new DrawerMenu(this, navigator, R.string.account_activity_title);
         controller = new AccountController();
         controller.getAccountDetailRequest();
+
+        if (AndroidDevice.getInstance().getActiveBatch().hasActiveBatch()){
+            logoutButton.setVisibility(View.INVISIBLE);
+        } else {
+            logoutButton.setVisibility(View.VISIBLE);
+        }
 
         Timber.tag(TAG).d("onResume");
     }
