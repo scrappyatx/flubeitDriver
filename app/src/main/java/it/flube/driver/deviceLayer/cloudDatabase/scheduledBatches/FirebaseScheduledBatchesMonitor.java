@@ -48,7 +48,7 @@ public class FirebaseScheduledBatchesMonitor {
             isListening = true;
             Timber.tag(TAG).d("START listening");
         } else {
-            Timber.tag(TAG).w("called startListening when already listening...");
+            Timber.tag(TAG).d("called startListening when already listening...");
         }
     }
 
@@ -56,9 +56,9 @@ public class FirebaseScheduledBatchesMonitor {
         if (isListening) {
             scheduledBatchesRef.removeEventListener(scheduledBatchListener);
             isListening = false;
-            Timber.tag(TAG).w("STOP listening");
+            Timber.tag(TAG).d("STOP listening");
         } else {
-            Timber.tag(TAG).w("called stopListening when not listening...");
+            Timber.tag(TAG).d("called stopListening when not listening...");
         }
     }
 

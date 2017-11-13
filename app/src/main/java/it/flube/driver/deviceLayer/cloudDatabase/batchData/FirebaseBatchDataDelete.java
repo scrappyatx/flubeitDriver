@@ -21,9 +21,9 @@ import timber.log.Timber;
 public class FirebaseBatchDataDelete implements OnCompleteListener<Void>  {
     private static final String TAG = "FirebaseBatchDataDelete";
 
-    private CloudDatabaseInterface.DeleteDemoBatchDataResponse response;
+    private CloudDatabaseInterface.DeleteBatchDataResponse response;
 
-    public void deleteDemoBatchDataRequest(DatabaseReference batchDataRef, String batchGuid, CloudDatabaseInterface.DeleteDemoBatchDataResponse response) {
+    public void deleteDemoBatchDataRequest(DatabaseReference batchDataRef, String batchGuid, CloudDatabaseInterface.DeleteBatchDataResponse response) {
         this.response = response;
         Timber.tag(TAG).d("batchDatRef = " + batchDataRef);
 
@@ -47,7 +47,7 @@ public class FirebaseBatchDataDelete implements OnCompleteListener<Void>  {
             }
 
         }
-        response.cloudDatabaseDemoBatchDataDeleteComplete();
+        response.cloudDatabaseBatchDataDeleteComplete();
     }
 
 }

@@ -22,7 +22,6 @@ import timber.log.Timber;
 
 public class FirebaseActiveBatchCurrentStepListener implements
         ValueEventListener,
-        FirebaseStepIdGet.StepIdResponse,
         FirebaseOrderStepGet.GetOrderStepResponse {
 
     private static final String TAG = "FirebaseActiveBatchCurrentStepListener";
@@ -45,11 +44,11 @@ public class FirebaseActiveBatchCurrentStepListener implements
         Timber.tag(TAG).d("onDataChange...");
 
         if (dataSnapshot.exists()) {
-            Timber.tag(TAG).w("   ...dataSnapshot exists!");
+            Timber.tag(TAG).d("   ...dataSnapshot exists!");
             try {
                 Integer stepIdSequence = dataSnapshot.getValue(Integer.class);
                 Timber.tag(TAG).d("      ...looking for stepId sequence " + stepIdSequence + " for serviceOrder Guid : " + serviceOrderGuid);
-                new FirebaseStepIdGet().getStepIdRequest(batchDataRef, batchGuid, serviceOrderGuid, stepIdSequence, this);
+                new FirebaseOrderStepGet().getOrderStep(batchDataRef, batchGuid, serviceOrderGuid, stepIdSequence, this);
             } catch (Exception e) {
                 Timber.tag(TAG).d("      ...ERROR");
                 Timber.tag(TAG).e(e);
@@ -64,17 +63,6 @@ public class FirebaseActiveBatchCurrentStepListener implements
 
     public void onCancelled(DatabaseError databaseError){
         Timber.tag(TAG).e("onCancelled --> error : " + databaseError.getCode() + " --> " + databaseError.getMessage());
-        response.currentStepFailure();
-    }
-
-    public void stepIdSuccess(StepId stepId) {
-        //now try to find a step
-        Timber.tag(TAG).d("         ...found a stepId, now searching for step...");
-        new FirebaseOrderStepGet().getOrderStep(batchDataRef, stepId.getBatchGuid(), stepId.getStepGuid(), stepId.getTaskType(), this);
-    }
-
-    public void stepIdFailure() {
-        Timber.tag(TAG).w("         ...couldn't find a stepId");
         response.currentStepFailure();
     }
 

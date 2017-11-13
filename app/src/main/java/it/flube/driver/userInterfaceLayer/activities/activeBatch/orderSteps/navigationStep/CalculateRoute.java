@@ -4,11 +4,12 @@
 
 package it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep;
 
-import com.mapbox.directions.v5.models.DirectionsResponse;
-import com.mapbox.directions.v5.models.DirectionsRoute;
-import com.mapbox.geojson.Point;
+
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 
+import com.mapbox.services.api.directions.v5.models.DirectionsResponse;
+import com.mapbox.services.api.directions.v5.models.DirectionsRoute;
+import com.mapbox.services.commons.geojson.Point;
 import com.mapbox.services.commons.models.Position;
 
 
@@ -35,13 +36,15 @@ public class CalculateRoute implements Callback<DirectionsResponse> {
         Position originPosition = Position.fromCoordinates(origin.getLongitude(), origin.getLatitude());
         Position destinationPosition = Position.fromCoordinates(destination.getLongitude(), destination.getLatitude());
 
-        Point originPoint = Point.fromLngLat(origin.getLongitude(), origin.getLatitude());
-        Point destinationPoint = Point.fromLngLat(destination.getLongitude(), destination.getLatitude());
+        Point originPoint = Point.fromCoordinates(originPosition);
+        //fromLngLat(origin.getLongitude(), origin.getLatitude());
+        Point destinationPoint = Point.fromCoordinates(destinationPosition);
+                //fromLngLat(destination.getLongitude(), destination.getLatitude());
 
         NavigationRoute.builder()
                 .accessToken(mapboxAccessToken)
-                .origin(originPoint)
-                .destination(destinationPoint)
+                .origin(originPosition)
+                .destination(destinationPosition)
                 .build()
                 .getRoute(this);
     }
@@ -56,14 +59,14 @@ public class CalculateRoute implements Callback<DirectionsResponse> {
             Timber.tag(TAG).w("   ...FAILURE -> response.body() is null");
             calcResponse.getRouteFailure();
 
-        } else if (response.body().routes().size() < 1) {
-            Timber.tag(TAG).w("   ...FAILURE -> getRoutes().size() = " + response.body().routes().size());
+        } else if (response.body().getRoutes().size() < 1) {
+            Timber.tag(TAG).w("   ...FAILURE -> getRoutes().size() = " + response.body().getRoutes().size());
            calcResponse.getRouteFailure();
 
         } else {
 
-            Timber.tag(TAG).w("   ...SUCCESS -> getRoutes().size() = " + response.body().routes().size());
-            calcResponse.getRouteSuccess(response.body().routes().get(0));
+            Timber.tag(TAG).d("   ...SUCCESS -> getRoutes().size() = " + response.body().getRoutes().size());
+            calcResponse.getRouteSuccess(response.body().getRoutes().get(0));
         }
         Timber.tag(TAG).d("COMPLETE onResponse");
     }

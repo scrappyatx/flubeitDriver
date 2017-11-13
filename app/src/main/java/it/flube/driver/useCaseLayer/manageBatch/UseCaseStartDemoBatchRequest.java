@@ -18,8 +18,7 @@ import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 public class UseCaseStartDemoBatchRequest implements
         Runnable,
         CloudDatabaseInterface.RemoveDemoBatchFromScheduledBatchListResponse,
-        CloudDatabaseInterface.StartDemoBatchComplete,
-        CloudDatabaseInterface.ActiveBatchNodesUpdated {
+        CloudDatabaseInterface.StartScheduledBatchResponse {
 
     private final CloudDatabaseInterface cloudDb;
     private final String batchGuid;
@@ -46,11 +45,11 @@ public class UseCaseStartDemoBatchRequest implements
         ///     Since a batch can be started by the mobile device, OR by the back-end server, the RESPONSE to a change
         ///     in the ActiveBatch nodes is handled by another use case
         ///
-        //cloudDb.startDemoBatchRequest(batchGuid, this);
-        cloudDb.setActiveBatchNodesRequest(batchGuid, 1, 1, this);
+        cloudDb.startScheduledBatchRequest(batchGuid, CloudDatabaseInterface.ActorType.MOBILE_USER,this);
+        //cloudDb.setActiveBatchNodesRequest(batchGuid, 1, 1, CloudDatabaseInterface.ActionType.BATCH_STARTED, this);
     }
 
-    public void cloudDatabaseStartDemoBatchComplete() {
+    public void cloudDatabaseStartScheduledBatchComplete() {
         //we are done
         response.startDemoBatchComplete(batchGuid);
     }

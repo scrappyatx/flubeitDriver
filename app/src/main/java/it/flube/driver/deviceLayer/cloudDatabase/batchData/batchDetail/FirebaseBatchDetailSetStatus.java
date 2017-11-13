@@ -24,16 +24,16 @@ import timber.log.Timber;
  * Project : Driver
  */
 
-public class FireBatchDetailSetStatus implements OnCompleteListener<Void> {
-    private static final String TAG = "FirebaseServiceOrderSetStatus";
+public class FirebaseBatchDetailSetStatus implements OnCompleteListener<Void> {
+    private static final String TAG = "FirebaseBatchDetailSetStatus";
     private static final String BATCH_DATA_BATCH_DETAIL_NODE = "batchDetail";
     private static final String STATUS_PROPERTY = "workStatus";
 
-    private CloudDatabaseInterface.BatchDetailStatusUpdated response;
+    private Response response;
 
 
     public void setBatchDetailStatusRequest(DatabaseReference batchDataRef, BatchDetail batchDetail, BatchDetail.WorkStatus status,
-                                            CloudDatabaseInterface.BatchDetailStatusUpdated response){
+                                            Response response){
         this.response = response;
 
         Timber.tag(TAG).d("batchDataRef = " + batchDataRef.toString());
@@ -60,7 +60,11 @@ public class FireBatchDetailSetStatus implements OnCompleteListener<Void> {
                 Timber.tag(TAG).e(e);
             }
         }
-        response.cloudDatabaseBatchDetailStatusSetComplete();
+        response.setBatchDetailStatusComplete();
+    }
+
+    public interface Response {
+        void setBatchDetailStatusComplete();
     }
 
 }

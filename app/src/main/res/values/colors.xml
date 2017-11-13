@@ -16,6 +16,11 @@
     <color name="colorTextPrimaryDark">@color/colorPrimaryDark</color>
     <color name="colorTextPrimary">@color/colorPrimary</color>
 
+    <color name="colorNavMenuPublicOfferHighlight">@color/colorPrimary</color>
+    <color name="colorNavMenuPersonalOfferHighlight">@color/colorPrimary</color>
+    <color name="colorNavMenuDemoOfferHighlight">@color/colorPrimary</color>
+    <color name="colorNavMenuScheduledBatchHighlight">@color/colorPrimary</color>
+
     <color name="colorOrderActive">@color/colorPrimary</color>
     <color name="colorOrderNotActive">@color/translucentMedBlue</color>
     <color name="colorOrderComplete">@color/alerterGREEN</color>

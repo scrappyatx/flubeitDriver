@@ -4,16 +4,19 @@
 
 package it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
-import com.mapbox.directions.v5.models.DirectionsRoute;
-import com.mapbox.geojson.Point;
+
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
 import com.mapbox.services.android.navigation.v5.navigation.MapboxNavigation;
 import com.mapbox.services.android.telemetry.location.LocationEngine;
 import com.mapbox.services.android.telemetry.location.LocationEnginePriority;
 import com.mapbox.services.android.telemetry.location.LostLocationEngine;
 
+import com.mapbox.services.api.directions.v5.models.DirectionsRoute;
 import com.mapbox.services.commons.models.Position;
 
 import java.util.concurrent.ExecutorService;
@@ -22,6 +25,7 @@ import java.util.concurrent.Executors;
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.activeBatch.UseCaseFinishCurrentStepResponseHandler;
 import it.flube.driver.modelLayer.entities.LatLonLocation;
+import it.flube.driver.modelLayer.entities.orderStep.ServiceOrderNavigationStep;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseFinishCurrentStepRequest;
@@ -86,9 +90,22 @@ public class NavigationController implements
         //NavigationLauncher.startNavigation(activity, originPoint, destinationPoint, awsPool, simulateRoute);
     }
 
-    public void finishStep(){
+    public void finishStep(String milestoneEvent){
         Timber.tag(TAG).d("finishing STEP");
-        useCaseExecutor.execute(new UseCaseFinishCurrentStepRequest(device, new UseCaseFinishCurrentStepResponseHandler()));
+        useCaseExecutor.execute(new UseCaseFinishCurrentStepRequest(device, milestoneEvent, new UseCaseFinishCurrentStepResponseHandler()));
+    }
+
+    public void manuallyConfirmArrival(Context activityContext, ServiceOrderNavigationStep step) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activityContext);
+
+        builder.setMessage("I have arrived at the destination, but GPS is not working");
+        builder.setTitle("Confirm Arrival");
+        builder.setPositiveButton("OK", new YesClick(step));
+        builder.setNegativeButton("Cancel", new NoClick());
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
     }
 
 
@@ -115,6 +132,27 @@ public class NavigationController implements
 
     public void getRouteFailure() {
         Timber.tag(TAG).d("... couldn't get a route");
+    }
+
+    private class YesClick implements DialogInterface.OnClickListener {
+        private ServiceOrderNavigationStep step;
+
+        public YesClick(ServiceOrderNavigationStep step){
+            this.step = step;
+        }
+
+        public void onClick(DialogInterface dialog, int id) {
+            // User clicked OK button
+            Timber.tag(TAG).d("user clicked yes");
+            finishStep(step.getMilestoneWhenFinished());
+        }
+    }
+
+    private class NoClick implements DialogInterface.OnClickListener {
+        public void onClick(DialogInterface dialog, int id) {
+            // User clicked No button
+            Timber.tag(TAG).d("user clicked no");
+        }
     }
 
 }

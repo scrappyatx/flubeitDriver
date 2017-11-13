@@ -45,7 +45,7 @@ public class FirebaseAuthUserRefreshToken implements
 
     }
     public void firebaseTokenSuccess(String token) {
-        Timber.tag(TAG).w("   ...got an auth token, now signing in with new token");
+        Timber.tag(TAG).d("   ...got an auth token, now signing in with new token");
         auth.signInWithCustomToken(token).addOnCompleteListener(this);
     }
 

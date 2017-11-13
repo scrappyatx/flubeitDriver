@@ -9,6 +9,7 @@ import com.google.firebase.database.DatabaseReference;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.activeBatch.ActiveBatchUpdatedResponseHandler;
 import it.flube.driver.modelLayer.entities.batch.BatchDetail;
 import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
+import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
 import timber.log.Timber;
 
@@ -21,7 +22,7 @@ public class FirebaseActiveBatchCurrentStepMonitor implements
         FirebaseActiveBatchCurrentStepListener.CurrentStepResponse {
 
     private static final String TAG = "FirebaseActiveBatchCurrentStepMonitor";
-    private static final String ACTIVE_BATCH_CURRENT_STEPID_NODE = "currentStepIdSequence";
+    private static final String ACTIVE_BATCH_CURRENT_STEP_NODE = "currentStepSequence";
 
     private DatabaseReference activeBatchRef;
     private DatabaseReference batchDataRef;
@@ -50,7 +51,7 @@ public class FirebaseActiveBatchCurrentStepMonitor implements
         if (!isListening) {
             stepListener = new FirebaseActiveBatchCurrentStepListener(batchDataRef, currentBatch.getBatchGuid(), currentServiceOrder.getGuid(), this);
 
-            activeBatchRef.child(ACTIVE_BATCH_CURRENT_STEPID_NODE).addValueEventListener(stepListener);
+            activeBatchRef.child(ACTIVE_BATCH_CURRENT_STEP_NODE).addValueEventListener(stepListener);
             isListening = true;
             Timber.tag(TAG).d("STARTED listening");
 
@@ -61,7 +62,7 @@ public class FirebaseActiveBatchCurrentStepMonitor implements
 
     public void stopListening(){
         if (isListening) {
-            activeBatchRef.child(ACTIVE_BATCH_CURRENT_STEPID_NODE).removeEventListener(stepListener);
+            activeBatchRef.child(ACTIVE_BATCH_CURRENT_STEP_NODE).removeEventListener(stepListener);
             isListening = false;
 
             Timber.tag(TAG).d("STOPPED listening");
@@ -73,8 +74,9 @@ public class FirebaseActiveBatchCurrentStepMonitor implements
     public void currentStepSuccess(OrderStepInterface orderStep) {
         Timber.tag(TAG).d("current step found : step guid -> " + orderStep.getGuid());
 
-        new ActiveBatchUpdatedResponseHandler()
-                .cloudDatabaseActiveBatchUpdated(currentBatch, currentServiceOrder, orderStep);
+        new ActiveBatchUpdatedResponseHandler().stepStarted(CloudDatabaseInterface.ActorType.MOBILE_USER, CloudDatabaseInterface.ActionType.STEP_STARTED,
+                currentBatch, currentServiceOrder, orderStep);
+                //.cloudDatabaseActiveBatchUpdated(currentBatch, currentServiceOrder, orderStep);
 
         Timber.tag(TAG).d("sending ActiveBatchUpdated -> batch, serviceOrder, step");
     }
@@ -83,7 +85,7 @@ public class FirebaseActiveBatchCurrentStepMonitor implements
         Timber.tag(TAG).d("no current step found");
 
         new ActiveBatchUpdatedResponseHandler()
-                .cloudDatabaseNoActiveBatch();
+                .noBatch();
 
         Timber.tag(TAG).d("sending ActiveBatchUpdated -> NO batch, NO service order, NO step");
     }

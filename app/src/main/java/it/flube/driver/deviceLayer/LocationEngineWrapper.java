@@ -36,12 +36,24 @@ public class LocationEngineWrapper implements LocationTelemetryInterface, Locati
         lastGoodPositionSaved = false;
     }
 
+    public LocationEngine getLocationEngine(){
+        return locationEngine;
+    }
+
     public void locationTrackingStartRequest(LocationTrackingStartResponse response, LocationTrackingPositionChanged update) {
         this.response = response;
         this.update = update;
-        locationEngine.setPriority(LocationEnginePriority.HIGH_ACCURACY);
+
         locationEngine.addLocationEngineListener(this);
+
+        locationEngine.setPriority(LocationEnginePriority.HIGH_ACCURACY);
+
+        locationEngine.setInterval(20*1000); //want updates at least every 20 seconds
+        locationEngine.setFastestInterval(5*1000); //but will accept them as fast as every 5 seconds
+        locationEngine.setSmallestDisplacement(3);  //but only if displacement is 3 meters or more
+
         locationEngine.activate();
+
         Timber.tag(TAG).d("locationTrackingStartRequest");
     }
 

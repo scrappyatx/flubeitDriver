@@ -91,31 +91,16 @@ public interface RealtimeMessagingInterface {
     }
 
     interface ActiveBatchChannel {
-        void connect(String batchOID);
+        void attach(String batchGuid);
 
-        void disconnect();
+        void detach();
 
-        void sendMsgBatchStart(String batchOID);
+        void sendMilestoneEvent(String milestoneEvent);
+
+        void sendCurrentlyDoing(String currentlyDoing);
 
         void sendMsgLocationUpdate(double latitude, double longitude);
 
-        void sendMsgArrivedToPickup(String batchOID);
-
-        void sendMsgDriverTakesVehicleFromCustomer(String batchOID);
-
-        void sendMsgArrivedToService(String batchOID);
-
-        void sendMsgServiceTakesVehicleFromDriver(String batchOID);
-
-        void sendMsgServiceStart(String batchOID);
-
-        void sendMsgServiceComplete(String batchOID);
-
-        void sendMsgDriverTakesVehicleFromService(String batchOID);
-
-        void sendMsgArrivedToDropOff(String batchOID);
-
-        void sendMsgOwnerTakesVehicleFromDriver(String batchOID);
     }
 
 }

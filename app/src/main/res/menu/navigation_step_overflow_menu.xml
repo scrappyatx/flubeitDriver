@@ -13,8 +13,7 @@
 
         android:onClick="clickOverflowMenuUserHasArrived"
 
-        app:showAsAction="always|collapseActionView"
-        app:actionLayout="@layout/navigation_step_overflow_action_user_has_arrived"
+        app:showAsAction="always"
         android:icon="@drawable/ic_help_outline_black_24dp"
 
         android:visible="true"

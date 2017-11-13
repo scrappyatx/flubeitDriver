@@ -50,16 +50,21 @@
     </string-array>
 
 
-    <!-- Strings related to foreground service -->
+    <!-- Strings related to foreground service
     <string name="rtm_and_loc_updates_fg_svc_notification_title">flube.it Driver</string>
     <string name="rtm_and_loc_updates_fg_svc_notification_text_searching">Searching for offers</string>
     <string name="rtm_and_loc_updates_fg_svc_notification_text_activebatch">Active Batch in progress</string>
+     -->
 
+    <!-- Strings related to active batch foreground service -->
+    <string name="active_batch_service_notification_title">flube.it Driver</string>
+    <string name="active_batch_service_notification_text">Active batch in progress</string>
+    <string name="active_batch_service_notification_subtext">Active batch in progress</string>
 
     <!-- Strings related to navigation drawer menu -->
     <string name="nav_menu_home">Home</string>
     <string name="nav_menu_batch_itinerary">Active Batch Itinerary</string>
-    <string name="nav_menu_order_itinerary">Active Order Itinerary</string>
+    <string name="nav_menu_order_itinerary">Current Order Itinerary</string>
     <string name="nav_menu_current_step">Current Step</string>
     <string name="nav_menu_offers">Public Offers</string>
     <string name="nav_menu_personal_offers">Personal Offers</string>"

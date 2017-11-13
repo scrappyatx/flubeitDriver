@@ -30,10 +30,10 @@ public class FirebaseServiceOrderSetStatus implements OnCompleteListener<Void> {
     private static final String FINISH_TIME_PROPERTY = "finishTime/actualTime";
 
 
-    private CloudDatabaseInterface.ServiceOrderStatusUpdated response;
+    private Response response;
 
     public void setServiceOrderStatusRequest(DatabaseReference batchDataRef, ServiceOrder serviceOrder, ServiceOrder.ServiceOrderStatus status,
-                                             CloudDatabaseInterface.ServiceOrderStatusUpdated response){
+                                             Response response){
         this.response = response;
 
         Timber.tag(TAG).d("batchDataRef = " + batchDataRef.toString());
@@ -76,7 +76,11 @@ public class FirebaseServiceOrderSetStatus implements OnCompleteListener<Void> {
                 Timber.tag(TAG).e(e);
             }
         }
-        response.cloudDatabaseServiceOrderStatusSetComplete();
+        response.setServiceOrderStatusComplete();
+    }
+
+    public interface Response {
+        void setServiceOrderStatusComplete();
     }
 
 

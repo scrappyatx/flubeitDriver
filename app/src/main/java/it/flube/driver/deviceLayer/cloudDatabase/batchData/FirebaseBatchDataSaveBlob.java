@@ -39,33 +39,48 @@ public class FirebaseBatchDataSaveBlob implements OnCompleteListener<Void> {
     private static final String CHAT_MESSAGES = "chatMessages";
     private static final String FILE_ATTACHMENTS = "fileAttachments";
 
-    private ResponseCounter responseCounter;
-    private CloudDatabaseInterface.SaveDemoBatchDataResponse response;
+    private CloudDatabaseInterface.SaveBatchDataResponse response;
 
-    public void saveDemoBatchDataRequest(DatabaseReference batchDataRef, BatchHolder batchHolder, CloudDatabaseInterface.SaveDemoBatchDataResponse response) {
+    public void saveDemoBatchDataRequest(DatabaseReference batchDataRef, BatchHolder batchHolder, CloudDatabaseInterface.SaveBatchDataResponse response) {
         Timber.tag(TAG).d("batchDataRef = " + batchDataRef.toString());
         this.response = response;
 
         DatabaseReference thisBatchRef = batchDataRef.child(batchHolder.getBatch().getGuid());
+        thisBatchRef.setValue(getDataMap(batchHolder)).addOnCompleteListener(this);
+
+        Timber.tag(TAG).d("saving DEMO BATCH DATA --> batch Guid : " + batchHolder.getBatch().getGuid());
+    }
+
+    private HashMap<String, Object> getDataMap(BatchHolder batchHolder){
+        HashMap<String, Object> batchData = new HashMap<String, Object>();
 
         //build the holder for the data, in the format it will be stored in firebase database
-        HashMap<String, Object> batchData = new HashMap<String, Object>();
         batchData.put(BATCH_NODE, batchHolder.getBatch());
         batchData.put(BATCH_DETAIL_NODE, batchHolder.getBatchDetail());
         batchData.put(ROUTE_STOPS, batchHolder.getRouteStops());
         batchData.put(SERVICE_ORDERS, batchHolder.getServiceOrders());
-        batchData.put(STEP_IDS, batchHolder.getStepIds());
+        //batchData.put(STEP_IDS, batchHolder.getStepIds());
         batchData.put(STEPS, batchHolder.getSteps());
+        batchData.put(MAP_PINGS, batchHolder.getMapPings());
 
-        thisBatchRef.setValue(batchData).addOnCompleteListener(this);
+        batchData.put(DRIVER_CHAT, batchHolder.getDriverChatHistories());
 
-        Timber.tag(TAG).d("saving DEMO BATCH DATA --> batch Guid : " + batchHolder.getBatch().getGuid());
+        batchData.put(CHAT_MESSAGES, batchHolder.getChatMessages());
+        batchData.put(FILE_ATTACHMENTS, batchHolder.getFileAttachments());
+
+        HashMap<String, Object> chatHistories = new HashMap<String, Object>();
+        chatHistories.put(DRIVER_CHAT, batchHolder.getDriverChatHistories());
+        chatHistories.put(CUSTOMER_CHAT, batchHolder.getCustomerChatHistories());
+        chatHistories.put(SERVICE_PROVIDER_CHAT, batchHolder.getServiceProviderChatHistories());
+
+        batchData.put(CHAT_HISTORY, chatHistories);
+
+        return batchData;
     }
 
 
     public void onComplete(@NonNull Task<Void> task) {
         Timber.tag(TAG).d("onComplete...");
-
 
         if (task.isSuccessful()) {
             Timber.tag(TAG).d("   ...SUCCESS");
@@ -79,7 +94,7 @@ public class FirebaseBatchDataSaveBlob implements OnCompleteListener<Void> {
             }
         }
         Timber.tag(TAG).d("...COMPLETE");
-        response.cloudDatabaseDemoBatchDataSaveComplete();
+        response.cloudDatabaseBatchDataSaveComplete();
     }
 
 }

@@ -81,6 +81,7 @@ public class ActivityNavigator {
 
         } else {
             Timber.tag(TAG).d("can't go to ActiveBatchStep, no active batch");
+            context.startActivity(new Intent(context, HomeNoActiveBatchActivity.class));
         }
 
     }

@@ -81,7 +81,7 @@ public class FirebaseActiveBatchCurrentServiceOrderMonitor implements
         stopMonitoringStep();
 
         new ActiveBatchUpdatedResponseHandler()
-                .cloudDatabaseNoActiveBatch();
+                .noBatch();
 
         Timber.tag(TAG).d("sending ActiveBatchUpdated -> NO batch, NO service order, NO step");
     }

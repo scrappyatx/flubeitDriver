@@ -46,12 +46,39 @@ public class FirebaseActiveBatchServerNode implements OnCompleteListener<Void> {
 
     private static final String ACTIVE_BATCH_SERVER_NOTIFICATION_NODE = "userWriteable/activeBatches";
 
-    public void activeBatchStartRequest(DatabaseReference activeBatchRef, Driver driver,
-                                        BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step){
+    public void activeBatchServerNodeUpdateRequest(DatabaseReference activeBatchRef, Driver driver,
+                                                   BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step){
 
         Timber.tag(TAG).d("activeBatchRef = " + activeBatchRef.toString());
 
+        HashMap<String, Object> data = getBaselineData(driver, batchDetail, serviceOrder, step);
+
+        activeBatchRef.child(ACTIVE_BATCH_SERVER_NOTIFICATION_NODE).child(batchDetail.getBatchGuid()).setValue(data).addOnCompleteListener(this);
+    }
+
+    public void activeBatchServerNodeUpdateRequest(DatabaseReference activeBatchRef, Driver driver,
+                                                   BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step, LatLonLocation driverLocation){
+
+        Timber.tag(TAG).d("activeBatchRef = " + activeBatchRef.toString());
+
+        HashMap<String, Object> data = getBaselineData(driver, batchDetail, serviceOrder, step);
+        data.put(DRIVER_LOCATION_PROPERTY, driverLocation);
+
+        activeBatchRef.child(ACTIVE_BATCH_SERVER_NOTIFICATION_NODE).child(batchDetail.getBatchGuid()).setValue(data).addOnCompleteListener(this);
+
+    }
+
+    public void activeBatchServerNodeUpdateRequest(DatabaseReference activeBatchRef, String batchGuid){
+
+        Timber.tag(TAG).d("activeBatchRef = " + activeBatchRef.toString());
+        activeBatchRef.child(ACTIVE_BATCH_SERVER_NOTIFICATION_NODE).child(batchGuid).setValue(null).addOnCompleteListener(this);
+    }
+
+    private HashMap<String, Object> getBaselineData(Driver driver,
+                                                    BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step) {
+
         HashMap<String, Object> data = new HashMap<String, Object>();
+
         data.put(CLIENT_ID_PROPERTY, driver.getClientId());
         data.put(FIRST_NAME_PROPERTY, driver.getFirstName());
 
@@ -70,47 +97,24 @@ public class FirebaseActiveBatchServerNode implements OnCompleteListener<Void> {
         data.put(CURRENT_STEP_SEQUENCE_PROPERTY, step.getSequence());
         data.put(STEP_COUNT_PROPERTY, serviceOrder.getTotalSteps());
 
-        Timber.tag(TAG).d("setting active batch data...");
-        Timber.tag(TAG).d("   clientId    --> " + driver.getClientId());
-        Timber.tag(TAG).d("   firstName   --> " + driver.getFirstName());
-        Timber.tag(TAG).d("   start timestamp");
+        Timber.tag(TAG).d("   baseline data...");
+        Timber.tag(TAG).d("         clientId             --> " + driver.getClientId());
+        Timber.tag(TAG).d("         driver firstName     --> " + driver.getFirstName());
 
-        activeBatchRef.child(ACTIVE_BATCH_SERVER_NOTIFICATION_NODE).child(batchDetail.getBatchGuid()).setValue(data).addOnCompleteListener(this);
-    }
+        Timber.tag(TAG).d("         batchType            --> " + batchDetail.getBatchType().toString());
 
-    public void activeBatchStartRequest(DatabaseReference activeBatchRef, Driver driver,
-                                        BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step, LatLonLocation driverLocation){
+        Timber.tag(TAG).d("         batchTitle           --> " + batchDetail.getTitle());
+        Timber.tag(TAG).d("         serviceOrderTitle    --> " + serviceOrder.getTitle());
+        Timber.tag(TAG).d("         stepTitle            --> " + step.getTitle());
 
-        Timber.tag(TAG).d("activeBatchRef = " + activeBatchRef.toString());
+        Timber.tag(TAG).d("         stepType             --> " + step.getTaskType().toString());
 
-        HashMap<String, Object> data = new HashMap<String, Object>();
-        data.put(CLIENT_ID_PROPERTY, driver.getClientId());
-        data.put(FIRST_NAME_PROPERTY, driver.getFirstName());
+        Timber.tag(TAG).d("         serviceOrderSequence --> " + serviceOrder.getSequence());
+        Timber.tag(TAG).d("         serviceOrderCount    --> " + batchDetail.getServiceOrderCount());
 
-        data.put(BATCH_TYPE_PROPERTY, batchDetail.getBatchType().toString());
-
-        data.put(BATCH_TITLE, ServerValue.TIMESTAMP);
-        data.put(CURRENT_SERVICE_ORDER_TITLE, serviceOrder.getTitle());
-        data.put(CURRENT_STEP_TITLE, step.getTitle());
-
-        data.put(CURRENT_STEP_TASK_TYPE_PROPERTY, step.getTaskType().toString());
-        data.put(CURRENT_STEP_START_TIME_PROPERTY, ServerValue.TIMESTAMP);
-
-        data.put(CURRENT_SERVICE_ORDER_SEQUENCE_PROPERTY, serviceOrder.getSequence());
-        data.put(SERVICE_ORDER_COUNT_PROPERTY, batchDetail.getServiceOrderCount());
-
-        data.put(CURRENT_STEP_SEQUENCE_PROPERTY, step.getSequence());
-        data.put(STEP_COUNT_PROPERTY, serviceOrder.getTotalSteps());
-
-        data.put(DRIVER_LOCATION_PROPERTY, driverLocation);
-
-        activeBatchRef.child(ACTIVE_BATCH_SERVER_NOTIFICATION_NODE).child(batchDetail.getBatchGuid()).setValue(data).addOnCompleteListener(this);
-
-    }
-
-    public void activeBatchFinishRequest(DatabaseReference activeBatchRef, String batchGuid){
-        Timber.tag(TAG).d("activeBatchRef = " + activeBatchRef.toString());
-        activeBatchRef.child(ACTIVE_BATCH_SERVER_NOTIFICATION_NODE).child(batchGuid).setValue(null).addOnCompleteListener(this);
+        Timber.tag(TAG).d("         stepSequence         --> " + step.getSequence());
+        Timber.tag(TAG).d("         stepCount            --> " + serviceOrder.getTotalSteps());
+        return data;
     }
 
     public void onComplete(@NonNull Task<Void> task) {

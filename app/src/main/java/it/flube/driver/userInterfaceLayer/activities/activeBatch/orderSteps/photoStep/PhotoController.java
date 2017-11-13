@@ -29,9 +29,9 @@ public class PhotoController {
         useCaseExecutor = device.getUseCaseEngine().getUseCaseExecutor();
     }
 
-    public void stepFinished(){
+    public void stepFinished(String milestoneEvent){
         Timber.tag(TAG).d("finishing STEP");
-        useCaseExecutor.execute(new UseCaseFinishCurrentStepRequest(device, new UseCaseFinishCurrentStepResponseHandler()));
+        useCaseExecutor.execute(new UseCaseFinishCurrentStepRequest(device, milestoneEvent, new UseCaseFinishCurrentStepResponseHandler()));
     }
 
     public void close(){

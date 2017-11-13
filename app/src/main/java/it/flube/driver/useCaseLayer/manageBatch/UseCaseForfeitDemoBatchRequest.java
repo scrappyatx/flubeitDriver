@@ -15,7 +15,7 @@ import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 public class UseCaseForfeitDemoBatchRequest implements
     Runnable,
     CloudDatabaseInterface.RemoveDemoBatchFromScheduledBatchListResponse,
-    CloudDatabaseInterface.DeleteDemoBatchDataResponse {
+    CloudDatabaseInterface.DeleteBatchDataResponse {
 
     private CloudDatabaseInterface cloudDb;
     private String batchGuid;
@@ -33,10 +33,10 @@ public class UseCaseForfeitDemoBatchRequest implements
 
     public void cloudDatabaseRemoveDemoBatchFromScheduledBatchListComplete(){
         // 2. delete batch data for this batch
-        cloudDb.deleteDemoBatchDataRequest(batchGuid, this);
+        cloudDb.deleteBatchDataRequest(batchGuid, this);
     }
 
-    public void cloudDatabaseDemoBatchDataDeleteComplete() {
+    public void cloudDatabaseBatchDataDeleteComplete() {
         response.useCaseForfeitDemoBatchComplete(batchGuid);
     }
 

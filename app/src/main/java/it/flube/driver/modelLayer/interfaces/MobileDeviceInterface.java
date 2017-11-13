@@ -24,6 +24,8 @@ public interface MobileDeviceInterface {
 
     ActiveBatchInterface getActiveBatch();
 
+    ActiveBatchForegroundServiceInterface getActiveBatchForegroundServiceController();
+
     OffersInterface getOfferLists();
 
     AppLoggingInterface getAppLogging();
@@ -51,5 +53,7 @@ public interface MobileDeviceInterface {
     RealtimeMessagingInterface.OfferChannel getRealtimeOfferMessages();
 
     RealtimeMessagingInterface.BatchChannel getRealtimeBatchMessages();
+
+    RealtimeMessagingInterface.ActiveBatchChannel getRealtimeActiveBatchMessages();
 
 }

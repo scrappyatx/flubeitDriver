@@ -18,7 +18,7 @@ import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 public class UseCaseMakeDemoBatchRequest implements
     Runnable,
     CloudDatabaseInterface.AddDemoOfferToOfferListResponse,
-    CloudDatabaseInterface.SaveDemoBatchDataResponse {
+    CloudDatabaseInterface.SaveBatchDataResponse {
 
     private final DemoBatchInterface demoMaker;
     private final Response response;
@@ -42,10 +42,10 @@ public class UseCaseMakeDemoBatchRequest implements
         demoBatchHolder = demoMaker.createDemoBatch(driver);
 
         //Step 2 - save the demo batch
-        cloudDb.saveDemoBatchDataRequest(demoBatchHolder, this);
+        cloudDb.saveBatchDataRequest(demoBatchHolder, this);
     }
 
-    public void cloudDatabaseDemoBatchDataSaveComplete(){
+    public void cloudDatabaseBatchDataSaveComplete(){
         //Step 3 - add to the demo offer list
         cloudDb.addDemoOfferToOfferListRequest(demoBatchHolder.getBatch().getGuid(), this);
     }

@@ -77,8 +77,7 @@ public class FirebaseActiveBatchCurrentBatchMonitor implements
         Timber.tag(TAG).d("no current batch found");
         stopMonitoringServiceOrder();
 
-        new ActiveBatchUpdatedResponseHandler()
-                .cloudDatabaseNoActiveBatch();
+        new ActiveBatchUpdatedResponseHandler().noBatch();
 
         Timber.tag(TAG).d("sending ActiveBatchUpdated -> NO batch, NO service order, NO step");
     }

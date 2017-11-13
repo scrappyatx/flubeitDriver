@@ -66,7 +66,7 @@ public class FirebaseAuthUserUpdate implements
 
 
     public void onComplete(@NonNull Task<Void> task) {
-        Timber.tag(TAG).w("   ...onComplete");
+        Timber.tag(TAG).d("   ...onComplete");
         if (task.isSuccessful()) {
             Timber.tag(TAG).d("      ...SUCCESS");
         } else {

@@ -211,7 +211,14 @@ public class PhotoActivity extends AppCompatActivity implements
 
     public void clickStepCompleteButton(View v){
         Timber.tag(TAG).d("clicked step complete button");
-        controller.stepFinished();
+        String milestoneEvent;
+        if (AndroidDevice.getInstance().getActiveBatch().hasActiveBatch()) {
+            ServiceOrderPhotoStep step = AndroidDevice.getInstance().getActiveBatch().getPhotoStep();
+            milestoneEvent = step.getMilestoneWhenFinished();
+        } else {
+            milestoneEvent = "no milestone";
+        }
+        controller.stepFinished(milestoneEvent);
     }
 
     @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)

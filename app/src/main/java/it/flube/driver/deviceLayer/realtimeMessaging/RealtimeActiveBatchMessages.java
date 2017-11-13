@@ -4,66 +4,83 @@
 
 package it.flube.driver.deviceLayer.realtimeMessaging;
 
+import it.flube.driver.dataLayer.AndroidDevice;
+import it.flube.driver.deviceLayer.realtimeMessaging.sendMessageHandlers.CurrentLocationMessageHandler;
+import it.flube.driver.deviceLayer.realtimeMessaging.sendMessageHandlers.CurrentlyDoingMessageHandler;
+import it.flube.driver.deviceLayer.realtimeMessaging.sendMessageHandlers.MilestoneEventMessageHandler;
 import it.flube.driver.modelLayer.interfaces.RealtimeMessagingInterface;
+import timber.log.Timber;
 
 /**
  * Created on 7/8/2017
  * Project : Driver
  */
 
-public class RealtimeActiveBatchMessages implements RealtimeMessagingInterface.ActiveBatchChannel {
+public class RealtimeActiveBatchMessages implements
+        RealtimeMessagingInterface.ActiveBatchChannel,
+        AblyChannel.ChannelConnectResponse,
+        AblyChannel.ChannelDisconnectResponse {
 
-    public void connect(String batchOID) {
+    ///  Singleton class using Initialization-on-demand holder idiom
+    ///  ref: https://en.wikipedia.org/wiki/Initialization-on-demand_holder_idiom
+    private static class Loader {
+        static volatile RealtimeActiveBatchMessages instance = new RealtimeActiveBatchMessages();
+    }
+
+    private RealtimeActiveBatchMessages() {
 
     }
 
-    public void disconnect() {
-
+    public static RealtimeActiveBatchMessages getInstance() {
+        return RealtimeActiveBatchMessages.Loader.instance;
     }
 
-    public void sendMsgBatchStart(String batchOID) {
+    private static final String TAG = "RealtimeActiveBatchMessages";
+    private AblyChannel ablyChannel;
 
+    public void attach(String batchGuid) {
+        Timber.tag(TAG).d("attaching to : " + batchGuid);
+        ablyChannel = new AblyChannel(batchGuid,
+                AndroidDevice.getInstance().getAppRemoteConfig().getRealtimeMessagingAuthTokenUrl());
+        ablyChannel.channelConnectRequest(AndroidDevice.getInstance().getUser().getDriver().getClientId(), this);
     }
+
+    public void channelConnectSuccess(){
+        Timber.tag(TAG).d("connectSuccess");
+    }
+
+    public void channelConnectFailure() {
+        Timber.tag(TAG).d("connectFailure");
+    }
+
+    public void detach() {
+        if (ablyChannel != null) {
+            Timber.tag(TAG).d("disconnecting channel..");
+            ablyChannel.channelDisconnectRequest(this);
+        } else {
+            Timber.tag(TAG).d("channel is already disconnected!");
+        }
+    }
+
+    public void channelDisconnectComplete() {
+        Timber.tag(TAG).d("disconnectComplete");
+        ablyChannel = null;
+    }
+
 
     public void sendMsgLocationUpdate(double latitude, double longitude) {
-
+        Timber.tag(TAG).d("publishing location -> latitude : " + latitude + " longitude : " + longitude);
+        ablyChannel.publish(new CurrentLocationMessageHandler.MessageBuilder(latitude, longitude).build());
     }
 
-    public void sendMsgArrivedToPickup(String batchOID) {
-
+    public void sendMilestoneEvent(String milestoneEvent){
+        Timber.tag(TAG).d("publishing milestone -> " + milestoneEvent);
+        ablyChannel.publish(new MilestoneEventMessageHandler.MessageBuilder(milestoneEvent).build());
     }
 
-    public void sendMsgDriverTakesVehicleFromCustomer(String batchOID) {
-
+    public void sendCurrentlyDoing(String stepTitle){
+        Timber.tag(TAG).d("publishing currentlyDoing -> " + stepTitle);
+        ablyChannel.publish(new CurrentlyDoingMessageHandler.MessageBuilder(stepTitle).build());
     }
-
-    public void sendMsgArrivedToService(String batchOID) {
-
-    }
-
-    public void sendMsgServiceTakesVehicleFromDriver(String batchOID) {
-
-    }
-
-    public void sendMsgServiceStart(String batchOID) {
-
-    }
-
-    public void sendMsgServiceComplete(String batchOID) {
-
-    }
-
-    public void sendMsgDriverTakesVehicleFromService(String batchOID) {
-
-    }
-
-    public void sendMsgArrivedToDropOff(String batchOID) {
-
-    }
-
-    public void sendMsgOwnerTakesVehicleFromDriver(String batchOID) {
-
-    }
-
 
 }

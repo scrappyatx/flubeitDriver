@@ -22,19 +22,8 @@ public class UseCaseFinishCurrentStepResponseHandler implements
 
     private static final String TAG = "UseCaseFinishCurrentStepResponseHandler";
 
-    public void finishCurrentStepWithStepComplete(){
+    public void finishCurrentStepComplete(){
         Timber.tag(TAG).d("finished a step!");
-        EventBus.getDefault().postSticky(new ActiveBatchCompletedStepEvent());
     }
-
-    public void finishCurrentStepWithOrderComplete(){
-        Timber.tag(TAG).d("finished an order!");
-        EventBus.getDefault().postSticky(new ActiveBatchCompletedServiceOrderEvent());
-    }
-
-    public void finishCurrentStepWithBatchComplete(){
-        Timber.tag(TAG).d("finished a batch!");
-        EventBus.getDefault().postSticky(new ActiveBatchCompletedBatchEvent());
-    }
-
+    
 }

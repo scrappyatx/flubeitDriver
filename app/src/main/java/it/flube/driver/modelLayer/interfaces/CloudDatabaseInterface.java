@@ -24,6 +24,22 @@ import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
 
 public interface CloudDatabaseInterface {
 
+
+    public enum ActionType {
+        BATCH_STARTED,
+        ORDER_STARTED,
+        STEP_STARTED,
+        BATCH_FINISHED,
+        BATCH_REMOVED,
+        NO_BATCH,
+        NOT_SPECIFIED
+    }
+
+    public enum ActorType {
+        MOBILE_USER,
+        SERVER_ADMIN,
+        NOT_SPECIFIED
+    }
     ///
     /// CONNECT & DISCONNECT
     ///
@@ -43,8 +59,6 @@ public interface CloudDatabaseInterface {
 
     void stopMonitoring();
 
-
-
     //
     //  USER INFO
     //
@@ -54,7 +68,6 @@ public interface CloudDatabaseInterface {
         void cloudDatabaseUserSaveComplete();
     }
 
-
     //
     //  DEVICE INFO
     //
@@ -63,7 +76,6 @@ public interface CloudDatabaseInterface {
     interface SaveDeviceInfoResponse {
         void cloudDatabaseDeviceInfoSaveComplete();
     }
-
 
     ///
     ///  DEMO OFFERS
@@ -95,29 +107,21 @@ public interface CloudDatabaseInterface {
         void cloudDatabaseRemoveDemoBatchFromScheduledBatchListComplete();
     }
 
-    void startDemoBatchRequest(String batchGuid, StartDemoBatchComplete response);
-
-    interface StartDemoBatchComplete {
-        void cloudDatabaseStartDemoBatchComplete();
-    }
-
-
     ///
-    ///  DEMO BATCH DATA
+    ///  BATCH DATA
     ///
 
-    void saveDemoBatchDataRequest(BatchHolder batchHolder, SaveDemoBatchDataResponse response);
+    void saveBatchDataRequest(BatchHolder batchHolder, SaveBatchDataResponse response);
 
-    interface SaveDemoBatchDataResponse {
-        void cloudDatabaseDemoBatchDataSaveComplete();
+    interface SaveBatchDataResponse {
+        void cloudDatabaseBatchDataSaveComplete();
     }
 
-    void deleteDemoBatchDataRequest(String batchGuid, DeleteDemoBatchDataResponse response);
+    void deleteBatchDataRequest(String batchGuid, DeleteBatchDataResponse response);
 
-    interface DeleteDemoBatchDataResponse {
-        void cloudDatabaseDemoBatchDataDeleteComplete();
+    interface DeleteBatchDataResponse {
+        void cloudDatabaseBatchDataDeleteComplete();
     }
-
 
     ///
     ///  GET BATCH INFORMATION
@@ -154,11 +158,6 @@ public interface CloudDatabaseInterface {
         void cloudDatabaseGetOrderStepListFailure();
     }
 
-
-
-
-
-
     ///
     ///  OFFERS UPDATED
     ///
@@ -175,7 +174,6 @@ public interface CloudDatabaseInterface {
         void cloudDatabaseDemoOffersUpdated(ArrayList<Batch> offerList);
     }
 
-
     ///
     ///   SCHEDULED BATCHES UPDATED
     ///
@@ -187,49 +185,109 @@ public interface CloudDatabaseInterface {
     ///   ACTIVE BATCH UPDATED
     ///
 
+    //interface ActiveBatchUpdated {
+    //    void cloudDatabaseActiveBatchUpdated(BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface orderStep);
+    //
+    //    void cloudDatabaseNoActiveBatch();
+    //}
+
     interface ActiveBatchUpdated {
-        void cloudDatabaseActiveBatchUpdated(BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface orderStep);
+        void stepStarted(ActorType actorType, ActionType actionType, BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step);
 
-        void cloudDatabaseNoActiveBatch();
+        void batchFinished(ActorType actorType, String batchGuid);
+
+        void batchRemoved(ActorType actorType, String batchGuid);
+
+        void noBatch();
     }
-
 
     ///
     ///   ACTIVE BATCH COMMANDS
     ///
 
-    void setActiveBatchNodesRequest(String batchGuid, Integer serviceOrderSequence, Integer stepSequence, ActiveBatchNodesUpdated response);
+    void startScheduledBatchRequest(String batchGuid, ActorType actorType, StartScheduledBatchResponse response);
 
-    void setActiveBatchNodesNullRequest(ActiveBatchNodesUpdated response);
-
-    interface ActiveBatchNodesUpdated{
-        void cloudDatabaseActiveBatchNodeSetComplete();
+    interface StartScheduledBatchResponse {
+        void cloudDatabaseStartScheduledBatchComplete();
     }
 
-    void setBatchDetailStatusRequest(BatchDetail batchDetail, BatchDetail.WorkStatus status, BatchDetailStatusUpdated response);
+    void removeActiveBatchRequest(ActorType actorType, RemoveActiveBatchResponse response);
 
-    interface BatchDetailStatusUpdated {
-        void cloudDatabaseBatchDetailStatusSetComplete();
+    interface RemoveActiveBatchResponse {
+        void cloudDatabaseRemoveActiveBatchComplete();
     }
 
-    void setServiceOrderStatusRequest(ServiceOrder serviceOrder, ServiceOrder.ServiceOrderStatus status, ServiceOrderStatusUpdated response);
+    ///void startActiveBatchStepRequest(ActorType actorType, StartActiveBatchStepResponse response);
+    ///
+    ///interface StartActiveBatchStepResponse {
+    ///    void cloudDatabaseStartActiveBatchStepComplete();
+    ///}
 
-    interface ServiceOrderStatusUpdated {
-        void cloudDatabaseServiceOrderStatusSetComplete();
+    void finishActiveBatchStepRequest(ActorType actorType, FinishActiveBatchStepResponse response);
+
+    interface FinishActiveBatchStepResponse {
+        void cloudDatabaseFinishActiveBatchStepComplete();
     }
 
-    void setOrderStepWorkStageRequest(OrderStepInterface step, OrderStepInterface.WorkStage workStage, OrderStepWorkStageUpdated response);
+    void acknowledgeFinishedBatchRequest(AcknowledgeFinishedBatchResponse response);
 
-    interface OrderStepWorkStageUpdated {
-        void cloudDatabaseOrderStepWorkStageSetComplete();
+    interface AcknowledgeFinishedBatchResponse {
+        void cloudDatabaseFinishedBatchAckComplete();
     }
 
-    void setActiveBatchStartedServerNode(BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step);
+    void acknowledgeRemovedBatchRequest(AcknowledgeRemovedBatchResponse response);
 
-    void setActiveBatchStartedServerNode(BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step, LatLonLocation driverLocation);
+    interface AcknowledgeRemovedBatchResponse {
+        void cloudDatabaseRemovedBatchAckComplete();
+    }
 
-    void setActiveBatchFinishedServerNode(String batchGuid);
+    ///
+    /// ActiveBatchNodes -> want to work these out of public interface
+    ///
+    ///void setActiveBatchNodesRequest(String batchGuid, Integer serviceOrderSequence, Integer stepSequence,
+    ///                                CloudDatabaseInterface.ActionType actionType,
+    ///                                ActiveBatchNodesUpdated response);
 
-    void setBatchCompletedServerNode(BatchDetail batchDetail);
+    ///void setActiveBatchNodesNullRequest(ActiveBatchNodesUpdated response);
+///
+    ///interface ActiveBatchNodesUpdated{
+    ///    void cloudDatabaseActiveBatchNodeSetComplete();
+    ///}
+
+    ///
+    ///
+    ///
+
+   /// void setBatchDetailStatusRequest(BatchDetail batchDetail, BatchDetail.WorkStatus status, BatchDetailStatusUpdated response);
+
+    ///interface BatchDetailStatusUpdated {
+    ///    void cloudDatabaseBatchDetailStatusSetComplete();
+    ///}
+
+    ///void setServiceOrderStatusRequest(ServiceOrder serviceOrder, ServiceOrder.ServiceOrderStatus status, ServiceOrderStatusUpdated response);
+///
+    ///interface ServiceOrderStatusUpdated {
+    ///    void cloudDatabaseServiceOrderStatusSetComplete();
+    ///}
+
+    ///void setOrderStepWorkStageRequest(OrderStepInterface step, OrderStepInterface.WorkStage workStage, OrderStepWorkStageUpdated response);
+///
+    ///interface OrderStepWorkStageUpdated {
+    ///    void cloudDatabaseOrderStepWorkStageSetComplete();
+    ///}
+
+    ////
+    ///     sets the server node for the active batch
+    ///
+
+    void updateActiveBatchServerNodeStatus(BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step);
+
+    void updateActiveBatchServerNodeStatus(BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step, LatLonLocation driverLocation);
+
+    void updateActiveBatchServerNodeStatus(String batchGuid);
+
+    ///    sets the server node for a completed batch
+
+    void updateBatchCompletedServerNode(BatchDetail batchDetail);
 
 }

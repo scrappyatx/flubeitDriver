@@ -38,9 +38,9 @@ public class FirebaseBatchDataSave implements OnCompleteListener<Void> {
     private static final String FILE_ATTACHMENTS = "fileAttachments";
 
     private ResponseCounter responseCounter;
-    private CloudDatabaseInterface.SaveDemoBatchDataResponse response;
+    private CloudDatabaseInterface.SaveBatchDataResponse response;
 
-    public void saveDemoBatchDataRequest(DatabaseReference batchDataRef, BatchHolder batchHolder, CloudDatabaseInterface.SaveDemoBatchDataResponse response) {
+    public void saveDemoBatchDataRequest(DatabaseReference batchDataRef, BatchHolder batchHolder, CloudDatabaseInterface.SaveBatchDataResponse response) {
         Timber.tag(TAG).d("batchDataRef = " + batchDataRef.toString());
         this.response = response;
         responseCounter = new ResponseCounter(12);
@@ -106,7 +106,7 @@ public class FirebaseBatchDataSave implements OnCompleteListener<Void> {
 
         if (responseCounter.isFinished()) {
             Timber.tag(TAG).d("...COMPLETE");
-            response.cloudDatabaseDemoBatchDataSaveComplete();
+            response.cloudDatabaseBatchDataSaveComplete();
         } else {
             Timber.tag(TAG).d("      ...responseCounter = " + Integer.toString(responseCounter.getCount()));
         }

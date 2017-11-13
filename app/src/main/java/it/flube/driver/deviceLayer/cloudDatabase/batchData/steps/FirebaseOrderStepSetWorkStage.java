@@ -9,13 +9,9 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ServerValue;
 
 import java.util.HashMap;
 
-import it.flube.driver.deviceLayer.cloudDatabase.batchData.batchDetail.FireBatchDetailSetStatus;
-import it.flube.driver.modelLayer.entities.batch.BatchDetail;
-import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
 import timber.log.Timber;
 
@@ -31,10 +27,10 @@ public class FirebaseOrderStepSetWorkStage implements OnCompleteListener<Void> {
     private static final String START_TIME_PROPERTY = "startTime/actualTime";
     private static final String FINISH_TIME_PROPERTY = "finishTime/actualTime";
 
-    private CloudDatabaseInterface.OrderStepWorkStageUpdated response;
+    private Response response;
 
-    public void setOrderStepSetWorkStageRequest(DatabaseReference batchDataRef, OrderStepInterface step, OrderStepInterface.WorkStage workStage,
-                                                CloudDatabaseInterface.OrderStepWorkStageUpdated response){
+    public void setOrderStepSetWorkStageRequest(@NonNull DatabaseReference batchDataRef, @NonNull OrderStepInterface step, @NonNull OrderStepInterface.WorkStage workStage,
+                                                @NonNull Response response){
         this.response = response;
 
         Timber.tag(TAG).d("batchDataRef = " + batchDataRef.toString());
@@ -58,6 +54,9 @@ public class FirebaseOrderStepSetWorkStage implements OnCompleteListener<Void> {
                 break;
         }
 
+        Timber.tag(TAG).d("batch guid -> " + step.getBatchGuid());
+        Timber.tag(TAG).d("step guid  -> " + step.getGuid());
+
         batchDataRef.child(step.getBatchGuid()).child(BATCH_DATA_STEPS_NODE).child(step.getGuid()).updateChildren(data)
                 .addOnCompleteListener(this);
 
@@ -77,7 +76,11 @@ public class FirebaseOrderStepSetWorkStage implements OnCompleteListener<Void> {
                 Timber.tag(TAG).e(e);
             }
         }
-        response.cloudDatabaseOrderStepWorkStageSetComplete();
+        response.setOrderStepWorkStageComplete();
+    }
+
+    public interface Response {
+        void setOrderStepWorkStageComplete();
     }
 
 }

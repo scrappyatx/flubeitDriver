@@ -26,13 +26,14 @@ public class FirebaseActiveBatchSetData implements OnCompleteListener<Void> {
 
     private static final String ACTIVE_BATCH_CURRENT_BATCH_NODE = "batch";
     private static final String ACTIVE_BATCH_CURRENT_SERVICE_ORDER_NODE = "currentServiceOrderSequence";
-    private static final String ACTIVE_BATCH_CURRENT_STEPID_NODE = "currentStepIdSequence";
+    private static final String ACTIVE_BATCH_CURRENT_STEPID_NODE = "currentStepSequence";
+    private static final String ACTIVE_BATCH_ACTION_TYPE = "actionType";
+    private static final String ACTIVE_BATCH_ACTOR_TYPE = "actorType";
 
-
-    private CloudDatabaseInterface.ActiveBatchNodesUpdated response;
+    private Response response;
 
     public void setDataNullRequest(DatabaseReference activeBatchRef,
-                                   CloudDatabaseInterface.ActiveBatchNodesUpdated response){
+                                   Response response){
 
         this.response = response;
         Timber.tag(TAG).d("activeBatchRef = " + activeBatchRef.toString());
@@ -41,13 +42,18 @@ public class FirebaseActiveBatchSetData implements OnCompleteListener<Void> {
         data.put(ACTIVE_BATCH_CURRENT_BATCH_NODE, null);
         data.put(ACTIVE_BATCH_CURRENT_SERVICE_ORDER_NODE, null);
         data.put(ACTIVE_BATCH_CURRENT_STEPID_NODE, null);
+        data.put(ACTIVE_BATCH_ACTION_TYPE, CloudDatabaseInterface.ActionType.NO_BATCH.toString());
+        data.put(ACTIVE_BATCH_ACTOR_TYPE, CloudDatabaseInterface.ActorType.MOBILE_USER.toString());
 
         Timber.tag(TAG).d("setting active batch data to NULL...");
         activeBatchRef.setValue(data).addOnCompleteListener(this);
     }
 
-    public void setDataRequest(DatabaseReference activeBatchRef, String batchGuid, Integer serviceOrderSequence, Integer stepSequence,
-                               CloudDatabaseInterface.ActiveBatchNodesUpdated response){
+    public void setDataRequest(DatabaseReference activeBatchRef,
+                               String batchGuid, Integer serviceOrderSequence, Integer stepSequence,
+                               CloudDatabaseInterface.ActionType actionType,
+                               CloudDatabaseInterface.ActorType actorType,
+                               Response response){
 
         this.response = response;
 
@@ -57,11 +63,15 @@ public class FirebaseActiveBatchSetData implements OnCompleteListener<Void> {
         data.put(ACTIVE_BATCH_CURRENT_STEPID_NODE, stepSequence);
         data.put(ACTIVE_BATCH_CURRENT_SERVICE_ORDER_NODE, serviceOrderSequence);
         data.put(ACTIVE_BATCH_CURRENT_BATCH_NODE, batchGuid);
+        data.put(ACTIVE_BATCH_ACTION_TYPE, actionType.toString());
+        data.put(ACTIVE_BATCH_ACTOR_TYPE, actorType.toString());
 
         Timber.tag(TAG).d("setting active batch data...");
         Timber.tag(TAG).d("   batchGuid            --> " + batchGuid);
         Timber.tag(TAG).d("   serviceOrderSequence --> " + serviceOrderSequence);
         Timber.tag(TAG).d("   stepSequence         --> " + stepSequence);
+        Timber.tag(TAG).d("   actionType           --> " + actionType.toString());
+        Timber.tag(TAG).d("   actorType            --> " + actorType.toString());
         activeBatchRef.setValue(data).addOnCompleteListener(this);
     }
 
@@ -80,6 +90,10 @@ public class FirebaseActiveBatchSetData implements OnCompleteListener<Void> {
             }
         }
         Timber.tag(TAG).d("COMPLETE");
-        response.cloudDatabaseActiveBatchNodeSetComplete();
+        response.setDataComplete();
+    }
+
+    public interface Response {
+        void setDataComplete();
     }
 }

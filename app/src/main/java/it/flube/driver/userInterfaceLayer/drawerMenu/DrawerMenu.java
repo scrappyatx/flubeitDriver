@@ -189,15 +189,21 @@ public class DrawerMenu {
     private void addOffersMenuItems(){
 
         drawer.addItem(new PrimaryDrawerItem().withName(R.string.nav_menu_offers).withIcon(FontAwesome.Icon.faw_car)
-                .withIdentifier(ID_PUBLIC_OFFERS).withSelectable(false).withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.md_red_700))
+                .withIdentifier(ID_PUBLIC_OFFERS).withSelectable(false).withBadgeStyle(new BadgeStyle()
+                        .withTextColor(activity.getResources().getColor(R.color.colorTextPrimaryLight))
+                        .withColorRes(R.color.colorNavMenuPublicOfferHighlight))
                 .withOnDrawerItemClickListener(new PublicOffersItemClickListener()));
 
         drawer.addItem(new PrimaryDrawerItem().withName(R.string.nav_menu_personal_offers).withIcon(FontAwesome.Icon.faw_bicycle)
-                .withIdentifier(ID_PERSONAL_OFFERS).withSelectable(false).withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.md_red_700))
+                .withIdentifier(ID_PERSONAL_OFFERS).withSelectable(false).withBadgeStyle(new BadgeStyle()
+                        .withTextColor(activity.getResources().getColor(R.color.colorTextPrimaryLight))
+                        .withColorRes(R.color.colorNavMenuPersonalOfferHighlight))
                 .withOnDrawerItemClickListener(new PersonalOffersItemClickListener()));
 
         drawer.addItem(new PrimaryDrawerItem().withName(R.string.nav_menu_demo).withIcon(FontAwesome.Icon.faw_ambulance)
-                .withIdentifier(ID_DEMO_OFFERS).withSelectable(false).withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.md_red_700))
+                .withIdentifier(ID_DEMO_OFFERS).withSelectable(false).withBadgeStyle(new BadgeStyle()
+                        .withTextColor(activity.getResources().getColor(R.color.colorTextPrimaryLight))
+                        .withColorRes(R.color.colorNavMenuDemoOfferHighlight))
                 .withOnDrawerItemClickListener(new DemoOffersClickListener()));
 
         drawer.addItem( new DividerDrawerItem());
@@ -205,7 +211,9 @@ public class DrawerMenu {
 
     private void addScheduledWorkMenuItems(){
         drawer.addItem(new PrimaryDrawerItem().withName(R.string.nav_menu_scheduled_batches).withIcon(FontAwesome.Icon.faw_calendar)
-                .withIdentifier(ID_SCHEDULED_WORK).withSelectable(false).withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.md_red_700))
+                .withIdentifier(ID_SCHEDULED_WORK).withSelectable(false).withBadgeStyle(new BadgeStyle()
+                        .withTextColor(activity.getResources().getColor(R.color.colorTextPrimaryLight))
+                        .withColorRes(R.color.colorNavMenuScheduledBatchHighlight))
                 .withOnDrawerItemClickListener(new ScheduledBatchesClickListener()));
 
         drawer.addItem(new DividerDrawerItem());
@@ -362,8 +370,6 @@ public class DrawerMenu {
         }
     }
 
-
-
     private class EarningsItemClickListener implements Drawer.OnDrawerItemClickListener {
 
         public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
@@ -448,7 +454,7 @@ public class DrawerMenu {
     }
 
     //// active batch step changed event
-    @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ActiveBatchUpdatedEvent event) {
         Timber.tag(TAG).d("active batch current step changed!");
         navigator.gotoActiveBatchStep(activity);

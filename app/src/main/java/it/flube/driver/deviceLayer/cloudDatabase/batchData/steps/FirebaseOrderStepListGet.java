@@ -27,7 +27,7 @@ import timber.log.Timber;
  */
 
 public class FirebaseOrderStepListGet implements ValueEventListener {
-    private static final String TAG = "FirebaseOrderStepGet";
+    private static final String TAG = "FirebaseOrderStepListGet";
     private static final String BATCH_DATA_STEPS_NODE = "steps";
     private static final String SERVICE_ORDER_GUID = "serviceOrderGuid";
 
