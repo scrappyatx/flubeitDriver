@@ -5,22 +5,17 @@
 package it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.joanzapata.iconify.IconDrawable;
@@ -30,23 +25,13 @@ import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.IconFactory;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
-import com.mapbox.mapboxsdk.annotations.MarkerViewOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
-import com.mapbox.mapboxsdk.camera.CameraUpdate;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
-import com.mapbox.mapboxsdk.plugins.locationlayer.LocationLayerMode;
-import com.mapbox.mapboxsdk.plugins.locationlayer.LocationLayerPlugin;
-
-import com.mapbox.services.android.navigation.ui.v5.instruction.InstructionView;
-import com.mapbox.services.android.telemetry.location.LocationEngine;
-import com.mapbox.services.api.directions.v5.models.DirectionsRoute;
-import com.mapbox.services.commons.models.Position;
-import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -59,23 +44,14 @@ import java.util.Locale;
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.dataLayer.deviceEvents.LocationTrackingPositionChangedEvent;
-import it.flube.driver.dataLayer.userInterfaceEvents.batchAlerts.ShowCompletedBatchAlertEvent;
-import it.flube.driver.dataLayer.userInterfaceEvents.batchAlerts.ShowCompletedServiceOrderAlertEvent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.batchAlerts.ShowCompletedServiceOrderAlertEvent;
 import it.flube.driver.modelLayer.entities.AddressLocation;
 import it.flube.driver.modelLayer.entities.LatLonLocation;
-import it.flube.driver.modelLayer.entities.batch.BatchDetail;
 import it.flube.driver.modelLayer.entities.orderStep.ServiceOrderNavigationStep;
-import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
-import it.flube.driver.modelLayer.interfaces.ActiveBatchInterface;
-import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
 import it.flube.driver.userInterfaceLayer.ActivityNavigator;
-import it.flube.driver.userInterfaceLayer.UserInterfaceUtilities;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.ActiveBatchAlerts;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import timber.log.Timber;
-
-import static android.view.View.INVISIBLE;
-import static android.view.View.VISIBLE;
 
 /**
  * Created on 10/15/2017

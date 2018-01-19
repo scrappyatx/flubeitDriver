@@ -35,10 +35,10 @@ public class AppInitialization {
     private final String TAG = "AppInitialization";
     private static final String instabug_auth_token = "66a3ed498b5c8845ee12ae07b3aa2553";
 
-    private Context mAppContext;
+    private Context appContext;
 
     public AppInitialization(Context appContext){
-        mAppContext = appContext;
+        this.appContext = appContext;
     }
 
     void initializeLeakDetection(Application application, Context context) {

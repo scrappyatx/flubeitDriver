@@ -30,7 +30,7 @@ public class UseCaseClaimOfferRequest implements
     }
 
     public void run(){
-        device.getRealtimeOfferMessages().sendClaimOfferRequestMessage(offerOID, this);
+        //device.getRealtimeOfferMessages().sendClaimOfferRequestMessage(offerOID, this);
     }
 
     public void receiveClaimOfferResponseMessage(String offerOID, String batchOID, String clientId) {

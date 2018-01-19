@@ -20,17 +20,18 @@ import java.util.ArrayList;
 
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.demoOffers.DemoOffersAvailableResponseHandler;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.OfferSelectedResponseHandler;
-import it.flube.driver.dataLayer.userInterfaceEvents.offerAlerts.ShowClaimOfferFailureAlertEvent;
-import it.flube.driver.dataLayer.userInterfaceEvents.offerAlerts.ShowClaimOfferSuccessAlertEvent;
-import it.flube.driver.dataLayer.userInterfaceEvents.batchAlerts.ShowDemoOfferCreatedAlertEvent;
-import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.DemoOfferOfferListUpdatedEvent;
-import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.DemoOffersUpdatedEvent;
+import it.flube.driver.useCaseLayer.generateDemoBatch.UseCaseMakeDemoBatchRequest;
+import it.flube.driver.userInterfaceLayer.layoutComponents.demoOffers.DemoOffersLayoutComponents;
+import it.flube.driver.userInterfaceLayer.layoutComponents.offers.OffersListLayoutComponent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerAlerts.ShowClaimOfferFailureAlertEvent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerAlerts.ShowClaimOfferSuccessAlertEvent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.batchAlerts.ShowDemoOfferCreatedAlertEvent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.DemoOfferOfferListUpdatedEvent;
 import it.flube.driver.modelLayer.entities.batch.Batch;
 import it.flube.driver.userInterfaceLayer.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
-import it.flube.driver.userInterfaceLayer.activities.offers.OffersListAdapter;
+import it.flube.driver.userInterfaceLayer.layoutComponents.offers.OffersListAdapter;
 import it.flube.driver.userInterfaceLayer.activities.offers.claimOffer.OfferClaimAlerts;
 import timber.log.Timber;
 
@@ -40,39 +41,36 @@ import timber.log.Timber;
  */
 
 public class DemoOffersActivity extends AppCompatActivity implements
+        OffersListAdapter.Response,
+        UseCaseMakeDemoBatchRequest.Response,
         DemoOfferAlerts.DemoOfferCreatedAlertHidden,
         OfferClaimAlerts.ClaimOfferSuccessAlertHidden,
         OfferClaimAlerts.ClaimOfferFailureAlertHidden,
         OfferClaimAlerts.ClaimOfferTimeoutAlertHidden {
 
     private static final String TAG = "DemoOffersActivity";
+    private static final Integer MAX_OFFERS = 20;
+    private static final String CLAIM_OFFER_RESULT_KEY = "claimOfferResult";
+    private static final String CLAIM_OFFER_SUCCESS_VALUE = "success";
+    private static final String CLAIM_OFFER_FAILURE_VALUE = "failure";
+    private static final String CLAIM_OFFER_TIMEOUT_VALUE = "timeout";
 
     private DemoOffersController controller;
     private ActivityNavigator navigator;
     private DrawerMenu drawer;
 
-    private RecyclerView offersView;
-    private OffersListAdapter offersAdapter;
-    private TextView noOffersText;
-    private TextView demoInstructions;
-    private Button makeDemoOfferButton;
-
-    private Boolean tooManyDemoOffers;
-    private Boolean createDemoOfferAlertShowing;
+    private DemoOffersLayoutComponents offersLayout;
+    private OffersListLayoutComponent offersList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_demo);
-        offersView = (RecyclerView) findViewById(R.id.demo_offers_offersView);
-        noOffersText = (TextView) findViewById(R.id.demo_offers_noOffers);
-        demoInstructions = (TextView) findViewById(R.id.demo_offers_instructions);
-        makeDemoOfferButton = (Button) findViewById(R.id.demo_offers_generate_button);
+        setContentView(R.layout.activity_demo_offers);
 
-        tooManyDemoOffers = false;
-        createDemoOfferAlertShowing = false;
+        offersLayout = new DemoOffersLayoutComponents(this);
+        offersList = new OffersListLayoutComponent(this, getString(R.string.demo_offers_no_offers_available));
 
         Timber.tag(TAG).d("onCreate");
     }
@@ -86,19 +84,16 @@ public class DemoOffersActivity extends AppCompatActivity implements
         drawer = new DrawerMenu(this, navigator, R.string.demo_offers_title);
         controller = new DemoOffersController();
 
-        offersAdapter = new OffersListAdapter(this, controller);
-
-        offersView.setLayoutManager(new LinearLayoutManager(this));
-        offersView.setAdapter(offersAdapter);
-        offersView.setVisibility(View.INVISIBLE);
-
-        noOffersText.setVisibility(View.VISIBLE);
-
-
         EventBus.getDefault().register(this);
-        controller.listenForOffers();
-        updateDemoOfferList();
 
+        offersLayout.setVisible();
+
+        offersList.onResume(this, this);
+        offersList.setValues(AndroidDevice.getInstance().getOfferLists().getDemoOffers());
+        offersList.setVisible();
+
+        checkIfTooManyOffers();
+        checkIfAlertNeedsToBeShown();
         Timber.tag(TAG).d("onResume");
     }
 
@@ -109,7 +104,7 @@ public class DemoOffersActivity extends AppCompatActivity implements
 
         drawer.close();
         controller.close();
-        offersAdapter.close();
+        offersList.onPause();
 
         Timber.tag(TAG).d(TAG, "onPause");
         super.onPause();
@@ -120,103 +115,90 @@ public class DemoOffersActivity extends AppCompatActivity implements
         //make demo offer button clicked
         Timber.tag(TAG).d("clicked MAKE DEMO OFFER");
 
-        makeDemoOfferButton.setVisibility(View.INVISIBLE);
-        //tell the controller to login using the user-supplied credentials
+        offersLayout.offerMakeStarted();
         controller.doMakeDemoOffer();
     }
 
-    private void updateDemoOfferButtonVisibility(){
-        if ((tooManyDemoOffers) || (createDemoOfferAlertShowing)) {
-            Timber.tag(TAG).d("demo offer button is INVISIBLE");
-            makeDemoOfferButton.setVisibility(View.INVISIBLE);
+
+    private void checkIfTooManyOffers(){
+        if (AndroidDevice.getInstance().getOfferLists().getDemoOffers().size() >= MAX_OFFERS) {
+            //too many offers
+            Timber.tag(TAG).d("...too many offers");
+            offersLayout.setTooManyOffers();
         } else {
-            Timber.tag(TAG).d("demo offer button is VISIBLE");
-            makeDemoOfferButton.setVisibility(View.VISIBLE);
+            //can still make offers
+            Timber.tag(TAG).d("...can still make offers");
+            offersLayout.setReadyToMake();
         }
     }
 
-    private void updateDemoOfferList(){
-
-        ArrayList<Batch> offerList = AndroidDevice.getInstance().getOfferLists().getDemoOffers();
-        Integer offerCount = offerList.size();
-
-        if (offerCount >= 20) {
-            tooManyDemoOffers = true;
+    private void checkIfAlertNeedsToBeShown(){
+        /// get the batch data for the batchGuid that was used to launch this activity
+        if (getIntent().hasExtra(CLAIM_OFFER_RESULT_KEY)){
+            //get the result
+            String resultKey = getIntent().getStringExtra(CLAIM_OFFER_RESULT_KEY);
+            Timber.tag(TAG).d(CLAIM_OFFER_RESULT_KEY + " --> " + resultKey);
+            switch (resultKey){
+                case CLAIM_OFFER_SUCCESS_VALUE:
+                    Timber.tag(TAG).d("claim offer SUCCESS!");
+                    new OfferClaimAlerts().showSuccessAlert(this, this);
+                    break;
+                case CLAIM_OFFER_FAILURE_VALUE:
+                    Timber.tag(TAG).d("claim offer FAILURE!");
+                    new OfferClaimAlerts().showFailureAlert(this, this);
+                    break;
+                case CLAIM_OFFER_TIMEOUT_VALUE:
+                    Timber.tag(TAG).d("claim offer TIMEOUT");
+                    break;
+                default:
+                    Timber.tag(TAG).w("unknown resultKey, this should never happen");
+                    break;
+            }
+            // now remove the key, only want to show an alert once
+            getIntent().removeExtra(CLAIM_OFFER_RESULT_KEY);
         } else {
-            tooManyDemoOffers = false;
+            Timber.tag(TAG).w("activity started with no claim_offer_result");
         }
-
-        if (offerCount > 0) {
-            Timber.tag(TAG).d("updating list!");
-            offersAdapter.updateList(offerList);
-            offersView.setVisibility(View.VISIBLE);
-            noOffersText.setVisibility(View.INVISIBLE);
-        } else {
-            Timber.tag(TAG).d("making list invisible!");
-            offersView.setVisibility(View.INVISIBLE);
-            noOffersText.setVisibility(View.VISIBLE);
-        }
-
-        updateDemoOfferButtonVisibility();
     }
+
+    ///
+    ///   OffersListAdapter.Response interface
+    ///
+    public void offerSelected(Batch batch){
+        Timber.tag(TAG).d("...batchSelected -> " + batch.getGuid());
+        navigator.gotoActivityOfferClaim(this, batch.getGuid());
+    }
+
+    ///
+    ///   UseCaseMakeDemoBatchRequest.Response interface
+    ///
+    public void makeDemoBatchComplete(){
+        Timber.tag(TAG).d("...make demo batch COMPLETE!");
+        new DemoOfferAlerts().showDemoOfferCreatedAlert(this, this);
+    }
+
 
     // Events for updating offers list.  Events not removed because we always want most recent
     // offers list whenever this activitity is created, started, or resumed.
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(DemoOfferOfferListUpdatedEvent event) {
-        Timber.tag(TAG).d("received PublicOfferListUpdatedEvent");
-        updateDemoOfferList();
+        Timber.tag(TAG).d("received DemoOfferListUpdatedEvent");
+        offersList.setValues(AndroidDevice.getInstance().getOfferLists().getDemoOffers());
+        offersList.setVisible();
+        checkIfTooManyOffers();
     }
 
-
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEvent(OfferSelectedResponseHandler.UseCaseOfferSelectedEvent event) {
-        Timber.tag(TAG).d("*** Offer was selected event");
-
-        navigator.gotoActivityOfferClaim(this);
-    }
-
-    @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
-    public void onEvent(ShowDemoOfferCreatedAlertEvent event) {
-        EventBus.getDefault().removeStickyEvent(event);
-
-        Timber.tag(TAG).d("demo offer created!");
-
-        DemoOfferAlerts alert = new DemoOfferAlerts();
-        alert.showDemoOfferCreatedAlert(this, this);
-
-        createDemoOfferAlertShowing = true;
-        updateDemoOfferButtonVisibility();
-    }
-
+    ///
+    ///   Interfaces for Alerts that can be shown in this activity
+    ///
     public void demoOfferCreatedAlertHidden(){
-        createDemoOfferAlertShowing = false;
-        updateDemoOfferButtonVisibility();
-    }
-
-    @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
-    public void onEvent(ShowClaimOfferSuccessAlertEvent event) {
-        EventBus.getDefault().removeStickyEvent(event);
-
-        Timber.tag(TAG).d("claim offer SUCCESS!");
-
-        OfferClaimAlerts alert = new OfferClaimAlerts();
-        alert.showSuccessAlert(this, this);
+        offersList.setValues(AndroidDevice.getInstance().getOfferLists().getDemoOffers());
+        checkIfTooManyOffers();
     }
 
     public void claimOfferSuccessAlertHidden() {
         Timber.tag(TAG).d("claim offer success alert hidden");
-    }
-
-    @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
-    public void onEvent(ShowClaimOfferFailureAlertEvent event) {
-        EventBus.getDefault().removeStickyEvent(event);
-
-        Timber.tag(TAG).d("claim offer FAILURE!");
-
-        OfferClaimAlerts alert = new OfferClaimAlerts();
-        alert.showFailureAlert(this, this);
     }
 
     public void claimOfferFailureAlertHidden() {

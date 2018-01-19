@@ -6,13 +6,9 @@ package it.flube.driver.deviceLayer.cloudAuth;
 
 import android.support.annotation.NonNull;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-import it.flube.driver.modelLayer.entities.Driver;
-import it.flube.driver.modelLayer.interfaces.AppRemoteConfigInterface;
+import it.flube.driver.dataLayer.useCaseResponseHandlers.cloudAuth.CloudAuthStateChangedResponseHandler;
 import it.flube.driver.modelLayer.interfaces.CloudAuthInterface;
 import timber.log.Timber;
 
@@ -23,8 +19,7 @@ import timber.log.Timber;
 
 public class CloudAuthFirebaseWrapper implements
         CloudAuthInterface,
-        FirebaseAuth.AuthStateListener,
-        FirebaseAuth.IdTokenListener {
+        FirebaseAuth.AuthStateListener {
 
     ///
     ///  Loader class provides synchronization across threads
@@ -41,9 +36,10 @@ public class CloudAuthFirebaseWrapper implements
     private CloudAuthFirebaseWrapper() {
         Timber.tag(TAG).d("creating auth instance");
         auth = FirebaseAuth.getInstance();
-        signOutCurrentUser();
+        auth.removeAuthStateListener(this);
 
-        shouldBeSignedIn = false;
+        isMonitoring = false;
+        cloudAuthStateChangedResponseHandler = new CloudAuthStateChangedResponseHandler();
     }
 
     ///
@@ -53,97 +49,74 @@ public class CloudAuthFirebaseWrapper implements
         return CloudAuthFirebaseWrapper.Loader.instance;
     }
 
-
     ///
     ///     class variables
     ///
     private static final String TAG = "CloudAuthFirebaseWrapper";
     private FirebaseAuth auth;
-    private Driver driver;
+    private CloudAuthStateChangedResponseHandler cloudAuthStateChangedResponseHandler;
 
-    private String tokenUrl;
-    private Boolean shouldBeSignedIn;
+    private Boolean isMonitoring;
 
-    private CloudAuthFirebaseWrapper.SignInResponse mSignInResponse;
+    private CloudAuthFirebaseWrapper.AuthStateChangedEvent authEvent;
 
-
-    public void connectRequest(AppRemoteConfigInterface appConfig, CloudAuthInterface.ConnectResponse response){
-        Timber.tag(TAG).d("STARTING connectRequest...");
-
-        tokenUrl = appConfig.getCloudStorageAuthTokenUrl();
-        Timber.tag(TAG).d("   ...tokenUrl = " + tokenUrl);
-
-        signOutCurrentUser();
-
-        auth.addAuthStateListener(this);
-        auth.addIdTokenListener(this);
-
-        Timber.tag(TAG).d("...connect COMPLETE");
-        response.cloudAuthConnectComplete();
-    }
-
-    private void signOutCurrentUser(){
-        Timber.tag(TAG).d("signOutCurrentUser...");
-        if (auth.getCurrentUser()!=null) {
-            Timber.tag(TAG).d("   ...current user : " + auth.getCurrentUser().getDisplayName());
-            Timber.tag(TAG).d("   ...signing out current user");
-            auth.signOut();
-        } else {
-            Timber.tag(TAG).d("   ...no current user");
+    public  void signOutCurrentUserRequest(SignOutCurrentUserResponse response){
+        Timber.tag(TAG).d("signOutCurrentUserRequest START...");
+        if (isMonitoring){
+            Timber.tag(TAG).d("   ...removing auth state listener");
+            auth.removeAuthStateListener(this);
         }
-        shouldBeSignedIn = false;
+        Timber.tag(TAG).d("   ...signing out user");
+        auth.signOut();
+        Timber.tag(TAG).d("...signOutCurrentUserRequest FINISHED");
+        response.cloudAuthSignOutCurrentUserComplete();
     }
 
-    public void disconnect(){
-        Timber.tag(TAG).d("STARTING disconnect...");
-
-        auth.removeAuthStateListener(this);
-        auth.removeIdTokenListener(this);
-        signOutCurrentUser();
-
-        Timber.tag(TAG).d("...disconnect COMPLETE");
+    public void startMonitoringAuthStateChanges(StartMonitoringResponse response){
+        Timber.tag(TAG).d("startMonitoringAuthStateChanges START...");
+        if (!isMonitoring) {
+            isMonitoring = true;
+            auth.addAuthStateListener(this);
+            Timber.tag(TAG).d("   ...started monitoring auth state changes");
+        } else {
+            Timber.tag(TAG).w("   ...startMonitoring called when already monitoring");
+        }
+        Timber.tag(TAG).d("...startMonitoringAuthStateChanges FINISHED");
+        response.cloudAuthStartMonitoringComplete();
     }
 
-    public void signInRequest(Driver driver, SignInResponse response){
-        this.driver = driver;
-        shouldBeSignedIn = true;
-
-        new FirebaseAuthUserSignIn().signInRequest(auth, driver, tokenUrl, response);
-        Timber.tag(TAG).d("received signInRequest");
-    }
-
-    public void signOutRequest(SignOutResponse response){
-        shouldBeSignedIn = false;
-
-        new FirebaseAuthUserSignIn().signOutRequest(auth, response);
-        Timber.tag(TAG).d("received signOutRequest");
+    public void stopMonitoringAuthStateChanges(StopMonitoringResponse response){
+        Timber.tag(TAG).d("stopMonitoringAuthStateChanges START...");
+        if (isMonitoring) {
+            auth.removeAuthStateListener(this);
+            isMonitoring = false;
+            Timber.tag(TAG).d("   ...stopped monitoring auth state changes");
+        } else {
+            Timber.tag(TAG).w("   ...stopMonitoring called when not monitoring");
+        }
+        Timber.tag(TAG).d("...stopMonitoringAuthStateChanges FINISHED");
+        response.cloudAuthStopMonitoringComplete();
     }
 
     public void onAuthStateChanged(@NonNull FirebaseAuth auth) {
-        Timber.tag(TAG).d("onAuthStateChanged...");
+        //This method gets invoked in the UI thread on changes in the authentication state:
+        //    - Right after the listener has been registered
+        //    - When a user is signed in
+        //    - When the current user is signed out
+        //    - When the current user changes
 
-        if (shouldBeSignedIn){
-            Timber.tag(TAG).d("   ...user should be signed in");
-            if (auth.getCurrentUser()==null){
-                Timber.tag(TAG).d("      ...need to refresh user's token");
-                new FirebaseAuthUserRefreshToken().refreshToken(auth, driver, tokenUrl);
-            } else {
-                Timber.tag(TAG).d("   ...user is signed in");
-            }
+        Timber.tag(TAG).d("onAuthStateChanged START...");
+
+        if (auth.getCurrentUser()==null){
+            //there is no signed in user
+            Timber.tag(TAG).d("   ...there IS NOT a current signed in user");
+            cloudAuthStateChangedResponseHandler.cloudAuthStateChangedNoUser();
         } else {
-            Timber.tag(TAG).d("   ...user should not be signed in");
-            if (auth.getCurrentUser()!=null){
-                Timber.tag(TAG).d("      ...signing user out");
-                signOutCurrentUser();
-            } else {
-                Timber.tag(TAG).d("   ...user is signed out");
-            }
+            // we have a signed in user
+            Timber.tag(TAG).d("   ...there IS a current signed in user, userId -> " + auth.getUid());
+            new FirebaseAuthGetUserToken().getUserTokenRequest(auth.getCurrentUser(), cloudAuthStateChangedResponseHandler);
         }
-    }
-
-
-    public void onIdTokenChanged(@NonNull FirebaseAuth auth){
-        Timber.tag(TAG).d("onIdTokenChanged...");
+        Timber.tag(TAG).d("...onAuthStateChange COMPLETE");
     }
 
 }

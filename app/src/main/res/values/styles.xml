@@ -68,16 +68,19 @@
         <item name="android:textColor">@color/offwhite</item>
     </style>
 
-    <style name="NavigationMapRoute">
-        <!-- Colors -->
-        <item name="routeColor">@color/mapbox_navigation_route_layer_blue</item>
-        <item name="routeModerateCongestionColor">@color/mapbox_navigation_route_layer_congestion_yellow</item>
-        <item name="routeSevereCongestionColor">@color/mapbox_navigation_route_layer_congestion_red</item>
-        <item name="routeShieldColor">@color/mapbox_navigation_route_shield_layer_color</item>
-
-        <!-- Scales -->
-        <item name="routeScale">1.0</item>
+    <!-- HOME SUMMARY styles -->
+    <style name="HomeSummaryStyleTitle" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorHomeSummaryTitle</item>
     </style>
+
+    <style name="HomeSummaryStyleDescription" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorHomeSummaryDescription</item>
+    </style>
+
 
     <!-- BATCH DETAIL styles -->
     <style name="BatchDetailStyleTitle" parent="TextAppearance.AppCompat.Title">
@@ -90,6 +93,18 @@
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/colorBatchDetailDescription</item>
+    </style>
+
+    <style name="BatchDetailTabTextAppearance" parent = "TextAppearance.AppCompat.Body1">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="BatchDetailForfeitStyleDescription" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
 
@@ -172,6 +187,19 @@
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/colorNavStepDestinationAddress</item>
     </style>
+
+    <!-- NOT USING MAPBOX NAVIGATION
+       <style name="NavigationMapRoute">
+
+        <item name="routeColor">@color/mapbox_navigation_route_layer_blue</item>
+        <item name="routeModerateCongestionColor">@color/mapbox_navigation_route_layer_congestion_yellow</item>
+        <item name="routeSevereCongestionColor">@color/mapbox_navigation_route_layer_congestion_red</item>
+        <item name="routeShieldColor">@color/mapbox_navigation_route_shield_layer_color</item>
+
+
+        <item name="routeScale">1.0</item>
+    </style>
+    -->
 
 
 </resources>

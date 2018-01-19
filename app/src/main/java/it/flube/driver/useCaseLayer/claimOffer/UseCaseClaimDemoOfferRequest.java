@@ -4,8 +4,6 @@
 
 package it.flube.driver.useCaseLayer.claimOffer;
 
-import it.flube.driver.modelLayer.entities.Driver;
-import it.flube.driver.modelLayer.entities.Offer;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 

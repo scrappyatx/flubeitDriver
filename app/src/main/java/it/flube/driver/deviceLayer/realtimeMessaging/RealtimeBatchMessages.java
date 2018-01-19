@@ -38,7 +38,7 @@ public class RealtimeBatchMessages implements RealtimeMessagingInterface.BatchCh
 
 
     public void connect(String clientId) {
-        ablyChannel.channelConnectRequest(clientId, this);
+        ablyChannel.channelConnectRequest(clientId, AndroidDevice.getInstance().getUser().getIdToken(), this);
     }
 
     public void channelConnectSuccess(){

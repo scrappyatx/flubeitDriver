@@ -5,12 +5,8 @@
 package it.flube.driver.deviceLayer.cloudDatabase.offers.publicOffers;
 
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
-import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.demoOffers.DemoOffersAvailableResponseHandler;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.publicOffers.PublicOffersAvailableResponseHandler;
-import it.flube.driver.deviceLayer.cloudDatabase.offers.demoOffers.FirebaseDemoOffersEventListener;
-import it.flube.driver.modelLayer.entities.Driver;
 import timber.log.Timber;
 
 /**

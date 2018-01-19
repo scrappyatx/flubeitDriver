@@ -20,7 +20,6 @@ import java.util.Locale;
 
 import it.flube.driver.R;
 import it.flube.driver.modelLayer.entities.batch.Batch;
-import it.flube.driver.userInterfaceLayer.activities.offers.OffersListAdapter;
 import timber.log.Timber;
 
 /**

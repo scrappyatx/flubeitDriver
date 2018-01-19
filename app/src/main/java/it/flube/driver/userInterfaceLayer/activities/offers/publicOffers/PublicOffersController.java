@@ -7,11 +7,8 @@ package it.flube.driver.userInterfaceLayer.activities.offers.publicOffers;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.OfferSelectedResponseHandler;
-import it.flube.driver.modelLayer.entities.Offer;
 import it.flube.driver.modelLayer.entities.batch.Batch;
-import it.flube.driver.useCaseLayer.claimOffer.UseCaseOfferSelected;
-import it.flube.driver.userInterfaceLayer.activities.offers.OffersListAdapter;
+import it.flube.driver.userInterfaceLayer.layoutComponents.offers.OffersListAdapter;
 import timber.log.Timber;
 
 /**

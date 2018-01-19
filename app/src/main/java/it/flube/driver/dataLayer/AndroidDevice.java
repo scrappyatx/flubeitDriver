@@ -13,7 +13,8 @@ import com.jaredrummler.android.device.DeviceName;
 
 import java.util.UUID;
 
-import it.flube.driver.dataLayer.services.ActiveBatchForegroundServiceController;
+import it.flube.driver.deviceLayer.googlePlayLocation.GooglePlayLocationWrapper;
+import it.flube.driver.deviceLayer.activeBatchForegroundService.ActiveBatchForegroundServiceController;
 import it.flube.driver.deviceLayer.AblyConnectionWrapper;
 import it.flube.driver.deviceLayer.ActiveBatch;
 import it.flube.driver.deviceLayer.AppRemoteConfig;
@@ -22,13 +23,10 @@ import it.flube.driver.deviceLayer.OfferLists;
 import it.flube.driver.deviceLayer.UseCaseEngine;
 import it.flube.driver.deviceLayer.cloudDatabase.CloudDatabaseFirebaseWrapper;
 import it.flube.driver.deviceLayer.DeviceStorageSharedPrefs;
-import it.flube.driver.deviceLayer.LocationEngineWrapper;
 import it.flube.driver.deviceLayer.UserProfile;
 import it.flube.driver.deviceLayer.appLogging.AppLoggingTimber;
 import it.flube.driver.deviceLayer.cloudAuth.CloudAuthFirebaseWrapper;
 import it.flube.driver.deviceLayer.realtimeMessaging.RealtimeActiveBatchMessages;
-import it.flube.driver.deviceLayer.realtimeMessaging.RealtimeBatchMessages;
-import it.flube.driver.deviceLayer.realtimeMessaging.RealtimeOfferMessages;
 import it.flube.driver.modelLayer.entities.DeviceInfo;
 import it.flube.driver.modelLayer.interfaces.ActiveBatchForegroundServiceInterface;
 import it.flube.driver.modelLayer.interfaces.ActiveBatchInterface;
@@ -157,13 +155,13 @@ public class AndroidDevice implements MobileDeviceInterface, DeviceName.Callback
         return AblyConnectionWrapper.getInstance();
     }
 
-    public RealtimeMessagingInterface.OfferChannel getRealtimeOfferMessages() {
-        return RealtimeOfferMessages.getInstance();
-    }
+    //public RealtimeMessagingInterface.OfferChannel getRealtimeOfferMessages() {
+    //    return RealtimeOfferMessages.getInstance();
+    //}
 
-    public RealtimeMessagingInterface.BatchChannel getRealtimeBatchMessages() {
-        return RealtimeBatchMessages.getInstance();
-    }
+    //public RealtimeMessagingInterface.BatchChannel getRealtimeBatchMessages() {
+    //    return RealtimeBatchMessages.getInstance();
+    //}
 
     public RealtimeMessagingInterface.ActiveBatchChannel getRealtimeActiveBatchMessages(){
         return RealtimeActiveBatchMessages.getInstance();
@@ -175,7 +173,8 @@ public class AndroidDevice implements MobileDeviceInterface, DeviceName.Callback
 
     public LocationTelemetryInterface getLocationTelemetry() {
         if (locationTelemetry == null) {
-            locationTelemetry = new LocationEngineWrapper(applicationContext);
+            //locationTelemetry = new LocationEngineWrapper(applicationContext);
+            locationTelemetry=new GooglePlayLocationWrapper(applicationContext);
         }
         return locationTelemetry;
     }

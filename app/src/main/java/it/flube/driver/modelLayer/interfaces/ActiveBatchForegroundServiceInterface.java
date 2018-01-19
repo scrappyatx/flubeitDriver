@@ -14,9 +14,23 @@ import android.content.Context;
 public interface ActiveBatchForegroundServiceInterface {
 
 
-    void startActiveBatchForegroundService(String notificationText, String notificationSubText, OrderStepInterface.TaskType taskType);
+    void startActiveBatchForegroundServiceRequest(String notificationText, String notificationSubText, OrderStepInterface.TaskType taskType,
+                                           StartActiveBatchForegroundServiceResponse response);
 
-    void updateActiveBatchForegroundService(String notificationText, String notificationSubText, OrderStepInterface.TaskType taskType);
+    interface StartActiveBatchForegroundServiceResponse {
+        void activeBatchForegroundServiceStarted();
+    }
 
-    void stopActiveBatchForegroundService();
+    void updateActiveBatchForegroundServiceRequest(String notificationText, String notificationSubText, OrderStepInterface.TaskType taskType,
+                                            UpdateActiveBatchForegroundServiceResponse response);
+
+    interface UpdateActiveBatchForegroundServiceResponse {
+        void activeBatchForegroundServiceUpdated();
+    }
+
+    void stopActiveBatchForegroundServiceRequest(StopActiveBatchForegroundServiceResponse response);
+
+    interface StopActiveBatchForegroundServiceResponse {
+        void activeBatchForegroundServiceStopped();
+    }
 }

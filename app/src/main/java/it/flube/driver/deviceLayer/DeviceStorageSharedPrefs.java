@@ -7,7 +7,7 @@ package it.flube.driver.deviceLayer;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import it.flube.driver.modelLayer.entities.Driver;
+import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.interfaces.DeviceStorageInterface;
 import timber.log.Timber;
 
@@ -57,35 +57,35 @@ public class DeviceStorageSharedPrefs implements DeviceStorageInterface {
     public void loadRequest(DeviceStorageInterface.LoadResponse response) {
         if (isPrefsDataAvailable()) {
             Driver driver = new Driver();
-            driver.setFirstName(prefs.getString(FIELD_FIRST_NAME, null));
-            driver.setLastName(prefs.getString(FIELD_LAST_NAME, null));
-            driver.setDisplayName(prefs.getString(FIELD_DISPLAY_NAME,null));
+            driver.getNameSettings().setFirstName(prefs.getString(FIELD_FIRST_NAME, null));
+            driver.getNameSettings().setLastName(prefs.getString(FIELD_LAST_NAME, null));
+            driver.getNameSettings().setDisplayName(prefs.getString(FIELD_DISPLAY_NAME,null));
             driver.setClientId(prefs.getString(FIELD_CLIENT_ID, null));
             driver.setEmail(prefs.getString(FIELD_EMAIL, null));
             driver.setPhotoUrl(prefs.getString(FIELD_PHOTO_URL,null));
-            driver.setIsDev(prefs.getBoolean(FIELD_IS_DEV, false));
-            driver.setIsQA(prefs.getBoolean(FIELD_IS_QA, false));
-            driver.setPublicOffersNode(prefs.getString(FIELD_PUBLIC_OFFERS_NODE,null));
-            driver.setPersonalOffersNode(prefs.getString(FIELD_PERSONAL_OFFERS_NODE,null));
-            driver.setDemoOffersNode(prefs.getString(FIELD_DEMO_OFFERS_NODE,null));
-            driver.setScheduledBatchesNode(prefs.getString(FIELD_SCHEDULED_BATCHES_NODE,null));
-            driver.setActiveBatchNode(prefs.getString(FIELD_ACTIVE_BATCH_NODE,null));
-            driver.setBatchDataNode(prefs.getString(FIELD_BATCH_DATA_NODE,null));
+            driver.getUserRoles().setDev(prefs.getBoolean(FIELD_IS_DEV, false));
+            driver.getUserRoles().setQa(prefs.getBoolean(FIELD_IS_QA, false));
+            driver.getCloudDatabaseSettings().setPublicOffersNode(prefs.getString(FIELD_PUBLIC_OFFERS_NODE,null));
+            driver.getCloudDatabaseSettings().setPersonalOffersNode(prefs.getString(FIELD_PERSONAL_OFFERS_NODE,null));
+            driver.getCloudDatabaseSettings().setDemoOffersNode(prefs.getString(FIELD_DEMO_OFFERS_NODE,null));
+            driver.getCloudDatabaseSettings().setScheduledBatchesNode(prefs.getString(FIELD_SCHEDULED_BATCHES_NODE,null));
+            driver.getCloudDatabaseSettings().setActiveBatchNode(prefs.getString(FIELD_ACTIVE_BATCH_NODE,null));
+            driver.getCloudDatabaseSettings().setBatchDataNode(prefs.getString(FIELD_BATCH_DATA_NODE,null));
 
             Timber.tag(TAG).d("loadRequest -> Success");
-            Timber.tag(TAG).d("     displayName -> " + driver.getDisplayName());
+            Timber.tag(TAG).d("     displayName -> " + driver.getNameSettings().getDisplayName());
             Timber.tag(TAG).d("     clientId    -> " + driver.getClientId());
-            Timber.tag(TAG).d("     email       -> " + driver.getDisplayName());
+            Timber.tag(TAG).d("     email       -> " + driver.getNameSettings().getDisplayName());
             Timber.tag(TAG).d("     photo URL   -> " + driver.getPhotoUrl());
 
-            Timber.tag(TAG).d("     is Dev      -> " + driver.isDev());
-            Timber.tag(TAG).d("     is QA       -> " + driver.isQA());
-            Timber.tag(TAG).d("     publicOffersNode     -> " + driver.getPublicOffersNode());
-            Timber.tag(TAG).d("     personalOffersNode   -> " + driver.getPersonalOffersNode());
-            Timber.tag(TAG).d("     demoOffersNode       -> " + driver.getDemoOffersNode());
-            Timber.tag(TAG).d("     scheduledBatchesNode -> " + driver.getScheduledBatchesNode());
-            Timber.tag(TAG).d("     activeBatchNode      -> " + driver.getActiveBatchNode());
-            Timber.tag(TAG).d("     batchDataNode        -> " + driver.getBatchDataNode());
+            Timber.tag(TAG).d("     is Dev      -> " + driver.getUserRoles().getDev());
+            Timber.tag(TAG).d("     is QA       -> " + driver.getUserRoles().getQa());
+            Timber.tag(TAG).d("     publicOffersNode     -> " + driver.getCloudDatabaseSettings().getPublicOffersNode());
+            Timber.tag(TAG).d("     personalOffersNode   -> " + driver.getCloudDatabaseSettings().getPersonalOffersNode());
+            Timber.tag(TAG).d("     demoOffersNode       -> " + driver.getCloudDatabaseSettings().getDemoOffersNode());
+            Timber.tag(TAG).d("     scheduledBatchesNode -> " + driver.getCloudDatabaseSettings().getScheduledBatchesNode());
+            Timber.tag(TAG).d("     activeBatchNode      -> " + driver.getCloudDatabaseSettings().getActiveBatchNode());
+            Timber.tag(TAG).d("     batchDataNode        -> " + driver.getCloudDatabaseSettings().getBatchDataNode());
 
             response.deviceStorageLoadSuccess(driver);
         } else {
@@ -98,39 +98,39 @@ public class DeviceStorageSharedPrefs implements DeviceStorageInterface {
         SharedPreferences.Editor editor;
         editor = prefs.edit();
 
-        editor.putString(FIELD_FIRST_NAME, driver.getFirstName());
-        editor.putString(FIELD_LAST_NAME, driver.getLastName());
-        editor.putString(FIELD_DISPLAY_NAME, driver.getDisplayName());
+        editor.putString(FIELD_FIRST_NAME, driver.getNameSettings().getFirstName());
+        editor.putString(FIELD_LAST_NAME, driver.getNameSettings().getLastName());
+        editor.putString(FIELD_DISPLAY_NAME, driver.getNameSettings().getDisplayName());
         editor.putString(FIELD_CLIENT_ID, driver.getClientId());
         editor.putString(FIELD_EMAIL, driver.getEmail());
         editor.putString(FIELD_PHOTO_URL, driver.getPhotoUrl());
 
-        editor.putBoolean(FIELD_IS_DEV, driver.isDev());
-        editor.putBoolean(FIELD_IS_QA, driver.isQA());
+        editor.putBoolean(FIELD_IS_DEV, driver.getUserRoles().getDev());
+        editor.putBoolean(FIELD_IS_QA, driver.getUserRoles().getQa());
 
-        editor.putString(FIELD_PUBLIC_OFFERS_NODE, driver.getPublicOffersNode());
-        editor.putString(FIELD_PERSONAL_OFFERS_NODE, driver.getPersonalOffersNode());
-        editor.putString(FIELD_DEMO_OFFERS_NODE, driver.getDemoOffersNode());
-        editor.putString(FIELD_SCHEDULED_BATCHES_NODE, driver.getScheduledBatchesNode());
-        editor.putString(FIELD_ACTIVE_BATCH_NODE, driver.getActiveBatchNode());
-        editor.putString(FIELD_BATCH_DATA_NODE, driver.getBatchDataNode());
+        editor.putString(FIELD_PUBLIC_OFFERS_NODE, driver.getCloudDatabaseSettings().getPublicOffersNode());
+        editor.putString(FIELD_PERSONAL_OFFERS_NODE, driver.getCloudDatabaseSettings().getPersonalOffersNode());
+        editor.putString(FIELD_DEMO_OFFERS_NODE, driver.getCloudDatabaseSettings().getDemoOffersNode());
+        editor.putString(FIELD_SCHEDULED_BATCHES_NODE, driver.getCloudDatabaseSettings().getScheduledBatchesNode());
+        editor.putString(FIELD_ACTIVE_BATCH_NODE, driver.getCloudDatabaseSettings().getActiveBatchNode());
+        editor.putString(FIELD_BATCH_DATA_NODE, driver.getCloudDatabaseSettings().getBatchDataNode());
 
         editor.apply();
 
         Timber.tag(TAG).d("saveRequest -> Complete");
-        Timber.tag(TAG).d("     displayName -> " + driver.getDisplayName());
+        Timber.tag(TAG).d("     displayName -> " + driver.getNameSettings().getDisplayName());
         Timber.tag(TAG).d("     clientId    -> " + driver.getClientId());
-        Timber.tag(TAG).d("     email       -> " + driver.getDisplayName());
+        Timber.tag(TAG).d("     email       -> " + driver.getNameSettings().getDisplayName());
         Timber.tag(TAG).d("     photo URL   -> " + driver.getPhotoUrl());
 
-        Timber.tag(TAG).d("     is Dev      -> " + driver.isDev());
-        Timber.tag(TAG).d("     is QA       -> " + driver.isQA());
-        Timber.tag(TAG).d("     publicOffersNode     -> " + driver.getPublicOffersNode());
-        Timber.tag(TAG).d("     personalOffersNode   -> " + driver.getPersonalOffersNode());
-        Timber.tag(TAG).d("     demoOffersNode       -> " + driver.getDemoOffersNode());
-        Timber.tag(TAG).d("     scheduledBatchesNode -> " + driver.getScheduledBatchesNode());
-        Timber.tag(TAG).d("     activeBatchNode      -> " + driver.getActiveBatchNode());
-        Timber.tag(TAG).d("     batchDataNode        -> " + driver.getBatchDataNode());
+        Timber.tag(TAG).d("     is Dev      -> " + driver.getUserRoles().getDev());
+        Timber.tag(TAG).d("     is QA       -> " + driver.getUserRoles().getQa());
+        Timber.tag(TAG).d("     publicOffersNode     -> " + driver.getCloudDatabaseSettings().getPublicOffersNode());
+        Timber.tag(TAG).d("     personalOffersNode   -> " + driver.getCloudDatabaseSettings().getPersonalOffersNode());
+        Timber.tag(TAG).d("     demoOffersNode       -> " + driver.getCloudDatabaseSettings().getDemoOffersNode());
+        Timber.tag(TAG).d("     scheduledBatchesNode -> " + driver.getCloudDatabaseSettings().getScheduledBatchesNode());
+        Timber.tag(TAG).d("     activeBatchNode      -> " + driver.getCloudDatabaseSettings().getActiveBatchNode());
+        Timber.tag(TAG).d("     batchDataNode        -> " + driver.getCloudDatabaseSettings().getBatchDataNode());
 
         response.deviceStorageSaveComplete();
     }

@@ -15,7 +15,7 @@ import com.google.firebase.database.ServerValue;
 import java.util.HashMap;
 import java.util.Map;
 
-import it.flube.driver.modelLayer.entities.Driver;
+import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import timber.log.Timber;
 
@@ -35,7 +35,7 @@ public class FirebaseUser {
 
     public void saveUserRequest(Driver driver, CloudDatabaseInterface.SaveResponse response) {
         userRef.child("driverInfo").child(driver.getClientId()).setValue(driver).addOnCompleteListener(new FirebaseUser.SaveUserCompleteListener(response));
-        Timber.tag(TAG).d("saving DRIVER object --> clientId : " + driver.getClientId() + " name : " + driver.getDisplayName());
+        Timber.tag(TAG).d("saving DRIVER object --> clientId : " + driver.getClientId() + " name : " + driver.getNameSettings().getDisplayName());
     }
 
     private class SaveUserCompleteListener implements OnCompleteListener<Void> {
@@ -66,7 +66,7 @@ public class FirebaseUser {
         value.put("clientId", driver.getClientId());
         value.put("lastLogin", ServerValue.TIMESTAMP);
         userRef.child("lastLogin").child(driver.getClientId()).setValue(value);
-        Timber.tag(TAG).d("saving DRIVER lastLogin --> clientId : " + driver.getClientId() + " name : " + driver.getDisplayName());
+        Timber.tag(TAG).d("saving DRIVER lastLogin --> clientId : " + driver.getClientId() + " name : " + driver.getNameSettings().getDisplayName());
     }
 
 }

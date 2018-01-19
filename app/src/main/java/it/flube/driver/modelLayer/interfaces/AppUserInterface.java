@@ -5,7 +5,7 @@
 package it.flube.driver.modelLayer.interfaces;
 
 import it.flube.driver.modelLayer.entities.batch.Batch;
-import it.flube.driver.modelLayer.entities.Driver;
+import it.flube.driver.modelLayer.entities.driver.Driver;
 
 /**
  * Created on 6/24/2017
@@ -31,5 +31,9 @@ public interface AppUserInterface {
     void setActiveBatch(Batch batch);
 
     void clearActiveBatch();
+
+    String getIdToken();
+
+    void setIdToken(String idToken);
 
 }

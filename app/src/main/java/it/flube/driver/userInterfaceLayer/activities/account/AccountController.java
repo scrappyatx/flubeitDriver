@@ -4,15 +4,17 @@
 
 package it.flube.driver.userInterfaceLayer.activities.account;
 
+import android.support.v7.app.AppCompatActivity;
+
+import com.firebase.ui.auth.AuthUI;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.GetAccountDetailsResponseHandler;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.signInAndSignOut.SignOutResponseHandler;
 import it.flube.driver.useCaseLayer.account.UseCaseGetAccountDetails;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
-import it.flube.driver.useCaseLayer.signInAndSignOut.UseCaseSignOut;
 import timber.log.Timber;
 
 /**
@@ -35,9 +37,11 @@ public class AccountController  {
         useCaseExecutor.execute(new UseCaseGetAccountDetails(device, new GetAccountDetailsResponseHandler()));
     }
 
-    public void signOutRequest() {
+    public void signOutRequest(AppCompatActivity activity) {
         Timber.tag(TAG).d("signOut STARTED");
-        useCaseExecutor.execute(new UseCaseSignOut(device, new SignOutResponseHandler()));
+
+        AuthUI.getInstance().signOut(activity);
+
     }
 
     public void close(){

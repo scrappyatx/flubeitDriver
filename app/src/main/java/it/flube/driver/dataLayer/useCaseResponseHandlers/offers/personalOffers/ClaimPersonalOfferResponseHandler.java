@@ -6,9 +6,9 @@ package it.flube.driver.dataLayer.useCaseResponseHandlers.offers.personalOffers;
 
 import org.greenrobot.eventbus.EventBus;
 
-import it.flube.driver.dataLayer.userInterfaceEvents.offerClaim.personalOffers.ClaimPersonalOfferFailureEvent;
-import it.flube.driver.dataLayer.userInterfaceEvents.offerClaim.personalOffers.ClaimPersonalOfferSuccessEvent;
-import it.flube.driver.dataLayer.userInterfaceEvents.offerClaim.personalOffers.ClaimPersonalOfferTimeoutEvent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerClaim.personalOffers.ClaimPersonalOfferFailureEvent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerClaim.personalOffers.ClaimPersonalOfferSuccessEvent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerClaim.personalOffers.ClaimPersonalOfferTimeoutEvent;
 import it.flube.driver.useCaseLayer.claimOffer.UseCaseClaimOfferRequest;
 import timber.log.Timber;
 

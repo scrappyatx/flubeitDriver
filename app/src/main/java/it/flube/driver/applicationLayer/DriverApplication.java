@@ -25,6 +25,8 @@ import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import it.flube.driver.modelLayer.interfaces.OffersInterface;
 import it.flube.driver.modelLayer.interfaces.RealtimeMessagingInterface;
 import it.flube.driver.modelLayer.interfaces.UseCaseInterface;
+import it.flube.driver.useCaseLayer.appLifecycle.UseCaseThingsToDoWhenApplicationPauses;
+import it.flube.driver.useCaseLayer.appLifecycle.UseCaseThingsToDoWhenApplicationResumes;
 import timber.log.Timber;
 
 /**
@@ -62,6 +64,13 @@ public class DriverApplication extends MultiDexApplication implements
 
         // Register a lifecycle handler to track the foreground/background state
         registerActivityLifecycleCallbacks(new ActivityLifecycleHandler(this));
+
+        // set references to device & to cloud auth
+        device = AndroidDevice.getInstance();
+        cloudAuth = device.getCloudAuth();
+        cloudDb = device.getCloudDatabase();
+        appUser = device.getUser();
+
     }
 
     /**
@@ -84,6 +93,7 @@ public class DriverApplication extends MultiDexApplication implements
     public void onApplicationPaused(){
         Timber.tag(TAG).d("onApplicationPaused");
         setReferencesToSingletons();
+        device.getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseThingsToDoWhenApplicationPauses(device));
     }
 
     /**
@@ -92,6 +102,7 @@ public class DriverApplication extends MultiDexApplication implements
     public void onApplicationResumed(){
         Timber.tag(TAG).d("onApplicationResumed");
         releaseReferencesToSingletons();
+        device.getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseThingsToDoWhenApplicationResumes(device));
     }
 
 
@@ -104,7 +115,7 @@ public class DriverApplication extends MultiDexApplication implements
         AppInitialization appInitialization = new AppInitialization(getApplicationContext());
 
         appInitialization.initializeBugReporting(this);
-        appInitialization.initializeLeakDetection(this, getApplicationContext());
+        //appInitialization.initializeLeakDetection(this, getApplicationContext());
         appInitialization.setThreadPolicy();
         appInitialization.setVMPolicy();
         appInitialization.initializeAndCreateImageLoaderLogic();
@@ -127,14 +138,10 @@ public class DriverApplication extends MultiDexApplication implements
     }
 
     private void setReferencesToSingletons(){
-       device = AndroidDevice.getInstance();
-       cloudAuth = device.getCloudAuth();
-       cloudDb = device.getCloudDatabase();
        locationTelemetry = device.getLocationTelemetry();
        remoteConfig = device.getAppRemoteConfig();
        useCaseEngine = device.getUseCaseEngine();
 
-       appUser = device.getUser();
        activeBatch = device.getActiveBatch();
        offerLists = device.getOfferLists();
 
@@ -142,14 +149,10 @@ public class DriverApplication extends MultiDexApplication implements
     }
 
     private void releaseReferencesToSingletons(){
-        device = null;
-        cloudAuth = null;
-        cloudDb = null;
         locationTelemetry = null;
         remoteConfig = null;
         useCaseEngine = null;
 
-        appUser = null;
         activeBatch = null;
         offerLists = null;
 

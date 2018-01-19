@@ -9,12 +9,8 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.DemoOfferCountUpdatedEvent;
-import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.DemoOfferOfferListUpdatedEvent;
-import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.PersonalOfferCountUpdatedEvent;
-import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.PersonalOfferListUpdatedEvent;
-import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.PersonalOffersUpdatedEvent;
-import it.flube.driver.modelLayer.entities.Offer;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.PersonalOfferCountUpdatedEvent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.PersonalOfferListUpdatedEvent;
 import it.flube.driver.modelLayer.entities.batch.Batch;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import timber.log.Timber;

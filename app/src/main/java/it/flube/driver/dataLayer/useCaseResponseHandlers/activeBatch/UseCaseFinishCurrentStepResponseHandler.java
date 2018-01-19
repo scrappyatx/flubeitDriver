@@ -4,11 +4,6 @@
 
 package it.flube.driver.dataLayer.useCaseResponseHandlers.activeBatch;
 
-import org.greenrobot.eventbus.EventBus;
-
-import it.flube.driver.dataLayer.userInterfaceEvents.activeBatch.ActiveBatchCompletedBatchEvent;
-import it.flube.driver.dataLayer.userInterfaceEvents.activeBatch.ActiveBatchCompletedServiceOrderEvent;
-import it.flube.driver.dataLayer.userInterfaceEvents.activeBatch.ActiveBatchCompletedStepEvent;
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseFinishCurrentStepRequest;
 import timber.log.Timber;
 

@@ -9,10 +9,8 @@ import java.util.ArrayList;
 import it.flube.driver.modelLayer.entities.LatLonLocation;
 import it.flube.driver.modelLayer.entities.RouteStop;
 import it.flube.driver.modelLayer.entities.batch.Batch;
-import it.flube.driver.modelLayer.entities.batch.BatchCloudDB;
 import it.flube.driver.modelLayer.entities.DeviceInfo;
-import it.flube.driver.modelLayer.entities.Driver;
-import it.flube.driver.modelLayer.entities.Offer;
+import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.entities.batch.BatchDetail;
 import it.flube.driver.modelLayer.entities.batch.BatchHolder;
 import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
@@ -43,21 +41,46 @@ public interface CloudDatabaseInterface {
     ///
     /// CONNECT & DISCONNECT
     ///
-    void connectRequest(AppRemoteConfigInterface remoteConfig, Driver driver, ConnectResponse response);
+    void connectDriverRequest(AppRemoteConfigInterface remoteConfig, Driver driver, ConnectResponse response);
 
     interface ConnectResponse {
-        void cloudDatabaseConnectComplete();
+        void cloudDatabaseConnectDriverComplete();
     }
 
-    void disconnect();
+    void disconnectDriverRequest(DisconnectResponse response);
+
+    interface DisconnectResponse {
+        void cloudDatabaseDisconnectDriverComplete();
+    }
 
     ///
     ///  START & STOP MONITORING
     ///
 
-    void startMonitoring();
+    void startMonitoringRequest(StartMonitoringResponse response);
 
-    void stopMonitoring();
+    interface StartMonitoringResponse {
+        void cloudDatabaseStartMonitoringComplete();
+    }
+
+    void stopMonitoringRequest(StopMonitoringResponse response);
+
+    interface StopMonitoringResponse {
+        void cloudDatabaseStopMonitoringComplete();
+    }
+
+    ///
+    /// USER PROFILE INFO
+    ///
+    void getUserProfileRequest(String clientId, String email, UserProfileResponse response);
+
+    interface UserProfileResponse {
+        void cloudDatabaseGetUserProfileSuccess(Driver driver);
+
+        void cloudDatabaseGetUserProfileNotFound();
+
+        void cloudDatabaseGetUserProfileAccessDenied();
+    }
 
     //
     //  USER INFO
@@ -239,6 +262,13 @@ public interface CloudDatabaseInterface {
 
     interface AcknowledgeRemovedBatchResponse {
         void cloudDatabaseRemovedBatchAckComplete();
+    }
+
+    void saveMapLocationRequest(String batchGuid, String serviceOrderGuid, String orderStepGuid,
+                                LatLonLocation location, SaveMapLocationResponse response);
+
+    interface SaveMapLocationResponse {
+        void cloudDatabaseSaveMapLocationComplete();
     }
 
     ///

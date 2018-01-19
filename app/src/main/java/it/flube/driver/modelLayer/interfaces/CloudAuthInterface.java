@@ -4,7 +4,7 @@
 
 package it.flube.driver.modelLayer.interfaces;
 
-import it.flube.driver.modelLayer.entities.Driver;
+import it.flube.driver.modelLayer.entities.driver.Driver;
 
 /**
  * Created on 6/25/2017
@@ -13,25 +13,30 @@ import it.flube.driver.modelLayer.entities.Driver;
 
 public interface CloudAuthInterface {
 
-    void connectRequest(AppRemoteConfigInterface appConfig, ConnectResponse response);
+    void startMonitoringAuthStateChanges(StartMonitoringResponse response);
 
-    interface ConnectResponse {
-        void cloudAuthConnectComplete();
+    interface StartMonitoringResponse {
+        void cloudAuthStartMonitoringComplete();
     }
 
-    void disconnect();
+    void stopMonitoringAuthStateChanges(StopMonitoringResponse response);
 
-    void signInRequest(Driver driver, SignInResponse response);
-
-    void signOutRequest(SignOutResponse response);
-
-    interface SignInResponse {
-        void signInUserCloudAuthSuccess();
-
-        void signInUserCloudAuthFailure();
+    interface StopMonitoringResponse {
+        void cloudAuthStopMonitoringComplete();
     }
 
-    interface SignOutResponse {
-        void signOutUserCloudAuthComplete();
+    void signOutCurrentUserRequest(SignOutCurrentUserResponse response);
+
+    interface SignOutCurrentUserResponse {
+        void cloudAuthSignOutCurrentUserComplete();
+    }
+
+
+    interface AuthStateChangedEvent {
+        void cloudAuthStateChangedUserChanged(String clientId, String email, String idToken);
+
+        void cloudAuthStateChangedNoUser();
+
+        void cloudAuthStateChangedNoIdToken();
     }
 }

@@ -5,30 +5,33 @@
 package it.flube.driver.userInterfaceLayer.activities.offers.claimOffer;
 
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.airbnb.lottie.LottieAnimationView;
-import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.text.NumberFormat;
-import java.util.Locale;
+import java.util.ArrayList;
 
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.OfferSelectedResponseHandler;
+import it.flube.driver.modelLayer.entities.RouteStop;
 import it.flube.driver.modelLayer.entities.batch.BatchDetail;
+import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
+import it.flube.driver.useCaseLayer.batchDetail.UseCaseGetBatchData;
+import it.flube.driver.useCaseLayer.claimOffer.UseCaseClaimDemoOfferRequest;
 import it.flube.driver.userInterfaceLayer.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
-import it.flube.driver.userInterfaceLayer.UserInterfaceUtilities;
+import it.flube.driver.userInterfaceLayer.layoutComponents.batchDetail.batchDetailTab.BatchDetailTabLayoutComponents;
+import it.flube.driver.userInterfaceLayer.layoutComponents.batchDetail.batchDetailTab.tabDetails.TabDetailLayoutComponents;
+import it.flube.driver.userInterfaceLayer.layoutComponents.batchDetail.BatchDetailTitleLayoutComponents;
+import it.flube.driver.userInterfaceLayer.layoutComponents.batchDetail.batchDetailTab.tabLocations.TabLocationsLayoutComponents;
+import it.flube.driver.userInterfaceLayer.layoutComponents.offerClaim.OfferClaimLayoutComponents;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerClaim.demoOffers.ClaimDemoOfferFailureEvent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerClaim.demoOffers.ClaimDemoOfferSuccessEvent;
 import timber.log.Timber;
 
 /**
@@ -36,207 +39,163 @@ import timber.log.Timber;
  * Project : Driver
  */
 
-public class OfferClaimActivity extends AppCompatActivity {
+public class OfferClaimActivity extends AppCompatActivity
+    implements
+        UseCaseGetBatchData.Response,
+        UseCaseClaimDemoOfferRequest.Response {
+
     private static final String TAG = "OfferClaimActivity";
+
+    private static final String BATCH_GUID_KEY = "batchGuid";
 
     private ActivityNavigator navigator;
     private OfferClaimController controller;
     private DrawerMenu drawer;
 
-    private BatchDetail offerDetail;
-
-    private ConstraintLayout titleLayout;
-    private ConstraintLayout timingLayout;
-    private ConstraintLayout earningsLayout;
-    private ConstraintLayout ordersStopsLayout;
-    private ConstraintLayout distanceLayout;
-
-    private ImageView batch_icon;
-    private TextView batch_title;
-    private TextView batch_description;
-
-    private TextView timing_display_date;
-    private TextView timing_display_duration;
-    private TextView timing_display_time;
-    private TextView timing_display_expiry;
-
-    private TextView earnings_base;
-    private TextView earnings_extra;
-
-    private ImageView orders_count_icon;
-    private TextView order_count_text;
-    private Button order_view_button;
-    private ImageView stops_count_icon;
-    private TextView stops_count_text;
-    private Button stops_view_button;
-
-    private ImageView distance_icon;
-    private TextView distance_to_travel;
-
-    private Button offerClaimButton;
-    private LottieAnimationView claimOfferWaitingAnimation;
-
+    private BatchDetailTitleLayoutComponents batchTitle;
+    private BatchDetailTabLayoutComponents batchTab;
+    private OfferClaimLayoutComponents offerClaimButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_offer_claim);
+        setContentView(R.layout.activity_offer_claim_new);
 
-        titleLayout = (ConstraintLayout) findViewById(R.id.batch_detail_title_viewgroup);
-        timingLayout = (ConstraintLayout) findViewById(R.id.batch_detail_timing_viewgroup);
-        earningsLayout = (ConstraintLayout) findViewById(R.id.batch_detail_earnings_viewgroup);
-        ordersStopsLayout = (ConstraintLayout) findViewById(R.id.batch_detail_orders_stops_viewgroup);
-        distanceLayout = (ConstraintLayout) findViewById(R.id.batch_detail_distance_viewgroup);
-
-        // title viewgroup elements
-        batch_icon = (ImageView) findViewById(R.id.batch_detail_title_icon);
-        batch_title = (TextView) findViewById(R.id.batch_detail_title);
-        batch_description = (TextView) findViewById(R.id.batch_detail_description);
-
-        //timing viewgroup elements
-        timing_display_date = (TextView) findViewById(R.id.batch_detail_display_date);
-        timing_display_duration = (TextView) findViewById(R.id.batch_detail_display_duration);
-        timing_display_time = (TextView) findViewById(R.id.batch_detail_display_time);
-        timing_display_expiry = (TextView) findViewById(R.id.batch_detail_display_expiry);
-
-        //earnings viewgroup elements
-        earnings_base = (TextView) findViewById(R.id.batch_detail_potential_earnings);
-        earnings_extra = (TextView) findViewById(R.id.batch_detail_plus_tips);
-
-        //orders & stops viewgroup elements
-        orders_count_icon = (ImageView) findViewById(R.id.batch_detail_order_count_icon);
-        order_count_text = (TextView) findViewById(R.id.batch_detail_order_count_text);
-        order_view_button = (Button) findViewById(R.id.batch_detail_order_view_button);
-
-        stops_count_icon = (ImageView) findViewById(R.id.batch_detail_stop_count_icon);
-        stops_count_text = (TextView) findViewById(R.id.batch_detail_stop_count_text);
-        stops_view_button = (Button) findViewById(R.id.batch_detail_stop_view_button);
-
-        //distance viewgroup elements
-        distance_icon = (ImageView) findViewById(R.id.batch_detail_distance_icon);
-        distance_to_travel = (TextView) findViewById(R.id.batch_detail_distance_to_travel);
+        //title block & tab selector
+        batchTitle = new BatchDetailTitleLayoutComponents(this);
+        batchTab = new BatchDetailTabLayoutComponents(this, savedInstanceState, true);
 
         // claim offer button
-        claimOfferWaitingAnimation = (LottieAnimationView) findViewById(R.id.claim_offer_animation);
-        claimOfferWaitingAnimation.setVisibility(View.INVISIBLE);
-
-        offerClaimButton = (Button) findViewById(R.id.offer_claim_button);
-        offerClaimButton.setVisibility(View.INVISIBLE);
+        offerClaimButton = new OfferClaimLayoutComponents(this);
 
         //set all viewgroups GONE
-        titleLayout.setVisibility(View.GONE);
-        timingLayout.setVisibility(View.GONE);
-        earningsLayout.setVisibility(View.GONE);
-        ordersStopsLayout.setVisibility(View.GONE);
-        distanceLayout.setVisibility(View.GONE);
+        batchTitle.setGone();
+        batchTab.setGone();
+        offerClaimButton.setGone();
 
         Timber.tag(TAG).d("onCreate");
     }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        batchTab.onStart();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
 
-
         navigator = new ActivityNavigator();
-        drawer = new DrawerMenu(this, navigator, R.string.offers_claim_activity_title);
+        drawer = new DrawerMenu(this, navigator, R.string.offer_claim_activity_title);
         controller = new OfferClaimController();
 
-        EventBus.getDefault().register(this);
+        /// get the batch data for the batchGuid that was used to launch this activity
+        if (getIntent().hasExtra(BATCH_GUID_KEY)){
+            //get the batchGuid
+            String batchGuid = getIntent().getStringExtra(BATCH_GUID_KEY);
+            Timber.tag(TAG).d("batchGuid -> " + batchGuid);
 
+            controller.getOfferData(batchGuid, this);
+        } else {
+            Timber.tag(TAG).w("no batch guid in the intent extras.  should never happen");
+        }
         Timber.tag(TAG).d("onResume");
     }
 
     @Override
     public void onPause() {
-        EventBus.getDefault().unregister(this);
-
         drawer.close();
         controller.close();
         Timber.tag(TAG).d(TAG, "onPause");
-
         super.onPause();
     }
 
     public void clickClaimButton(View v) {
         Timber.tag(TAG).d("clicked claim button");
-        offerClaimButton.setVisibility(View.INVISIBLE);
-
-        claimOfferWaitingAnimation.setVisibility(View.VISIBLE);
-        claimOfferWaitingAnimation.setProgress(0);
-        claimOfferWaitingAnimation.playAnimation();
-
-
-        controller.claimOfferRequest(offerDetail);
+        offerClaimButton.offerClaimStarted();
+        controller.claimOfferRequest(offerClaimButton.getBatchDetail(), this);
     }
 
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEvent(OfferSelectedResponseHandler.UseCaseOfferSelectedEvent event) {
-        EventBus.getDefault().removeStickyEvent(event);
+    ///
+    ///  UseCaseGetBatchData
+    ///
+    public void getBatchDataSuccess(BatchDetail batchDetail, ArrayList<ServiceOrder> orderList, ArrayList<RouteStop> routeList){
+        Timber.tag(TAG).d("got batch data");
 
-        Timber.tag(TAG).d("*** Offer was selected event");
-        offerDetail = event.getBatchDetail();
+        //set the values on display components
+        batchTitle.setValues(this, batchDetail);
+        batchTab.setValues(this, batchDetail, orderList, routeList);
+        offerClaimButton.setValues(batchDetail);
 
-        // title viewgroup elements
-        Picasso.with(this)
-                .load(offerDetail.getIconUrl())
-                .into(batch_icon);
-
-        batch_title.setText(offerDetail.getTitle());
-        batch_description.setText(offerDetail.getDescription());
-        titleLayout.setVisibility(View.VISIBLE);
-
-        //timing viewgroup elements
-        timing_display_date.setText(offerDetail.getDisplayTiming().getDate());
-        timing_display_duration.setText(offerDetail.getDisplayTiming().getDuration());
-        timing_display_time.setText(offerDetail.getDisplayTiming().getHours());
-        timing_display_expiry.setText(offerDetail.getDisplayTiming().getOfferExpiryDate());
-        timingLayout.setVisibility(View.VISIBLE);
-
-        //earnings viewgroup elements
-        earnings_base.setText(NumberFormat.getCurrencyInstance(new Locale("en", "US"))
-                        .format(offerDetail.getPotentialEarnings().getPayRateInCents()/100));
-
-        String displayExtraEarnings = "";
-        if (offerDetail.getPotentialEarnings().getPlusTips()) {
-            displayExtraEarnings = "+ Tips";
-        }
-        earnings_extra.setText(displayExtraEarnings);
-        earningsLayout.setVisibility(View.VISIBLE);
-
-        //orders & stops viewgroup elements
-        Picasso.with(this)
-                .load(UserInterfaceUtilities.getCountIconUrl(offerDetail.getServiceOrderCount()))
-                .into(orders_count_icon);
-
-        if (offerDetail.getServiceOrderCount()==1) {
-            order_count_text.setText("service order");
-        } else {
-            order_count_text.setText("service orders");
-        }
-        order_view_button.setText("View");
-
-        Picasso.with(this)
-                .load(UserInterfaceUtilities.getCountIconUrl(offerDetail.getRouteStopCount()))
-                .into(stops_count_icon);
-
-        ordersStopsLayout.setVisibility(View.VISIBLE);
-        if (offerDetail.getRouteStopCount()==1){
-            stops_count_text.setText("destination");
-        } else {
-            stops_count_text.setText("destinations");
-        }
-        stops_view_button.setText("View");
-        ordersStopsLayout.setVisibility(View.VISIBLE);
-
-        //distance viewgroup elements
-        Picasso.with(this)
-                .load(offerDetail.getDisplayDistance().getDistanceIndicatorUrl())
-                .into(distance_icon);
-        distance_to_travel.setText(offerDetail.getDisplayDistance().getDistanceToTravel());
-        distanceLayout.setVisibility(View.VISIBLE);
-
-        offerClaimButton.setVisibility(View.VISIBLE);
-        claimOfferWaitingAnimation.setVisibility(View.INVISIBLE);
+        //make them visible();
+        batchTitle.setVisible();
+        batchTab.setVisible();
+        offerClaimButton.setVisible();
     }
+
+    public void getBatchDataFailure(){
+        Timber.tag(TAG).d("could not get batch data");
+    }
+
+    ///
+    ///  UseCaseClaimDemoOfferRequest
+    ///
+    public void useCaseClaimDemoOfferRequestSuccess(String offerGUID) {
+        Timber.tag(TAG).d("user claim demo offer SUCCESS");
+        navigator.gotoActivityDemoOffersAndShowOfferClaimedSuccessAlert(this);
+    }
+
+    // FAILURE - Someone else got offer
+    public void useCaseClaimDemoOfferRequestFailure(String offerGUID) {
+        Timber.tag(TAG).d("user claim demo offer FAILURE");
+        navigator.gotoActivityDemoOffersAndShowOfferClaimedFailureAlert(this);
+    }
+
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        batchTab.onStop();
+        Timber.tag(TAG).d("onStop");
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        batchTab.onSaveInstanceState(outState);
+        Timber.tag(TAG).d("onSaveInstanceState");
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        batchTab.onLowMemory();
+        Timber.tag(TAG).d("onLowMemory");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        batchTab.onDestroy();
+        Timber.tag(TAG).d("onDestroy");
+    }
+
+
+    //@Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    //public void onEvent(OfferSelectedResponseHandler.UseCaseOfferSelectedEvent event) {
+    //    EventBus.getDefault().removeStickyEvent(event);
+//
+    //    Timber.tag(TAG).d("*** Offer was selected event");
+    //    offerDetail = event.getBatchDetail();
+//
+    //    batchTitle.setValues(this, offerDetail);
+     //   batchTitle.setVisible();
+
+    //    batchTab.setValues(this, offerDetail);
+     //   batchDetailTab.setVisible();
+//
+     //   offerClaimButton.setValuesAndShow();
+    //}
 
 }

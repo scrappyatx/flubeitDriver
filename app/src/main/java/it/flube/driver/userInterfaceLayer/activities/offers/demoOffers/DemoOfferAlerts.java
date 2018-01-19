@@ -19,7 +19,7 @@ import timber.log.Timber;
  */
 
 public class DemoOfferAlerts {
-    private static final String TAG = "OfferClaimAlerts";
+    private static final String TAG = "DemoOfferAlerts";
     private static final int displayDuration = 2000;
 
     public void showDemoOfferCreatedAlert(AppCompatActivity activity, DemoOfferCreatedAlertHidden response) {

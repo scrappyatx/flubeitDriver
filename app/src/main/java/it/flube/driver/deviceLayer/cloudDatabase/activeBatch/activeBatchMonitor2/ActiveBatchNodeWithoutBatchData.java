@@ -46,7 +46,7 @@ public class ActiveBatchNodeWithoutBatchData {
                     Timber.tag(TAG).w("         ...batchRemoved, but nodeData is missing batchGuid");
                     response.noBatch();
                 }
-
+                break;
 
             case BATCH_FINISHED:
                 if (nodeData.hasBatchGuid()) {
@@ -56,6 +56,7 @@ public class ActiveBatchNodeWithoutBatchData {
                     Timber.tag(TAG).w("         ...batchFinished, but nodeData is missing batchGuid");
                     response.noBatch();
                 }
+                break;
 
             case BATCH_STARTED:
             case ORDER_STARTED:

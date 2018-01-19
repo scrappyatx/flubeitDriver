@@ -34,6 +34,14 @@ android {
         versionName version
         archivesBaseName="flubeit_driver"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        resConfigs "auto"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath false
+            }
+        }
+
     }
     buildTypes {
         release {
@@ -61,13 +69,19 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+
     annotationProcessor "android.arch.lifecycle:compiler:1.0.0-alpha9-1"
+    annotationProcessor "android.arch.lifecycle:compiler:1.0.0"
+
+
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
     androidTestCompile('com.android.support.test:runner:0.5', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
     // Set this dependency to use JUnit 4 rules
     androidTestCompile('com.android.support.test:rules:0.5', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -80,23 +94,31 @@ dependencies {
     androidTestCompile('com.android.support.test.uiautomator:uiautomator-v18:2.1.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    androidTestCompile('com.android.support:support-annotations:27.0.0', {
+    androidTestCompile('com.android.support:support-annotations:27.0.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    compile 'com.android.support:appcompat-v7:27.0.0'
-    compile 'com.android.support:recyclerview-v7:27.0.0'
-    compile 'com.android.support:design:27.0.0'
-    compile 'com.android.support:support-compat:27.0.0'
+    compile 'com.android.support:appcompat-v7:27.0.2'
+    compile 'com.android.support:cardview-v7:27.0.2'
+    compile 'com.android.support:customtabs:27.0.2'
+    compile 'com.android.support:recyclerview-v7:27.0.2'
+    compile 'com.android.support:design:27.0.2'
+    compile 'com.android.support:support-compat:27.0.2'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:multidex:1.0.2'
 
+    // google credentials for saved signin
+    compile 'com.google.android.gms:play-services-auth:11.8.0'
+
     // was using firebase 10.2.6
-    compile 'com.google.firebase:firebase-config:11.4.2'
-    compile 'com.google.firebase:firebase-auth:11.4.2'
-    compile 'com.google.firebase:firebase-database:11.4.2'
-    compile 'com.google.firebase:firebase-storage:11.4.2'
-    compile 'com.google.android.gms:play-services-location:11.4.2'
+    compile 'com.firebaseui:firebase-ui-auth:3.1.0'
+    compile 'com.google.firebase:firebase-config:11.8.0'
+    compile 'com.google.firebase:firebase-auth:11.8.0'
+    compile 'com.google.firebase:firebase-database:11.8.0'
+    compile 'com.google.firebase:firebase-storage:11.8.0'
+    compile 'com.google.android.gms:play-services-location:11.8.0'
+    compile "com.google.android.gms:play-services-maps:11.8.0"
+    compile 'com.google.maps.android:android-maps-utils:0.5+'
 
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.2'
@@ -108,34 +130,41 @@ dependencies {
     compile 'com.rollbar:rollbar-android:0.2.1'
     compile 'io.ably:ably-android:1.0.0'
     compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'com.squareup.okhttp3:okhttp:3.9.0'
+    compile 'com.squareup.okhttp3:okhttp:3.9.1'
     compile 'com.squareup.okhttp3:logging-interceptor:3.9.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
-    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     compile 'com.airbnb.android:lottie:2.0.0-rc2'
     compile 'com.tapadoo.android:alerter:2.0.1'
-    compile 'com.instabug.library:instabug:4.2.2'
+    compile 'com.instabug.library:instabug:4.3.3'
     //compile('com.mapbox.mapboxsdk:mapbox-android-sdk:5.1.1@aar') {
     //    transitive = true
     //}
     // Mapbox dependencies
-    compile('com.mapbox.mapboxsdk:mapbox-android-sdk:5.2.0-beta.4@aar') {
+    compile 'com.google.maps.android:android-maps-utils:0.5+'
+    compile "com.google.android.gms:play-services-maps:11.8.0"
+
+    compile 'com.mapzen.android:lost:3.0.2'
+    compile('com.mapbox.mapboxsdk:mapbox-android-sdk:5.2.1@aar') {
         transitive = true
     }
+    //implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:5.3.1'
+
     compile('com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.6.3') {
         transitive = true
     }
     compile 'com.mapbox.mapboxsdk:mapbox-android-navigation:0.6.3'
     compile 'com.mapbox.mapboxsdk:mapbox-android-services:2.2.6'
     // Mapbox plugins
-    compile 'com.mapbox.mapboxsdk:mapbox-android-plugin-locationlayer:0.1.0'
-    compile 'com.mapbox.mapboxsdk:mapbox-android-plugin-building:0.1.0'
-    compile 'com.mapbox.mapboxsdk:mapbox-android-plugin-traffic:0.3.0'
-    compile 'com.mapbox.mapboxsdk:mapbox-android-plugin-geojson:0.1.0'
+    //compile 'com.mapbox.mapboxsdk:mapbox-android-plugin-locationlayer:0.1.0'
+    //compile 'com.mapbox.mapboxsdk:mapbox-android-plugin-building:0.1.0'
+    //compile 'com.mapbox.mapboxsdk:mapbox-android-plugin-traffic:0.3.0'
+    //compile 'com.mapbox.mapboxsdk:mapbox-android-plugin-geojson:0.1.0'
     // Mapbox Android UI
-    compile 'com.mapbox.mapboxsdk:mapbox-android-ui:2.2.6'
+    //compile 'com.mapbox.mapboxsdk:mapbox-android-ui:2.2.6'
+
     compile 'com.facebook.device.yearclass:yearclass:2.0.0'
     compile 'com.jaredrummler:android-device-names:1.1.4'
     compile 'com.jakewharton.timber:timber:4.5.1'
@@ -143,6 +172,7 @@ dependencies {
     compile 'com.inrista.loggliest:loggliest:0.2'
     compile 'com.github.halysongoncalves:pugnotification:1.8.1'
     compile 'com.github.MAXDeliveryNG:slideview:1.0.2'
+    compile 'com.ebanx:swipe-button:0.8.3'
     compile 'com.jaredrummler:android-device-names:1.1.4'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
     testCompile 'junit:junit:4.12'

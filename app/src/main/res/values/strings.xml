@@ -92,6 +92,9 @@
     <string name="login_submit_caption">Submit</string>
     <string name="login_error_text">error text</string>
 
+    <!-- Strings related to auth ui signin launch activity  -->
+    <string name="signin_submit_caption">Sign In</string>
+
     <!-- Strings related to login controller -->
     <string name="login_auth_failure_message">The email address or password is incorrect</string>
     <string name="login_auth_user_not_a_driver_message">This user is not a Flube.it driver.  Please try signing in with another user ID.</string>
@@ -105,6 +108,21 @@
     <string name="account_activity_title">Account</string>
     <string name="account_activity_software_version">software version</string>
 
+    <!-- Strings related to quit app alert dialog -->
+    <string name="quit_app_alert_title">Exit flube.it Driver</string>
+    <string name="quit_app_alert_message">Are you sure you want to exit?</string>
+    <string name="quit_app_alert_positive_caption">Yes</string>
+    <string name="quit_app_alert_negative_caption">No</string>
+
+    <!-- Strings related to access denied alert dialog -->
+    <string name="access_denied_app_alert_title">Access Denied</string>
+    <string name="access_denied_app_alert_message">Are you sure you want to exit?</string>
+    <string name="access_denied_app_alert_neutral_caption">OK</string>
+
+    <!-- Strings related to no profile data alert dialog -->
+    <string name="no_profile_app_alert_title">No profile data</string>
+    <string name="no_profile_app_alert_message">Could not find profile data for this user</string>
+    <string name="no_profile_app_alert_neutral_caption">OK</string>
 
     <!-- Strings related to demo offers activity layout -->
     <string name="demo_offers_title">Demo Offers</string>
@@ -126,6 +144,41 @@
     <!-- Strings related to home activity layout -->
     <string name="home_activity_title">Home</string>
 
+    <!-- Strings related to home summary active batch layout -->
+    <string name="home_summary_active_batch_title">Active Batch</string>
+    <string name="home_summary_active_batch_detail_no_active_batch">You have no active batch</string>
+    <string name="home_summary_active_batch_button_caption">Go to active batch</string>
+
+    <!-- Strings related to home summary scheduled batches layout -->
+    <string name="home_summary_scheduled_batches_title">Scheduled Batches</string>
+    <string name="home_summary_scheduled_batches_detail_no_batches">You have no scheduled batches</string>
+    <string name="home_summary_scheduled_batches_detail_one_batch">You have 1 scheduled batch</string>
+    <string name="home_summary_scheduled_batches_detail_some_batches">You have %1$d scheduled batches</string>
+    <string name="home_summary_scheduled_batches_button_caption">Go to scheduled batches</string>
+
+    <!-- Strings related to home summary public offers layout -->
+    <string name="home_summary_public_offers_title">Public Offers</string>
+    <string name="home_summary_public_offers_detail_no_offers">There are no public offers available</string>
+    <string name="home_summary_public_offers_detail_one_offer">There is 1 public offer available</string>
+    <string name="home_summary_public_offers_detail_some_offers">There are %1$d public offers available</string>
+    <string name="home_summary_public_offers_button_caption">Go to public offers</string>
+
+    <!-- Strings related to home summary personal offers layout -->
+    <string name="home_summary_personal_offers_title">Personal Offers</string>
+    <string name="home_summary_personal_offers_detail_no_offers">You have no personal offers available</string>
+    <string name="home_summary_personal_offers_detail_one_offer">You have 1 personal offer available</string>
+    <string name="home_summary_personal_offers_detail_some_offers">You have %1$d personal offers available</string>
+    <string name="home_summary_personal_offers_button_caption">Go to personal offers</string>
+
+    <!-- Strings related to home summary demo offers layout -->
+    <string name="home_summary_demo_offers_title">Demo Offers</string>
+    <string name="home_summary_demo_offers_detail_no_offers">You have no demo offers</string>
+    <string name="home_summary_demo_offers_detail_one_offer">You have 1 demo offer</string>
+    <string name="home_summary_demo_offers_detail_some_offers">You have %1$d demo offers</string>
+    <string name="home_summary_demo_offers_button_caption">Go to demo offers</string>
+
+
+
     <!-- Strings related to home no active batch activity layout -->
     <string name="home_no_active_batch_activity_title">Home</string>
 
@@ -142,8 +195,11 @@
     <string name="offers_activity_no_offers_available">There are no available public offers</string>
 
     <!-- Strings related to offer claim activity layout -->
-    <string name="offers_claim_activity_title">Claim Offer</string>
-    <string name="offers_claim_button_caption">Claim Offer</string>
+    <string name="offer_claim_activity_title">Claim Offer</string>
+    <string name="offer_claim_button_caption">Claim Offer</string>
+    <string name="offer_claim_tab_zero_caption">Details</string>
+    <string name="offer_claim_tab_one_caption">Orders</string>
+    <string name="offer_claim_tab_two_caption">Locations</string>
 
     <!-- Strings related to offer claim offer alerts -->
     <string name="offer_claim_alert_success_title">SUCCESS</string>
@@ -165,6 +221,17 @@
 
     <!-- Strings related to scheduled batches manage activity layout -->
     <string name="batch_manage_activity_title">Batch Manage</string>
+    <string name="batch_manage_forfeit_batch_caption">Forfeit Batch</string>
+    <string name="batch_manage_button_caption">SWIPE TO START</string>
+    <string name="batch_manage_tab_zero_caption">Details</string>
+    <string name="batch_manage_tab_one_caption">Orders</string>
+    <string name="batch_manage_tab_two_caption">Locations</string>
+    <string name="batch_manage_forfeit_batch_dialog_title">Forfeit Batch?</string>
+    <string name="batch_manage_forfeit_batch_dialog_message">Are you sure you want to forfeit this batch?</string>
+    <string name="batch_manage_forfeit_batch_positive_response">Yes, Forfeit Batch</string>
+    <string name="batch_manage_forfeit_batch_negative_response">No, Keep Batch</string>
+
+
 
     <!-- Strings related to scheduled batches map activity layout -->
     <string name="batch_map_activity_title">Batch Location</string>

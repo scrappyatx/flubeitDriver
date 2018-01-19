@@ -35,12 +35,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".userInterfaceLayer.activities.signIn.SignInActivity"
             android:launchMode="singleTask"
             android:noHistory="true"/>
 
-        <activity android:name=".userInterfaceLayer.activities.home.HomeActiveBatchActivity" />
-        <activity android:name=".userInterfaceLayer.activities.home.HomeNoActiveBatchActivity" />
+        <activity android:name=".userInterfaceLayer.activities.signIn.SignInAuthUiLaunchActivity"
+            android:launchMode="singleTask" />
+
+        <activity android:name=".userInterfaceLayer.activities.home.HomeActivity" />
 
         <activity android:name=".userInterfaceLayer.activities.messages.MessagesActivity" />
         <activity android:name=".userInterfaceLayer.activities.offers.publicOffers.PublicOffersActivity" />
@@ -69,7 +72,7 @@
         <activity android:name=".userInterfaceLayer.activities.activeBatch.orderItinerary.OrderItineraryActivity"
             android:noHistory="true" />
         <service
-            android:name=".dataLayer.services.ActiveBatchForegroundService"
+            android:name=".deviceLayer.activeBatchForegroundService.ActiveBatchForegroundService"
             android:enabled="true"
             android:exported="false"
             android:stopWithTask="true" />

@@ -25,7 +25,7 @@ public interface ActiveBatchInterface {
 
     Boolean hasActiveBatch();
 
-    void setActiveBatch();
+    void clear();
 
     void setActiveBatch(@NonNull BatchDetail batchDetail, @NonNull ServiceOrder serviceOrder, @NonNull OrderStepInterface step);
 

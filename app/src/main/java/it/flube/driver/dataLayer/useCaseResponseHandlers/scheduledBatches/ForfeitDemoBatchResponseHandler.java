@@ -6,7 +6,7 @@ package it.flube.driver.dataLayer.useCaseResponseHandlers.scheduledBatches;
 
 import org.greenrobot.eventbus.EventBus;
 
-import it.flube.driver.dataLayer.userInterfaceEvents.scheduledBatch.BatchForfeitedEvent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.scheduledBatch.BatchForfeitedEvent;
 import it.flube.driver.useCaseLayer.manageBatch.UseCaseForfeitDemoBatchRequest;
 import timber.log.Timber;
 

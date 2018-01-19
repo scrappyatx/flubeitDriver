@@ -9,9 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.signInAndSignOut.SignInFromUserProfileResponseHandler;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
-import it.flube.driver.useCaseLayer.signInAndSignOut.UseCaseSignInFromUserProfile;
 import timber.log.Timber;
 
 
@@ -35,7 +33,7 @@ public class SignInController  {
         Timber.tag(TAG).d("SignIn attempt:");
         Timber.tag(TAG).d("   username = " + userName);
         Timber.tag(TAG).d("   password = " + password);
-        useCaseExecutor.execute(new UseCaseSignInFromUserProfile(userName, password, device, new SignInFromUserProfileResponseHandler()));
+        //useCaseExecutor.execute(new UseCaseSignInFromUserProfile(userName, password, device, new SignInFromUserProfileResponseHandler()));
     }
 
     public void close(){

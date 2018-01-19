@@ -10,19 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
 
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.modelLayer.entities.batch.BatchDetail;
 import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
 import it.flube.driver.userInterfaceLayer.ActivityNavigator;
-import it.flube.driver.userInterfaceLayer.activities.account.AccountController;
-import it.flube.driver.userInterfaceLayer.activities.activeBatch.batchItinerary.BatchItineraryActivity;
-import it.flube.driver.userInterfaceLayer.activities.activeBatch.batchItinerary.ServiceOrderListAdapter;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import timber.log.Timber;
 

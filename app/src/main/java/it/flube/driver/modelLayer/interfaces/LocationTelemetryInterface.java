@@ -4,8 +4,6 @@
 
 package it.flube.driver.modelLayer.interfaces;
 
-import com.mapbox.services.android.telemetry.location.LocationEngine;
-
 import it.flube.driver.modelLayer.entities.LatLonLocation;
 
 /**
@@ -15,9 +13,7 @@ import it.flube.driver.modelLayer.entities.LatLonLocation;
 
 public interface LocationTelemetryInterface {
 
-    LocationEngine getLocationEngine();
-
-    void locationTrackingStartRequest(LocationTrackingStartResponse response, LocationTrackingPositionChanged update );
+    void locationTrackingStartRequest(LocationTrackingStartResponse response);
 
     interface LocationTrackingStartResponse {
 

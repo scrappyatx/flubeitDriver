@@ -11,7 +11,7 @@ import org.greenrobot.eventbus.EventBus;
 import io.ably.lib.types.Message;
 import it.flube.driver.deviceLayer.realtimeMessaging.eventBus.driverMessageEvents.RealtimeMessageClaimOfferResultEvent;
 import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyCallbackInterfaces.AblyMessageSubscribeCallback;
-import it.flube.driver.useCaseLayer.interfaces.realtimeMessaging.RtmReceiveMsgClaimOfferResult;
+import it.flube.driver.deprecated.realtimeMessaging.RtmReceiveMsgClaimOfferResult;
 
 /**
  * Created on 5/17/2017

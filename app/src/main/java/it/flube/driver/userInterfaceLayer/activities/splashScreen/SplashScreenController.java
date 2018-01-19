@@ -9,46 +9,53 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.dataLayer.DeviceCheck;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.signInAndSignOut.SignInFromDeviceStorageResponseHandler;
+import it.flube.driver.dataLayer.DeviceCheckForGooglePlayServices;
 
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
-import it.flube.driver.useCaseLayer.appInitialization.UseCaseThingsToDoWhenApplicationStarts;
+import it.flube.driver.useCaseLayer.appInitialization.UseCaseInitialization;
+import it.flube.driver.userInterfaceLayer.ActivityNavigator;
 import timber.log.Timber;
 
 /**
  * Created by Bryan on 4/30/2017.
  */
 
-public class SplashScreenController  {
+public class SplashScreenController implements
+    UseCaseInitialization.Response {
 
     private final String TAG = "SplashScreenController";
 
     private ExecutorService useCaseExecutor;
     private MobileDeviceInterface device;
-    private DeviceCheck deviceCheck;
+    private DeviceCheckForGooglePlayServices deviceCheckForGooglePlayServices;
+    private ActivityNavigator navigator;
 
     public SplashScreenController(Context applicationContext, AppCompatActivity activity) {
+        this.navigator = navigator;
         device = AndroidDevice.getInstance();
         useCaseExecutor = device.getUseCaseEngine().getUseCaseExecutor();
-        deviceCheck = new DeviceCheck(applicationContext, activity);
-        Timber.tag(TAG).d("created splash screen controlller");
+        deviceCheckForGooglePlayServices = new DeviceCheckForGooglePlayServices(applicationContext, activity);
+        Timber.tag(TAG).d("created splash screen controller");
     }
 
-    public void doDeviceCheck(DeviceCheck.Response response) {
-        deviceCheck.doDeviceCheck(response);
+    public void doDeviceCheck(DeviceCheckForGooglePlayServices.Response response) {
+        deviceCheckForGooglePlayServices.doTheCheck(response);
     }
 
     public void doStartupSequence() {
         Timber.tag(TAG).d("doStartupSequence START");
-        useCaseExecutor.execute(new UseCaseThingsToDoWhenApplicationStarts(device, new SignInFromDeviceStorageResponseHandler()));
+        useCaseExecutor.execute(new UseCaseInitialization(device, this));
+    }
+
+    public void useCaseInitializationComplete(){
+        Timber.tag(TAG).d("useCaseInitialization complete");
     }
 
     public void close() {
-        deviceCheck.close();
+        Timber.tag(TAG).d("close received!");
+        deviceCheckForGooglePlayServices.close();
         device = null;
         useCaseExecutor=null;
     }

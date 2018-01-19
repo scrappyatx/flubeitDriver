@@ -13,11 +13,10 @@ import com.google.firebase.database.ServerValue;
 
 import java.util.HashMap;
 
-import it.flube.driver.modelLayer.entities.Driver;
+import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.entities.LatLonLocation;
 import it.flube.driver.modelLayer.entities.batch.BatchDetail;
 import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
-import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
 import timber.log.Timber;
 
@@ -80,7 +79,7 @@ public class FirebaseActiveBatchServerNode implements OnCompleteListener<Void> {
         HashMap<String, Object> data = new HashMap<String, Object>();
 
         data.put(CLIENT_ID_PROPERTY, driver.getClientId());
-        data.put(FIRST_NAME_PROPERTY, driver.getFirstName());
+        data.put(FIRST_NAME_PROPERTY, driver.getNameSettings().getFirstName());
 
         data.put(BATCH_TYPE_PROPERTY, batchDetail.getBatchType().toString());
 
@@ -99,7 +98,7 @@ public class FirebaseActiveBatchServerNode implements OnCompleteListener<Void> {
 
         Timber.tag(TAG).d("   baseline data...");
         Timber.tag(TAG).d("         clientId             --> " + driver.getClientId());
-        Timber.tag(TAG).d("         driver firstName     --> " + driver.getFirstName());
+        Timber.tag(TAG).d("         driver firstName     --> " + driver.getNameSettings().getFirstName());
 
         Timber.tag(TAG).d("         batchType            --> " + batchDetail.getBatchType().toString());
 

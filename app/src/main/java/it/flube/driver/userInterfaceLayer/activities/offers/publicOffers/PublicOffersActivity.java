@@ -20,17 +20,14 @@ import java.util.ArrayList;
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.OfferSelectedResponseHandler;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.publicOffers.PublicOffersAvailableResponseHandler;
-import it.flube.driver.dataLayer.userInterfaceEvents.offerAlerts.ShowClaimOfferFailureAlertEvent;
-import it.flube.driver.dataLayer.userInterfaceEvents.offerAlerts.ShowClaimOfferSuccessAlertEvent;
-import it.flube.driver.dataLayer.userInterfaceEvents.offerAlerts.ShowClaimOfferTimeoutAlertEvent;
-import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.PublicOfferListUpdatedEvent;
-import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.PublicOffersUpdatedEvent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerAlerts.ShowClaimOfferFailureAlertEvent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerAlerts.ShowClaimOfferSuccessAlertEvent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerAlerts.ShowClaimOfferTimeoutAlertEvent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.PublicOfferListUpdatedEvent;
 import it.flube.driver.modelLayer.entities.batch.Batch;
 import it.flube.driver.userInterfaceLayer.ActivityNavigator;
-import it.flube.driver.userInterfaceLayer.activities.offers.demoOffers.DemoOfferAlerts;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
-import it.flube.driver.userInterfaceLayer.activities.offers.OffersListAdapter;
+import it.flube.driver.userInterfaceLayer.layoutComponents.offers.OffersListAdapter;
 import it.flube.driver.userInterfaceLayer.activities.offers.claimOffer.OfferClaimAlerts;
 import timber.log.Timber;
 
@@ -133,7 +130,7 @@ public class PublicOffersActivity extends AppCompatActivity implements
     public void onEvent(OfferSelectedResponseHandler.UseCaseOfferSelectedEvent event) {
         Timber.tag(TAG).d("*** Offer was selected event");
 
-        navigator.gotoActivityOfferClaim(this);
+        navigator.gotoActivityOfferClaim(this, event.getBatchDetail().getBatchGuid());
     }
 
     @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)

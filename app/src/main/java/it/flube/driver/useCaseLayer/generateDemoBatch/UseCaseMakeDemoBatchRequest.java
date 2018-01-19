@@ -4,7 +4,7 @@
 
 package it.flube.driver.useCaseLayer.generateDemoBatch;
 
-import it.flube.driver.modelLayer.entities.Driver;
+import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.entities.batch.BatchHolder;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import it.flube.driver.modelLayer.interfaces.DemoBatchInterface;

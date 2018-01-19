@@ -4,15 +4,11 @@
 
 package it.flube.driver.deviceLayer.realtimeMessaging.receiveMessageHandlers;
 
-import android.util.Log;
-
 import org.greenrobot.eventbus.EventBus;
 
 import io.ably.lib.realtime.Channel;
 import io.ably.lib.types.Message;
-import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyCallbackInterfaces.AblyMessageSubscribeCallback;
 import it.flube.driver.deviceLayer.realtimeMessaging.AblyChannel;
-import it.flube.driver.useCaseLayer.interfaces.realtimeMessaging.RsmReceiveMsgCallbackBatchRemoval;
 import timber.log.Timber;
 
 /**

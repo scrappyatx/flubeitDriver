@@ -4,6 +4,10 @@
 
 package it.flube.driver.dataLayer.useCaseResponseHandlers.deviceLocation;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+
 import org.greenrobot.eventbus.EventBus;
 
 import it.flube.driver.dataLayer.deviceEvents.LocationTrackingPositionChangedEvent;
@@ -16,7 +20,8 @@ import timber.log.Timber;
  * Project : Driver
  */
 
-public class LocationTrackingPositionChangedHandler implements LocationTelemetryInterface.LocationTrackingPositionChanged {
+public class LocationTrackingPositionChangedHandler
+        implements LocationTelemetryInterface.LocationTrackingPositionChanged {
     private final static String TAG = "LocationTrackingPositionChangedHandler";
 
     public void positionChanged(LatLonLocation position) {

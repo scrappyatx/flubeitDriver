@@ -7,7 +7,7 @@ package it.flube.driver.deviceLayer;
 import android.support.annotation.NonNull;
 
 import it.flube.driver.modelLayer.entities.batch.Batch;
-import it.flube.driver.modelLayer.entities.Driver;
+import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.interfaces.AppUserInterface;
 import timber.log.Timber;
 
@@ -29,7 +29,9 @@ public class AppUser implements AppUserInterface {
     ///
     ///  constructor is private, instances can only be created internally by the class
     ///
-    private AppUser() {}
+    private AppUser() {
+        clear();
+    }
 
     ///
     ///  getInstance() provides access to the singleton instance outside the class
@@ -45,6 +47,7 @@ public class AppUser implements AppUserInterface {
     private Driver driver;
     private Boolean signedIn;
     private Batch activeBatch;
+    private String idToken;
 
 
     public Driver getDriver() {
@@ -55,7 +58,7 @@ public class AppUser implements AppUserInterface {
     public void setDriver(@NonNull Driver driver) {
         this.driver = driver;
         this.signedIn = true;
-        Timber.tag(TAG).d("setDriver : driver --> " + driver.getClientId() + " name --> " + driver.getDisplayName());
+        Timber.tag(TAG).d("setDriver : driver --> " + driver.getClientId() + " name --> " + driver.getNameSettings().getDisplayName());
     }
 
     public Boolean isSignedIn() {
@@ -88,11 +91,19 @@ public class AppUser implements AppUserInterface {
         activeBatch = null;
     }
 
+    public String getIdToken() {
+        return idToken;
+    }
+
+    public void setIdToken(String idToken) {
+        this.idToken = idToken;
+    }
 
     public void clear() {
         driver = null;
         signedIn=false;
         activeBatch = null;
+        idToken = null;
         Timber.tag(TAG).d("clear()");
     }
 }

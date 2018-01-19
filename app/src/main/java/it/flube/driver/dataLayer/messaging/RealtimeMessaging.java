@@ -57,11 +57,11 @@ import it.flube.driver.deviceLayer.realtimeMessaging.messageBuilders.driverMessa
 import it.flube.driver.modelLayer.entities.batch.Batch;
 import it.flube.driver.modelLayer.entities.Offer;
 import it.flube.driver.modelLayer.interfaces.RealtimeMessagingInterface;
-import it.flube.driver.useCaseLayer.interfaces.realtimeMessaging.RtmReceiveMsgAssignedBatches;
-import it.flube.driver.useCaseLayer.interfaces.realtimeMessaging.RsmReceiveMsgCallbackBatchNotification;
-import it.flube.driver.useCaseLayer.interfaces.realtimeMessaging.RsmReceiveMsgCallbackBatchRemoval;
-import it.flube.driver.useCaseLayer.interfaces.realtimeMessaging.RtmReceiveMsgClaimOfferResult;
-import it.flube.driver.useCaseLayer.interfaces.realtimeMessaging.RtmReceiveMsgCurrentOffers;
+import it.flube.driver.deprecated.realtimeMessaging.RtmReceiveMsgAssignedBatches;
+import it.flube.driver.deprecated.realtimeMessaging.RsmReceiveMsgCallbackBatchNotification;
+import it.flube.driver.deprecated.realtimeMessaging.RsmReceiveMsgCallbackBatchRemoval;
+import it.flube.driver.deprecated.realtimeMessaging.RtmReceiveMsgClaimOfferResult;
+import it.flube.driver.deprecated.realtimeMessaging.RtmReceiveMsgCurrentOffers;
 
 /**
  * Created on 5/17/2017

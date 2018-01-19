@@ -5,8 +5,11 @@
 package it.flube.driver.useCaseLayer.activeBatch;
 
 import it.flube.driver.modelLayer.entities.batch.BatchDetail;
+import it.flube.driver.modelLayer.interfaces.ActiveBatchForegroundServiceInterface;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
+import it.flube.driver.modelLayer.interfaces.LocationTelemetryInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
+import it.flube.driver.modelLayer.interfaces.RealtimeMessagingInterface;
 
 /**
  * Created on 11/8/2017
@@ -14,8 +17,11 @@ import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
  */
 
 public class UseCaseBatchRemovedRequest implements
-    Runnable,
-    CloudDatabaseInterface.AcknowledgeRemovedBatchResponse {
+        Runnable,
+        LocationTelemetryInterface.LocationTrackingStopResponse,
+        RealtimeMessagingInterface.ActiveBatchChannel.ActiveBatchChannelDisconnectResponse,
+        ActiveBatchForegroundServiceInterface.StopActiveBatchForegroundServiceResponse,
+        CloudDatabaseInterface.AcknowledgeRemovedBatchResponse {
 
         private MobileDeviceInterface device;
         private String batchGuid;
@@ -28,21 +34,37 @@ public class UseCaseBatchRemovedRequest implements
         }
 
     public void run(){
-        /// set the active batch data with the null
-        device.getActiveBatch().setActiveBatch();
+        /// clear active batch
+        device.getActiveBatch().clear();
+
+        // stop location tracking
+        device.getLocationTelemetry().locationTrackingStopRequest(this);
 
         //  stop the foreground service
-        device.getActiveBatchForegroundServiceController().stopActiveBatchForegroundService();
+        device.getActiveBatchForegroundServiceController().stopActiveBatchForegroundServiceRequest(this);
 
         // stop the active batch channel
-        device.getRealtimeActiveBatchMessages().detach();
+        device.getRealtimeActiveBatchMessages().disconnectRequest(this);
 
         //set the active batch server node to null
         device.getCloudDatabase().updateActiveBatchServerNodeStatus(batchGuid);
+        //TODO put a response interface here
 
         //acknowledge the removed batch
         device.getCloudDatabase().acknowledgeRemovedBatchRequest(this);
 
+    }
+
+    public void activeBatchChannelDisconnectComplete(){
+        //do nothing
+    }
+
+    public void locationTrackingStopComplete(){
+        //do nothing
+    }
+
+    public void activeBatchForegroundServiceStopped(){
+        //do nothing
     }
 
     public void cloudDatabaseRemovedBatchAckComplete(){

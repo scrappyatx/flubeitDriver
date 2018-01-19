@@ -7,19 +7,16 @@ package it.flube.driver.userInterfaceLayer.activities.offers.demoOffers;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.dataLayer.DemoBatchCreation.DemoBatchNearbyPhotos;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.OfferSelectedResponseHandler;
-import it.flube.driver.dataLayer.userInterfaceEvents.batchAlerts.ShowDemoOfferCreatedAlertEvent;
-import it.flube.driver.modelLayer.entities.Offer;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.batchAlerts.ShowDemoOfferCreatedAlertEvent;
 import it.flube.driver.modelLayer.entities.batch.Batch;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import it.flube.driver.useCaseLayer.claimOffer.UseCaseOfferSelected;
 import it.flube.driver.useCaseLayer.generateDemoBatch.UseCaseMakeDemoBatchRequest;
-import it.flube.driver.useCaseLayer.listenForOffers.UseCaseListenForOffers;
-import it.flube.driver.userInterfaceLayer.activities.offers.OffersListAdapter;
+import it.flube.driver.userInterfaceLayer.layoutComponents.offers.OffersListAdapter;
 import timber.log.Timber;
 
 /**
@@ -41,9 +38,6 @@ public class DemoOffersController implements
         Timber.tag(TAG).d("DemoOffersController CREATED");
     }
 
-    public void listenForOffers(){
-        useCaseExecutor.execute(new UseCaseListenForOffers(device));
-    }
 
     public void doMakeDemoOffer(){
         useCaseExecutor.execute(new UseCaseMakeDemoBatchRequest(device, new DemoBatchNearbyPhotos(), this));

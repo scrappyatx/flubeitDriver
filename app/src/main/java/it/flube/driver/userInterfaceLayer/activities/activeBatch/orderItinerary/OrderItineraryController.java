@@ -5,15 +5,10 @@
 package it.flube.driver.userInterfaceLayer.activities.activeBatch.orderItinerary;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.GetAccountDetailsResponseHandler;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.signInAndSignOut.SignOutResponseHandler;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
-import it.flube.driver.useCaseLayer.account.UseCaseGetAccountDetails;
-import it.flube.driver.useCaseLayer.signInAndSignOut.UseCaseSignOut;
 import timber.log.Timber;
 
 /**

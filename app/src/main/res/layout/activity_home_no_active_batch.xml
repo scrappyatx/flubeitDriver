@@ -17,7 +17,7 @@
     <include layout="@layout/toolbar"
         android:id="@+id/toolbar" />
 
-    <include layout="@layout/activity_home_summary_active_batch"
+    <include layout="@layout/home_summary_active_batch"
         android:id="@+id/summary_active_batch_view"
 
         android:layout_width="0dp"
@@ -34,7 +34,7 @@
 
         android:elevation="8dp" />
 
-    <include layout="@layout/activity_home_summary_scheduled_batches"
+    <include layout="@layout/home_summary_scheduled_batches"
         android:id="@+id/summary_scheduled_batches_view"
 
         android:layout_width="0dp"
@@ -51,7 +51,7 @@
 
         android:elevation="8dp" />
 
-    <include layout="@layout/activity_home_summary_public_offers"
+    <include layout="@layout/home_summary_public_offers"
         android:id="@+id/summary_public_offers_view"
 
         android:layout_width="0dp"
@@ -68,7 +68,7 @@
 
         android:elevation="8dp" />
 
-    <include layout="@layout/activity_home_summary_personal_offers"
+    <include layout="@layout/home_summary_personal_offers"
         android:id="@+id/summary_personal_offers_view"
 
         android:layout_width="0dp"

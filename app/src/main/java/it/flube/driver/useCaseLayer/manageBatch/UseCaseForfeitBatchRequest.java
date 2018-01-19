@@ -24,7 +24,7 @@ public class UseCaseForfeitBatchRequest implements Runnable {
     }
 
     public void run(){
-        device.getRealtimeBatchMessages().sendMsgForfeitBatch(batchGuid);
+        //device.getRealtimeBatchMessages().sendMsgForfeitBatch(batchGuid);
         response.forfeitBatchComplete(batchGuid);
     }
 

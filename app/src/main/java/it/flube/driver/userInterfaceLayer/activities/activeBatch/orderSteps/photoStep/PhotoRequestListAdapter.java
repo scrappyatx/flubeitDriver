@@ -15,8 +15,6 @@ import java.util.ArrayList;
 
 import it.flube.driver.R;
 import it.flube.driver.modelLayer.entities.PhotoRequest;
-import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
-import it.flube.driver.userInterfaceLayer.activities.activeBatch.batchItinerary.ServiceOrderListAdapter;
 import timber.log.Timber;
 
 /**

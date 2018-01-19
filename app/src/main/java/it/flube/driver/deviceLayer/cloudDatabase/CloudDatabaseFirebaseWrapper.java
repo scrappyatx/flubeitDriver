@@ -4,27 +4,23 @@
 
 package it.flube.driver.deviceLayer.cloudDatabase;
 
-import android.support.annotation.NonNull;
-
 import com.google.firebase.database.FirebaseDatabase;
 
 import it.flube.driver.deviceLayer.cloudDatabase.activeBatch.FirebaseActiveBatchRemove;
 import it.flube.driver.deviceLayer.cloudDatabase.activeBatch.FirebaseActiveBatchServerNode;
-import it.flube.driver.deviceLayer.cloudDatabase.activeBatch.FirebaseActiveBatchSetData;
 import it.flube.driver.deviceLayer.cloudDatabase.activeBatch.activeBatchMonitor2.FirebaseActiveBatchNodeMonitor;
 import it.flube.driver.deviceLayer.cloudDatabase.activeBatch.manageSteps.FirebaseActiveBatchAcknowledgeFinishedBatch;
 import it.flube.driver.deviceLayer.cloudDatabase.activeBatch.manageSteps.FirebaseActiveBatchAcknowledgeRemovedBatch;
 import it.flube.driver.deviceLayer.cloudDatabase.activeBatch.manageSteps.FirebaseActiveBatchStepFinishPrep;
 import it.flube.driver.deviceLayer.cloudDatabase.batchData.FirebaseBatchDataDelete;
 import it.flube.driver.deviceLayer.cloudDatabase.batchData.FirebaseBatchDataSaveBlob;
-import it.flube.driver.deviceLayer.cloudDatabase.batchData.batchDetail.FirebaseBatchDetailSetStatus;
 import it.flube.driver.deviceLayer.cloudDatabase.batchData.batchDetail.FirebaseBatchDetailGet;
+import it.flube.driver.deviceLayer.cloudDatabase.batchData.mapLocations.FirebaseBatchDataSaveMapLocation;
 import it.flube.driver.deviceLayer.cloudDatabase.batchData.routeStops.FirebaseRouteStopListGet;
 import it.flube.driver.deviceLayer.cloudDatabase.batchData.serviceOrders.FirebaseServiceOrderListGet;
-import it.flube.driver.deviceLayer.cloudDatabase.batchData.serviceOrders.FirebaseServiceOrderSetStatus;
 import it.flube.driver.deviceLayer.cloudDatabase.batchData.steps.FirebaseOrderStepListGet;
-import it.flube.driver.deviceLayer.cloudDatabase.batchData.steps.FirebaseOrderStepSetWorkStage;
 import it.flube.driver.deviceLayer.cloudDatabase.completedBatches.FirebaseCompletedBatchesServerNode;
+import it.flube.driver.deviceLayer.cloudDatabase.driverProfiles.FirebaseDriverProfileGet;
 import it.flube.driver.deviceLayer.cloudDatabase.offers.demoOffers.FirebaseDemoOffersAdd;
 import it.flube.driver.deviceLayer.cloudDatabase.offers.demoOffers.FirebaseDemoOffersMonitor;
 import it.flube.driver.deviceLayer.cloudDatabase.deviceAndUser.FirebaseDevice;
@@ -37,7 +33,7 @@ import it.flube.driver.deviceLayer.cloudDatabase.scheduledBatches.FirebaseSchedu
 import it.flube.driver.deviceLayer.cloudDatabase.scheduledBatches.FirebaseScheduledBatchesMonitor;
 import it.flube.driver.deviceLayer.cloudDatabase.scheduledBatches.FirebaseScheduledBatchesRemove;
 import it.flube.driver.modelLayer.entities.DeviceInfo;
-import it.flube.driver.modelLayer.entities.Driver;
+import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.entities.LatLonLocation;
 import it.flube.driver.modelLayer.entities.batch.BatchDetail;
 import it.flube.driver.modelLayer.entities.batch.BatchHolder;
@@ -53,7 +49,8 @@ import timber.log.Timber;
  */
 
 public class CloudDatabaseFirebaseWrapper implements
-        CloudDatabaseInterface {
+        CloudDatabaseInterface,
+        CloudDatabaseInterface.StopMonitoringResponse {
 
     ///  Singleton class using Initialization-on-demand holder idiom
     ///  ref: https://en.wikipedia.org/wiki/Initialization-on-demand_holder_idiom
@@ -61,7 +58,13 @@ public class CloudDatabaseFirebaseWrapper implements
         static volatile CloudDatabaseFirebaseWrapper instance = new CloudDatabaseFirebaseWrapper();
     }
 
-    private CloudDatabaseFirebaseWrapper() {}
+    private CloudDatabaseFirebaseWrapper() {
+        database = FirebaseDatabase.getInstance();
+        database.setPersistenceEnabled(true);
+        database.goOnline();
+        isMonitoring = false;
+        isConnected = false;
+    }
 
     public static CloudDatabaseFirebaseWrapper getInstance() {
         return CloudDatabaseFirebaseWrapper.Loader.instance;
@@ -80,6 +83,7 @@ public class CloudDatabaseFirebaseWrapper implements
     private String personalOffersNode;
     private String publicOffersNode;
     private String activeBatchNode;
+    private String driverProfileNode;
 
     private String syncNodeForUserOwnedData;
     private String syncNodeForPublicOffers;
@@ -91,14 +95,25 @@ public class CloudDatabaseFirebaseWrapper implements
     private FirebaseScheduledBatchesMonitor firebaseScheduledBatchesMonitor;
     private FirebaseActiveBatchNodeMonitor firebaseActiveBatchMonitor;
 
-    public void connectRequest(AppRemoteConfigInterface remoteConfig, Driver driver, ConnectResponse response){
-        database = FirebaseDatabase.getInstance();
-        database.setPersistenceEnabled(true);
-        database.goOnline();
-        Timber.tag(TAG).d("setPersistenceEnabled TRUE for OFFLINE persistence");
+    private Boolean isMonitoring;
+    private Boolean isConnected;
 
+    public void getUserProfileRequest(String clientId, String email, UserProfileResponse response){
+        String driverProfileNode = "userReadable/driverProfiles";
+
+        new FirebaseDriverProfileGet().getDriverProfile(database.getReference(driverProfileNode),
+                clientId, email, response);
+
+        Timber.tag(TAG).d("getUserProfileRequest : clientId -> " + clientId + " email -> " + email);
+    }
+
+    public void connectDriverRequest(AppRemoteConfigInterface remoteConfig, Driver driver, ConnectResponse response){
+        Timber.tag(TAG).d("connectDriverRequest START...");
+
+        Timber.tag(TAG).d("  ...setting driver to current user");
         this.driver = driver;
 
+        Timber.tag(TAG).d("  ...start syncing syncNodes");
         setupNodeStrings(remoteConfig, driver);
 
         //setup database to sync mobile with backend on the sync nodes
@@ -106,6 +121,7 @@ public class CloudDatabaseFirebaseWrapper implements
         database.getReference(syncNodeForPublicOffers).keepSynced(true);
         database.getReference(syncNodeForPersonalOffers).keepSynced(true);
 
+        Timber.tag(TAG).d("  ...create monitors for offers & active batch");
         //setup persistent objects for monitors
         firebaseDemoOffersMonitor = new FirebaseDemoOffersMonitor(database.getReference(demoOffersNode), database.getReference(batchDataNode));
         firebasePublicOffersMonitor = new FirebasePublicOffersMonitor(database.getReference(publicOffersNode), database.getReference(batchDataNode));
@@ -113,7 +129,9 @@ public class CloudDatabaseFirebaseWrapper implements
         firebaseScheduledBatchesMonitor = new FirebaseScheduledBatchesMonitor(database.getReference(scheduledBatchesNode), database.getReference(batchDataNode));
         firebaseActiveBatchMonitor = new FirebaseActiveBatchNodeMonitor(database.getReference(activeBatchNode), database.getReference(batchDataNode));
 
-        response.cloudDatabaseConnectComplete();
+        isConnected = true;
+        response.cloudDatabaseConnectDriverComplete();
+        Timber.tag(TAG).d("...connectDriverRequest COMPLETE");
     }
 
     private void setupNodeStrings(AppRemoteConfigInterface remoteConfig, Driver driver){
@@ -123,61 +141,133 @@ public class CloudDatabaseFirebaseWrapper implements
         deviceNode = remoteConfig.getCloudDatabaseBaseNodeDeviceData();
         Timber.tag(TAG).d("deviceNode = " + deviceNode);
 
-        demoOffersNode = remoteConfig.getCloudDatabaseBaseNodeDemoOffers() + "/" + driver.getClientId() + "/" + driver.getDemoOffersNode();
+        demoOffersNode = remoteConfig.getCloudDatabaseBaseNodeDemoOffers() + "/" + driver.getClientId() + "/" + driver.getCloudDatabaseSettings().getDemoOffersNode();
         Timber.tag(TAG).d("demoOffersNode = " + demoOffersNode);
 
-        publicOffersNode = remoteConfig.getCloudDatabaseBaseNodePublicOffers()+ "/" + driver.getClientId() + "/" + driver.getPublicOffersNode();
+        publicOffersNode = remoteConfig.getCloudDatabaseBaseNodePublicOffers()+ "/" + driver.getCloudDatabaseSettings().getPublicOffersNode();
         Timber.tag(TAG).d("publicOffersNode = " + publicOffersNode);
 
-        personalOffersNode = remoteConfig.getCloudDatabaseBaseNodePersonalOffers()+ "/" + driver.getClientId() + "/" + driver.getPersonalOffersNode();
+        personalOffersNode = remoteConfig.getCloudDatabaseBaseNodePersonalOffers()+ "/" + driver.getClientId() + "/" + driver.getCloudDatabaseSettings().getPersonalOffersNode();
         Timber.tag(TAG).d("personalOffersNode = " + personalOffersNode);
 
-        batchDataNode = remoteConfig.getCloudDatabaseBaseNodeBatchData() + "/" + driver.getClientId() + "/" + driver.getBatchDataNode();
+        batchDataNode = remoteConfig.getCloudDatabaseBaseNodeBatchData() + "/" + driver.getClientId() + "/" + driver.getCloudDatabaseSettings().getBatchDataNode();
         Timber.tag(TAG).d("batchDataNode = " + batchDataNode);
 
-        scheduledBatchesNode = remoteConfig.getCloudDatabaseBaseNodeScheduledBatches()+ "/" + driver.getClientId() + "/" + driver.getScheduledBatchesNode();
+        scheduledBatchesNode = remoteConfig.getCloudDatabaseBaseNodeScheduledBatches()+ "/" + driver.getClientId() + "/" + driver.getCloudDatabaseSettings().getScheduledBatchesNode();
         Timber.tag(TAG).d("scheduledBatchesNode = " + scheduledBatchesNode);
 
-        activeBatchNode = remoteConfig.getCloudDatabaseBaseNodeActiveBatch()+ "/" + driver.getClientId() + "/" + driver.getActiveBatchNode();
+        activeBatchNode = remoteConfig.getCloudDatabaseBaseNodeActiveBatch()+ "/" + driver.getClientId() + "/" + driver.getCloudDatabaseSettings().getActiveBatchNode();
         Timber.tag(TAG).d("activeBatchNode = " + activeBatchNode);
+
+        driverProfileNode = "userReadable/driverProfiles";
 
         syncNodeForUserOwnedData = "userOwned/users" + "/" + driver.getClientId();
         syncNodeForPublicOffers = "userReadable/publicOffers";
         syncNodeForPersonalOffers = "userReadable/users" + "/" + driver.getClientId();
     }
 
-    public void disconnect(){
+    public void disconnectDriverRequest(DisconnectResponse response){
+        Timber.tag(TAG).d("disconnectDriver START...");
+        if (isConnected) {
+            Timber.tag(TAG).d("   ...stop monitoring offers & active batch");
+            stopMonitoring();
+            Timber.tag(TAG).d("   ...stop syncing syncNodes");
+            //setup database to sync mobile with backend on the sync nodes
+            database.getReference(syncNodeForUserOwnedData).keepSynced(false);
+            database.getReference(syncNodeForPublicOffers).keepSynced(false);
+            database.getReference(syncNodeForPersonalOffers).keepSynced(false);
 
-        firebaseDemoOffersMonitor = null;
-        firebaseDemoOffersMonitor = null;
-        firebasePersonalOffersMonitor = null;
-        firebaseScheduledBatchesMonitor = null;
-        firebaseActiveBatchMonitor = null;
 
-        database.goOffline();
-        database = null;
+            Timber.tag(TAG).d("   ...setting offer & batch monitors to null");
+            firebaseDemoOffersMonitor = null;
+            firebaseDemoOffersMonitor = null;
+            firebasePersonalOffersMonitor = null;
+            firebaseScheduledBatchesMonitor = null;
+            firebaseActiveBatchMonitor = null;
+
+            Timber.tag(TAG).d("  ...setting driver to null");
+            this.driver = null;
+        } else {
+            Timber.tag(TAG).d("   ...already disconnected");
+        }
+
+        isConnected = false;
+        Timber.tag(TAG).d("...disconnectDriver COMPLETE");
+        response.cloudDatabaseDisconnectDriverComplete();
+    }
+
+    public void cloudDatabaseStopMonitoringComplete(){
+        Timber.tag(TAG).d("      ...stop monitoring request COMPLETE during disconnect driver request");
     }
 
     ///
     ///     LISTENING FOR OFFERS
     ///
 
-    public void startMonitoring(){
-        firebaseDemoOffersMonitor.startListening();
-        firebasePublicOffersMonitor.startListening();
-        firebasePersonalOffersMonitor.startListening();
-
-        firebaseScheduledBatchesMonitor.startListening();
-        firebaseActiveBatchMonitor.startListening();
+    public void startMonitoringRequest(CloudDatabaseInterface.StartMonitoringResponse response){
+        Timber.tag(TAG).d("startMonitoringRequest START...");
+        startMonitoring();
+        response.cloudDatabaseStartMonitoringComplete();
+        Timber.tag(TAG).d("...startMonitoringRequest COMPLETE");
     }
 
-    public void stopMonitoring() {
-        firebaseDemoOffersMonitor.stopListening();
-        firebasePublicOffersMonitor.stopListening();
-        firebasePersonalOffersMonitor.stopListening();
+    private void startMonitoring(){
+        Timber.tag(TAG).d("startMonitoring START...");
+        if (isConnected) {
+            Timber.tag(TAG).d("   ...we are connected");
 
-        firebaseScheduledBatchesMonitor.stopListening();
-        firebaseActiveBatchMonitor.stopListening();
+            if (isMonitoring) {
+                Timber.tag(TAG).d("   ...we are ALREADY monitoring, do nothing");
+            } else {
+                Timber.tag(TAG).d("   ...starting listeners for offers");
+                firebaseDemoOffersMonitor.startListening();
+                firebasePublicOffersMonitor.startListening();
+                firebasePersonalOffersMonitor.startListening();
+
+                Timber.tag(TAG).d("   ...starting listeners for batches");
+                firebaseScheduledBatchesMonitor.startListening();
+                firebaseActiveBatchMonitor.startListening();
+
+                isMonitoring = true;
+            }
+        } else {
+            Timber.tag(TAG).d("   ...we are NOT connected, do nothing");
+        }
+
+        Timber.tag(TAG).d("...startMonitoring COMPLETE");
+
+    }
+
+    public void stopMonitoringRequest(CloudDatabaseInterface.StopMonitoringResponse response){
+        Timber.tag(TAG).d("stopMonitoringRequest START...");
+        stopMonitoring();
+        response.cloudDatabaseStopMonitoringComplete();
+        Timber.tag(TAG).d("...stopMonitoringRequest COMPLETE");
+    }
+
+    private void stopMonitoring() {
+        Timber.tag(TAG).d("stopMonitoring START...");
+
+        if (isConnected) {
+            Timber.tag(TAG).d("   ...we are connected");
+            if (isMonitoring) {
+                Timber.tag(TAG).d("   ...stopping listeners for offers");
+                firebaseDemoOffersMonitor.stopListening();
+                firebasePublicOffersMonitor.stopListening();
+                firebasePersonalOffersMonitor.stopListening();
+
+                Timber.tag(TAG).d("   ...stopping listeners for batches");
+                firebaseScheduledBatchesMonitor.stopListening();
+                firebaseActiveBatchMonitor.stopListening();
+
+                isMonitoring = false;
+            } else {
+                Timber.tag(TAG).d("   ...we are ALREADY not monitoring, do nothing");
+            }
+        } else {
+            Timber.tag(TAG).d("   ...we are NOT connected, do nothing");
+        }
+        Timber.tag(TAG).d("...stopMonitoring COMPLETE");
     }
 
 
@@ -187,10 +277,10 @@ public class CloudDatabaseFirebaseWrapper implements
     public void saveUserRequest(CloudDatabaseInterface.SaveResponse response) {
         FirebaseUser firebaseUser = new FirebaseUser(database, userNode);
         firebaseUser.saveUserRequest(driver, response);
-        Timber.tag(TAG).d("saving DRIVER object --> clientId : " + driver.getClientId() + " name : " + driver.getDisplayName());
+        Timber.tag(TAG).d("saving DRIVER object --> clientId : " + driver.getClientId() + " name : " + driver.getNameSettings().getDisplayName());
 
         firebaseUser.saveUserLastLogin(driver);
-        Timber.tag(TAG).d("saving DRIVER lastLogin --> clientId " + driver.getClientId() + " name : " + driver.getDisplayName());
+        Timber.tag(TAG).d("saving DRIVER lastLogin --> clientId " + driver.getClientId() + " name : " + driver.getNameSettings().getDisplayName());
     }
 
     ///
@@ -314,6 +404,16 @@ public class CloudDatabaseFirebaseWrapper implements
 
         new FirebaseActiveBatchAcknowledgeRemovedBatch().acknowledgeRemovedBatch(database.getReference(activeBatchNode), response);
     }
+
+    public void saveMapLocationRequest(String batchGuid, String serviceOrderGuid, String orderStepGuid,
+                                LatLonLocation location, CloudDatabaseInterface.SaveMapLocationResponse response){
+
+        Timber.tag(TAG).d("save Map Location request");
+        new FirebaseBatchDataSaveMapLocation().saveMapLocation(database.getReference(batchDataNode), batchGuid, serviceOrderGuid, orderStepGuid, location, response);
+
+    }
+
+
 
     ///public void setActiveBatchNodesRequest(String batchGuid, Integer serviceOrderSequence, Integer stepSequence,
     ///                                       CloudDatabaseInterface.ActionType actionType,

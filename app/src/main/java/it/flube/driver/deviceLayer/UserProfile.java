@@ -10,7 +10,7 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 
-import it.flube.driver.modelLayer.entities.Driver;
+import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.interfaces.UserProfileInterface;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -105,21 +105,21 @@ public class UserProfile implements UserProfileInterface, Callback {
                     Driver driver = new Driver();
 
                     driver.setClientId(profileData.getClientId());
-                    driver.setFirstName(profileData.getFirstName());
-                    driver.setLastName(profileData.getLastName());
+                    driver.getNameSettings().setFirstName(profileData.getFirstName());
+                    driver.getNameSettings().setLastName(profileData.getLastName());
                     //TODO should get display name from profile request response instead of building myself
-                    driver.setDisplayName(profileData.getFirstName() + " " + profileData.getLastName());
+                    driver.getNameSettings().setDisplayName(profileData.getFirstName() + " " + profileData.getLastName());
                     driver.setEmail(profileData.getEmail());
                     driver.setPhotoUrl(profileData.getImageUrl());
 
-                    driver.setIsDev(propertyData.isDev());
-                    driver.setIsQA(propertyData.isQA());
-                    driver.setPublicOffersNode(propertyData.getPublicOffersNode());
-                    driver.setPersonalOffersNode(propertyData.getPersonalOffersNode());
-                    driver.setDemoOffersNode(propertyData.getDemoOffersNode());
-                    driver.setScheduledBatchesNode(propertyData.getScheduledBatchesNode());
-                    driver.setActiveBatchNode(propertyData.getActiveBatchNode());
-                    driver.setBatchDataNode(propertyData.getBatchDataNode());
+                    driver.getUserRoles().setDev(propertyData.isDev());
+                    driver.getUserRoles().setQa(propertyData.isQA());
+                    driver.getCloudDatabaseSettings().setPublicOffersNode(propertyData.getPublicOffersNode());
+                    driver.getCloudDatabaseSettings().setPersonalOffersNode(propertyData.getPersonalOffersNode());
+                    driver.getCloudDatabaseSettings().setDemoOffersNode(propertyData.getDemoOffersNode());
+                    driver.getCloudDatabaseSettings().setScheduledBatchesNode(propertyData.getScheduledBatchesNode());
+                    driver.getCloudDatabaseSettings().setActiveBatchNode(propertyData.getActiveBatchNode());
+                    driver.getCloudDatabaseSettings().setBatchDataNode(propertyData.getBatchDataNode());
 
                     response.getDriverSuccess(driver);
                 } else {

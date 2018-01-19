@@ -7,18 +7,9 @@ package it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.pho
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.joanzapata.iconify.IconDrawable;
-import com.joanzapata.iconify.fonts.FontAwesomeIcons;
-import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.maps.MapView;
-import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -30,23 +21,12 @@ import java.util.Locale;
 
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.dataLayer.userInterfaceEvents.batchAlerts.ShowCompletedServiceOrderAlertEvent;
-import it.flube.driver.modelLayer.entities.AddressLocation;
-import it.flube.driver.modelLayer.entities.LatLonLocation;
-import it.flube.driver.modelLayer.entities.orderStep.ServiceOrderNavigationStep;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.batchAlerts.ShowCompletedServiceOrderAlertEvent;
 import it.flube.driver.modelLayer.entities.orderStep.ServiceOrderPhotoStep;
-import it.flube.driver.modelLayer.interfaces.ActiveBatchInterface;
-import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
 import it.flube.driver.userInterfaceLayer.ActivityNavigator;
-import it.flube.driver.userInterfaceLayer.UserInterfaceUtilities;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.ActiveBatchAlerts;
-import it.flube.driver.userInterfaceLayer.activities.activeBatch.batchItinerary.ServiceOrderListAdapter;
-import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.NavigationController;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import timber.log.Timber;
-
-import static android.view.View.INVISIBLE;
-import static android.view.View.VISIBLE;
 
 /**
  * Created on 10/26/2017

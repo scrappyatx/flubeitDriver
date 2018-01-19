@@ -21,7 +21,7 @@
 
     <include layout="@layout/guidelines"/>
 
-    <include layout="@layout/batch_detail_title"
+    <include layout="@layout/batch_detail_title_group"
         android:id="@+id/batch_detail_title_viewgroup"
 
         android:layout_width="0dp"

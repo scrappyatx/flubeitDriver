@@ -22,7 +22,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
-    <include layout="@layout/batch_detail_title"
+    <include layout="@layout/batch_detail_title_group"
         android:id="@+id/batch_detail_title_viewgroup"
 
         android:layout_width="0dp"
@@ -38,7 +38,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
-    <include layout="@layout/batch_detail_display_timing"
+    <include layout="@layout/batch_detail_display_timing_group"
         android:id="@+id/batch_detail_timing_viewgroup"
 
         android:layout_width="0dp"
@@ -54,7 +54,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
-    <include layout="@layout/batch_detail_display_earnings"
+    <include layout="@layout/batch_detail_display_earnings_group"
         android:id="@+id/batch_detail_earnings_viewgroup"
 
         android:layout_width="0dp"
@@ -70,7 +70,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
-    <include layout="@layout/batch_detail_display_distance"
+    <include layout="@layout/batch_detail_display_distance_group"
         android:id="@+id/batch_detail_distance_viewgroup"
 
         android:layout_width="0dp"
@@ -87,7 +87,7 @@
         app:layout_constraintRight_toRightOf="parent"/>
 
     <include layout="@layout/batch_detail_orders_and_stops"
-        android:id="@+id/batch_detail_orders_stops_viewgroup"
+        android:id="@+id/batch_detail_orders_and_stops"
 
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
         android:onClick="clickClaimButton"
         android:paddingBottom="25dp"
         android:paddingTop="25dp"
-        android:text="@string/offers_claim_button_caption"
+        android:text="@string/offer_claim_button_caption"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

@@ -50,9 +50,9 @@ public interface MobileDeviceInterface {
 
     RealtimeMessagingInterface.Connection getRealtimeConnection();
 
-    RealtimeMessagingInterface.OfferChannel getRealtimeOfferMessages();
+    //RealtimeMessagingInterface.OfferChannel getRealtimeOfferMessages();
 
-    RealtimeMessagingInterface.BatchChannel getRealtimeBatchMessages();
+    //RealtimeMessagingInterface.BatchChannel getRealtimeBatchMessages();
 
     RealtimeMessagingInterface.ActiveBatchChannel getRealtimeActiveBatchMessages();
 

@@ -66,7 +66,7 @@ public class ActiveBatch implements ActiveBatchInterface {
     private Boolean hasOrderStepList;
     private Boolean hasRouteStopList;
 
-    public void setActiveBatch(){
+    public void clear(){
         batchDetail = null;
         serviceOrder = null;
         step = null;

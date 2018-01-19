@@ -46,34 +46,37 @@ public class AblyConnection implements ConnectionStateListener, CompletionListen
         return isConnected;
     }
 
-    public void serverConnectRequest(@NonNull String clientId, @NonNull ServerConnectResponse serverConnectResponse){
+    public void serverConnectRequest(@NonNull String clientId, @NonNull String idToken, @NonNull ServerConnectResponse serverConnectResponse){
+        Timber.tag(TAG).d("serverConnectRequest START...");
         if (!isConnected) {
-            Timber.tag(TAG).d("serverConnectRequest START...");
+
             Timber.tag(TAG).d("   clientId     --> " + clientId);
+            Timber.tag(TAG).d("   idToken      --> " + idToken);
             Timber.tag(TAG).d("   authUrl      --> " + authUrl);
             try {
-                ablyRealtime = new AblyRealtime(getClientOptions(clientId, authUrl));
+                ablyRealtime = new AblyRealtime(getClientOptions(clientId, idToken, authUrl));
                 ablyRealtime.connection.on(this);
                 isConnected = true;
-                Timber.tag(TAG).d("serverConnectRequest SUCCESS");
+                Timber.tag(TAG).d("   ...serverConnectRequest SUCCESS");
                 serverConnectResponse.serverConnectSuccess();
             } catch (AblyException e) {
                 Timber.tag(TAG).e(e);
                 isConnected = false;
-                Timber.tag(TAG).d("serverConnectRequest FAILURE");
+                Timber.tag(TAG).d("   ...serverConnectRequest FAILURE");
                 serverConnectResponse.serverConnectFailure();
             }
         } else {
-            Timber.tag(TAG).d("serverConnectRequest ---> SERVER WAS ALREADY CONNECTED!");
+            Timber.tag(TAG).d("   ...SERVER WAS ALREADY CONNECTED!");
             serverConnectResponse.serverConnectSuccess();
         }
+        Timber.tag(TAG).d("...serverConnectRequest COMPLETE");
     }
 
-    private ClientOptions getClientOptions(String clientId, String tokenUrl) {
+    private ClientOptions getClientOptions(String clientId, String idToken, String tokenUrl) {
         ClientOptions clientOptions = new ClientOptions();
         clientOptions.authUrl = tokenUrl;
         clientOptions.authMethod = "GET";
-        clientOptions.authParams = getAuthorizationParameters(clientId);
+        clientOptions.authParams = getAuthorizationParameters(idToken);
         clientOptions.clientId = clientId;
         clientOptions.tls = true;
         clientOptions.logLevel = io.ably.lib.util.Log.VERBOSE;
@@ -82,17 +85,26 @@ public class AblyConnection implements ConnectionStateListener, CompletionListen
         return clientOptions;
     }
 
-    private Param[] getAuthorizationParameters(String clientId) {
+    private Param[] getAuthorizationParameters(String idToken) {
         Param[] param = new Param[1];
-        param[0] = new Param("clientId", clientId);
+        param[0] = new Param("clientId", idToken);
         return param;
     }
 
 
     public void serverDisconnectRequest(@NonNull ServerDisconnectResponse response){
-        ablyRealtime.close();
+        Timber.tag(TAG).d("serverDisconnectRequest START...");
+
+        if (isConnected) {
+            Timber.tag(TAG).d("   ...closing ablyRealtime");
+            ablyRealtime.close();
+
+        } else {
+            Timber.tag(TAG).d("   ...ablyRealtime already closed, doing nothing");
+        }
+
         isConnected = false;
-        Timber.tag(TAG).d("disconnectRequest COMPLETE");
+        Timber.tag(TAG).d("...serverDisconnectRequest COMPLETE");
         response.serverDisconnectComplete();
     }
 

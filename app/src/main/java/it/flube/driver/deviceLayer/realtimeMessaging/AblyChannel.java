@@ -45,11 +45,11 @@ public class AblyChannel implements AblyConnection.ServerConnectResponse, AblyCo
         isConnected = false;
     }
 
-    public void channelConnectRequest(String clientId, ChannelConnectResponse response) {
+    public void channelConnectRequest(String clientId, String idToken, ChannelConnectResponse response) {
         channelConnectResponse = response;
         Timber.tag(TAG).d("try to connect to ably realtime messaging server");
         Timber.tag(TAG).d("    clientID --> " + clientId);
-        ablyConnection.serverConnectRequest(clientId, this);
+        ablyConnection.serverConnectRequest(clientId, idToken, this);
     }
 
     /// AblyChannel.ServerConnectResponse callbacks
@@ -104,6 +104,7 @@ public class AblyChannel implements AblyConnection.ServerConnectResponse, AblyCo
     ///AblyChannel.DisconnectResponse callbacks
     public void channelDetachComplete(){
         isConnected = false;
+        ablyConnection.serverDisconnectRequest(this);
         Timber.tag(TAG).d("disconnectComplete");
         channelDisconnectResponse.channelDisconnectComplete();
     }

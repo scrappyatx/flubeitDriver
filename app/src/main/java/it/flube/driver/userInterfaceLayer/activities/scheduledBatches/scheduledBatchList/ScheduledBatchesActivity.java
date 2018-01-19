@@ -20,10 +20,9 @@ import java.util.ArrayList;
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.scheduledBatches.BatchSelectedResponseHandler;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.scheduledBatches.ScheduledBatchesAvailableResponseHandler;
-import it.flube.driver.dataLayer.userInterfaceEvents.batchAlerts.ShowForfeitBatchAlertEvent;
-import it.flube.driver.dataLayer.userInterfaceEvents.batchAlerts.ShowStartedBatchAlertEvent;
-import it.flube.driver.dataLayer.userInterfaceEvents.scheduledBatchListUpdates.ScheduledBatchListUpdateEvent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.batchAlerts.ShowForfeitBatchAlertEvent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.batchAlerts.ShowStartedBatchAlertEvent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.scheduledBatchListUpdates.ScheduledBatchListUpdateEvent;
 import it.flube.driver.modelLayer.entities.batch.Batch;
 import it.flube.driver.userInterfaceLayer.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
@@ -124,7 +123,7 @@ public class ScheduledBatchesActivity extends AppCompatActivity implements
     @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
     public void onEvent(BatchSelectedResponseHandler.UseCaseBatchSelectedEvent event) {
         Timber.tag(TAG).d("batch selected => " + event.getBatchDetail().getBatchGuid());
-        navigator.gotoActivityBatchManage(this);
+        navigator.gotoActivityBatchManage(this, event.getBatchDetail().getBatchGuid());
     }
 
     @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)

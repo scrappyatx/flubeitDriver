@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2018. scrapdoodle, LLC.  All Rights Reserved
+  -->
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/toolbar"
+        android:id="@+id/toolbar"
+
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <include layout="@layout/batch_detail_title_group"
+        android:id="@+id/batch_detail_title_group"
+
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:elevation="8dp"
+
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" tools:targetApi="lollipop"/>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/batch_itinerary_tab"
+
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@+id/batch_detail_title_group"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+
+        app:tabMode="fixed"
+        app:tabGravity="fill"
+        app:tabTextAppearance = "@style/BatchDetailTabTextAppearance">
+
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/offer_claim_tab_zero_caption" />
+
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/offer_claim_tab_one_caption" />
+
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/offer_claim_tab_two_caption" />
+    </android.support.design.widget.TabLayout>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/claim_offer_animation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="32dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitEnd"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/offer_claim_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="material_wave_loading.json"
+        app:lottie_loop="true"
+        android:layout_marginBottom="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp" />
+
+    <Button
+        android:id="@+id/offer_claim_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:onClick="clickClaimButton"
+        android:paddingBottom="25dp"
+        android:paddingTop="25dp"
+        android:text="@string/offer_claim_button_caption"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <include
+        android:id="@+id/batch_tab_details_viewgroup"
+        layout="@layout/batch_tab_details_viewgroup"
+
+        tools:visibility="visible"
+
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:elevation="8dp"
+
+        app:layout_constraintBottom_toTopOf="@+id/offer_claim_button"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/batch_itinerary_tab" />
+
+    <include
+        android:id="@+id/batch_tab_orders_viewgroup"
+        layout="@layout/batch_tab_orders_viewgroup"
+
+        tools:visibility="gone"
+
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="0dp"
+
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:elevation="8dp"
+
+        app:layout_constraintBottom_toTopOf="@+id/offer_claim_button"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/batch_itinerary_tab" />
+
+    <include
+        android:id="@+id/batch_tab_locations_viewgroup"
+        layout="@layout/batch_tab_locations_viewgroup"
+
+        tools:visibility="gone"
+
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="0dp"
+
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:elevation="8dp"
+
+        app:layout_constraintBottom_toTopOf="@+id/offer_claim_button"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/batch_itinerary_tab" />
+
+
+
+</android.support.constraint.ConstraintLayout>

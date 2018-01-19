@@ -6,7 +6,7 @@ package it.flube.driver.deviceLayer;
 
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.deviceLayer.realtimeMessaging.AblyConnection;
-import it.flube.driver.modelLayer.entities.Driver;
+import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.interfaces.RealtimeMessagingInterface;
 
 /**
@@ -45,9 +45,9 @@ public class AblyConnectionWrapper implements
 
 
 
-    public void messageServerConnectRequest(Driver driver, RealtimeMessagingInterface.Connection.ConnectResponse connectResponse) {
+    public void messageServerConnectRequest(String clientId, String idToken, RealtimeMessagingInterface.Connection.ConnectResponse connectResponse) {
         this.connectResponse = connectResponse;
-        ablyConnection.serverConnectRequest(driver.getClientId(), this);
+        ablyConnection.serverConnectRequest(clientId, idToken, this);
     }
 
     public void serverConnectSuccess() {

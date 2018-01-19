@@ -45,7 +45,7 @@ public class RealtimeOfferMessages implements RealtimeMessagingInterface.OfferCh
 
 
     public void attach(String clientId) {
-        ablyChannel.channelConnectRequest(clientId, this);
+        ablyChannel.channelConnectRequest(clientId, AndroidDevice.getInstance().getUser().getIdToken(), this);
     }
 
     public void channelConnectSuccess(){

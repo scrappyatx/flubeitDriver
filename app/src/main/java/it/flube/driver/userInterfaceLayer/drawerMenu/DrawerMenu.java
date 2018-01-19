@@ -4,7 +4,6 @@
 
 package it.flube.driver.userInterfaceLayer.drawerMenu;
 
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
@@ -33,20 +32,14 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.scheduledBatches.ScheduledBatchesAvailableResponseHandler;
-import it.flube.driver.dataLayer.userInterfaceEvents.activeBatch.ActiveBatchUpdatedEvent;
-import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.DemoOfferCountUpdatedEvent;
-import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.DemoOffersUpdatedEvent;
-import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.PersonalOfferCountUpdatedEvent;
-import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.PersonalOffersUpdatedEvent;
-import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.PublicOfferCountUpdatedEvent;
-import it.flube.driver.dataLayer.userInterfaceEvents.offerListUpdates.PublicOffersUpdatedEvent;
-import it.flube.driver.dataLayer.userInterfaceEvents.scheduledBatchListUpdates.ScheduledBatchCountUpdateEvent;
-import it.flube.driver.modelLayer.interfaces.ActiveBatchInterface;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.activeBatch.ActiveBatchUpdatedEvent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.DemoOfferCountUpdatedEvent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.PersonalOfferCountUpdatedEvent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.PublicOfferCountUpdatedEvent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.scheduledBatchListUpdates.ScheduledBatchCountUpdateEvent;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
-import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
 import it.flube.driver.userInterfaceLayer.ActivityNavigator;
-import it.flube.driver.userInterfaceLayer.UserInterfaceEventHandler;
+import it.flube.driver.userInterfaceLayer.userInterfaceEventHandlers.UserInterfaceEventHandler;
 import timber.log.Timber;
 
 /**
@@ -123,7 +116,7 @@ public class DrawerMenu {
         // this prevents calling the "onCheckedChanged" listener everytime user switches activities
         toolbarSwitch.setChecked(mSearchingForOffers);
         toolbarSwitch.setOnCheckedChangeListener(new toolbarSwitchListener());
-        toolbarSwitch.setVisibility(View.INVISIBLE);
+        toolbarSwitch.setVisibility(View.GONE);
     }
 
     private void createDrawer() {
@@ -151,7 +144,7 @@ public class DrawerMenu {
         addEarningsAndAccountMenuItems();
         addHelpMenuItems();
 
-        if (device.getUser().getDriver().isDev()) {
+        if (device.getUser().getDriver().getUserRoles().getDev()) {
             addDeveloperToolsMenuItems();
         }
 
@@ -260,7 +253,7 @@ public class DrawerMenu {
     private AccountHeader buildAccountHeader() {
         //String photoUrl = "http://lorempixel.com/60/60/people/";
 
-        IProfile profile = new ProfileDrawerItem().withName(device.getUser().getDriver().getDisplayName())
+        IProfile profile = new ProfileDrawerItem().withName(device.getUser().getDriver().getNameSettings().getDisplayName())
                 .withEmail(device.getUser().getDriver().getEmail()).withIcon(device.getUser().getDriver().getPhotoUrl());
 
                 //.withIcon(R.drawable.demo_profile_pic)

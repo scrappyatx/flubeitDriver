@@ -162,11 +162,11 @@ public class AppRemoteConfig implements AppRemoteConfigInterface {
                 try {
                     throw task.getException();
                 } catch (FirebaseRemoteConfigFetchException e) {
-                    Timber.tag(TAG).d("FirebaseRemoteConfig FETCH EXCEPTION -> " + e.getMessage());
+                    Timber.tag(TAG).w("FirebaseRemoteConfig FETCH EXCEPTION -> " + e.getMessage());
                     Timber.tag(TAG).e(e);
                 }
                 catch (Exception e) {
-                    Timber.tag(TAG).d("FirebaseRemoteConfig unrecognized exception -> " + e.getMessage());
+                    Timber.tag(TAG).w("FirebaseRemoteConfig unrecognized exception -> " + e.getMessage());
                     Timber.tag(TAG).e(e);
                 }
                 mResponse.getUpdatedValuesFromRemoteServerComplete();

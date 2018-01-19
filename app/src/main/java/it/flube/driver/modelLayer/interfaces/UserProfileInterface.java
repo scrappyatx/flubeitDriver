@@ -5,7 +5,7 @@
 package it.flube.driver.modelLayer.interfaces;
 
 
-import it.flube.driver.modelLayer.entities.Driver;
+import it.flube.driver.modelLayer.entities.driver.Driver;
 
 /**
  * Created on 5/5/2017

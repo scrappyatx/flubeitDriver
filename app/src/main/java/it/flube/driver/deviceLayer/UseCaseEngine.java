@@ -27,7 +27,8 @@ public class UseCaseEngine implements UseCaseInterface {
     ///  constructor is private, instances can only be created internally by the class
     ///
     private UseCaseEngine() {
-        useCaseExecutor = Executors.newSingleThreadExecutor();
+        //useCaseExecutor = Executors.newSingleThreadExecutor();
+        useCaseExecutor = Executors.newFixedThreadPool(4);
     }
 
     ///

@@ -8,7 +8,7 @@ import android.util.Log;
 
 import io.ably.lib.types.Message;
 import it.flube.driver.dataLayer.messaging.ablyRealtime.ablyCallbackInterfaces.AblyMessageSubscribeCallback;
-import it.flube.driver.useCaseLayer.interfaces.realtimeMessaging.RsmReceiveMsgCallbackBatchRemoval;
+import it.flube.driver.deprecated.realtimeMessaging.RsmReceiveMsgCallbackBatchRemoval;
 
 /**
  * Created on 5/17/2017

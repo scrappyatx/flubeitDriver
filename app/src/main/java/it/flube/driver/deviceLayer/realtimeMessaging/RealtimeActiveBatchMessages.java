@@ -38,11 +38,31 @@ public class RealtimeActiveBatchMessages implements
     private static final String TAG = "RealtimeActiveBatchMessages";
     private AblyChannel ablyChannel;
 
+
+    public void connectRequest(String batchGuid, ActiveBatchChannelConnectResponse response){
+        Timber.tag(TAG).d("connectRequest START...");
+        attach(batchGuid);
+        response.activeBatchChannelConnectComplete();
+        Timber.tag(TAG).d("...connectRequest COMPLETE");
+    }
+
+    public void disconnectRequest(ActiveBatchChannelDisconnectResponse response){
+        Timber.tag(TAG).d("disconnectRequest START...");
+        if (ablyChannel != null){
+            Timber.tag(TAG).d("   ...disconnecting ablyChannel");
+            ablyChannel.channelDisconnectRequest(this);
+        } else {
+            Timber.tag(TAG).d("   ...ablyChannel is null, doing nothing");
+        }
+        response.activeBatchChannelDisconnectComplete();
+        Timber.tag(TAG).d("...disconnectRequest COMPLETE");
+    }
+
     public void attach(String batchGuid) {
         Timber.tag(TAG).d("attaching to : " + batchGuid);
         ablyChannel = new AblyChannel(batchGuid,
                 AndroidDevice.getInstance().getAppRemoteConfig().getRealtimeMessagingAuthTokenUrl());
-        ablyChannel.channelConnectRequest(AndroidDevice.getInstance().getUser().getDriver().getClientId(), this);
+        ablyChannel.channelConnectRequest(AndroidDevice.getInstance().getUser().getDriver().getClientId(), AndroidDevice.getInstance().getUser().getIdToken(), this);
     }
 
     public void channelConnectSuccess(){

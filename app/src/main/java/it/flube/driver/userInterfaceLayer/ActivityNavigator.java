@@ -15,11 +15,10 @@ import it.flube.driver.userInterfaceLayer.activities.activeBatch.batchItinerary.
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderItinerary.OrderItineraryActivity;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.NavigationActivity;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.PhotoActivity;
+import it.flube.driver.userInterfaceLayer.activities.home.HomeActivity;
 import it.flube.driver.userInterfaceLayer.activities.offers.demoOffers.DemoOffersActivity;
 import it.flube.driver.userInterfaceLayer.activities.earnings.EarningsActivity;
 import it.flube.driver.userInterfaceLayer.activities.help.HelpActivity;
-import it.flube.driver.userInterfaceLayer.activities.home.HomeActiveBatchActivity;
-import it.flube.driver.userInterfaceLayer.activities.home.HomeNoActiveBatchActivity;
 import it.flube.driver.userInterfaceLayer.activities.offers.claimOffer.OfferClaimActivity;
 import it.flube.driver.userInterfaceLayer.activities.offers.personalOffers.PersonalOffersActivity;
 import it.flube.driver.userInterfaceLayer.activities.offers.publicOffers.PublicOffersActivity;
@@ -28,6 +27,7 @@ import it.flube.driver.userInterfaceLayer.activities.scheduledBatches.BatchMapAc
 import it.flube.driver.userInterfaceLayer.activities.signIn.SignInActivity;
 import it.flube.driver.userInterfaceLayer.activities.messages.MessagesActivity;
 import it.flube.driver.userInterfaceLayer.activities.scheduledBatches.scheduledBatchList.ScheduledBatchesActivity;
+import it.flube.driver.userInterfaceLayer.activities.signIn.SignInAuthUiLaunchActivity;
 import it.flube.driver.userInterfaceLayer.activities.splashScreen.SplashScreenActivity;
 import timber.log.Timber;
 
@@ -39,11 +39,17 @@ import timber.log.Timber;
 public class ActivityNavigator {
     private static final String TAG = "ActivityNavigator";
 
+    private static final String BATCH_GUID_KEY = "batchGuid";
+    private static final String CLAIM_OFFER_RESULT_KEY = "claimOfferResult";
+    private static final String CLAIM_OFFER_SUCCESS_VALUE = "success";
+    private static final String CLAIM_OFFER_FAILURE_VALUE = "failure";
+    private static final String CLAIM_OFFER_TIMEOUT_VALUE = "timeout";
+
     public ActivityNavigator(){}
 
     public void gotoActivityHome(Context context){
-        context.startActivity(new Intent(context, HomeNoActiveBatchActivity.class));
-        Timber.tag(TAG).d("starting activity HomeNoActiveBatchActivity.class");
+        context.startActivity(new Intent(context, HomeActivity.class));
+        Timber.tag(TAG).d("starting activity HomeActivity.class");
     }
 
     public void gotoBatchItinerary(Context context){
@@ -81,15 +87,40 @@ public class ActivityNavigator {
 
         } else {
             Timber.tag(TAG).d("can't go to ActiveBatchStep, no active batch");
-            context.startActivity(new Intent(context, HomeNoActiveBatchActivity.class));
+            context.startActivity(new Intent(context, HomeActivity.class));
         }
 
     }
 
+    ///
+    ///  DEMO OFFERS
+    ///
     public void gotoActivityDemoOffers(Context context) {
         context.startActivity(new Intent(context, DemoOffersActivity.class));
         Timber.tag(TAG).d("starting activity DemoOffersActivity.class");
     }
+
+    public void gotoActivityDemoOffersAndShowOfferClaimedSuccessAlert(Context context){
+        Intent i = new Intent(context, DemoOffersActivity.class);
+        i.putExtra(CLAIM_OFFER_RESULT_KEY, CLAIM_OFFER_SUCCESS_VALUE);
+        context.startActivity(i);
+        Timber.tag(TAG).d("starting activity OfferClaimActivity.class AND show claim offer success alert");
+    }
+
+    public void gotoActivityDemoOffersAndShowOfferClaimedFailureAlert(Context context){
+        Intent i = new Intent(context, DemoOffersActivity.class);
+        i.putExtra(CLAIM_OFFER_RESULT_KEY, CLAIM_OFFER_FAILURE_VALUE);
+        context.startActivity(i);
+        Timber.tag(TAG).d("starting activity OfferClaimActivity.class AND show claim offer failure alert");
+    }
+
+    public void gotoActivityDemoOffersAndShowOfferClaimedTimeoutAlert(Context context){
+        Intent i = new Intent(context, DemoOffersActivity.class);
+        i.putExtra(CLAIM_OFFER_RESULT_KEY, CLAIM_OFFER_TIMEOUT_VALUE);
+        context.startActivity(i);
+        Timber.tag(TAG).d("starting activity OfferClaimActivity.class AND show claim offer timeout alert");
+    }
+
 
     public void gotoActivityEarnings(Context context) {
         context.startActivity(new Intent(context, EarningsActivity.class));
@@ -121,8 +152,10 @@ public class ActivityNavigator {
         Timber.tag(TAG).d("starting activity PublicOffersActivity.class");
     }
 
-    public void gotoActivityOfferClaim(Context context) {
-        context.startActivity(new Intent(context, OfferClaimActivity.class));
+    public void gotoActivityOfferClaim(Context context, String batchGuid) {
+        Intent i = new Intent(context, OfferClaimActivity.class);
+        i.putExtra(BATCH_GUID_KEY, batchGuid);
+        context.startActivity(i);
         Timber.tag(TAG).d("starting activity OfferClaimActivity.class");
     }
 
@@ -131,8 +164,10 @@ public class ActivityNavigator {
         Timber.tag(TAG).d("starting activity ScheduledBatchesActivity.class");
     }
 
-    public void gotoActivityBatchManage(Context context) {
-        context.startActivity(new Intent(context, BatchManageActivity.class));
+    public void gotoActivityBatchManage(Context context, String batchGuid) {
+        Intent i = new Intent(context, BatchManageActivity.class);
+        i.putExtra(BATCH_GUID_KEY, batchGuid);
+        context.startActivity(i);
         Timber.tag(TAG).d("starting activity BatchManageActivity.class");
     }
 
@@ -145,6 +180,13 @@ public class ActivityNavigator {
     public void gotoActivitySplashScreen(Context context) {
         context.startActivity(new Intent(context, SplashScreenActivity.class));
         Timber.tag(TAG).d("starting activity SplashScreenActivity.class");
+    }
+
+    public void gotoActivityAuthUiSignIn(Context context) {
+        context.startActivity(new Intent(context, SignInAuthUiLaunchActivity.class));
+        Timber.tag(TAG).d("starting activity SignInAuthUiLaunchActivity.class");
+        //new FirebaseAuthUiSignIn().signIn(context);
+        //Timber.tag(TAG).d("starting activity AuthUI signin");
     }
 
 }

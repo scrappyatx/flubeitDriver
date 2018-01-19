@@ -18,7 +18,6 @@ import it.flube.driver.BuildConfig;
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.GetAccountDetailsResponseHandler;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.signInAndSignOut.SignOutResponseHandler;
 import it.flube.driver.userInterfaceLayer.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import timber.log.Timber;
@@ -98,7 +97,7 @@ public class AccountActivity extends AppCompatActivity {
     public void clickLogoutButton(View v) {
         //user wants to logout
         Timber.tag(TAG).d("*** user clicked Logout button");
-        controller.signOutRequest();
+        controller.signOutRequest(this);
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
@@ -107,17 +106,17 @@ public class AccountActivity extends AppCompatActivity {
 
         Timber.tag(TAG).d("*** Profille Detail was updated event");
 
-        String details = "Name --> " + event.getDriver().getDisplayName() + System.getProperty("line.separator")
+        String details = "Name --> " + event.getDriver().getNameSettings().getDisplayName() + System.getProperty("line.separator")
                 + "Email --> " + event.getDriver().getEmail() + System.getProperty("line.separator")+ System.getProperty("line.separator")
                 + "Client ID --> "  + event.getDriver().getClientId() + System.getProperty("line.separator")+ System.getProperty("line.separator")
                 + "Photo Url --> "  + event.getDriver().getPhotoUrl() + System.getProperty("line.separator")+ System.getProperty("line.separator")
-                + "isDev --> " + event.getDriver().isDev() + System.getProperty("line.separator")
-                + "isQA --> " + event.getDriver().isQA() + System.getProperty("line.separator")+ System.getProperty("line.separator")
-                + "publicOffersNode --> " + event.getDriver().getPublicOffersNode() + System.getProperty("line.separator")
-                + "personalOffersNode --> " + event.getDriver().getPersonalOffersNode() + System.getProperty("line.separator")
-                + "demoOffersNode --> " + event.getDriver().getDemoOffersNode() + System.getProperty("line.separator")
-                + "scheduledBatchesNode --> " + event.getDriver().getScheduledBatchesNode() + System.getProperty("line.separator")
-                + "activeBatchesNode --> " + event.getDriver().getActiveBatchNode() + System.getProperty("line.separator");
+                + "isDev --> " + event.getDriver().getUserRoles().getDev() + System.getProperty("line.separator")
+                + "isQA --> " + event.getDriver().getUserRoles().getQa() + System.getProperty("line.separator")+ System.getProperty("line.separator")
+                + "publicOffersNode --> " + event.getDriver().getCloudDatabaseSettings().getPublicOffersNode() + System.getProperty("line.separator")
+                + "personalOffersNode --> " + event.getDriver().getCloudDatabaseSettings().getPersonalOffersNode() + System.getProperty("line.separator")
+                + "demoOffersNode --> " + event.getDriver().getCloudDatabaseSettings().getDemoOffersNode() + System.getProperty("line.separator")
+                + "scheduledBatchesNode --> " + event.getDriver().getCloudDatabaseSettings().getScheduledBatchesNode() + System.getProperty("line.separator")
+                + "activeBatchesNode --> " + event.getDriver().getCloudDatabaseSettings().getActiveBatchNode() + System.getProperty("line.separator");
 
         Timber.tag(TAG).d("details -->" + details);
 
@@ -135,10 +134,5 @@ public class AccountActivity extends AppCompatActivity {
     }
 
 
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEvent(SignOutResponseHandler.UseCaseSignOutCompleteEvent event) {
-        EventBus.getDefault().removeStickyEvent(SignOutResponseHandler.UseCaseSignOutCompleteEvent.class);
-        navigator.gotoActivityLogin(this);
-    }
 
 }

@@ -7,7 +7,7 @@ package it.flube.driver.modelLayer.interfaces;
 import java.util.ArrayList;
 
 import it.flube.driver.modelLayer.entities.batch.Batch;
-import it.flube.driver.modelLayer.entities.Driver;
+import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.entities.Offer;
 
 /**
@@ -18,7 +18,7 @@ import it.flube.driver.modelLayer.entities.Offer;
 public interface RealtimeMessagingInterface {
 
     interface Connection {
-        void messageServerConnectRequest(Driver driver, ConnectResponse response);
+        void messageServerConnectRequest(String clientId, String idToken, ConnectResponse response);
 
         interface ConnectResponse {
             void messageServerConnectSuccess();
@@ -91,6 +91,19 @@ public interface RealtimeMessagingInterface {
     }
 
     interface ActiveBatchChannel {
+
+        void connectRequest(String batchGuid, ActiveBatchChannelConnectResponse response);
+
+        interface ActiveBatchChannelConnectResponse {
+            void activeBatchChannelConnectComplete();
+        }
+
+        void disconnectRequest(ActiveBatchChannelDisconnectResponse response);
+
+        interface ActiveBatchChannelDisconnectResponse {
+            void activeBatchChannelDisconnectComplete();
+        }
+
         void attach(String batchGuid);
 
         void detach();

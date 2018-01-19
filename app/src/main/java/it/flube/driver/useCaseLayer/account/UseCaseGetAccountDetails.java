@@ -4,8 +4,9 @@
 
 package it.flube.driver.useCaseLayer.account;
 
-import it.flube.driver.modelLayer.entities.Driver;
+import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
+import timber.log.Timber;
 
 /**
  * Created on 7/16/2017
@@ -13,6 +14,8 @@ import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
  */
 
 public class UseCaseGetAccountDetails implements Runnable {
+    private final static String TAG = "UseCaseGetAccountDetails";
+
     private final MobileDeviceInterface device;
     private final UseCaseGetAccountDetails.Response response;
 
@@ -22,6 +25,7 @@ public class UseCaseGetAccountDetails implements Runnable {
     }
 
     public void run(){
+        Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
         if (device.getUser().isSignedIn()) {
             response.accountDetailSuccess(device.getUser().getDriver());
         } else {

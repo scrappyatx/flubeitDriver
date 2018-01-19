@@ -37,6 +37,9 @@
     <color name="colorStepTimingLate">@color/yellow</color>
     <color name="colorStepTimingVeryLate">@color/alerterRED</color>
 
+    <color name="colorHomeSummaryTitle">@color/translucentBlackCC</color>
+    <color name="colorHomeSummaryDescription">@color/translucentBlackAA</color>
+
     <color name="colorBatchDetailTitle">@color/translucentBlackCC</color>
     <color name="colorBatchDetailDescription">@color/translucentBlackAA</color>
 

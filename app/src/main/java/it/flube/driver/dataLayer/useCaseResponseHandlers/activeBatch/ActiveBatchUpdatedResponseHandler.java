@@ -7,7 +7,8 @@ package it.flube.driver.dataLayer.useCaseResponseHandlers.activeBatch;
 import org.greenrobot.eventbus.EventBus;
 
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.dataLayer.userInterfaceEvents.activeBatch.ActiveBatchUpdatedEvent;
+import it.flube.driver.dataLayer.useCaseResponseHandlers.deviceLocation.LocationTrackingPositionChangedHandler;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.activeBatch.ActiveBatchUpdatedEvent;
 import it.flube.driver.modelLayer.entities.batch.BatchDetail;
 import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
@@ -56,7 +57,8 @@ public class ActiveBatchUpdatedResponseHandler implements
 
 
         device = AndroidDevice.getInstance();
-        device.getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseStepStartedRequest(device, actorType, actionType, batchDetail, serviceOrder, step, this));
+        device.getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseStepStartedRequest(device, actorType, actionType,
+                batchDetail, serviceOrder, step, this));
     }
 
     /// there isn't a step

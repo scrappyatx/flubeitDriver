@@ -9,7 +9,7 @@ import android.content.Context;
 import com.rollbar.android.Rollbar;
 
 import it.flube.driver.BuildConfig;
-import it.flube.driver.modelLayer.entities.Driver;
+import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.interfaces.AppLoggingInterface;
 import it.flube.driver.modelLayer.interfaces.AppRemoteConfigInterface;
 import timber.log.Timber;
@@ -84,7 +84,7 @@ public class AppLoggingTimber implements AppLoggingInterface {
 
     public void setPersonData(Driver driver) {
         if (Rollbar.isInit()) {
-            Rollbar.setPersonData(driver.getClientId(), driver.getDisplayName(), driver.getEmail());
+            Rollbar.setPersonData(driver.getClientId(), driver.getNameSettings().getDisplayName(), driver.getEmail());
         }
     }
 
