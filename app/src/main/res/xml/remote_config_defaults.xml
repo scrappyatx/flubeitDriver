@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- START xml_defaults -->
+<defaultsMap>
+
+    <!-- user profile interface with cloud conceirge defaults -->
+
+    <entry>
+        <key>base_url</key>
+        <value>http://develop.api.flube.it/concierge-oil-service/</value>
+    </entry>
+
+    <entry>
+        <key>driver_profile_path</key>
+        <value>ably/clientId</value>
+    </entry>
+
+    <entry>
+        <key>ably_auth_token_path</key>
+        <value>ably/token</value>
+    </entry>
+
+    <entry>
+        <key>firebase_auth_token_path</key>
+        <value>firebase/token</value>
+    </entry>
+
+    <!-- firebase database storage defaults -->
+    <entry>
+        <key>firebase_database_base_node_public_offers</key>
+        <value>userReadable</value>
+    </entry>
+
+    <entry>
+        <key>firebase_database_base_node_personal_offers</key>
+        <value>userReadable/users</value>
+    </entry>
+
+    <entry>
+        <key>firebase_database_base_node_demo_offers</key>
+        <value>userOwned/users</value>
+    </entry>
+
+    <entry>
+        <key>firebase_database_base_node_scheduled_batches</key>
+        <value>userOwned/users</value>
+    </entry>
+
+    <entry>
+        <key>firebase_database_base_node_active_batch</key>
+        <value>userOwned/users</value>
+    </entry>
+
+    <entry>
+        <key>firebase_database_base_node_batch_data</key>
+        <value>userOwned/users</value>
+    </entry>
+
+    <entry>
+        <key>firebase_database_base_node_user_data</key>
+        <value>userWriteable/users</value>
+    </entry>
+
+    <entry>
+        <key>firebase_database_base_node_device_data</key>
+        <value>userWriteable/users</value>
+    </entry>
+
+
+    <!-- logging and crash reporting defaults -->
+
+    <entry>
+        <key>loggly_debug_active</key>
+        <value>true</value>
+    </entry>
+
+    <entry>
+        <key>loggly_release_active</key>
+        <value>false</value>
+    </entry>
+
+    <entry>
+        <key>rollbar_debug_active</key>
+        <value>true</value>
+    </entry>
+
+    <entry>
+        <key>rollbar_release_active</key>
+        <value>false</value>
+    </entry>
+
+    <!-- ably realtime communication defaults -->
+
+    <entry>
+        <key>ably_channel_name_looking_for_offers</key>
+        <value>LookingForOffers</value>
+    </entry>
+
+    <entry>
+        <key>ably_channel_name_batch_activity</key>
+        <value>BatchActivity</value>
+    </entry>
+
+    <entry>
+        <key>ably_channel_name_looking_for_offers_demo</key>
+        <value>LookingForOffersDemo</value>
+    </entry>
+
+    <!-- application color defaults -->
+
+    <entry>
+        <key>app_colors_colorPrimary</key>
+        <value>#009CC8</value>
+    </entry>
+
+    <entry>
+        <key>app_colors_colorPrimaryDark</key>
+        <value>#005989</value>
+    </entry>
+
+    <entry>
+        <key>app_colors_colorAccent</key>
+        <value>#FACF00</value>
+    </entry>
+
+    <entry>
+        <key>app_colors_colorButton</key>
+        <value>#FACF00</value>
+    </entry>
+
+    <entry>
+        <key>app_colors_colorErrorText</key>
+        <value>#EF5350</value>
+    </entry>
+
+    <entry>
+        <key>app_colors_colorControlActivated</key>
+        <value>#FACF00</value>
+    </entry>
+
+    <entry>
+        <key>app_colors_colorActivityBackground</key>
+        <value>#F3F3F3</value>
+    </entry>
+
+    <entry>
+        <key>app_colors_colorSplashScreenBackground</key>
+        <value>#77CEE7</value>
+    </entry>
+
+
+</defaultsMap>
+    <!-- END xml_defaults -->
