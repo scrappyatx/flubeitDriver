@@ -11,7 +11,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import it.flube.driver.userInterfaceLayer.ActivityNavigator;
+import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.activeBatch.ActiveBatchCompletedBatchEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.activeBatch.ActiveBatchCompletedServiceOrderEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.activeBatch.ActiveBatchCompletedStepEvent;

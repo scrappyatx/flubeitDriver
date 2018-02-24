@@ -9,6 +9,7 @@ import it.flube.driver.modelLayer.entities.batch.BatchHolder;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import it.flube.driver.modelLayer.interfaces.DemoBatchInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
+import timber.log.Timber;
 
 /**
  * Created on 9/6/2017
@@ -19,6 +20,8 @@ public class UseCaseMakeDemoBatchRequest implements
     Runnable,
     CloudDatabaseInterface.AddDemoOfferToOfferListResponse,
     CloudDatabaseInterface.SaveBatchDataResponse {
+
+    private final static String TAG = "UseCaseMakeDemoBatchRequest";
 
     private final DemoBatchInterface demoMaker;
     private final Response response;
@@ -38,9 +41,11 @@ public class UseCaseMakeDemoBatchRequest implements
     }
 
     public void run(){
+        Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
         //Step 1 - create a demo batch
         demoBatchHolder = demoMaker.createDemoBatch(driver);
 
+        Timber.tag(TAG).d("   batchGuid -> " + demoBatchHolder.getBatch().getGuid());
         //Step 2 - save the demo batch
         cloudDb.saveBatchDataRequest(demoBatchHolder, this);
     }
@@ -48,11 +53,13 @@ public class UseCaseMakeDemoBatchRequest implements
     public void cloudDatabaseBatchDataSaveComplete(){
         //Step 3 - add to the demo offer list
         cloudDb.addDemoOfferToOfferListRequest(demoBatchHolder.getBatch().getGuid(), this);
+        Timber.tag(TAG).d("   ...batchDataSaved");
     }
 
     public void cloudDatabaseAddDemoOfferToOfferListComplete(){
         //Step 4 - we are done
         response.makeDemoBatchComplete();
+        Timber.tag(TAG).d("   ...added to demo offer list");
     }
 
     public interface Response {

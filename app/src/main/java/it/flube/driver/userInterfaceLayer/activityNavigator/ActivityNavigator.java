@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
+ * Copyright (c) 2018. scrapdoodle, LLC.  All Rights Reserved
  */
 
-package it.flube.driver.userInterfaceLayer;
+package it.flube.driver.userInterfaceLayer.activityNavigator;
 
 import android.content.Context;
 import android.content.Intent;
@@ -40,10 +40,6 @@ public class ActivityNavigator {
     private static final String TAG = "ActivityNavigator";
 
     private static final String BATCH_GUID_KEY = "batchGuid";
-    private static final String CLAIM_OFFER_RESULT_KEY = "claimOfferResult";
-    private static final String CLAIM_OFFER_SUCCESS_VALUE = "success";
-    private static final String CLAIM_OFFER_FAILURE_VALUE = "failure";
-    private static final String CLAIM_OFFER_TIMEOUT_VALUE = "timeout";
 
     public ActivityNavigator(){}
 
@@ -96,29 +92,32 @@ public class ActivityNavigator {
     ///  DEMO OFFERS
     ///
     public void gotoActivityDemoOffers(Context context) {
-        context.startActivity(new Intent(context, DemoOffersActivity.class));
-        Timber.tag(TAG).d("starting activity DemoOffersActivity.class");
+        DemoOffersNavigator.gotoActivityDemoOffers(context);
     }
 
     public void gotoActivityDemoOffersAndShowOfferClaimedSuccessAlert(Context context){
-        Intent i = new Intent(context, DemoOffersActivity.class);
-        i.putExtra(CLAIM_OFFER_RESULT_KEY, CLAIM_OFFER_SUCCESS_VALUE);
-        context.startActivity(i);
-        Timber.tag(TAG).d("starting activity OfferClaimActivity.class AND show claim offer success alert");
+        DemoOffersNavigator.gotoActivityDemoOffersAndShowOfferClaimedSuccessAlert(context);
     }
 
     public void gotoActivityDemoOffersAndShowOfferClaimedFailureAlert(Context context){
-        Intent i = new Intent(context, DemoOffersActivity.class);
-        i.putExtra(CLAIM_OFFER_RESULT_KEY, CLAIM_OFFER_FAILURE_VALUE);
-        context.startActivity(i);
-        Timber.tag(TAG).d("starting activity OfferClaimActivity.class AND show claim offer failure alert");
+        DemoOffersNavigator.gotoActivityDemoOffersAndShowOfferClaimedFailureAlert(context);
     }
 
     public void gotoActivityDemoOffersAndShowOfferClaimedTimeoutAlert(Context context){
-        Intent i = new Intent(context, DemoOffersActivity.class);
-        i.putExtra(CLAIM_OFFER_RESULT_KEY, CLAIM_OFFER_TIMEOUT_VALUE);
-        context.startActivity(i);
-        Timber.tag(TAG).d("starting activity OfferClaimActivity.class AND show claim offer timeout alert");
+        DemoOffersNavigator.gotoActivityDemoOffersAndShowOfferClaimedTimeoutAlert(context);
+    }
+
+    public void gotoActivityDemoOffersAndShowDemoOfferMakeSuccess(Context context){
+       DemoOffersNavigator.gotoActivityDemoOffersAndShowDemoOfferMakeSuccess(context);
+    }
+
+    public void gotoActivityDemoOffersAndShowDemoOfferMakeFailure(Context context){
+        DemoOffersNavigator.gotoActivityDemoOffersAndShowDemoOfferMakeFailure(context);
+    }
+
+    //// DEMO OFFERS MAKE
+    public void gotoActivityDemoOffersMake(Context context){
+        DemoOffersMakeNavigator.gotoActivityDemoOffersMake(context);
     }
 
 
@@ -187,6 +186,12 @@ public class ActivityNavigator {
         Timber.tag(TAG).d("starting activity SignInAuthUiLaunchActivity.class");
         //new FirebaseAuthUiSignIn().signIn(context);
         //Timber.tag(TAG).d("starting activity AuthUI signin");
+    }
+
+    //// PHOTO STEP NAVIGATION
+    public void gotoActivityPhotoDetail(Context context, String photoRequestGuid){
+        PhotoStepNavigator.gotoActivityPhotoDetail(context, photoRequestGuid);
+        Timber.tag(TAG).d("starting activity PhotoDetail, photoRequestGuid -> " + photoRequestGuid);
     }
 
 }

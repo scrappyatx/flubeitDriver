@@ -15,7 +15,7 @@ import it.flube.driver.dataLayer.DeviceCheckForGooglePlayServices;
 
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import it.flube.driver.useCaseLayer.appInitialization.UseCaseInitialization;
-import it.flube.driver.userInterfaceLayer.ActivityNavigator;
+import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import timber.log.Timber;
 
 /**

@@ -272,6 +272,45 @@ public interface CloudDatabaseInterface {
     }
 
     ///
+    ///  File upload tasks -> for files uploading to storage
+    ///
+
+    void addPhotoUploadTaskToNotStartedRequest(String batchGuid, String serviceOrderGuid, String orderStepGuid, String photoRequestGuid,
+                                               String deviceGuid, String deviceAbsoluteFileName, String cloudStorageFileName,
+                                               AddPhotoUploadTaskResponse response);
+
+    interface AddPhotoUploadTaskResponse {
+        void cloudDatabaseAddPhotoUploadTaskComplete();
+    }
+
+    void movePhotoUploadTaskToInProgress(String batchGuid, String serviceOrderGuid, String orderStepGuid, String photoRequestGuid,
+                                         String deviceGuid, String deviceAbsoluteFileName, String cloudStorageFileName,
+                                         String sessionUriString, Double progress,
+                                         MovePhotoUploadTaskInProgressResponse response);
+
+    interface MovePhotoUploadTaskInProgressResponse {
+        void cloudDatabaseMovePhotoUploadTaskToInProgressComplete();
+    }
+
+    void movePhotoUploadTaskToFinished(String batchGuid, String serviceOrderGuid, String orderStepGuid, String photoRequestGuid,
+                                       String deviceGuid, String deviceAbsoluteFileName, String cloudStorageFileName,
+                                       MovePhotoUploadTaskFinishedResponse response);
+
+
+    interface MovePhotoUploadTaskFinishedResponse {
+        void cloudDatabaseMovePhotoUploadTaskFinishedComplete();
+    }
+
+    void movePhotoUploadTaskToFailed(String batchGuid, String serviceOrderGuid, String orderStepGuid, String photoRequestGuid,
+                                     String deviceGuid, String deviceAbsoluteFileName, String cloudStorageFileName,
+                                     MovePhotoUploadTaskFailedResponse response);
+
+
+    interface MovePhotoUploadTaskFailedResponse {
+        void cloudDatabaseMoveUploadTaskFailedComplete(Integer attempts);
+    }
+
+    ///
     /// ActiveBatchNodes -> want to work these out of public interface
     ///
     ///void setActiveBatchNodesRequest(String batchGuid, Integer serviceOrderSequence, Integer stepSequence,

@@ -48,7 +48,10 @@
         <activity android:name=".userInterfaceLayer.activities.messages.MessagesActivity" />
         <activity android:name=".userInterfaceLayer.activities.offers.publicOffers.PublicOffersActivity" />
         <activity android:name=".userInterfaceLayer.activities.offers.personalOffers.PersonalOffersActivity" />
+
         <activity android:name=".userInterfaceLayer.activities.offers.demoOffers.DemoOffersActivity" />
+        <activity android:name=".userInterfaceLayer.activities.offers.demoOffers.DemoOffersMakeActivity"
+            android:noHistory="true" />
 
         <activity android:name=".userInterfaceLayer.activities.scheduledBatches.scheduledBatchList.ScheduledBatchesActivity" />
 
@@ -65,8 +68,14 @@
             android:noHistory="true" />
         <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.NavigationActivity"
             android:noHistory="true" />
+
         <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.PhotoActivity"
             android:noHistory="true" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.PhotoDetailActivity"
+            android:noHistory="true" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.PhotoTakeActivity"
+            android:noHistory="true" />
+
         <activity android:name=".userInterfaceLayer.activities.activeBatch.batchItinerary.BatchItineraryActivity"
             android:noHistory="true" />
         <activity android:name=".userInterfaceLayer.activities.activeBatch.orderItinerary.OrderItineraryActivity"

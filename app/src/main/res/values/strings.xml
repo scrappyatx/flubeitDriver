@@ -131,6 +131,11 @@
     <string name="demo_offers_generate_caption">Make a new demo offer</string>
     <string name="demo_offers_generate_confirmation">Are you sure you want to make a new demo offer?\n\nThe existing demo offer will be replaced</string>
 
+    <!-- Strings related to demo offers activity layout -->
+    <string name="demo_offers_make_instructions">Tap the type of demo offer to create</string>
+    <string name="demo_offers_make_two_step_button_caption">Two Step Offer, with navigation step and simple photo step</string>
+    <string name="demo_offers_make_auto_photos_button_caption">Two Step Offer, with navigation step and auto photo step</string>
+
     <!-- Strings related to demo offer alerts -->
     <string name="demo_offers_alert_created_title">SUCCESS</string>
     <string name="demo_offers_alert_created_message">You created a demo offer!</string>
@@ -257,6 +262,8 @@
     <string name="photo_step_activity_title">Photos</string>
     <string name="photo_step_completed_step_button_caption">I\'m finished</string>
 
+    <!-- Strings related to photo take activity layout -->
+    <string name="photo_take_button_caption">{fa-camera}</string>
 
 
 </resources>

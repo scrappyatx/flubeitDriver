@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2018. scrapdoodle, LLC.  All Rights Reserved
+  -->
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/photo_list_sequence"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="4dp"
+
+        android:background="@drawable/step_work_stage_circle_not_started"
+        android:gravity="center"
+        android:textAppearance="@style/PhotoRequestRowSequence"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="@+id/vGuideline10"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="1" />
+
+    <TextView
+        android:id="@+id/photo_list_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        tools:text="Front of Car"
+        android:textAppearance="@style/PhotoRequestRowTitle"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/photo_list_description"
+        app:layout_constraintLeft_toRightOf="@+id/vGuideline10"
+
+
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/photo_list_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        tools:text="This is the front of car photo"
+        android:textAppearance="@style/PhotoRequestRowDescription"
+
+        app:layout_constraintTop_toBottomOf="@+id/photo_list_title"
+        app:layout_constraintLeft_toRightOf="@+id/vGuideline10"
+
+
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp" />
+
+    <ImageView
+        android:id="@+id/image_photo_hint"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="4dp"
+
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"
+        android:scaleType="fitCenter"
+
+        tools:src="@mipmap/jiffylube"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/vGuideline70"
+        app:layout_constraintRight_toLeftOf="@+id/vGuideline90"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <ImageView
+        android:id="@+id/image_photo_actual"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="4dp"
+
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"
+        android:scaleType="fitCenter"
+
+        tools:src="@mipmap/jiffylube"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/vGuideline70"
+        app:layout_constraintRight_toLeftOf="@+id/vGuideline90"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+
+</android.support.constraint.ConstraintLayout>

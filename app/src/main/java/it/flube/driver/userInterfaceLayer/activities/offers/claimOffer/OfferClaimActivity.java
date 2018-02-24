@@ -5,33 +5,23 @@
 package it.flube.driver.userInterfaceLayer.activities.offers.claimOffer;
 
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 
 import android.view.View;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 
 import it.flube.driver.R;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.OfferSelectedResponseHandler;
 import it.flube.driver.modelLayer.entities.RouteStop;
 import it.flube.driver.modelLayer.entities.batch.BatchDetail;
 import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
 import it.flube.driver.useCaseLayer.batchDetail.UseCaseGetBatchData;
 import it.flube.driver.useCaseLayer.claimOffer.UseCaseClaimDemoOfferRequest;
-import it.flube.driver.userInterfaceLayer.ActivityNavigator;
+import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import it.flube.driver.userInterfaceLayer.layoutComponents.batchDetail.batchDetailTab.BatchDetailTabLayoutComponents;
-import it.flube.driver.userInterfaceLayer.layoutComponents.batchDetail.batchDetailTab.tabDetails.TabDetailLayoutComponents;
 import it.flube.driver.userInterfaceLayer.layoutComponents.batchDetail.BatchDetailTitleLayoutComponents;
-import it.flube.driver.userInterfaceLayer.layoutComponents.batchDetail.batchDetailTab.tabLocations.TabLocationsLayoutComponents;
 import it.flube.driver.userInterfaceLayer.layoutComponents.offerClaim.OfferClaimLayoutComponents;
-import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerClaim.demoOffers.ClaimDemoOfferFailureEvent;
-import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerClaim.demoOffers.ClaimDemoOfferSuccessEvent;
 import timber.log.Timber;
 
 /**

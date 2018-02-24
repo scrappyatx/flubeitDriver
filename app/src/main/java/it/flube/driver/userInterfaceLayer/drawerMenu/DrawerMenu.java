@@ -38,7 +38,7 @@ import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.P
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.PublicOfferCountUpdatedEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.scheduledBatchListUpdates.ScheduledBatchCountUpdateEvent;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
-import it.flube.driver.userInterfaceLayer.ActivityNavigator;
+import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.userInterfaceEventHandlers.UserInterfaceEventHandler;
 import timber.log.Timber;
 

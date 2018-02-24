@@ -4,6 +4,11 @@
 
 package it.flube.driver.userInterfaceLayer;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import java.io.ByteArrayOutputStream;
+
 import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
 
 /**
@@ -75,5 +80,15 @@ public class UserInterfaceUtilities {
             default:
                 return "";
         }
+    }
+
+    public static byte[] convertBitmapToByteArray(Bitmap bitmap){
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteStream);
+        return byteStream.toByteArray();
+    }
+
+    public static Bitmap convertByteArrayToBitmap(byte[] byteArray){
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
     }
 }

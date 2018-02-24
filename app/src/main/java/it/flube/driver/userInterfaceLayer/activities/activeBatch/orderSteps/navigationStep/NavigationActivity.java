@@ -48,7 +48,7 @@ import it.flube.driver.userInterfaceLayer.userInterfaceEvents.batchAlerts.ShowCo
 import it.flube.driver.modelLayer.entities.AddressLocation;
 import it.flube.driver.modelLayer.entities.LatLonLocation;
 import it.flube.driver.modelLayer.entities.orderStep.ServiceOrderNavigationStep;
-import it.flube.driver.userInterfaceLayer.ActivityNavigator;
+import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.ActiveBatchAlerts;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import timber.log.Timber;
@@ -460,7 +460,7 @@ public class NavigationActivity extends AppCompatActivity implements
     }
 
     public void createDueByViewGroupElements(){
-        stepWorkTiming = (TextView) findViewById(R.id.step_detail_workTiming);
+        stepWorkTiming = (TextView) findViewById(R.id.step_detail_work_timing);
         stepDueByCaption = (TextView) findViewById(R.id.step_detail_complete_by_caption);;
         stepDueByValue = (TextView) findViewById(R.id.step_detail_complete_by_value);
         dateFormat = new SimpleDateFormat("h:mm aa", Locale.US);

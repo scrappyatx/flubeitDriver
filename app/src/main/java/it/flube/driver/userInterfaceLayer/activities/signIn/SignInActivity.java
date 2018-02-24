@@ -16,11 +16,9 @@ import android.widget.TextView;
 import com.airbnb.lottie.LottieAnimationView;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import it.flube.driver.R;
-import it.flube.driver.userInterfaceLayer.ActivityNavigator;
+import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import timber.log.Timber;
 
 

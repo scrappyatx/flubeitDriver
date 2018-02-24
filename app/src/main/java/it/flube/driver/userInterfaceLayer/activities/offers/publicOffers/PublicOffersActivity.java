@@ -25,7 +25,7 @@ import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerAlerts.ShowCl
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerAlerts.ShowClaimOfferTimeoutAlertEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.PublicOfferListUpdatedEvent;
 import it.flube.driver.modelLayer.entities.batch.Batch;
-import it.flube.driver.userInterfaceLayer.ActivityNavigator;
+import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import it.flube.driver.userInterfaceLayer.layoutComponents.offers.OffersListAdapter;
 import it.flube.driver.userInterfaceLayer.activities.offers.claimOffer.OfferClaimAlerts;

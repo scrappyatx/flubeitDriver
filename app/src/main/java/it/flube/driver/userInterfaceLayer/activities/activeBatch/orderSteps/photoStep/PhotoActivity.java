@@ -6,24 +6,24 @@ package it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.pho
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
+import it.flube.driver.modelLayer.entities.PhotoRequest;
+import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
+import it.flube.driver.userInterfaceLayer.layoutComponents.orderStep.StepDetailCompleteLayoutComponents;
+import it.flube.driver.userInterfaceLayer.layoutComponents.orderStep.StepDetailDueByLayoutComponents;
+import it.flube.driver.userInterfaceLayer.layoutComponents.orderStep.StepDetailTitleLayoutComponents;
+import it.flube.driver.userInterfaceLayer.layoutComponents.orderStep.photoList.PhotoRequestListAdapter;
+import it.flube.driver.userInterfaceLayer.layoutComponents.orderStep.photoList.PhotoRequestListLayoutComponents;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.batchAlerts.ShowCompletedServiceOrderAlertEvent;
 import it.flube.driver.modelLayer.entities.orderStep.ServiceOrderPhotoStep;
-import it.flube.driver.userInterfaceLayer.ActivityNavigator;
+import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.ActiveBatchAlerts;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import timber.log.Timber;
@@ -34,7 +34,8 @@ import timber.log.Timber;
  */
 
 public class PhotoActivity extends AppCompatActivity implements
-        ActiveBatchAlerts.ServiceOrderCompletedAlertHidden {
+        ActiveBatchAlerts.ServiceOrderCompletedAlertHidden,
+        PhotoRequestListAdapter.Response {
 
     private static final String TAG = "PhotoActivity";
 
@@ -42,25 +43,10 @@ public class PhotoActivity extends AppCompatActivity implements
     private PhotoController controller;
     private DrawerMenu drawer;
 
-    //step detail title viewgroup
-    private TextView stepSequence;
-    private TextView stepTitle;
-    private TextView stepDescription;
-    private TextView stepWorkStage;
-
-    //step detail due by viewgroup
-    private TextView stepWorkTiming;
-    private TextView stepDueByCaption;
-    private TextView stepDueByValue;
-
-    //step finished button
-    private Button stepFinishedButton;
-
-
-    private RecyclerView photoRequestListView;
-    //private ServiceOrderListAdapter orderListAdapter;
-
-    private DateFormat dateFormat;
+    private StepDetailTitleLayoutComponents stepTitle;
+    private StepDetailDueByLayoutComponents stepDueBy;
+    private PhotoRequestListLayoutComponents photoList;
+    private StepDetailCompleteLayoutComponents stepComplete;
 
 
     @Override
@@ -69,23 +55,10 @@ public class PhotoActivity extends AppCompatActivity implements
 
         setContentView(R.layout.activity_photo_step);
 
-        //step detail title viewgroup
-        stepSequence = (TextView) findViewById(R.id.step_sequence);
-        stepTitle = (TextView) findViewById(R.id.step_title);
-        stepDescription = (TextView) findViewById(R.id.step_description);
-        stepWorkStage = (TextView) findViewById(R.id.step_workStage);
-
-        //step due by viewgroup
-        stepWorkTiming = (TextView) findViewById(R.id.step_detail_workTiming);
-        stepDueByCaption = (TextView) findViewById(R.id.step_detail_complete_by_caption);
-        stepDueByValue = (TextView) findViewById(R.id.step_detail_complete_by_value);
-
-        //photoRequest recycler view
-        photoRequestListView = (RecyclerView) findViewById(R.id.photoRequestListView);
-        //buttons
-        stepFinishedButton = (Button) findViewById(R.id.step_complete_button);
-
-        dateFormat = new SimpleDateFormat("h:mm aa", Locale.US);
+        stepTitle = new StepDetailTitleLayoutComponents(this);
+        stepDueBy = new StepDetailDueByLayoutComponents(this);
+        photoList = new PhotoRequestListLayoutComponents(this, this);
+        stepComplete = new StepDetailCompleteLayoutComponents(this, getResources().getString(R.string.photo_step_completed_step_button_caption));
 
     }
 
@@ -97,10 +70,12 @@ public class PhotoActivity extends AppCompatActivity implements
         drawer = new DrawerMenu(this, navigator, R.string.photo_step_activity_title);
         controller = new PhotoController();
 
-        updateStepTitleViewGroup();
-        updateStepDueByViewGroup();
-        updatePhotoRequestList();
-        stepFinishedButton.setVisibility(View.VISIBLE);
+        updateValues();
+
+        stepTitle.setVisible();
+        stepDueBy.setVisible();
+        photoList.setVisible();
+        stepComplete.setVisible();
 
         EventBus.getDefault().register(this);
 
@@ -118,79 +93,28 @@ public class PhotoActivity extends AppCompatActivity implements
         EventBus.getDefault().unregister(this);
     }
 
-    private void updateStepTitleViewGroup(){
-        Timber.tag(TAG).d("updating stepTitleViewgroup...");
+    private void updateValues(){
+        Timber.tag(TAG).d("updating Values...");
         if (AndroidDevice.getInstance().getActiveBatch().hasActiveBatch()) {
             ServiceOrderPhotoStep step = AndroidDevice.getInstance().getActiveBatch().getPhotoStep();
+            OrderStepInterface oiStep = AndroidDevice.getInstance().getActiveBatch().getStep();
 
-            stepSequence.setText(step.getSequence().toString());
-            stepSequence.setVisibility(View.VISIBLE);
+            stepTitle.setValues(this, oiStep);
+            stepDueBy.setValues(this, oiStep);
+            photoList.setValues(step.getPhotoRequestList());
 
-            stepTitle.setText(step.getTitle());
-            stepTitle.setVisibility(View.VISIBLE);
-
-            stepDescription.setText(step.getDescription());
-            stepDescription.setVisibility(View.VISIBLE);
-
-            stepWorkStage.setText(step.getWorkStageIconTextMap().get(step.getWorkStage().toString()));
-            stepWorkStage.setTextColor(getResources().getColor(R.color.colorStepStageActive));
-            stepWorkStage.setVisibility(View.VISIBLE);
-
+            Timber.tag(TAG).d("...photoList update complete");
         } else {
-            stepSequence.setVisibility(View.INVISIBLE);
-            stepTitle.setVisibility(View.INVISIBLE);
-            stepDescription.setVisibility(View.INVISIBLE);
-            stepWorkStage.setVisibility(View.INVISIBLE);
-            Timber.tag(TAG).d("...can't update stepTitleViewgroup, no active batch");
+            Timber.tag(TAG).d("...can't update photoList, no active batch");
         }
     }
 
-    private void updateStepDueByViewGroup(){
-        Timber.tag(TAG).d("updating stepDueByViewgroup...");
-        if (AndroidDevice.getInstance().getActiveBatch().hasActiveBatch()) {
-
-            ServiceOrderPhotoStep step = AndroidDevice.getInstance().getActiveBatch().getPhotoStep();
-
-            stepWorkTiming.setText(step.getWorkTimingIconTextMap().get(step.getWorkTiming().toString()));
-            switch (step.getWorkTiming()){
-                case ON_TIME:
-                    stepWorkTiming.setTextColor(getResources().getColor(R.color.colorStepTimingOnTime));
-                    break;
-                case LATE:
-                    stepWorkTiming.setTextColor(getResources().getColor(R.color.colorStepTimingLate));
-                    break;
-                case VERY_LATE:
-                    stepWorkTiming.setTextColor(getResources().getColor(R.color.colorStepTimingVeryLate));
-                    break;
-                default:
-                    stepWorkTiming.setTextColor(getResources().getColor(R.color.colorStepTimingOnTime));
-                    break;
-            }
-            stepWorkTiming.setTextColor(getResources().getColor(R.color.colorStepTimingOnTime));
-            stepWorkTiming.setVisibility(View.VISIBLE);
-
-            stepDueByCaption.setVisibility(View.VISIBLE);
-
-            String dueTime = dateFormat.format(step.getFinishTime().getScheduledTime());
-            Timber.tag(TAG).d("---> Formatted due by   : " + dueTime);
-
-            stepDueByValue.setText(dueTime);
-            stepDueByValue.setVisibility(View.VISIBLE);
-
-        } else {
-            stepWorkTiming.setVisibility(View.INVISIBLE);
-            stepDueByCaption.setVisibility(View.INVISIBLE);
-            stepDueByValue.setVisibility(View.INVISIBLE);
-            Timber.tag(TAG).d("...can't update stepDueByViewgroup, no active batch");
-        }
-    }
-
-    private void updatePhotoRequestList(){
-        photoRequestListView.setVisibility(View.INVISIBLE);
-    }
 
     public void clickStepCompleteButton(View v){
         Timber.tag(TAG).d("clicked step complete button");
+
+        stepComplete.buttonWasClicked();
+
         String milestoneEvent;
         if (AndroidDevice.getInstance().getActiveBatch().hasActiveBatch()) {
             ServiceOrderPhotoStep step = AndroidDevice.getInstance().getActiveBatch().getPhotoStep();
@@ -199,6 +123,13 @@ public class PhotoActivity extends AppCompatActivity implements
             milestoneEvent = "no milestone";
         }
         controller.stepFinished(milestoneEvent);
+    }
+
+    //// photo list interface
+    public void photoRequestSelected(PhotoRequest photoRequest){
+        Timber.tag(TAG).d("photoRequestSelected -> " + photoRequest.getGuid());
+
+
     }
 
     @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)

@@ -46,6 +46,11 @@
     <color name="colorNavStepDestinationCaption">@color/colorTextPrimaryDark</color>
     <color name="colorNavStepDestinationAddress">@color/translucentBlackCC</color>
 
+    <color name="colorPhotoRequestRowSequence">@color/colorTextPrimaryLight</color>
+    <color name="colorPhotoRequestRowTitle">@color/translucentBlackCC</color>
+    <color name="colorPhotoRequestRowDescription">@color/translucentBlackAA</color>
+    <color name="colorPhotoRequestRowStatus">@color/translucentBlackAA</color>
+
 
 
     <color name="grey">#788FA0</color>

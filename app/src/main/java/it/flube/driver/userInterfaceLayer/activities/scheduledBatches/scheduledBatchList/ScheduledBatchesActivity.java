@@ -24,7 +24,7 @@ import it.flube.driver.userInterfaceLayer.userInterfaceEvents.batchAlerts.ShowFo
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.batchAlerts.ShowStartedBatchAlertEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.scheduledBatchListUpdates.ScheduledBatchListUpdateEvent;
 import it.flube.driver.modelLayer.entities.batch.Batch;
-import it.flube.driver.userInterfaceLayer.ActivityNavigator;
+import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import it.flube.driver.userInterfaceLayer.activities.scheduledBatches.manageBatch.BatchManageAlerts;
 import timber.log.Timber;

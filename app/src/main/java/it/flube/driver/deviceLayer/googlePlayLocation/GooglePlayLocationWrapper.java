@@ -31,7 +31,8 @@ import timber.log.Timber;
 
 public class GooglePlayLocationWrapper implements
         LocationTelemetryInterface,
-        OnCompleteListener<android.location.Location> {
+        OnCompleteListener<android.location.Location>,
+        LocationCallbackWrapper.UpdateLastGoodPositionInterface {
 
     private static final String TAG = "GooglePlayLocationWrapper";
 
@@ -55,7 +56,7 @@ public class GooglePlayLocationWrapper implements
 
 
     public GooglePlayLocationWrapper(Context appContext){
-        Timber.tag(TAG).w("creating GooglePlayLocationWrapper START...");
+        Timber.tag(TAG).d("creating GooglePlayLocationWrapper START...");
 
         clientOk = false;
         lastGoodPositionSaved = false;
@@ -82,7 +83,7 @@ public class GooglePlayLocationWrapper implements
             client.getLastLocation().addOnCompleteListener(this);
         }
 
-        Timber.tag(TAG).w("...GooglePlayLocationWrapper CREATED");
+        Timber.tag(TAG).d("...GooglePlayLocationWrapper CREATED");
     }
 
     public void locationTrackingStartRequest(LocationTelemetryInterface.LocationTrackingStartResponse response){
@@ -98,7 +99,7 @@ public class GooglePlayLocationWrapper implements
                 try {
                     handlerThread = new HandlerThread("locationHandlerThread");
                     handlerThread.start();
-                    callback = new LocationCallbackWrapper();
+                    callback = new LocationCallbackWrapper(this);
 
                     client.requestLocationUpdates(getLocationRequest(), callback, handlerThread.getLooper());
 
@@ -194,6 +195,14 @@ public class GooglePlayLocationWrapper implements
         } else {
             Timber.tag(TAG).d("      ...was NOT successful!");
         }
+    }
+
+    ///
+    ///  UpdateLastGoodPositionInterface
+    ///
+    public void locationUpdated(@NonNull Location location){
+        Timber.tag(TAG).d("   ...location update received!");
+        updateLastGoodPosition(location);
     }
 
 }

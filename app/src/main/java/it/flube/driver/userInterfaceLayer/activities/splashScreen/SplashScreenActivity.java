@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.DeviceCheckForGooglePlayServices;
-import it.flube.driver.userInterfaceLayer.ActivityNavigator;
+import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.userInterfaceEventHandlers.UserInterfaceEventHandler;
 import timber.log.Timber;
 

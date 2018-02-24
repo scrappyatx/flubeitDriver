@@ -17,6 +17,7 @@ import it.flube.driver.modelLayer.builders.DisplayDistanceBuilder;
 import it.flube.driver.modelLayer.builders.DisplayTimingBuilder;
 import it.flube.driver.modelLayer.builders.LatLonLocationBuilder;
 import it.flube.driver.modelLayer.builders.PhotoRequestBuilder;
+import it.flube.driver.modelLayer.builders.PhotoRequestListForVehicleBuilder;
 import it.flube.driver.modelLayer.builders.PhotoStepBuilder;
 import it.flube.driver.modelLayer.builders.PotentialEarningsBuilder;
 import it.flube.driver.modelLayer.builders.ServiceOrderScaffoldBuilder;
@@ -41,6 +42,73 @@ public class DemoBatchNearbyPhotos implements DemoBatchInterface {
     public DemoBatchNearbyPhotos(){
         createBatchTitle();
     }
+
+    /// Vehicle Photo Batch
+    public BatchHolder createDemoVehiclePhotoBatch(@NonNull Driver driver){
+        return getDemoVehicleBatch(driver, BuilderUtilities.generateGuid());
+    }
+
+    public BatchHolder createDemoVehiclePhotoBatch(@NonNull Driver driver, @NonNull String batchGuid){
+        return getDemoVehicleBatch(driver, batchGuid);
+    }
+
+    public BatchHolder getDemoVehicleBatch(@NonNull Driver driver, @NonNull String batchGuid){
+
+        return new BatchHolderBuilder.Builder()
+                .batchType(BatchDetail.BatchType.MOBILE_DEMO)
+                .claimStatus(BatchDetail.ClaimStatus.NOT_CLAIMED)
+                .guid(batchGuid)
+                .title(getRandomTitle())
+                .description("pick up a vehicle")
+                .iconUrl(getRandomIconUrl())
+                .displayTiming(new DisplayTimingBuilder.Builder()
+                        .date("Today")
+                        .hours("9:30 am - 12:00 pm")
+                        .duration("2.5 hours")
+                        .offerExpiryDate("Claim by today, 3:00 pm")
+                        .build())
+                .displayDistance(new DisplayDistanceBuilder.Builder()
+                        .distanceToTravel("18 miles")
+                        .distanceIndicatorUrl(getRandomDistanceIndicatorUrl())
+                        .build())
+                .potentialEarnings(new PotentialEarningsBuilder.Builder()
+                        .payRateInCents(2800)
+                        .earningsType(PotentialEarnings.EarningsType.FIXED_FEE)
+                        .plusTips(true)
+                        .build())
+                .expectedStartTime(BuilderUtilities.getNowDate())
+                .expectedFinishTime(BuilderUtilities.getFutureDate(150))
+                .addServiceOrder(new ServiceOrderScaffoldBuilder.Builder()
+                        .title("DEMO ORDER")
+                        .description("Go to destination and take photos of a car")
+                        .startTime(BuilderUtilities.getNowDate())
+                        .finishTime(BuilderUtilities.getFutureDate(30))
+                        .addStep(new NavigationStepBuilder.Builder()
+                                .title("Go to end of street")
+                                .description("Navigate to the end of the street")
+                                .startTime(BuilderUtilities.getNowDate())
+                                .finishTime(BuilderUtilities.getNowDate(),10)
+                                .destination(new DestinationBuilder.Builder()
+                                        .targetAddress(getAddressByClientId(driver.getClientId()))
+                                        .targetLatLon(getLatLonLocationByClientID(driver.getClientId()))
+                                        .targetType(Destination.DestinationType.OTHER)
+                                        .build())
+                                .milestoneWhenFinished("Arrived At Destination")
+                                .build())
+                        .addStep(new PhotoStepBuilder.Builder()
+                                .title("Take three photos")
+                                .description("Take three photos of things around you")
+                                .startTime(BuilderUtilities.getNowDate(), 10)
+                                .finishTime(BuilderUtilities.getNowDate(), 20)
+                                .milestoneWhenFinished("Photos Taken")
+                                .addVehiclePhotoRequests(new PhotoRequestListForVehicleBuilder.Builder()
+                                        .build())
+                                .build())
+                        .build())
+                .build();
+    }
+
+    /// 3 photo demo batch
 
     public BatchHolder createDemoBatch(@NonNull Driver driver) {
         // if user doesn't supply a batchGUID, we create one
@@ -120,8 +188,6 @@ public class DemoBatchNearbyPhotos implements DemoBatchInterface {
 
 
 
-
-
     private AddressLocation getAddressByClientId(@NonNull String clientId){
         String street;
         String city;
@@ -129,7 +195,9 @@ public class DemoBatchNearbyPhotos implements DemoBatchInterface {
         String zip;
 
         switch (clientId) {
-            case "5904da5fff2f3a2fd19d3cf6":
+            case "UrA04KD3kfQfF7W6ljQ3jeukuAi2": //cocopebble@test.com
+            case "GG85NOrJ7MOpRn0Xk97hRza5V8k2": //coryplusplus@gmail.com
+
                 // cory kelly
                 // 607 Hyde Park Place, Austin TX 78748
                 // lat lon = (30.176713, -97.798745)
@@ -143,7 +211,8 @@ public class DemoBatchNearbyPhotos implements DemoBatchInterface {
                 state = "TX";
                 zip = "78747";
                 break;
-            case "59409679ff2f3a45ba272dad":
+            case "Gg1g9iiHDjTqRhxEFoOLZ3DWOzw1":  //testtt@test.com
+            case "EtqQbEGuwrdTOjeGLbUK5b845R03": //godwinbw@yahoo.com
                 //bryan godwin
                 //2001 summercrest cove, round rock tx 78681
                 // lat lon = (30.545792, -97.757828)
@@ -171,7 +240,8 @@ public class DemoBatchNearbyPhotos implements DemoBatchInterface {
 
 
                 break;
-            case "597b2fa17729e871ed1775ce":
+            case "ftEt6rBZ31gp2AjJ3ludOFNF9Dp2": //shadyguy@test.com
+            case "wXDKdJU1vvMcJPLzEWPewVc1JKG3": //fluberthree@gmail.com
                 // sean howell
                 // 2020 E 2nd St Unit A, Austin TX 78702
                 // lat lon =(30.257000, -97.721278)

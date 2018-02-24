@@ -11,7 +11,7 @@ import android.widget.Button;
 
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.userInterfaceLayer.ActivityNavigator;
+import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.dialogs.QuitAppAlertDialog;
 import it.flube.driver.userInterfaceLayer.userInterfaceEventHandlers.UserInterfaceAuthAlertEventHandler;
 import it.flube.driver.userInterfaceLayer.userInterfaceEventHandlers.UserInterfaceAuthChangeEventHandler;

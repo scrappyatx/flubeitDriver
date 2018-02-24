@@ -13,6 +13,8 @@ import it.flube.driver.modelLayer.entities.DeviceInfo;
 
 public interface MobileDeviceInterface {
 
+    String getDeviceGuid();
+
     void deviceInfoRequest(DeviceInfoRequestComplete response);
 
     interface DeviceInfoRequestComplete {
@@ -20,7 +22,6 @@ public interface MobileDeviceInterface {
 
         void deviceInfoFailure(Exception exception);
     }
-
 
     ActiveBatchInterface getActiveBatch();
 
@@ -34,11 +35,13 @@ public interface MobileDeviceInterface {
 
     CloudAuthInterface getCloudAuth();
 
-    CloudStorageInterface getCloudStorage();
+    CloudImageStorageInterface getCloudStorage();
 
     CloudDatabaseInterface getCloudDatabase();
 
     DeviceStorageInterface getDeviceStorage();
+
+    DeviceImageStorageInterface getDeviceImageStorage();
 
     UseCaseInterface getUseCaseEngine();
 

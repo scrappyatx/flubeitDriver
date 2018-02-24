@@ -5,10 +5,7 @@
 package it.flube.driver.userInterfaceLayer.activities.home;
 
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -24,10 +21,8 @@ import it.flube.driver.userInterfaceLayer.layoutComponents.homeSummary.Scheduled
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.batchAlerts.ShowCompletedBatchAlertEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.DemoOfferCountUpdatedEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.PersonalOfferCountUpdatedEvent;
-import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.PersonalOffersUpdatedEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.PublicOfferCountUpdatedEvent;
-import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.PublicOffersUpdatedEvent;
-import it.flube.driver.userInterfaceLayer.ActivityNavigator;
+import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.ActiveBatchAlerts;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import it.flube.driver.userInterfaceLayer.activities.PermissionsCheckActivity;

@@ -5,6 +5,7 @@
 package it.flube.driver.deviceLayer.googlePlayLocation;
 
 import android.location.Location;
+import android.support.annotation.NonNull;
 
 import com.google.android.gms.location.LocationAvailability;
 import com.google.android.gms.location.LocationCallback;
@@ -23,12 +24,15 @@ import timber.log.Timber;
  */
 
 public class LocationCallbackWrapper extends LocationCallback {
+
     private static final String TAG = "LocationCallbackWrapper";
 
     private LocationTrackingPositionChangedHandler update;
+    private UpdateLastGoodPositionInterface lastGoodPosition;
 
-    public LocationCallbackWrapper(){
+    public LocationCallbackWrapper(UpdateLastGoodPositionInterface lastGoodPosition){
         update = new LocationTrackingPositionChangedHandler();
+        this.lastGoodPosition = lastGoodPosition;
         Timber.tag(TAG).d("created");
     }
 
@@ -57,8 +61,13 @@ public class LocationCallbackWrapper extends LocationCallback {
             Timber.tag(TAG).d("      ...latitude -> " + latLonLocation.getLatitude() + " longitude -> " + latLonLocation.getLongitude());
 
             update.positionChanged(latLonLocation);
+            lastGoodPosition.locationUpdated(location);
         }
         Timber.tag(TAG).d("...onLocationResult COMPLETE");
+    }
+
+    public interface UpdateLastGoodPositionInterface {
+        void locationUpdated(@NonNull Location location);
     }
 
 }

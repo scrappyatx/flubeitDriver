@@ -13,6 +13,7 @@ import com.jaredrummler.android.device.DeviceName;
 
 import java.util.UUID;
 
+import it.flube.driver.deviceLayer.deviceImageStorage.DeviceImageStorage;
 import it.flube.driver.deviceLayer.googlePlayLocation.GooglePlayLocationWrapper;
 import it.flube.driver.deviceLayer.activeBatchForegroundService.ActiveBatchForegroundServiceController;
 import it.flube.driver.deviceLayer.AblyConnectionWrapper;
@@ -35,7 +36,8 @@ import it.flube.driver.modelLayer.interfaces.AppRemoteConfigInterface;
 import it.flube.driver.modelLayer.interfaces.AppUserInterface;
 import it.flube.driver.modelLayer.interfaces.CloudAuthInterface;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
-import it.flube.driver.modelLayer.interfaces.CloudStorageInterface;
+import it.flube.driver.modelLayer.interfaces.CloudImageStorageInterface;
+import it.flube.driver.modelLayer.interfaces.DeviceImageStorageInterface;
 import it.flube.driver.modelLayer.interfaces.DeviceStorageInterface;
 import it.flube.driver.modelLayer.interfaces.LocationTelemetryInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
@@ -76,6 +78,8 @@ public class AndroidDevice implements MobileDeviceInterface, DeviceName.Callback
     private static final String DEVICE_PREFS = "DevicePrefs";
     private static final String DEVICE_GUID_FIELD_NAME = "guid";
 
+    private String deviceGuid;
+
     private Context applicationContext;
 
     private MobileDeviceInterface.DeviceInfoRequestComplete deviceInfoResponse;
@@ -83,12 +87,14 @@ public class AndroidDevice implements MobileDeviceInterface, DeviceName.Callback
     private ActiveBatchForegroundServiceInterface foregroundService;
     private AppLoggingInterface logging;
     private DeviceStorageInterface localStorage;
+    private DeviceImageStorageInterface localImageStorage;
     private UserProfileInterface userProfile;
     private LocationTelemetryInterface locationTelemetry;
 
 
     public void setApplicationContext(Context applicationContext) {
         this.applicationContext = applicationContext;
+        deviceGuid = getDeviceGuidFromSharedPreferences();
     }
 
     public Context getApplicationContext(){
@@ -129,7 +135,7 @@ public class AndroidDevice implements MobileDeviceInterface, DeviceName.Callback
         return CloudDatabaseFirebaseWrapper.getInstance();
     }
 
-    public CloudStorageInterface getCloudStorage() {
+    public CloudImageStorageInterface getCloudStorage() {
         return null;
     }
 
@@ -138,6 +144,13 @@ public class AndroidDevice implements MobileDeviceInterface, DeviceName.Callback
             localStorage = new DeviceStorageSharedPrefs(applicationContext);
         }
         return localStorage;
+    }
+
+    public DeviceImageStorageInterface getDeviceImageStorage(){
+        if (localImageStorage == null){
+            localImageStorage = new DeviceImageStorage(applicationContext);
+        }
+        return localImageStorage;
     }
 
     public UserProfileInterface getUserProfile() {
@@ -190,7 +203,7 @@ public class AndroidDevice implements MobileDeviceInterface, DeviceName.Callback
         if (exception == null) {
             DeviceInfo thisDevice = new DeviceInfo();
 
-            thisDevice.setDeviceGUID(getDeviceGUID());
+            thisDevice.setDeviceGUID(getDeviceGuidFromSharedPreferences());
             thisDevice.setManufacturer(info.manufacturer);
             thisDevice.setMarketName(info.marketName);
             thisDevice.setModel(info.model);
@@ -207,7 +220,7 @@ public class AndroidDevice implements MobileDeviceInterface, DeviceName.Callback
 
     }
 
-    private String getDeviceGUID() {
+    private String getDeviceGuidFromSharedPreferences() {
         //check to see if a device GUID has been saved to shared preferences on this device
         // if NO, then create one and save it
         // read device GUID from shared preferences and return it
@@ -221,6 +234,9 @@ public class AndroidDevice implements MobileDeviceInterface, DeviceName.Callback
         return prefs.getString(DEVICE_GUID_FIELD_NAME, null);
     }
 
+    public String getDeviceGuid(){
+        return deviceGuid;
+    }
 
 
 }

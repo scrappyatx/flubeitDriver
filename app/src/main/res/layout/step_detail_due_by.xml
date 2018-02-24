@@ -22,7 +22,7 @@
     tools:targetApi="lollipop">
 
     <com.joanzapata.iconify.widget.IconTextView
-        android:id="@+id/step_detail_workTiming"
+        android:id="@+id/step_detail_work_timing"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
@@ -49,7 +49,7 @@
 
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/step_detail_workTiming"
+        app:layout_constraintLeft_toRightOf="@+id/step_detail_work_timing"
 
         android:layout_marginTop="4dp"
         android:layout_marginLeft="16dp"

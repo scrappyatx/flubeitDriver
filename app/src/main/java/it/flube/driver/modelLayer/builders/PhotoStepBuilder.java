@@ -183,6 +183,10 @@ public class PhotoStepBuilder {
             return this;
         }
 
+        public Builder addVehiclePhotoRequests(@NonNull ArrayList<PhotoRequest> photoList){
+            this.photoStep.getPhotoRequestList().addAll(photoList);
+            return this;
+        }
 
         private void validate(ServiceOrderPhotoStep photoStep){
             // required PRESENT (must not be null)

@@ -32,6 +32,10 @@ import it.flube.driver.deviceLayer.cloudDatabase.scheduledBatches.FirebaseSchedu
 import it.flube.driver.deviceLayer.cloudDatabase.scheduledBatches.FirebaseScheduledBatchesAdd;
 import it.flube.driver.deviceLayer.cloudDatabase.scheduledBatches.FirebaseScheduledBatchesMonitor;
 import it.flube.driver.deviceLayer.cloudDatabase.scheduledBatches.FirebaseScheduledBatchesRemove;
+import it.flube.driver.deviceLayer.cloudDatabase.uploadTasks.AddPhotoUploadTaskNotStarted;
+import it.flube.driver.deviceLayer.cloudDatabase.uploadTasks.MovePhotoUploadTaskToFailed;
+import it.flube.driver.deviceLayer.cloudDatabase.uploadTasks.MovePhotoUploadTaskToFinished;
+import it.flube.driver.deviceLayer.cloudDatabase.uploadTasks.MovePhotoUploadTaskToInProgress;
 import it.flube.driver.modelLayer.entities.DeviceInfo;
 import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.entities.LatLonLocation;
@@ -64,6 +68,8 @@ public class CloudDatabaseFirebaseWrapper implements
         database.goOnline();
         isMonitoring = false;
         isConnected = false;
+
+        //TODO when a user logs out, need to set database to OFFLINE, then go backONLINE as part of a user connection attempt
     }
 
     public static CloudDatabaseFirebaseWrapper getInstance() {
@@ -100,6 +106,7 @@ public class CloudDatabaseFirebaseWrapper implements
 
     public void getUserProfileRequest(String clientId, String email, UserProfileResponse response){
         String driverProfileNode = "userReadable/driverProfiles";
+
 
         new FirebaseDriverProfileGet().getDriverProfile(database.getReference(driverProfileNode),
                 clientId, email, response);
@@ -473,6 +480,58 @@ public class CloudDatabaseFirebaseWrapper implements
     public void updateBatchCompletedServerNode(BatchDetail batchDetail){
         Timber.tag(TAG).d("batch complete, putting notification on server node");
         new FirebaseCompletedBatchesServerNode().setCompletedBatchRequest(database.getReference(), driver, batchDetail);
+    }
+
+    ///
+    ///  Photo Upload Tasks
+    ///
+
+    public void addPhotoUploadTaskToNotStartedRequest(String batchGuid, String serviceOrderGuid, String orderStepGuid, String photoRequestGuid,
+                                               String deviceGuid, String deviceAbsoluteFileName, String cloudStorageFileName,
+                                               AddPhotoUploadTaskResponse response){
+
+        Timber.tag(TAG).d("addPhotoUploadTaskToNotStartedRequest");
+        new AddPhotoUploadTaskNotStarted().addPhotoUploadTaskToNotStartedRequest(database.getReference(batchDataNode),
+                batchGuid, serviceOrderGuid, orderStepGuid, photoRequestGuid, deviceGuid,
+                deviceAbsoluteFileName, cloudStorageFileName, response);
+
+
+
+    }
+
+    public void movePhotoUploadTaskToInProgress(String batchGuid, String serviceOrderGuid, String orderStepGuid, String photoRequestGuid,
+                                         String deviceGuid, String deviceAbsoluteFileName, String cloudStorageFileName,
+                                         String sessionUriString, Double progress,
+                                         CloudDatabaseInterface.MovePhotoUploadTaskInProgressResponse response){
+
+        Timber.tag(TAG).d("movePhotoUploadTaskToInProgress");
+        new MovePhotoUploadTaskToInProgress().movePhotoUploadTaskToInProgress(database.getReference(batchDataNode),
+                batchGuid, serviceOrderGuid, orderStepGuid, photoRequestGuid, deviceGuid,
+                deviceAbsoluteFileName, cloudStorageFileName,
+                sessionUriString, progress, response);
+
+    }
+
+    public void movePhotoUploadTaskToFinished(String batchGuid, String serviceOrderGuid, String orderStepGuid, String photoRequestGuid,
+                                       String deviceGuid, String deviceAbsoluteFileName, String cloudStorageFileName,
+                                       CloudDatabaseInterface.MovePhotoUploadTaskFinishedResponse response){
+
+        Timber.tag(TAG).d("movePhotoUploadTaskToFinished");
+        new MovePhotoUploadTaskToFinished().movePhotoUploadTaskToFinished(database.getReference(batchDataNode),
+                batchGuid, serviceOrderGuid, orderStepGuid, photoRequestGuid, deviceGuid,
+                deviceAbsoluteFileName, cloudStorageFileName, response);
+
+    }
+
+    public void movePhotoUploadTaskToFailed(String batchGuid, String serviceOrderGuid, String orderStepGuid, String photoRequestGuid,
+                                     String deviceGuid, String deviceAbsoluteFileName, String cloudStorageFileName,
+                                     MovePhotoUploadTaskFailedResponse response){
+
+        Timber.tag(TAG).d("movePhotoUploadTaskToFailed");
+        new MovePhotoUploadTaskToFailed().movePhotoUploadTaskToFailed(database.getReference(batchDataNode),
+                batchGuid, serviceOrderGuid, orderStepGuid, photoRequestGuid, deviceGuid,
+                deviceAbsoluteFileName, cloudStorageFileName, response);
+
     }
 
 

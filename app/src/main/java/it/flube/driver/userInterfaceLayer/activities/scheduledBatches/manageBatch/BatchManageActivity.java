@@ -23,10 +23,9 @@ import it.flube.driver.userInterfaceLayer.layoutComponents.batchDetail.BatchDeta
 import it.flube.driver.userInterfaceLayer.layoutComponents.batchDetail.batchDetailTab.tabLocations.TabLocationsLayoutComponents;
 import it.flube.driver.userInterfaceLayer.layoutComponents.batchManage.BatchManageLayoutComponents;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.batchAlerts.ShowForfeitBatchAlertEvent;
-import it.flube.driver.userInterfaceLayer.userInterfaceEvents.batchAlerts.ShowStartedBatchAlertEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.demoBatch.DemoBatchStartedEvent;
 import it.flube.driver.modelLayer.entities.batch.BatchDetail;
-import it.flube.driver.userInterfaceLayer.ActivityNavigator;
+import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import ng.max.slideview.SlideView;
 import timber.log.Timber;

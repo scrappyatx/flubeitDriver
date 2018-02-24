@@ -19,7 +19,7 @@ import static android.content.Context.MODE_PRIVATE;
  */
 
 public class DeviceStorageSharedPrefs implements DeviceStorageInterface {
-    private final String TAG = "DeviceStorageSharedPrefs";
+    private static final String TAG = "DeviceStorageSharedPrefs";
 
     private static final String PREFS_NAME = "DriverPrefs";
 

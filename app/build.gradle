@@ -71,7 +71,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
     annotationProcessor "android.arch.lifecycle:compiler:1.0.0-alpha9-1"
-    annotationProcessor "android.arch.lifecycle:compiler:1.0.0"
+    annotationProcessor "android.arch.lifecycle:compiler:1.1.0"
 
 
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -139,6 +139,8 @@ dependencies {
     compile 'com.airbnb.android:lottie:2.0.0-rc2'
     compile 'com.tapadoo.android:alerter:2.0.1'
     compile 'com.instabug.library:instabug:4.3.3'
+    compile 'com.wonderkiln:camerakit:0.13.2'
+
     //compile('com.mapbox.mapboxsdk:mapbox-android-sdk:5.1.1@aar') {
     //    transitive = true
     //}

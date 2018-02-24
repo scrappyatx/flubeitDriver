@@ -22,6 +22,7 @@ public class FirebaseDriverProfileGet implements ValueEventListener {
     private static final String TAG = "FirebaseDriverProfileGet";
 
     private CloudDatabaseInterface.UserProfileResponse response;
+    private DatabaseReference clientIdRef;
     private String clientId;
     private String email;
 
@@ -34,7 +35,11 @@ public class FirebaseDriverProfileGet implements ValueEventListener {
         Timber.tag(TAG).d("clientId             = " + clientId);
         Timber.tag(TAG).d("email                = " + email);
 
-        driverProfileNodeRef.child(clientId).addListenerForSingleValueEvent(this);
+        clientIdRef = driverProfileNodeRef.child(clientId);
+        Timber.tag(TAG).d("clientIdRef          = " + clientIdRef.toString());
+
+        clientIdRef.keepSynced(true);
+        clientIdRef.addListenerForSingleValueEvent(this);
     }
 
     public void onDataChange(DataSnapshot dataSnapshot){
@@ -62,11 +67,13 @@ public class FirebaseDriverProfileGet implements ValueEventListener {
             Timber.tag(TAG).w("   ...dataSnapshot does not exist");
             response.cloudDatabaseGetUserProfileNotFound();
         }
+        clientIdRef.keepSynced(false);
     }
 
     public void onCancelled(DatabaseError databaseError) {
         Timber.tag(TAG).w("onCancelled --> error : " + databaseError.getCode() + " --> " + databaseError.getMessage());
         response.cloudDatabaseGetUserProfileNotFound();
+        clientIdRef.keepSynced(false);
     }
 
 

@@ -6,33 +6,21 @@ package it.flube.driver.userInterfaceLayer.activities.offers.demoOffers;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
-
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.OfferSelectedResponseHandler;
-import it.flube.driver.useCaseLayer.generateDemoBatch.UseCaseMakeDemoBatchRequest;
 import it.flube.driver.userInterfaceLayer.layoutComponents.demoOffers.DemoOffersLayoutComponents;
 import it.flube.driver.userInterfaceLayer.layoutComponents.offers.OffersListLayoutComponent;
-import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerAlerts.ShowClaimOfferFailureAlertEvent;
-import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerAlerts.ShowClaimOfferSuccessAlertEvent;
-import it.flube.driver.userInterfaceLayer.userInterfaceEvents.batchAlerts.ShowDemoOfferCreatedAlertEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.DemoOfferOfferListUpdatedEvent;
 import it.flube.driver.modelLayer.entities.batch.Batch;
-import it.flube.driver.userInterfaceLayer.ActivityNavigator;
+import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import it.flube.driver.userInterfaceLayer.layoutComponents.offers.OffersListAdapter;
-import it.flube.driver.userInterfaceLayer.activities.offers.claimOffer.OfferClaimAlerts;
 import timber.log.Timber;
 
 /**
@@ -42,18 +30,20 @@ import timber.log.Timber;
 
 public class DemoOffersActivity extends AppCompatActivity implements
         OffersListAdapter.Response,
-        UseCaseMakeDemoBatchRequest.Response,
-        DemoOfferAlerts.DemoOfferCreatedAlertHidden,
-        OfferClaimAlerts.ClaimOfferSuccessAlertHidden,
-        OfferClaimAlerts.ClaimOfferFailureAlertHidden,
-        OfferClaimAlerts.ClaimOfferTimeoutAlertHidden {
+        DemoOfferAlerts.DemoOfferCreatedAlertHidden {
 
+    private static final int REQUEST_CODE = 1082;   // identifies this as the calling activity
     private static final String TAG = "DemoOffersActivity";
     private static final Integer MAX_OFFERS = 20;
-    private static final String CLAIM_OFFER_RESULT_KEY = "claimOfferResult";
-    private static final String CLAIM_OFFER_SUCCESS_VALUE = "success";
-    private static final String CLAIM_OFFER_FAILURE_VALUE = "failure";
-    private static final String CLAIM_OFFER_TIMEOUT_VALUE = "timeout";
+
+    public static final String CLAIM_OFFER_RESULT_KEY = "claimOfferResult";
+    public static final String CLAIM_OFFER_SUCCESS_VALUE = "success";
+    public static final String CLAIM_OFFER_FAILURE_VALUE = "failure";
+    public static final String CLAIM_OFFER_TIMEOUT_VALUE = "timeout";
+
+    public static final String MAKE_OFFER_RESULT_KEY = "makeOfferResult";
+    public static final String MAKE_OFFER_SUCCESS_VALUE = "success";
+    public static final String MAKE_OFFER_FAILURE_VALUE = "failure";
 
     private DemoOffersController controller;
     private ActivityNavigator navigator;
@@ -93,7 +83,9 @@ public class DemoOffersActivity extends AppCompatActivity implements
         offersList.setVisible();
 
         checkIfTooManyOffers();
-        checkIfAlertNeedsToBeShown();
+        controller.checkIfClaimAlertNeedsToBeShown(this);
+        controller.checkIfMakeAlertNeedsToBeShown(this, this);
+
         Timber.tag(TAG).d("onResume");
     }
 
@@ -114,9 +106,10 @@ public class DemoOffersActivity extends AppCompatActivity implements
     public void clickMakeDemoOfferButton(View v) {
         //make demo offer button clicked
         Timber.tag(TAG).d("clicked MAKE DEMO OFFER");
+        navigator.gotoActivityDemoOffersMake(this);
+        //offersLayout.offerMakeStarted();
+        //controller.doMakeDemoOffer();
 
-        offersLayout.offerMakeStarted();
-        controller.doMakeDemoOffer();
     }
 
 
@@ -132,34 +125,6 @@ public class DemoOffersActivity extends AppCompatActivity implements
         }
     }
 
-    private void checkIfAlertNeedsToBeShown(){
-        /// get the batch data for the batchGuid that was used to launch this activity
-        if (getIntent().hasExtra(CLAIM_OFFER_RESULT_KEY)){
-            //get the result
-            String resultKey = getIntent().getStringExtra(CLAIM_OFFER_RESULT_KEY);
-            Timber.tag(TAG).d(CLAIM_OFFER_RESULT_KEY + " --> " + resultKey);
-            switch (resultKey){
-                case CLAIM_OFFER_SUCCESS_VALUE:
-                    Timber.tag(TAG).d("claim offer SUCCESS!");
-                    new OfferClaimAlerts().showSuccessAlert(this, this);
-                    break;
-                case CLAIM_OFFER_FAILURE_VALUE:
-                    Timber.tag(TAG).d("claim offer FAILURE!");
-                    new OfferClaimAlerts().showFailureAlert(this, this);
-                    break;
-                case CLAIM_OFFER_TIMEOUT_VALUE:
-                    Timber.tag(TAG).d("claim offer TIMEOUT");
-                    break;
-                default:
-                    Timber.tag(TAG).w("unknown resultKey, this should never happen");
-                    break;
-            }
-            // now remove the key, only want to show an alert once
-            getIntent().removeExtra(CLAIM_OFFER_RESULT_KEY);
-        } else {
-            Timber.tag(TAG).w("activity started with no claim_offer_result");
-        }
-    }
 
     ///
     ///   OffersListAdapter.Response interface
@@ -168,15 +133,6 @@ public class DemoOffersActivity extends AppCompatActivity implements
         Timber.tag(TAG).d("...batchSelected -> " + batch.getGuid());
         navigator.gotoActivityOfferClaim(this, batch.getGuid());
     }
-
-    ///
-    ///   UseCaseMakeDemoBatchRequest.Response interface
-    ///
-    public void makeDemoBatchComplete(){
-        Timber.tag(TAG).d("...make demo batch COMPLETE!");
-        new DemoOfferAlerts().showDemoOfferCreatedAlert(this, this);
-    }
-
 
     // Events for updating offers list.  Events not removed because we always want most recent
     // offers list whenever this activitity is created, started, or resumed.
@@ -189,24 +145,13 @@ public class DemoOffersActivity extends AppCompatActivity implements
         checkIfTooManyOffers();
     }
 
-    ///
-    ///   Interfaces for Alerts that can be shown in this activity
-    ///
+    /// make offer alert interfaces
     public void demoOfferCreatedAlertHidden(){
         offersList.setValues(AndroidDevice.getInstance().getOfferLists().getDemoOffers());
         checkIfTooManyOffers();
     }
 
-    public void claimOfferSuccessAlertHidden() {
-        Timber.tag(TAG).d("claim offer success alert hidden");
-    }
 
-    public void claimOfferFailureAlertHidden() {
-        Timber.tag(TAG).d("claim offer failure alert hidden");
-    }
-    public void claimOfferTimeoutAlertHidden() {
-        Timber.tag(TAG).d("claim offer timeout alert hidden");
-    }
 
 
 

@@ -22,6 +22,8 @@ public class PhotoRequestBuilder {
     private static final String USER_SKIPPED_AFTER_FAILED_ATTEMPTS_ICON_TEXT = "{fa-question-circle-o}";
     private static final String USER_SKIPPED_WITH_NO_ATTEMPTS_ICON_TEXT = "{fa-ban}";
 
+    private static final String DEFAULT_NO_ATTEMPT_IMAGE_URL= "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2Fno_attempts_photo_image_2.png?alt=media&token=82c4c53a-371a-4122-9d11-249344f22557";
+
     private PhotoRequest photoRequest;
 
     private PhotoRequestBuilder(@NonNull Builder builder){
@@ -47,6 +49,15 @@ public class PhotoRequestBuilder {
             statusIconText.put(PhotoRequest.PhotoStatus.USER_SKIPPED_AFTER_FAILED_ATTEMPTS.toString(), USER_SKIPPED_AFTER_FAILED_ATTEMPTS_ICON_TEXT);
             statusIconText.put(PhotoRequest.PhotoStatus.USER_SKIPPED_WITH_NO_ATTEMPTS.toString(), USER_SKIPPED_WITH_NO_ATTEMPTS_ICON_TEXT);
             photoRequest.setStatusIconText(statusIconText);
+
+            photoRequest.setAttemptCount(0);
+            photoRequest.setHasPhotoHint(false);
+
+            photoRequest.setNoAttemptImageUrl(DEFAULT_NO_ATTEMPT_IMAGE_URL);
+            photoRequest.setHasNoAttemptImage(true);
+
+            photoRequest.setHasDeviceFile(false);
+            photoRequest.setHasCloudFile(false);
         }
 
         public Builder guid(@NonNull String guid) {
@@ -76,6 +87,18 @@ public class PhotoRequestBuilder {
 
         public Builder statusIconText(@NonNull Map<String, String> statusIconText){
             this.photoRequest.setStatusIconText(statusIconText);
+            return this;
+        }
+
+        public Builder photoHintUrl(@NonNull String photoHintUrl){
+            this.photoRequest.setPhotoHintUrl(photoHintUrl);
+            this.photoRequest.setHasPhotoHint(true);
+            return this;
+        }
+
+        public Builder noAttemptImageUrl(@NonNull String noAttemptImageUrl){
+            this.photoRequest.setNoAttemptImageUrl(noAttemptImageUrl);
+            this.photoRequest.setHasNoAttemptImage(true);
             return this;
         }
 

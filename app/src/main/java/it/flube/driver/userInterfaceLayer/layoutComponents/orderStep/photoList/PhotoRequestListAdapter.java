@@ -1,15 +1,19 @@
 /*
- * Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
+ * Copyright (c) 2018. scrapdoodle, LLC.  All Rights Reserved
  */
 
-package it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.photoStep;
+package it.flube.driver.userInterfaceLayer.layoutComponents.orderStep.photoList;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -23,7 +27,7 @@ import timber.log.Timber;
  */
 
 public class PhotoRequestListAdapter extends RecyclerView.Adapter<PhotoRequestListAdapter.PhotoRequestViewHolder> {
-    private static final String TAG = "ServiceOrderListAdapter";
+    private static final String TAG = "PhotoRequestListAdapter";
 
     private Context activityContext;
     private ArrayList<PhotoRequest> photoRequestList;
@@ -81,6 +85,7 @@ public class PhotoRequestListAdapter extends RecyclerView.Adapter<PhotoRequestLi
         private TextView title;
         private TextView description;
         private TextView statusIconText;
+        private ImageView thumbnailImage;
 
         private PhotoRequest photoRequest;
 
@@ -90,6 +95,7 @@ public class PhotoRequestListAdapter extends RecyclerView.Adapter<PhotoRequestLi
             super(v);
             this.response = response;
 
+            thumbnailImage = (ImageView) v.findViewById(R.id.image_thumbnail);
             sequence = (TextView) v.findViewById(R.id.photo_list_sequence);
             title = (TextView) v.findViewById(R.id.photo_list_title);
             description = (TextView) v.findViewById(R.id.photo_list_description);
@@ -119,6 +125,27 @@ public class PhotoRequestListAdapter extends RecyclerView.Adapter<PhotoRequestLi
             Timber.tag(TAG).d("---> Description        : " + photoRequest.getDescription());
             Timber.tag(TAG).d("---> Status             : " + photoRequest.getStatus().toString());
             Timber.tag(TAG).d("---> StatusIconText     : " + photoRequest.getStatusIconText().get(photoRequest.getStatus()));
+
+            //set thumbnail image
+            if (photoRequest.getHasDeviceFile()) {
+                //use device image
+                thumbnailImage.setImageBitmap(BitmapFactory.decodeFile(photoRequest.getDeviceAbsoluteFileName()));
+                Timber.tag(TAG).d("---> Thumbnail Image (deviceFile)    : " + photoRequest.getDeviceAbsoluteFileName());
+
+            } else if (photoRequest.getHasNoAttemptImage()) {
+                //use no attempt image
+                Picasso.with(activityContext)
+                        .load(photoRequest.getNoAttemptImageUrl())
+                        .into(thumbnailImage);
+
+                Timber.tag(TAG).d("---> Thumbnail Image (no attempt image)    : " + photoRequest.getNoAttemptImageUrl());
+
+            } else {
+                //use default image
+                thumbnailImage.setImageDrawable(activityContext.getResources().getDrawable(R.drawable.exclamation_circle_red_1));
+                Timber.tag(TAG).d("---> Thumbnail Image (default)    : " + photoRequest.getNoAttemptImageUrl());
+            }
+
         }
     }
 

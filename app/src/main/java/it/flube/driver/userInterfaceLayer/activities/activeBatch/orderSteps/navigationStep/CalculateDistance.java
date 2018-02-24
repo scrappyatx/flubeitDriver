@@ -51,7 +51,7 @@ public class CalculateDistance {
                 Timber.tag(TAG).d("setting initZoom to maxZoomLevel");
                 initZoom = maxZoomLevel;
             }
-            Timber.tag(TAG).w("returning zoom level : " + initZoom);
+            Timber.tag(TAG).d("returning zoom level : " + initZoom);
 
             return initZoom;
         } catch (Exception e) {
