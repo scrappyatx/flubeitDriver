@@ -4,7 +4,7 @@
 
 package it.flube.driver.modelLayer.interfaces;
 
-import android.content.Context;
+import it.flube.libbatchdata.interfaces.OrderStepInterface;
 
 /**
  * Created on 11/7/2017

@@ -10,7 +10,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import it.flube.driver.deviceLayer.cloudDatabase.batchData.batchDetail.FirebaseBatchDetailGet;
-import it.flube.driver.modelLayer.entities.batch.BatchDetail;
+import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import timber.log.Timber;
 

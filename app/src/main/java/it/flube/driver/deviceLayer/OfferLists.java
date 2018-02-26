@@ -6,7 +6,7 @@ package it.flube.driver.deviceLayer;
 
 import java.util.ArrayList;
 
-import it.flube.driver.modelLayer.entities.batch.Batch;
+import it.flube.libbatchdata.entities.batch.Batch;
 import it.flube.driver.modelLayer.interfaces.OffersInterface;
 
 /**

@@ -24,7 +24,7 @@ import it.flube.driver.userInterfaceLayer.layoutComponents.batchDetail.batchDeta
 import it.flube.driver.userInterfaceLayer.layoutComponents.batchManage.BatchManageLayoutComponents;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.batchAlerts.ShowForfeitBatchAlertEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.demoBatch.DemoBatchStartedEvent;
-import it.flube.driver.modelLayer.entities.batch.BatchDetail;
+import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import ng.max.slideview.SlideView;

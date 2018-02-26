@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import it.flube.driver.R;
-import it.flube.driver.modelLayer.entities.batch.Batch;
+import it.flube.libbatchdata.entities.batch.Batch;
 import timber.log.Timber;
 
 /**

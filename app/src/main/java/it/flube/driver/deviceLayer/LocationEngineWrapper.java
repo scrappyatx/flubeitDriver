@@ -6,7 +6,6 @@ package it.flube.driver.deviceLayer;
 
 import android.content.Context;
 import android.location.Location;
-import android.os.HandlerThread;
 
 import com.mapbox.services.android.telemetry.location.AndroidLocationEngine;
 import com.mapbox.services.android.telemetry.location.LocationEngine;
@@ -14,7 +13,7 @@ import com.mapbox.services.android.telemetry.location.LocationEngineListener;
 import com.mapbox.services.android.telemetry.location.LocationEnginePriority;
 
 import it.flube.driver.dataLayer.useCaseResponseHandlers.deviceLocation.LocationTrackingPositionChangedHandler;
-import it.flube.driver.modelLayer.entities.LatLonLocation;
+import it.flube.libbatchdata.entities.LatLonLocation;
 import it.flube.driver.modelLayer.interfaces.LocationTelemetryInterface;
 import timber.log.Timber;
 

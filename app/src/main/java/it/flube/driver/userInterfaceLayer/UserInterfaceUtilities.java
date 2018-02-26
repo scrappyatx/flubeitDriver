@@ -9,7 +9,7 @@ import android.graphics.BitmapFactory;
 
 import java.io.ByteArrayOutputStream;
 
-import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
+import it.flube.libbatchdata.interfaces.OrderStepInterface;
 
 /**
  * Created on 10/10/2017

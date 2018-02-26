@@ -4,7 +4,7 @@
 
 package it.flube.driver.userInterfaceLayer.activities.scheduledBatches.scheduledBatchList;
 
-import it.flube.driver.modelLayer.entities.batch.Batch;
+import it.flube.libbatchdata.entities.batch.Batch;
 
 /**
  * Created on 10/26/2017

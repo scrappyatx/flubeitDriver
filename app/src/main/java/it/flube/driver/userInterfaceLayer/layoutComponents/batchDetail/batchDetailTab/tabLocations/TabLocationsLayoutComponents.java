@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.annotations.IconFactory;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraUpdate;
@@ -24,8 +23,7 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import java.util.ArrayList;
 
 import it.flube.driver.R;
-import it.flube.driver.modelLayer.entities.RouteStop;
-import it.flube.driver.modelLayer.entities.batch.BatchDetail;
+import it.flube.libbatchdata.entities.RouteStop;
 import timber.log.Timber;
 
 /**

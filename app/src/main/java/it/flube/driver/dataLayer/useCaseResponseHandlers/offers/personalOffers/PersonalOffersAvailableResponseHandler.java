@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.PersonalOfferCountUpdatedEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.PersonalOfferListUpdatedEvent;
-import it.flube.driver.modelLayer.entities.batch.Batch;
+import it.flube.libbatchdata.entities.batch.Batch;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import timber.log.Timber;
 
@@ -25,6 +25,8 @@ public class PersonalOffersAvailableResponseHandler implements CloudDatabaseInte
 
     public void cloudDatabasePersonalOffersUpdated(ArrayList<Batch> offerList) {
         Timber.tag(TAG).d("personal offers available from cloud database");
+
+        Timber.tag(TAG).d("   ...offerList size -> " + offerList.size());
 
         AndroidDevice.getInstance().getOfferLists().setPersonalOffers(offerList);
         EventBus.getDefault().post(new PersonalOfferCountUpdatedEvent());

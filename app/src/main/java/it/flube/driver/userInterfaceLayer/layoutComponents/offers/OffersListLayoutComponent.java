@@ -14,9 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import it.flube.driver.R;
-import it.flube.driver.modelLayer.entities.batch.Batch;
-import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
-import it.flube.driver.userInterfaceLayer.layoutComponents.batchDetail.batchDetailTab.tabOrders.ServiceOrderListAdapter;
+import it.flube.libbatchdata.entities.batch.Batch;
 import timber.log.Timber;
 
 /**

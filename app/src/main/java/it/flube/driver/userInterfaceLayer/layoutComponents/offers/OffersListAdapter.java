@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import it.flube.driver.R;
-import it.flube.driver.modelLayer.entities.batch.Batch;
+import it.flube.libbatchdata.entities.batch.Batch;
 import timber.log.Timber;
 
 import java.text.NumberFormat;

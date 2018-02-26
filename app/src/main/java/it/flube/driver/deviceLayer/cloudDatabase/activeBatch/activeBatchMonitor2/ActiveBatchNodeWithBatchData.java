@@ -12,10 +12,10 @@ import it.flube.driver.deviceLayer.cloudDatabase.batchData.serviceOrders.Firebas
 import it.flube.driver.deviceLayer.cloudDatabase.batchData.serviceOrders.FirebaseServiceOrderSetStatus;
 import it.flube.driver.deviceLayer.cloudDatabase.batchData.steps.FirebaseOrderStepGet;
 import it.flube.driver.deviceLayer.cloudDatabase.batchData.steps.FirebaseOrderStepSetWorkStage;
-import it.flube.driver.modelLayer.entities.batch.BatchDetail;
-import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
+import it.flube.libbatchdata.entities.batch.BatchDetail;
+import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
-import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
+import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import timber.log.Timber;
 
 /**

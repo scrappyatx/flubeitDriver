@@ -10,7 +10,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 
-import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
+import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import timber.log.Timber;
 
 /**

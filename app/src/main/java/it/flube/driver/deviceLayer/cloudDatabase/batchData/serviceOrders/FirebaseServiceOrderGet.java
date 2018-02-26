@@ -4,18 +4,12 @@
 
 package it.flube.driver.deviceLayer.cloudDatabase.batchData.serviceOrders;
 
-import android.support.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
-import it.flube.driver.modelLayer.entities.ResponseCounter;
-import it.flube.driver.modelLayer.entities.batch.BatchDetail;
-import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
+import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import timber.log.Timber;
 
 /**

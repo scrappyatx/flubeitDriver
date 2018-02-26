@@ -6,14 +6,15 @@ package it.flube.driver.modelLayer.interfaces;
 
 import java.util.ArrayList;
 
-import it.flube.driver.modelLayer.entities.LatLonLocation;
-import it.flube.driver.modelLayer.entities.RouteStop;
-import it.flube.driver.modelLayer.entities.batch.Batch;
+import it.flube.libbatchdata.entities.LatLonLocation;
+import it.flube.libbatchdata.entities.RouteStop;
+import it.flube.libbatchdata.entities.batch.Batch;
 import it.flube.driver.modelLayer.entities.DeviceInfo;
 import it.flube.driver.modelLayer.entities.driver.Driver;
-import it.flube.driver.modelLayer.entities.batch.BatchDetail;
-import it.flube.driver.modelLayer.entities.batch.BatchHolder;
-import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
+import it.flube.libbatchdata.entities.batch.BatchDetail;
+import it.flube.libbatchdata.entities.batch.BatchHolder;
+import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
+import it.flube.libbatchdata.interfaces.OrderStepInterface;
 
 /**
  * Created on 7/5/2017
@@ -101,6 +102,19 @@ public interface CloudDatabaseInterface {
     }
 
     ///
+    ///  PUBLIC OFFER CLAIM REQUEST
+    ///  PERSONAL OFFER CLAIM REQUEST
+    ///
+    void claimOfferRequest(String batchGuid, BatchDetail.BatchType batchType, ClaimOfferResponse response);
+
+    interface ClaimOfferResponse {
+        void cloudDatabaseClaimOfferRequestComplete();
+    }
+    ///
+    ///
+    ///
+
+    ///
     ///  DEMO OFFERS
     ///
     void addDemoOfferToOfferListRequest(String batchGuid, AddDemoOfferToOfferListResponse response);
@@ -128,6 +142,15 @@ public interface CloudDatabaseInterface {
 
     interface RemoveDemoBatchFromScheduledBatchListResponse {
         void cloudDatabaseRemoveDemoBatchFromScheduledBatchListComplete();
+    }
+
+    ///
+    /// BATCH FORFEIT REQUEST
+    ///
+    void batchForfeitRequest(String batchGuid, BatchDetail.BatchType batchType, BatchForfeitResponse response);
+
+    interface BatchForfeitResponse {
+        void cloudDatabaseBatchForfeitRequestComplete();
     }
 
     ///

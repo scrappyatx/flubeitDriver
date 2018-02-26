@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Driver.iml" filepath="$PROJECT_DIR$/Driver.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libBatchData/libMobileBatchData.iml" filepath="$PROJECT_DIR$/libBatchData/libMobileBatchData.iml" />
     </modules>
   </component>
 </project>

@@ -4,19 +4,8 @@
 
 package it.flube.driver.deviceLayer.cloudDatabase.activeBatch.activeBatchMonitor;
 
-import android.support.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 
-import it.flube.driver.dataLayer.useCaseResponseHandlers.activeBatch.ActiveBatchUpdatedResponseHandler;
-import it.flube.driver.modelLayer.entities.ResponseCounter;
-import it.flube.driver.modelLayer.entities.batch.BatchDetail;
-import it.flube.driver.modelLayer.entities.orderStep.StepId;
-import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
-import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
-import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
 import timber.log.Timber;
 
 /**

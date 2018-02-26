@@ -134,7 +134,7 @@ public class HomeActivity extends PermissionsCheckActivity implements
     }
 
     public void onClickPersonalOffers(View view){
-        navigator.gotoActivityPublicOffers(this);
+        navigator.gotoActivityPersonalOffers(this);
         Timber.tag(TAG).d("clicked Personal Offers button");
     }
 

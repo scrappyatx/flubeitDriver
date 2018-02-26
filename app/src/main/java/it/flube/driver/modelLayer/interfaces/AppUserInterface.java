@@ -4,7 +4,7 @@
 
 package it.flube.driver.modelLayer.interfaces;
 
-import it.flube.driver.modelLayer.entities.batch.Batch;
+import it.flube.libbatchdata.entities.batch.Batch;
 import it.flube.driver.modelLayer.entities.driver.Driver;
 
 /**

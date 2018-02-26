@@ -6,16 +6,13 @@ package it.flube.driver.userInterfaceLayer.activities.offers.demoOffers;
 
 import android.support.v7.app.AppCompatActivity;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.concurrent.ExecutorService;
 
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.dataLayer.DemoBatchCreation.DemoBatchNearbyPhotos;
+import it.flube.libbatchdata.demoBatchCreation.DemoBatchNearbyPhotos;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import it.flube.driver.useCaseLayer.generateDemoBatch.UseCaseMakeDemoAutoBatchRequest;
 import it.flube.driver.useCaseLayer.generateDemoBatch.UseCaseMakeDemoBatchRequest;
-import it.flube.driver.userInterfaceLayer.userInterfaceEvents.batchAlerts.ShowDemoOfferCreatedAlertEvent;
 import timber.log.Timber;
 
 /**

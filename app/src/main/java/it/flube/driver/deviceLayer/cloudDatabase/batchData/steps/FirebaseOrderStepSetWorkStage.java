@@ -12,7 +12,7 @@ import com.google.firebase.database.DatabaseReference;
 
 import java.util.HashMap;
 
-import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
+import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import timber.log.Timber;
 
 /**

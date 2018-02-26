@@ -4,7 +4,6 @@
 
 package it.flube.driver.useCaseLayer.activeBatch;
 
-import it.flube.driver.modelLayer.entities.batch.BatchDetail;
 import it.flube.driver.modelLayer.interfaces.ActiveBatchForegroundServiceInterface;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import it.flube.driver.modelLayer.interfaces.LocationTelemetryInterface;

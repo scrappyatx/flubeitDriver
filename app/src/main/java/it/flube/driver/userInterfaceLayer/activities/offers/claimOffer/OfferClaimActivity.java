@@ -12,9 +12,9 @@ import android.view.View;
 import java.util.ArrayList;
 
 import it.flube.driver.R;
-import it.flube.driver.modelLayer.entities.RouteStop;
-import it.flube.driver.modelLayer.entities.batch.BatchDetail;
-import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
+import it.flube.libbatchdata.entities.RouteStop;
+import it.flube.libbatchdata.entities.batch.BatchDetail;
+import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import it.flube.driver.useCaseLayer.batchDetail.UseCaseGetBatchData;
 import it.flube.driver.useCaseLayer.claimOffer.UseCaseClaimDemoOfferRequest;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;

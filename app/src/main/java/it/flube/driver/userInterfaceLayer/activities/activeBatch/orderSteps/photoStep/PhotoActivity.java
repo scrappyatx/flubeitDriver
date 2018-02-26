@@ -14,15 +14,15 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.modelLayer.entities.PhotoRequest;
-import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
+import it.flube.libbatchdata.entities.PhotoRequest;
+import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import it.flube.driver.userInterfaceLayer.layoutComponents.orderStep.StepDetailCompleteLayoutComponents;
 import it.flube.driver.userInterfaceLayer.layoutComponents.orderStep.StepDetailDueByLayoutComponents;
 import it.flube.driver.userInterfaceLayer.layoutComponents.orderStep.StepDetailTitleLayoutComponents;
 import it.flube.driver.userInterfaceLayer.layoutComponents.orderStep.photoList.PhotoRequestListAdapter;
 import it.flube.driver.userInterfaceLayer.layoutComponents.orderStep.photoList.PhotoRequestListLayoutComponents;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.batchAlerts.ShowCompletedServiceOrderAlertEvent;
-import it.flube.driver.modelLayer.entities.orderStep.ServiceOrderPhotoStep;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderPhotoStep;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.ActiveBatchAlerts;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;

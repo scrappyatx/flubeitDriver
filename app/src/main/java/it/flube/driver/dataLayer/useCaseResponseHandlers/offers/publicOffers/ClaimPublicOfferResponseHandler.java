@@ -9,7 +9,7 @@ import org.greenrobot.eventbus.EventBus;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerClaim.publicOffers.ClaimPublicOfferFailureEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerClaim.publicOffers.ClaimPublicOfferSuccessEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerClaim.publicOffers.ClaimPublicOfferTimeoutEvent;
-import it.flube.driver.useCaseLayer.claimOffer.UseCaseClaimOfferRequest;
+import it.flube.driver.useCaseLayer.claimOffer.UseCaseClaimOfferRequestDEPRECATED;
 import timber.log.Timber;
 
 /**
@@ -18,7 +18,7 @@ import timber.log.Timber;
  */
 
 public class ClaimPublicOfferResponseHandler
-     implements UseCaseClaimOfferRequest.Response {
+     implements UseCaseClaimOfferRequestDEPRECATED.Response {
         private final static String TAG = "ClaimPublicOfferResponseHandler";
 
         // SUCCESS - Driver got offer

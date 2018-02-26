@@ -4,7 +4,7 @@
 
 package it.flube.driver.modelLayer.interfaces;
 
-import it.flube.driver.modelLayer.entities.LatLonLocation;
+import it.flube.libbatchdata.entities.LatLonLocation;
 
 /**
  * Created on 7/27/2017

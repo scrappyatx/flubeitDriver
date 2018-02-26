@@ -15,14 +15,12 @@ import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.scheduledBatches.ForfeitBatchResponseHandler;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.scheduledBatches.ForfeitDemoBatchResponseHandler;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.scheduledBatches.StartDemoBatchResponseHandler;
-import it.flube.driver.modelLayer.entities.batch.BatchDetail;
+import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import it.flube.driver.useCaseLayer.manageBatch.UseCaseForfeitBatchRequest;
 import it.flube.driver.useCaseLayer.manageBatch.UseCaseForfeitDemoBatchRequest;
 import it.flube.driver.useCaseLayer.manageBatch.UseCaseStartDemoBatchRequest;
 import timber.log.Timber;
-
-import static it.flube.driver.modelLayer.entities.batch.BatchDetail.BatchType.PRODUCTION_TEST;
 
 /**
  * Created on 7/24/2017
@@ -74,11 +72,11 @@ public class BatchManageController  {
                 break;
             case PRODUCTION:
                 Timber.tag(TAG).d("...production batch -> batch guid : " + batchDetail.getBatchGuid());
-                useCaseExecutor.execute(new UseCaseForfeitBatchRequest(device, batchDetail.getBatchGuid(), new ForfeitBatchResponseHandler()));
+                useCaseExecutor.execute(new UseCaseForfeitBatchRequest(device, batchDetail.getBatchGuid(), batchDetail.getBatchType(), new ForfeitBatchResponseHandler()));
                 break;
             case PRODUCTION_TEST:
                 Timber.tag(TAG).d("...production test batch -> batch guid : " + batchDetail.getBatchGuid());
-                useCaseExecutor.execute(new UseCaseForfeitBatchRequest(device, batchDetail.getBatchGuid(), new ForfeitBatchResponseHandler()));
+                useCaseExecutor.execute(new UseCaseForfeitBatchRequest(device, batchDetail.getBatchGuid(), batchDetail.getBatchType(), new ForfeitBatchResponseHandler()));
                 break;
         }
 

@@ -5,11 +5,11 @@
 package it.flube.driver.modelLayer.builders;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 import it.flube.driver.modelLayer.entities.Offer;
-import it.flube.driver.modelLayer.entities.RouteStop;
-import it.flube.driver.modelLayer.entities.ServiceProvider;
+import it.flube.libbatchdata.entities.RouteStop;
+import it.flube.libbatchdata.entities.ServiceProvider;
+import it.flube.libbatchdata.builders.BuilderUtilities;
 
 /**
  * Created on 9/6/2017

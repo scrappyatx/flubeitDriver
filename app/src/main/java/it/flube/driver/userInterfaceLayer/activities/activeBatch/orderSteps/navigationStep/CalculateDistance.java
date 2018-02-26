@@ -6,7 +6,7 @@ package it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.nav
 
 import android.location.Location;
 
-import it.flube.driver.modelLayer.entities.LatLonLocation;
+import it.flube.libbatchdata.entities.LatLonLocation;
 import timber.log.Timber;
 
 /**

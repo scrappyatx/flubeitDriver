@@ -8,8 +8,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.offers.demoOffers.ClaimDemoOfferResponseHandler;
-import it.flube.driver.modelLayer.entities.batch.BatchDetail;
+import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.driver.useCaseLayer.batchDetail.UseCaseGetBatchData;
 import it.flube.driver.useCaseLayer.claimOffer.UseCaseClaimDemoOfferRequest;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
@@ -45,8 +44,10 @@ public class OfferClaimController {
                 break;
             case PRODUCTION:
             case PRODUCTION_TEST:
+                Timber.tag(TAG).d("tried to claim a production_test offer");
+
             default:
-                //useCaseExecutor.execute(new UseCaseClaimOfferRequest(device, batchDetail.getBatchGuid(), new ClaimPublicOfferResponseHandler()));
+                //useCaseExecutor.execute(new UseCaseClaimOfferRequestDEPRECATED(device, batchDetail.getBatchGuid(), new ClaimPublicOfferResponseHandler()));
                 break;
         }
     }

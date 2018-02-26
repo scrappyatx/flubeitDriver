@@ -11,7 +11,6 @@ import android.widget.Button;
 import com.airbnb.lottie.LottieAnimationView;
 
 import it.flube.driver.R;
-import it.flube.driver.modelLayer.entities.batch.BatchDetail;
 import timber.log.Timber;
 
 /**

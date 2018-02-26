@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import it.flube.driver.deviceLayer.cloudDatabase.batchData.batch.FirebaseBatchSummaryGet;
 import it.flube.driver.modelLayer.entities.ResponseCounter;
-import it.flube.driver.modelLayer.entities.batch.Batch;
+import it.flube.libbatchdata.entities.batch.Batch;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import timber.log.Timber;
 

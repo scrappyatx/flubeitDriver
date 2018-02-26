@@ -24,7 +24,7 @@ import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerAlerts.ShowCl
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerAlerts.ShowClaimOfferSuccessAlertEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerAlerts.ShowClaimOfferTimeoutAlertEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.PublicOfferListUpdatedEvent;
-import it.flube.driver.modelLayer.entities.batch.Batch;
+import it.flube.libbatchdata.entities.batch.Batch;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import it.flube.driver.userInterfaceLayer.layoutComponents.offers.OffersListAdapter;
@@ -79,6 +79,7 @@ public class PublicOffersActivity extends AppCompatActivity implements
         offersView.setVisibility(View.INVISIBLE);
 
         noOffersText.setVisibility(View.VISIBLE);
+        noOffersText.setText(R.string.offers_activity_no_offers_available);
 
         EventBus.getDefault().register(this);
 
@@ -130,7 +131,7 @@ public class PublicOffersActivity extends AppCompatActivity implements
     public void onEvent(OfferSelectedResponseHandler.UseCaseOfferSelectedEvent event) {
         Timber.tag(TAG).d("*** Offer was selected event");
 
-        navigator.gotoActivityOfferClaim(this, event.getBatchDetail().getBatchGuid());
+        //navigator.gotoActivityOfferClaim(this, event.getBatchDetail().getBatchGuid());
     }
 
     @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)

@@ -4,7 +4,7 @@
 
 package it.flube.driver.useCaseLayer.activeBatch;
 
-import it.flube.driver.modelLayer.entities.LatLonLocation;
+import it.flube.libbatchdata.entities.LatLonLocation;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import timber.log.Timber;

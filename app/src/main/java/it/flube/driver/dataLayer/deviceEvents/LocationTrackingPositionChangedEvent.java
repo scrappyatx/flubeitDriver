@@ -4,7 +4,7 @@
 
 package it.flube.driver.dataLayer.deviceEvents;
 
-import it.flube.driver.modelLayer.entities.LatLonLocation;
+import it.flube.libbatchdata.entities.LatLonLocation;
 
 /**
  * Created on 10/14/2017

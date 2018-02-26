@@ -6,16 +6,13 @@ package it.flube.driver.userInterfaceLayer.layoutComponents.batchDetail.batchDet
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.SphericalUtil;
-import com.mapbox.mapboxsdk.annotations.Marker;
-import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 
 
 import com.mapbox.mapboxsdk.geometry.LatLngBounds;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
-import it.flube.driver.modelLayer.entities.RouteStop;
+import it.flube.libbatchdata.entities.RouteStop;
 import timber.log.Timber;
 
 /**

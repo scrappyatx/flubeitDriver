@@ -12,8 +12,7 @@ import com.google.firebase.database.DatabaseReference;
 
 import java.util.HashMap;
 
-import it.flube.driver.modelLayer.entities.ResponseCounter;
-import it.flube.driver.modelLayer.entities.batch.BatchHolder;
+import it.flube.libbatchdata.entities.batch.BatchHolder;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import timber.log.Timber;
 

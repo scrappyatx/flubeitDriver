@@ -6,9 +6,7 @@ package it.flube.driver.dataLayer.useCaseResponseHandlers.offers;
 
 import org.greenrobot.eventbus.EventBus;
 
-import it.flube.driver.modelLayer.entities.Offer;
-import it.flube.driver.modelLayer.entities.batch.Batch;
-import it.flube.driver.modelLayer.entities.batch.BatchDetail;
+import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.driver.useCaseLayer.claimOffer.UseCaseOfferSelected;
 import timber.log.Timber;
 

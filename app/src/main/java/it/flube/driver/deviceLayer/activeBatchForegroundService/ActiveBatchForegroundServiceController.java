@@ -8,7 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import it.flube.driver.modelLayer.interfaces.ActiveBatchForegroundServiceInterface;
-import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
+import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import timber.log.Timber;
 
 /**

@@ -8,7 +8,7 @@ import java.util.concurrent.ExecutorService;
 
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
-import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
+import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import timber.log.Timber;
 
 /**

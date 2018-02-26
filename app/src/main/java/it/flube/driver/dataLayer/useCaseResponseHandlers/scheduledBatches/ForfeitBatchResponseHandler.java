@@ -18,7 +18,7 @@ import timber.log.Timber;
 public class ForfeitBatchResponseHandler implements UseCaseForfeitBatchRequest.Response {
     private final static String TAG = "ForfeitBatchResponseHandler";
 
-    public void forfeitBatchComplete(String batchGuid) {
+    public void useCaseForfeitBatchRequestComplete(String batchGuid) {
         Timber.tag(TAG).d("forfeitBatchComplete -> " + batchGuid);
         EventBus.getDefault().postSticky(new UseCaseForfeitBatchEvent(batchGuid));
     }

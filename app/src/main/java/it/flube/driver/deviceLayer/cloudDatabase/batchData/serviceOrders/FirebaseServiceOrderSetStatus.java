@@ -9,12 +9,10 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ServerValue;
 
 import java.util.HashMap;
 
-import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
-import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
+import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import timber.log.Timber;
 
 /**

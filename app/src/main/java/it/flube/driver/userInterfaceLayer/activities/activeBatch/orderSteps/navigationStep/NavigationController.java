@@ -10,22 +10,17 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 
-import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
 import com.mapbox.services.android.navigation.v5.navigation.MapboxNavigation;
 import com.mapbox.services.android.telemetry.location.LocationEngine;
-import com.mapbox.services.android.telemetry.location.LocationEnginePriority;
-import com.mapbox.services.android.telemetry.location.LostLocationEngine;
 
 import com.mapbox.services.api.directions.v5.models.DirectionsRoute;
-import com.mapbox.services.commons.models.Position;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.activeBatch.UseCaseFinishCurrentStepResponseHandler;
-import it.flube.driver.modelLayer.entities.LatLonLocation;
-import it.flube.driver.modelLayer.entities.orderStep.ServiceOrderNavigationStep;
+import it.flube.libbatchdata.entities.LatLonLocation;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderNavigationStep;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseFinishCurrentStepRequest;

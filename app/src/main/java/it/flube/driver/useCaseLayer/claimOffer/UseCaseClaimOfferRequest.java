@@ -1,69 +1,46 @@
 /*
- * Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
+ * Copyright (c) 2018. scrapdoodle, LLC.  All Rights Reserved
  */
 
 package it.flube.driver.useCaseLayer.claimOffer;
 
-import it.flube.driver.modelLayer.entities.Offer;
+import it.flube.libbatchdata.entities.batch.BatchDetail;
+import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
-import it.flube.driver.modelLayer.interfaces.RealtimeMessagingInterface;
 
 /**
- * Created on 7/22/2017
+ * Created on 2/24/2018
  * Project : Driver
  */
 
 public class UseCaseClaimOfferRequest implements
         Runnable,
-        RealtimeMessagingInterface.OfferChannel.ClaimOfferResponse {
+        CloudDatabaseInterface.ClaimOfferResponse {
 
-    private final MobileDeviceInterface device;
-    private final UseCaseClaimOfferRequest.Response response;
-    private final String offerOID;
-    private Boolean responseSeenForThisRequest;
+    private final Response response;
+    private final String batchGuid;
+    private final BatchDetail.BatchType batchType;
 
-    public UseCaseClaimOfferRequest(MobileDeviceInterface device, Offer offer, UseCaseClaimOfferRequest.Response response ){
-        this.device = device;
+    private final CloudDatabaseInterface cloudDb;
+
+    public UseCaseClaimOfferRequest(MobileDeviceInterface device, String batchGuid, Response response){
+        this.batchGuid = batchGuid;
         this.response = response;
-        this.offerOID = offer.getGUID();
-        responseSeenForThisRequest = false;
+        this.batchType = BatchDetail.BatchType.PRODUCTION_TEST;
+        cloudDb = device.getCloudDatabase();
+
     }
 
     public void run(){
-        //device.getRealtimeOfferMessages().sendClaimOfferRequestMessage(offerOID, this);
+        //make a request for this offer
+        cloudDb.claimOfferRequest(batchGuid, batchType, this);
     }
 
-    public void receiveClaimOfferResponseMessage(String offerOID, String batchOID, String clientId) {
-        responseSeenForThisRequest = true;
-
-        Boolean sameDriver = device.getUser().getDriver().getClientId().equals(clientId);
-        Boolean sameOffer = this.offerOID.equals(offerOID);
-
-        if (sameOffer) {
-            if (sameDriver) {
-                response.useCaseClaimOfferRequestSuccess(offerOID);
-            } else {
-                response.useCaseClaimOfferRequestFailure(offerOID);
-            }
-        } else {
-              // ignore this, we just happened to listen to the response message for another offer
-              // it will either have it's own useCaseClaimRequest thread (if the user tried to claim it), OR
-              // we can safely ignore it, because the user didn't try to claim it at all.
-        }
-    }
-
-    public void claimOfferRequestTimeoutNoResponse() {
-        if (!responseSeenForThisRequest) {
-            response.useCaseClaimOfferRequestTimeoutNoResponse();
-        }
+    public void cloudDatabaseClaimOfferRequestComplete(){
+        response.useCaseClaimOfferRequestComplete(batchGuid);
     }
 
     public interface Response {
-        void useCaseClaimOfferRequestSuccess(String offerOID);
-
-        void useCaseClaimOfferRequestFailure(String offerOID);
-
-        void useCaseClaimOfferRequestTimeoutNoResponse();
-
+        void useCaseClaimOfferRequestComplete(String batchGuid);
     }
 }

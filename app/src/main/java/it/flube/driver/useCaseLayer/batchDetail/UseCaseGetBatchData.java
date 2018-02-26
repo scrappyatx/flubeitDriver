@@ -6,10 +6,9 @@ package it.flube.driver.useCaseLayer.batchDetail;
 
 import java.util.ArrayList;
 
-import it.flube.driver.modelLayer.entities.RouteList;
-import it.flube.driver.modelLayer.entities.RouteStop;
-import it.flube.driver.modelLayer.entities.batch.BatchDetail;
-import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
+import it.flube.libbatchdata.entities.RouteStop;
+import it.flube.libbatchdata.entities.batch.BatchDetail;
+import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import timber.log.Timber;

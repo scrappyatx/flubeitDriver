@@ -7,13 +7,12 @@ package it.flube.driver.dataLayer.useCaseResponseHandlers.activeBatch;
 import org.greenrobot.eventbus.EventBus;
 
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.deviceLocation.LocationTrackingPositionChangedHandler;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.activeBatch.ActiveBatchUpdatedEvent;
-import it.flube.driver.modelLayer.entities.batch.BatchDetail;
-import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
+import it.flube.libbatchdata.entities.batch.BatchDetail;
+import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
-import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
+import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseBatchFinishedRequest;
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseBatchRemovedRequest;
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseStepStartedRequest;

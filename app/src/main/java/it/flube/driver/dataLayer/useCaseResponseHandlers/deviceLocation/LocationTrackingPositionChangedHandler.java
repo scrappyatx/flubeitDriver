@@ -4,14 +4,10 @@
 
 package it.flube.driver.dataLayer.useCaseResponseHandlers.deviceLocation;
 
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-
 import org.greenrobot.eventbus.EventBus;
 
 import it.flube.driver.dataLayer.deviceEvents.LocationTrackingPositionChangedEvent;
-import it.flube.driver.modelLayer.entities.LatLonLocation;
+import it.flube.libbatchdata.entities.LatLonLocation;
 import it.flube.driver.modelLayer.interfaces.LocationTelemetryInterface;
 import timber.log.Timber;
 

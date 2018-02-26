@@ -9,14 +9,13 @@ import android.content.Intent;
 
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.modelLayer.interfaces.ActiveBatchInterface;
-import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
+import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import it.flube.driver.userInterfaceLayer.activities.account.AccountActivity;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.batchItinerary.BatchItineraryActivity;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderItinerary.OrderItineraryActivity;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.NavigationActivity;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.PhotoActivity;
 import it.flube.driver.userInterfaceLayer.activities.home.HomeActivity;
-import it.flube.driver.userInterfaceLayer.activities.offers.demoOffers.DemoOffersActivity;
 import it.flube.driver.userInterfaceLayer.activities.earnings.EarningsActivity;
 import it.flube.driver.userInterfaceLayer.activities.help.HelpActivity;
 import it.flube.driver.userInterfaceLayer.activities.offers.claimOffer.OfferClaimActivity;

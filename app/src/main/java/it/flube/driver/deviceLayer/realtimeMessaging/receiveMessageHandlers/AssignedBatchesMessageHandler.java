@@ -15,7 +15,7 @@ import java.util.List;
 import io.ably.lib.realtime.Channel;
 import io.ably.lib.types.Message;
 import it.flube.driver.deviceLayer.realtimeMessaging.AblyChannel;
-import it.flube.driver.modelLayer.entities.batch.Batch;
+import it.flube.libbatchdata.entities.batch.Batch;
 import timber.log.Timber;
 
 /**

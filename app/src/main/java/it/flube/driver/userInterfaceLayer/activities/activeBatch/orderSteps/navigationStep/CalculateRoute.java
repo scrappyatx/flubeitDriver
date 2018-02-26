@@ -13,7 +13,7 @@ import com.mapbox.services.commons.geojson.Point;
 import com.mapbox.services.commons.models.Position;
 
 
-import it.flube.driver.modelLayer.entities.LatLonLocation;
+import it.flube.libbatchdata.entities.LatLonLocation;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

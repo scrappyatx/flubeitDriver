@@ -13,12 +13,9 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
-import it.flube.driver.modelLayer.entities.RouteStop;
-import it.flube.driver.modelLayer.entities.orderStep.ServiceOrderGenericStep;
-import it.flube.driver.modelLayer.entities.orderStep.ServiceOrderNavigationStep;
-import it.flube.driver.modelLayer.entities.orderStep.ServiceOrderPhotoStep;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderGenericStep;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
-import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
+import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import timber.log.Timber;
 
 /**

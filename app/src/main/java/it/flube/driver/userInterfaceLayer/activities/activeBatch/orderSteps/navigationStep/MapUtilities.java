@@ -10,8 +10,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
-import it.flube.driver.modelLayer.builders.LatLonLocationBuilder;
-import it.flube.driver.modelLayer.entities.LatLonLocation;
+import it.flube.libbatchdata.builders.LatLonLocationBuilder;
+import it.flube.libbatchdata.entities.LatLonLocation;
 import timber.log.Timber;
 
 /**

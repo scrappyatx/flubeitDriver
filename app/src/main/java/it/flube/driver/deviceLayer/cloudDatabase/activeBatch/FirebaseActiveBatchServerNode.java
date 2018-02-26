@@ -14,10 +14,10 @@ import com.google.firebase.database.ServerValue;
 import java.util.HashMap;
 
 import it.flube.driver.modelLayer.entities.driver.Driver;
-import it.flube.driver.modelLayer.entities.LatLonLocation;
-import it.flube.driver.modelLayer.entities.batch.BatchDetail;
-import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
-import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
+import it.flube.libbatchdata.entities.LatLonLocation;
+import it.flube.libbatchdata.entities.batch.BatchDetail;
+import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
+import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import timber.log.Timber;
 
 /**

@@ -6,10 +6,9 @@ package it.flube.driver.useCaseLayer.activeBatch;
 
 import java.util.ArrayList;
 
-import it.flube.driver.modelLayer.entities.RouteStop;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
-import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
+import it.flube.libbatchdata.interfaces.OrderStepInterface;
 
 /**
  * Created on 10/24/2017

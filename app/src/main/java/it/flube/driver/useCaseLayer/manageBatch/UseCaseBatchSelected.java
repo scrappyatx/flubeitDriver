@@ -4,9 +4,8 @@
 
 package it.flube.driver.useCaseLayer.manageBatch;
 
-import it.flube.driver.modelLayer.entities.batch.Batch;
-import it.flube.driver.modelLayer.entities.batch.BatchCloudDB;
-import it.flube.driver.modelLayer.entities.batch.BatchDetail;
+import it.flube.libbatchdata.entities.batch.Batch;
+import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 

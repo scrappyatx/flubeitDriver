@@ -6,20 +6,14 @@ package it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.pho
 
 import android.graphics.Bitmap;
 
-import com.wonderkiln.camerakit.CameraKitError;
-import com.wonderkiln.camerakit.CameraKitEvent;
 import com.wonderkiln.camerakit.CameraKitEventCallback;
-import com.wonderkiln.camerakit.CameraKitEventListener;
 import com.wonderkiln.camerakit.CameraKitImage;
-import com.wonderkiln.camerakit.CameraKitVideo;
 
 import java.util.concurrent.ExecutorService;
 
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.activeBatch.UseCaseFinishCurrentStepResponseHandler;
-import it.flube.driver.modelLayer.builders.BuilderUtilities;
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
-import it.flube.driver.useCaseLayer.activeBatch.UseCaseFinishCurrentStepRequest;
 import it.flube.driver.useCaseLayer.photoStep.UseCaseSavePhotoToDeviceImageStorage;
 import timber.log.Timber;
 

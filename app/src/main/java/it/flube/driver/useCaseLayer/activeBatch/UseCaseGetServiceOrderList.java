@@ -6,7 +6,7 @@ package it.flube.driver.useCaseLayer.activeBatch;
 
 import java.util.ArrayList;
 
-import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
+import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 

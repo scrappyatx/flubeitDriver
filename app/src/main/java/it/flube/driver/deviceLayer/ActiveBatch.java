@@ -8,13 +8,13 @@ import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
-import it.flube.driver.modelLayer.entities.RouteStop;
-import it.flube.driver.modelLayer.entities.batch.BatchDetail;
-import it.flube.driver.modelLayer.entities.orderStep.ServiceOrderNavigationStep;
-import it.flube.driver.modelLayer.entities.orderStep.ServiceOrderPhotoStep;
-import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
+import it.flube.libbatchdata.entities.RouteStop;
+import it.flube.libbatchdata.entities.batch.BatchDetail;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderNavigationStep;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderPhotoStep;
+import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import it.flube.driver.modelLayer.interfaces.ActiveBatchInterface;
-import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
+import it.flube.libbatchdata.interfaces.OrderStepInterface;
 
 /**
  * Created on 10/16/2017

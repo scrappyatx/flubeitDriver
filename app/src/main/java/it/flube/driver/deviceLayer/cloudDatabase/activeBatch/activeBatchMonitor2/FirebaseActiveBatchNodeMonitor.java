@@ -7,9 +7,6 @@ package it.flube.driver.deviceLayer.cloudDatabase.activeBatch.activeBatchMonitor
 import com.google.firebase.database.DatabaseReference;
 
 import it.flube.driver.dataLayer.useCaseResponseHandlers.activeBatch.ActiveBatchUpdatedResponseHandler;
-import it.flube.driver.deviceLayer.cloudDatabase.activeBatch.activeBatchMonitor.FirebaseActiveBatchCurrentBatchListener;
-import it.flube.driver.deviceLayer.cloudDatabase.activeBatch.activeBatchMonitor.FirebaseActiveBatchCurrentServiceOrderMonitor;
-import it.flube.driver.modelLayer.entities.batch.BatchDetail;
 import timber.log.Timber;
 
 /**

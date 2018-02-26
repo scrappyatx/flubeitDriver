@@ -19,8 +19,10 @@ import it.flube.driver.deviceLayer.cloudDatabase.batchData.mapLocations.Firebase
 import it.flube.driver.deviceLayer.cloudDatabase.batchData.routeStops.FirebaseRouteStopListGet;
 import it.flube.driver.deviceLayer.cloudDatabase.batchData.serviceOrders.FirebaseServiceOrderListGet;
 import it.flube.driver.deviceLayer.cloudDatabase.batchData.steps.FirebaseOrderStepListGet;
+import it.flube.driver.deviceLayer.cloudDatabase.batchForfeitRequest.BatchForfeitRequest;
 import it.flube.driver.deviceLayer.cloudDatabase.completedBatches.FirebaseCompletedBatchesServerNode;
 import it.flube.driver.deviceLayer.cloudDatabase.driverProfiles.FirebaseDriverProfileGet;
+import it.flube.driver.deviceLayer.cloudDatabase.offerClaimRequest.OfferClaimRequest;
 import it.flube.driver.deviceLayer.cloudDatabase.offers.demoOffers.FirebaseDemoOffersAdd;
 import it.flube.driver.deviceLayer.cloudDatabase.offers.demoOffers.FirebaseDemoOffersMonitor;
 import it.flube.driver.deviceLayer.cloudDatabase.deviceAndUser.FirebaseDevice;
@@ -38,13 +40,13 @@ import it.flube.driver.deviceLayer.cloudDatabase.uploadTasks.MovePhotoUploadTask
 import it.flube.driver.deviceLayer.cloudDatabase.uploadTasks.MovePhotoUploadTaskToInProgress;
 import it.flube.driver.modelLayer.entities.DeviceInfo;
 import it.flube.driver.modelLayer.entities.driver.Driver;
-import it.flube.driver.modelLayer.entities.LatLonLocation;
-import it.flube.driver.modelLayer.entities.batch.BatchDetail;
-import it.flube.driver.modelLayer.entities.batch.BatchHolder;
-import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
+import it.flube.libbatchdata.entities.LatLonLocation;
+import it.flube.libbatchdata.entities.batch.BatchDetail;
+import it.flube.libbatchdata.entities.batch.BatchHolder;
+import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import it.flube.driver.modelLayer.interfaces.AppRemoteConfigInterface;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
-import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
+import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import timber.log.Timber;
 
 /**
@@ -90,6 +92,14 @@ public class CloudDatabaseFirebaseWrapper implements
     private String publicOffersNode;
     private String activeBatchNode;
     private String driverProfileNode;
+    private String publicOffersBatchDataNode;
+    private String personalOffersBatchDataNode;
+
+    private String offerClaimRequestNode;
+    private String offerClaimResponseNode;
+
+    private String batchForfeitRequestNode;
+
 
     private String syncNodeForUserOwnedData;
     private String syncNodeForPublicOffers;
@@ -131,8 +141,8 @@ public class CloudDatabaseFirebaseWrapper implements
         Timber.tag(TAG).d("  ...create monitors for offers & active batch");
         //setup persistent objects for monitors
         firebaseDemoOffersMonitor = new FirebaseDemoOffersMonitor(database.getReference(demoOffersNode), database.getReference(batchDataNode));
-        firebasePublicOffersMonitor = new FirebasePublicOffersMonitor(database.getReference(publicOffersNode), database.getReference(batchDataNode));
-        firebasePersonalOffersMonitor = new FirebasePersonalOffersMonitor(database.getReference(personalOffersNode), database.getReference(batchDataNode));
+        firebasePublicOffersMonitor = new FirebasePublicOffersMonitor(database.getReference(publicOffersNode), database.getReference(publicOffersBatchDataNode));
+        firebasePersonalOffersMonitor = new FirebasePersonalOffersMonitor(database.getReference(personalOffersNode), database.getReference(personalOffersBatchDataNode));
         firebaseScheduledBatchesMonitor = new FirebaseScheduledBatchesMonitor(database.getReference(scheduledBatchesNode), database.getReference(batchDataNode));
         firebaseActiveBatchMonitor = new FirebaseActiveBatchNodeMonitor(database.getReference(activeBatchNode), database.getReference(batchDataNode));
 
@@ -167,6 +177,22 @@ public class CloudDatabaseFirebaseWrapper implements
         Timber.tag(TAG).d("activeBatchNode = " + activeBatchNode);
 
         driverProfileNode = "userReadable/driverProfiles";
+        Timber.tag(TAG).d("driverProfileNode = " + driverProfileNode);
+
+        publicOffersBatchDataNode = "/userReadable/batchData";
+        Timber.tag(TAG).d("publicOffersBatchDataNode = " + publicOffersBatchDataNode);
+
+        personalOffersBatchDataNode = "/userReadable/batchData";
+        Timber.tag(TAG).d("personalOffersBatchDataNode = " + personalOffersBatchDataNode);
+
+        offerClaimRequestNode = "/userWriteable/claimOfferRequest";
+        Timber.tag(TAG).d("offerClaimRequestNode = " + offerClaimRequestNode);
+
+        offerClaimResponseNode = "/userReadable/claimOfferResponse";
+        Timber.tag(TAG).d("offerClaimResponseNode = " + offerClaimResponseNode);
+
+        batchForfeitRequestNode = "/userWriteable/batchForfeitRequest";
+        Timber.tag(TAG).d("batchForfeitRequestNode = " + batchForfeitRequestNode);
 
         syncNodeForUserOwnedData = "userOwned/users" + "/" + driver.getClientId();
         syncNodeForPublicOffers = "userReadable/publicOffers";
@@ -534,5 +560,20 @@ public class CloudDatabaseFirebaseWrapper implements
 
     }
 
+    ////
+    ////  CLAIM OFFER REQUEST
+    ////
+    public void claimOfferRequest(String batchGuid, BatchDetail.BatchType batchType, ClaimOfferResponse response){
+        Timber.tag(TAG).d("claimOfferRequest");
+        new OfferClaimRequest().claimOfferRequest(database.getReference(offerClaimRequestNode),driver.getClientId(), batchGuid, batchType, response);
+    }
+
+    ////
+    ////    BATCH FORFEIT REQUEST
+    ////
+    public void batchForfeitRequest(String batchGuid, BatchDetail.BatchType batchType, BatchForfeitResponse response){
+        Timber.tag(TAG).d("batchForfeitRequest");
+        new BatchForfeitRequest().batchForfeitRequest(database.getReference(batchForfeitRequestNode), driver.getClientId(), batchGuid, batchType, response);
+    }
 
 }

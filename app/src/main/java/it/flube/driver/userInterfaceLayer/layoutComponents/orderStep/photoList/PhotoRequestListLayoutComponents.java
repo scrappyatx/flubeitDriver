@@ -12,9 +12,7 @@ import android.view.View;
 import java.util.ArrayList;
 
 import it.flube.driver.R;
-import it.flube.driver.modelLayer.entities.PhotoRequest;
-import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
-import it.flube.driver.userInterfaceLayer.layoutComponents.batchDetail.batchDetailTab.tabOrders.ServiceOrderListAdapter;
+import it.flube.libbatchdata.entities.PhotoRequest;
 import timber.log.Timber;
 
 /**

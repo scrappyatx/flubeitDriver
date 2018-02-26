@@ -7,13 +7,11 @@ package it.flube.driver.userInterfaceLayer.layoutComponents.offerClaim;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 
 import it.flube.driver.R;
-import it.flube.driver.modelLayer.entities.batch.BatchDetail;
-import ng.max.slideview.SlideView;
+import it.flube.libbatchdata.entities.batch.BatchDetail;
 import timber.log.Timber;
 
 /**

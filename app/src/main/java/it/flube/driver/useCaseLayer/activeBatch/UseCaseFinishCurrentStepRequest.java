@@ -4,13 +4,8 @@
 
 package it.flube.driver.useCaseLayer.activeBatch;
 
-import java.util.ArrayList;
-
-import it.flube.driver.modelLayer.entities.batch.BatchDetail;
-import it.flube.driver.modelLayer.entities.serviceOrder.ServiceOrder;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
-import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
 
 /**
  * Created on 10/28/2017

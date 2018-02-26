@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import it.flube.driver.R;
-import it.flube.driver.modelLayer.entities.batch.BatchDetail;
+import it.flube.libbatchdata.entities.batch.BatchDetail;
 import timber.log.Timber;
 
 /**

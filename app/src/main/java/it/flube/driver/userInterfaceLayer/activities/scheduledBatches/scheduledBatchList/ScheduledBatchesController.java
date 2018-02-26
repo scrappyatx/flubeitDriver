@@ -5,11 +5,10 @@
 package it.flube.driver.userInterfaceLayer.activities.scheduledBatches.scheduledBatchList;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.scheduledBatches.BatchSelectedResponseHandler;
-import it.flube.driver.modelLayer.entities.batch.Batch;
+import it.flube.libbatchdata.entities.batch.Batch;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import it.flube.driver.useCaseLayer.manageBatch.UseCaseBatchSelected;
 import timber.log.Timber;

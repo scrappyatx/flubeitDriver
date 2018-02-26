@@ -199,6 +199,10 @@
     <string name="offers_activity_title">Public Offers</string>
     <string name="offers_activity_no_offers_available">There are no available public offers</string>
 
+    <!-- Strings related to personal offers activity layout -->
+    <string name="personal_offers_activity_title">Personal Offers</string>
+    <string name="personal_offers_no_offers_available">You have no personal offers</string>
+
     <!-- Strings related to offer claim activity layout -->
     <string name="offer_claim_activity_title">Claim Offer</string>
     <string name="offer_claim_button_caption">Claim Offer</string>

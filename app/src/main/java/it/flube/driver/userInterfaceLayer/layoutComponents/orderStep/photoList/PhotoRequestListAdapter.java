@@ -18,7 +18,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import it.flube.driver.R;
-import it.flube.driver.modelLayer.entities.PhotoRequest;
+import it.flube.libbatchdata.entities.PhotoRequest;
 import timber.log.Timber;
 
 /**

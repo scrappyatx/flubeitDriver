@@ -9,11 +9,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
-import it.flube.driver.modelLayer.entities.orderStep.ServiceOrderGenericStep;
-import it.flube.driver.modelLayer.entities.orderStep.ServiceOrderNavigationStep;
-import it.flube.driver.modelLayer.entities.orderStep.ServiceOrderPhotoStep;
-import it.flube.driver.modelLayer.entities.orderStep.StepId;
-import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderGenericStep;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderNavigationStep;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderPhotoStep;
+import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import timber.log.Timber;
 
 /**

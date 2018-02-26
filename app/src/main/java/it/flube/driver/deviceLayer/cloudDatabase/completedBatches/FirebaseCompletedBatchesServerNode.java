@@ -14,7 +14,7 @@ import com.google.firebase.database.ServerValue;
 import java.util.HashMap;
 
 import it.flube.driver.modelLayer.entities.driver.Driver;
-import it.flube.driver.modelLayer.entities.batch.BatchDetail;
+import it.flube.libbatchdata.entities.batch.BatchDetail;
 import timber.log.Timber;
 
 /**

@@ -6,6 +6,9 @@ package it.flube.driver.modelLayer.entities;
 
 import java.util.ArrayList;
 
+import it.flube.libbatchdata.entities.RouteStop;
+import it.flube.libbatchdata.entities.ServiceProvider;
+
 /**
  * Created by Bryan on 3/21/2017.
  */

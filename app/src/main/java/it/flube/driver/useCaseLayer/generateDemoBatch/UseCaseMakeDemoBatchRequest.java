@@ -5,9 +5,9 @@
 package it.flube.driver.useCaseLayer.generateDemoBatch;
 
 import it.flube.driver.modelLayer.entities.driver.Driver;
-import it.flube.driver.modelLayer.entities.batch.BatchHolder;
+import it.flube.libbatchdata.entities.batch.BatchHolder;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
-import it.flube.driver.modelLayer.interfaces.DemoBatchInterface;
+import it.flube.libbatchdata.interfaces.DemoBatchInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import timber.log.Timber;
 
@@ -43,7 +43,7 @@ public class UseCaseMakeDemoBatchRequest implements
     public void run(){
         Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
         //Step 1 - create a demo batch
-        demoBatchHolder = demoMaker.createDemoBatch(driver);
+        demoBatchHolder = demoMaker.createDemoBatch(driver.getClientId());
 
         Timber.tag(TAG).d("   batchGuid -> " + demoBatchHolder.getBatch().getGuid());
         //Step 2 - save the demo batch

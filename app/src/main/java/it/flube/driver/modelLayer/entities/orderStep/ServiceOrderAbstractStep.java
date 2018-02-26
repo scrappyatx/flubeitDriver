@@ -4,9 +4,7 @@
 
 package it.flube.driver.modelLayer.entities.orderStep;
 
-import java.util.UUID;
-
-import it.flube.driver.modelLayer.entities.Timestamp;
+import it.flube.libbatchdata.entities.Timestamp;
 
 /**
  * Created on 8/8/2017

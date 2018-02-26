@@ -270,9 +270,9 @@ public class DrawerMenu {
         Integer offerCount = device.getOfferLists().getPersonalOffers().size();
         Timber.tag(TAG).d("personal offers count = " + offerCount);
         if (offerCount > 0) {
-            drawer.updateBadge(ID_PUBLIC_OFFERS, new StringHolder(Integer.toString(offerCount) + ""));
+            drawer.updateBadge(ID_PERSONAL_OFFERS, new StringHolder(Integer.toString(offerCount) + ""));
         } else {
-            drawer.updateBadge(ID_PUBLIC_OFFERS, null);
+            drawer.updateBadge(ID_PERSONAL_OFFERS, null);
         }
     }
 
@@ -280,9 +280,9 @@ public class DrawerMenu {
         Integer offerCount = device.getOfferLists().getPublicOffers().size();
         Timber.tag(TAG).d("public offers count = " + offerCount);
         if (offerCount > 0) {
-            drawer.updateBadge(ID_PERSONAL_OFFERS, new StringHolder(Integer.toString(offerCount) + ""));
+            drawer.updateBadge(ID_PUBLIC_OFFERS, new StringHolder(Integer.toString(offerCount) + ""));
         } else {
-            drawer.updateBadge(ID_PERSONAL_OFFERS, null);
+            drawer.updateBadge(ID_PUBLIC_OFFERS, null);
         }
     }
 
@@ -408,7 +408,7 @@ public class DrawerMenu {
         public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
             // do something with the clicked item :D
             navigator.gotoActivityPublicOffers(activity);
-            Timber.tag(TAG).d("clicked on OFFERS");
+            Timber.tag(TAG).d("clicked on PUBLIC OFFERS");
             return false;
         }
     }
@@ -418,7 +418,7 @@ public class DrawerMenu {
 
         public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
             // do something with the clicked item :D
-            //navigator.gotoActivityOffers(activity);
+            navigator.gotoActivityPersonalOffers(activity);
             Timber.tag(TAG).d("clicked on PERSONAL OFFERS");
             return false;
         }

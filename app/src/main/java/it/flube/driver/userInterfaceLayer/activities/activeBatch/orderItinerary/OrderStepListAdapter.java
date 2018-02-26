@@ -5,7 +5,6 @@
 package it.flube.driver.userInterfaceLayer.activities.activeBatch.orderItinerary;
 
 import android.content.Context;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import it.flube.driver.R;
-import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
+import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import it.flube.driver.userInterfaceLayer.UserInterfaceUtilities;
 import timber.log.Timber;
 

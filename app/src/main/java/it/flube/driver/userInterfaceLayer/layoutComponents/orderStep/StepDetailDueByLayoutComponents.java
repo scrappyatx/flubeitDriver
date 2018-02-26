@@ -4,7 +4,6 @@
 
 package it.flube.driver.userInterfaceLayer.layoutComponents.orderStep;
 
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -14,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import it.flube.driver.R;
-import it.flube.driver.modelLayer.interfaces.OrderStepInterface;
+import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import timber.log.Timber;
 
 /**
