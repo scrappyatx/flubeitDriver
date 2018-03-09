@@ -51,12 +51,12 @@ public interface MobileDeviceInterface {
 
     LocationTelemetryInterface getLocationTelemetry();
 
-    RealtimeMessagingInterface.Connection getRealtimeConnection();
+    //RealtimeMessagingInterface.Connection getRealtimeConnection();
 
     //RealtimeMessagingInterface.OfferChannel getRealtimeOfferMessages();
 
     //RealtimeMessagingInterface.BatchChannel getRealtimeBatchMessages();
 
-    RealtimeMessagingInterface.ActiveBatchChannel getRealtimeActiveBatchMessages();
+    //RealtimeMessagingInterface.ActiveBatchChannel getRealtimeActiveBatchMessages();
 
 }

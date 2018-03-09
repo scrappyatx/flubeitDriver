@@ -21,12 +21,11 @@ public class UseCaseDisconnectUser implements
         Runnable,
         ActiveBatchForegroundServiceInterface.StopActiveBatchForegroundServiceResponse,
         CloudDatabaseInterface.DisconnectResponse,
-        RealtimeMessagingInterface.Connection.DisconnectResponse,
         LocationTelemetryInterface.LocationTrackingStopResponse {
 
     private final static String TAG = "UseCaseDisconnectUser";
 
-    private final static Integer responseCount = 4;
+    private final static Integer responseCount = 3;
     private final MobileDeviceInterface device;
     private final Response response;
     private final ResponseCounter responseCounter;
@@ -51,11 +50,11 @@ public class UseCaseDisconnectUser implements
         device.getCloudDatabase().disconnectDriverRequest(this);
 
         /// 3. disconnect from realtime messaging server
-        Timber.tag(TAG).d("   3 --> disconnect from realtime messaging server...");
-        device.getRealtimeConnection().messageServerDisconnectRequest(this);
+        //Timber.tag(TAG).d("   3 --> disconnect from realtime messaging server...");
+        //device.getRealtimeConnection().messageServerDisconnectRequest(this);
 
         /// 4. stop location tracking
-        Timber.tag(TAG).d("   4 --> stop location tracking...");
+        Timber.tag(TAG).d("   3 --> stop location tracking...");
         device.getLocationTelemetry().locationTrackingStopRequest(this);
 
     }
@@ -70,10 +69,10 @@ public class UseCaseDisconnectUser implements
         checkIfFinished();
     }
 
-    public void messageServerDisconnectComplete() {
-        Timber.tag(TAG).d("      ...realtime messaging server disconnect complete");
-        checkIfFinished();
-    }
+    // void messageServerDisconnectComplete() {
+    //    Timber.tag(TAG).d("      ...realtime messaging server disconnect complete");
+    //    checkIfFinished();
+    //}
 
     public void locationTrackingStopComplete(){
         Timber.tag(TAG).d("      ...location tracking stopped");

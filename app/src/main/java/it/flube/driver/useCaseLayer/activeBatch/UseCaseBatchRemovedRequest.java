@@ -18,7 +18,6 @@ import it.flube.driver.modelLayer.interfaces.RealtimeMessagingInterface;
 public class UseCaseBatchRemovedRequest implements
         Runnable,
         LocationTelemetryInterface.LocationTrackingStopResponse,
-        RealtimeMessagingInterface.ActiveBatchChannel.ActiveBatchChannelDisconnectResponse,
         ActiveBatchForegroundServiceInterface.StopActiveBatchForegroundServiceResponse,
         CloudDatabaseInterface.AcknowledgeRemovedBatchResponse {
 
@@ -43,7 +42,7 @@ public class UseCaseBatchRemovedRequest implements
         device.getActiveBatchForegroundServiceController().stopActiveBatchForegroundServiceRequest(this);
 
         // stop the active batch channel
-        device.getRealtimeActiveBatchMessages().disconnectRequest(this);
+        //device.getRealtimeActiveBatchMessages().disconnectRequest(this);
 
         //set the active batch server node to null
         device.getCloudDatabase().updateActiveBatchServerNodeStatus(batchGuid);
@@ -54,9 +53,9 @@ public class UseCaseBatchRemovedRequest implements
 
     }
 
-    public void activeBatchChannelDisconnectComplete(){
+    //public void activeBatchChannelDisconnectComplete(){
         //do nothing
-    }
+    //}
 
     public void locationTrackingStopComplete(){
         //do nothing

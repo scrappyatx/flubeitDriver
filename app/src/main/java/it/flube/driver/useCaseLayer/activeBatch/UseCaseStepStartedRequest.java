@@ -23,7 +23,6 @@ import timber.log.Timber;
 public class UseCaseStepStartedRequest implements
         Runnable,
         LocationTelemetryInterface.LocationTrackingStartResponse,
-        RealtimeMessagingInterface.ActiveBatchChannel.ActiveBatchChannelConnectResponse,
         ActiveBatchForegroundServiceInterface.StartActiveBatchForegroundServiceResponse,
         ActiveBatchForegroundServiceInterface.UpdateActiveBatchForegroundServiceResponse {
 
@@ -72,9 +71,6 @@ public class UseCaseStepStartedRequest implements
         Timber.tag(TAG).d("   start location tracking...");
         device.getLocationTelemetry().locationTrackingStartRequest(this);
 
-        Timber.tag(TAG).d("   connect to realtime messaging server...");
-        device.getRealtimeActiveBatchMessages().connectRequest(batchDetail.getBatchGuid(), this);
-
         String notificationTitle;
         String notificationSubTitle;
 
@@ -117,10 +113,10 @@ public class UseCaseStepStartedRequest implements
         response.startCurrentStepComplete();
     }
 
-    public void activeBatchChannelConnectComplete(){
-        Timber.tag(TAG).d("   ...realtime messaging server connecting, sending current step title");
-        device.getRealtimeActiveBatchMessages().sendCurrentlyDoing(step.getTitle());
-    }
+    //public void activeBatchChannelConnectComplete(){
+    //    Timber.tag(TAG).d("   ...realtime messaging server connecting, sending current step title");
+     //   device.getRealtimeActiveBatchMessages().sendCurrentlyDoing(step.getTitle());
+    //}
 
     public void locationTrackingStartSuccess(){
         Timber.tag(TAG).d("   ...location tracking started SUCCESS");

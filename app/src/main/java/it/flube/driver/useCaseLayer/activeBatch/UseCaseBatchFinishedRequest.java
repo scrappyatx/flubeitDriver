@@ -20,7 +20,6 @@ import timber.log.Timber;
 public class UseCaseBatchFinishedRequest implements
     Runnable,
     LocationTelemetryInterface.LocationTrackingStopResponse,
-    RealtimeMessagingInterface.ActiveBatchChannel.ActiveBatchChannelDisconnectResponse,
     ActiveBatchForegroundServiceInterface.StopActiveBatchForegroundServiceResponse,
     CloudDatabaseInterface.GetBatchDetailResponse,
     CloudDatabaseInterface.AcknowledgeFinishedBatchResponse {
@@ -53,8 +52,8 @@ public class UseCaseBatchFinishedRequest implements
         device.getActiveBatchForegroundServiceController().stopActiveBatchForegroundServiceRequest(this);
 
         // stop the active batch channel
-        Timber.tag(TAG).d("   ...disconnect from active batch channel");
-        device.getRealtimeActiveBatchMessages().disconnectRequest(this);
+        //Timber.tag(TAG).d("   ...disconnect from active batch channel");
+        //device.getRealtimeActiveBatchMessages().disconnectRequest(this);
 
         //set the active batch server node to complete (null)
         Timber.tag(TAG).d("   ...set the active batch cloud database server node to complete");
@@ -67,10 +66,10 @@ public class UseCaseBatchFinishedRequest implements
 
     }
 
-    public void activeBatchChannelDisconnectComplete(){
+    //public void activeBatchChannelDisconnectComplete(){
         //do nothing
-        Timber.tag(TAG).d("   ...active batch channel disconnect complete");
-    }
+    //    Timber.tag(TAG).d("   ...active batch channel disconnect complete");
+    //}
 
     public void locationTrackingStopComplete(){
         //do nothing

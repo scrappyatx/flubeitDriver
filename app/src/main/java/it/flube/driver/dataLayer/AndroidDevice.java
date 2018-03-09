@@ -164,9 +164,9 @@ public class AndroidDevice implements MobileDeviceInterface, DeviceName.Callback
         return UseCaseEngine.getInstance();
     }
 
-    public RealtimeMessagingInterface.Connection getRealtimeConnection() {
-        return AblyConnectionWrapper.getInstance();
-    }
+    //public RealtimeMessagingInterface.Connection getRealtimeConnection() {
+    //    return AblyConnectionWrapper.getInstance();
+    //}
 
     //public RealtimeMessagingInterface.OfferChannel getRealtimeOfferMessages() {
     //    return RealtimeOfferMessages.getInstance();
@@ -176,9 +176,9 @@ public class AndroidDevice implements MobileDeviceInterface, DeviceName.Callback
     //    return RealtimeBatchMessages.getInstance();
     //}
 
-    public RealtimeMessagingInterface.ActiveBatchChannel getRealtimeActiveBatchMessages(){
-        return RealtimeActiveBatchMessages.getInstance();
-    }
+    //public RealtimeMessagingInterface.ActiveBatchChannel getRealtimeActiveBatchMessages(){
+    //    return RealtimeActiveBatchMessages.getInstance();
+    //}
 
     public AppUserInterface getUser() {
         return AppUser.getInstance();

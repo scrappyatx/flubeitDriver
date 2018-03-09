@@ -42,8 +42,8 @@ public class UseCaseSaveMapLocationRequest implements
     public void run(){
         Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
 
-        Timber.tag(TAG).d("   ...sending location to realtime messaging");
-        device.getRealtimeActiveBatchMessages().sendMsgLocationUpdate(location.getLatitude(), location.getLongitude());
+        //Timber.tag(TAG).d("   ...sending location to realtime messaging");
+        //device.getRealtimeActiveBatchMessages().sendMsgLocationUpdate(location.getLatitude(), location.getLongitude());
 
         Timber.tag(TAG).d("   ...sending location to cloud database");
         device.getCloudDatabase().saveMapLocationRequest(batchGuid, serviceOrderGuid, orderStepGuid, location, this);

@@ -29,7 +29,7 @@ public class UseCaseFinishCurrentStepRequest implements
 
     public void run(){
         device.getCloudDatabase().finishActiveBatchStepRequest(CloudDatabaseInterface.ActorType.MOBILE_USER, this);
-        device.getRealtimeActiveBatchMessages().sendMilestoneEvent(milestoneEvent);
+        //device.getRealtimeActiveBatchMessages().sendMilestoneEvent(milestoneEvent);
     }
 
     public void cloudDatabaseFinishActiveBatchStepComplete() {
