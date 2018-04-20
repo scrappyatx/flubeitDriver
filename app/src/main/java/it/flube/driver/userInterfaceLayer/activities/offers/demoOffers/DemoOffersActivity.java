@@ -14,6 +14,8 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
+import it.flube.driver.userInterfaceLayer.activities.offers.OfferConstants;
+import it.flube.driver.userInterfaceLayer.activityNavigator.OfferClaimNavigator;
 import it.flube.driver.userInterfaceLayer.layoutComponents.demoOffers.DemoOffersLayoutComponents;
 import it.flube.driver.userInterfaceLayer.layoutComponents.offers.OffersListLayoutComponent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.DemoOfferOfferListUpdatedEvent;
@@ -22,6 +24,8 @@ import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import it.flube.driver.userInterfaceLayer.layoutComponents.offers.OffersListAdapter;
 import timber.log.Timber;
+
+import static it.flube.driver.userInterfaceLayer.activities.offers.OfferConstants.MAX_OFFERS;
 
 /**
  * Created on 5/28/2017
@@ -32,18 +36,7 @@ public class DemoOffersActivity extends AppCompatActivity implements
         OffersListAdapter.Response,
         DemoOfferAlerts.DemoOfferCreatedAlertHidden {
 
-    private static final int REQUEST_CODE = 1082;   // identifies this as the calling activity
     private static final String TAG = "DemoOffersActivity";
-    private static final Integer MAX_OFFERS = 20;
-
-    public static final String CLAIM_OFFER_RESULT_KEY = "claimOfferResult";
-    public static final String CLAIM_OFFER_SUCCESS_VALUE = "success";
-    public static final String CLAIM_OFFER_FAILURE_VALUE = "failure";
-    public static final String CLAIM_OFFER_TIMEOUT_VALUE = "timeout";
-
-    public static final String MAKE_OFFER_RESULT_KEY = "makeOfferResult";
-    public static final String MAKE_OFFER_SUCCESS_VALUE = "success";
-    public static final String MAKE_OFFER_FAILURE_VALUE = "failure";
 
     private DemoOffersController controller;
     private ActivityNavigator navigator;
@@ -98,7 +91,7 @@ public class DemoOffersActivity extends AppCompatActivity implements
         controller.close();
         offersList.onPause();
 
-        Timber.tag(TAG).d(TAG, "onPause");
+        Timber.tag(TAG).d( "onPause");
         super.onPause();
 
     }
@@ -131,7 +124,7 @@ public class DemoOffersActivity extends AppCompatActivity implements
     ///
     public void offerSelected(Batch batch){
         Timber.tag(TAG).d("...batchSelected -> " + batch.getGuid());
-        navigator.gotoActivityOfferClaim(this, batch.getGuid());
+        navigator.gotoActivityOfferClaim(this, OfferConstants.OfferType.DEMO, batch.getGuid());
     }
 
     // Events for updating offers list.  Events not removed because we always want most recent

@@ -5,7 +5,7 @@
 package it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep;
 
 
-import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
+//import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 
 import com.mapbox.services.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.services.api.directions.v5.models.DirectionsRoute;
@@ -41,12 +41,12 @@ public class CalculateRoute implements Callback<DirectionsResponse> {
         Point destinationPoint = Point.fromCoordinates(destinationPosition);
                 //fromLngLat(destination.getLongitude(), destination.getLatitude());
 
-        NavigationRoute.builder()
-                .accessToken(mapboxAccessToken)
-                .origin(originPosition)
-                .destination(destinationPosition)
-                .build()
-                .getRoute(this);
+        //NavigationRoute.builder()
+        //        .accessToken(mapboxAccessToken)
+        //        .origin(originPosition)
+        //        .destination(destinationPosition)
+        //        .build()
+        //        .getRoute(this);
     }
 
     public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {

@@ -19,12 +19,12 @@ public class RealtimeNotifications implements RealtimeMessagingInterface.Notific
     ///  Singleton class using Initialization-on-demand holder idiom
     ///  ref: https://en.wikipedia.org/wiki/Initialization-on-demand_holder_idiom
     private static class Loader {
-        static volatile RealtimeNotifications mInstance = new RealtimeNotifications();
+        static  RealtimeNotifications mInstance = new RealtimeNotifications();
     }
 
     private RealtimeNotifications() {
-        ablyChannel = new AblyChannel(AndroidDevice.getInstance().getAppRemoteConfig().getRealtimeMessagingLookingForOffersChannelName(),
-                AndroidDevice.getInstance().getAppRemoteConfig().getRealtimeMessagingAuthTokenUrl());
+        ablyChannel = new AblyChannel(AndroidDevice.getInstance().getCloudConfig().getRealtimeMessagingLookingForOffersChannelName(),
+                AndroidDevice.getInstance().getCloudConfig().getRealtimeMessagingAuthTokenUrl());
     }
 
     public static RealtimeNotifications getInstance() {

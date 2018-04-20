@@ -6,6 +6,7 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
         <!-- colorPrimary ==> toolbar background -->
         <item name="colorPrimary">@color/colorPrimary</item>
 
@@ -88,11 +89,26 @@
         <item name="android:textColor">@color/colorBatchDetailTitle</item>
     </style>
 
+    <!---CLAIM OFFER styles -->
+    <style name="OfferClaimRequestBanner" parent="TextAppearance.AppCompat.Display2">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorOfferClaimRequestBanner</item>
+    </style>
+
+
     <!-- BATCH DETAIL styles -->
     <style name="BatchDetailStyleTitle" parent="TextAppearance.AppCompat.Title">
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/colorBatchDetailTitle</item>
+    </style>
+
+    <style name="BatchDetailStyleBatchType" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorBatchDetailBatchType</item>
     </style>
 
     <style name="BatchDetailStyleDescription" parent="TextAppearance.AppCompat.Body1">
@@ -113,6 +129,19 @@
         <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
+    <style name="BatchDetailForfeitBanner" parent="TextAppearance.AppCompat.Display2">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorBatchDetailForfeitBanner</item>
+    </style>
+
+    <style name="BatchDetailStartBanner" parent="TextAppearance.AppCompat.Display2">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorBatchDetailStartBanner</item>
+    </style>
 
     <!-- STEP sequence styles   -->
     <style name="StepSequenceStyle" parent="TextAppearance.AppCompat.Subhead">

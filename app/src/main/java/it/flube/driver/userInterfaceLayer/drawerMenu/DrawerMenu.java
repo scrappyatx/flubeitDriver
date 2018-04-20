@@ -32,6 +32,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
+import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.activeBatch.ActiveBatchUpdatedEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.DemoOfferCountUpdatedEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.PersonalOfferCountUpdatedEvent;
@@ -252,9 +253,12 @@ public class DrawerMenu {
 
     private AccountHeader buildAccountHeader() {
         //String photoUrl = "http://lorempixel.com/60/60/people/";
+        Driver driver = device.getUser().getDriver();
+        Timber.tag(TAG).d("driver display name -> " + driver.getNameSettings().getDisplayName());
+        Timber.tag(TAG).d("driver email        -> " + driver.getEmail());
 
-        IProfile profile = new ProfileDrawerItem().withName(device.getUser().getDriver().getNameSettings().getDisplayName())
-                .withEmail(device.getUser().getDriver().getEmail()).withIcon(device.getUser().getDriver().getPhotoUrl());
+        IProfile profile = new ProfileDrawerItem().withName(driver.getNameSettings().getDisplayName())
+                .withEmail(driver.getEmail()).withIcon(device.getUser().getDriver().getPhotoUrl());
 
                 //.withIcon(R.drawable.demo_profile_pic)
         return new AccountHeaderBuilder()

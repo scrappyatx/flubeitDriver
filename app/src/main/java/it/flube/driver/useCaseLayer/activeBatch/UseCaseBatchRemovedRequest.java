@@ -4,7 +4,9 @@
 
 package it.flube.driver.useCaseLayer.activeBatch;
 
+import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.interfaces.ActiveBatchForegroundServiceInterface;
+import it.flube.driver.modelLayer.interfaces.CloudActiveBatchInterface;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import it.flube.driver.modelLayer.interfaces.LocationTelemetryInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
@@ -19,14 +21,16 @@ public class UseCaseBatchRemovedRequest implements
         Runnable,
         LocationTelemetryInterface.LocationTrackingStopResponse,
         ActiveBatchForegroundServiceInterface.StopActiveBatchForegroundServiceResponse,
-        CloudDatabaseInterface.AcknowledgeRemovedBatchResponse {
+        CloudActiveBatchInterface.AcknowledgeRemovedBatchResponse {
 
         private MobileDeviceInterface device;
+        private Driver driver;
         private String batchGuid;
         private UseCaseBatchRemovedRequest.Response response;
 
     public UseCaseBatchRemovedRequest(MobileDeviceInterface device, String batchGuid, UseCaseBatchRemovedRequest.Response response){
             this.device = device;
+            this.driver = device.getUser().getDriver();
             this.batchGuid = batchGuid;
             this.response = response;
         }
@@ -45,11 +49,11 @@ public class UseCaseBatchRemovedRequest implements
         //device.getRealtimeActiveBatchMessages().disconnectRequest(this);
 
         //set the active batch server node to null
-        device.getCloudDatabase().updateActiveBatchServerNodeStatus(batchGuid);
+        device.getCloudActiveBatch().updateActiveBatchServerNodeStatus(driver, batchGuid);
         //TODO put a response interface here
 
         //acknowledge the removed batch
-        device.getCloudDatabase().acknowledgeRemovedBatchRequest(this);
+        device.getCloudActiveBatch().acknowledgeRemovedBatchRequest(driver, batchGuid,this);
 
     }
 
@@ -65,7 +69,7 @@ public class UseCaseBatchRemovedRequest implements
         //do nothing
     }
 
-    public void cloudDatabaseRemovedBatchAckComplete(){
+    public void cloudActiveBatchRemovedBatchAckComplete(){
         response.batchRemovedComplete();
     }
 

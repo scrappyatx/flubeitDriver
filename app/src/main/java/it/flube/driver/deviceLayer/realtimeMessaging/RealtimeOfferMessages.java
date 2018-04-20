@@ -28,12 +28,12 @@ public class RealtimeOfferMessages implements RealtimeMessagingInterface.OfferCh
     ///  Singleton class using Initialization-on-demand holder idiom
     ///  ref: https://en.wikipedia.org/wiki/Initialization-on-demand_holder_idiom
     private static class Loader {
-        static volatile RealtimeOfferMessages mInstance = new RealtimeOfferMessages();
+        static  RealtimeOfferMessages mInstance = new RealtimeOfferMessages();
     }
 
     private RealtimeOfferMessages() {
-        ablyChannel = new AblyChannel(AndroidDevice.getInstance().getAppRemoteConfig().getRealtimeMessagingLookingForOffersChannelName(),
-                AndroidDevice.getInstance().getAppRemoteConfig().getRealtimeMessagingAuthTokenUrl());
+        ablyChannel = new AblyChannel(AndroidDevice.getInstance().getCloudConfig().getRealtimeMessagingLookingForOffersChannelName(),
+                AndroidDevice.getInstance().getCloudConfig().getRealtimeMessagingAuthTokenUrl());
     }
 
     public static RealtimeOfferMessages getInstance() {

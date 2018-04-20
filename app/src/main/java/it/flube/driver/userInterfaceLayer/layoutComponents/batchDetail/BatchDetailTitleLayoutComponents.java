@@ -24,6 +24,9 @@ import timber.log.Timber;
 public class BatchDetailTitleLayoutComponents {
     public final static String TAG = "BatchDetailTitleLayoutComponents";
 
+    public final static String PRODUCTION_TEST_TEXT = "Production TEST";
+    public final static String MOBILE_DEMO_TEXT = "Mobile DEMO";
+    public final static String PRODUCTION_TEXT = "Production";
     ///
     ///     wrapper class for the layout file:
     ///     batch_detail_title_group.xml
@@ -31,14 +34,20 @@ public class BatchDetailTitleLayoutComponents {
     private ConstraintLayout layout;
     private ImageView batch_icon;
     private TextView batch_title;
+    private TextView batch_type;
     private TextView batch_description;
+
+    private Boolean showBatchType;
 
     public BatchDetailTitleLayoutComponents(AppCompatActivity activity){
 
         layout = (ConstraintLayout) activity.findViewById(R.id.batch_detail_title_group);
         batch_icon = (ImageView) activity.findViewById(R.id.batch_detail_title_icon);
         batch_title = (TextView) activity.findViewById(R.id.batch_detail_title);
+        batch_type = (TextView) activity.findViewById(R.id.batch_detail_batch_type);
         batch_description = (TextView) activity.findViewById(R.id.batch_detail_description);
+
+        showBatchType = false;
 
         setInvisible();
         Timber.tag(TAG).d("components created");
@@ -68,6 +77,22 @@ public class BatchDetailTitleLayoutComponents {
 
         batch_title.setText(batchDetail.getTitle());
         batch_description.setText(batchDetail.getDescription());
+
+        Timber.tag(TAG).d("   batchType -> " + batchDetail.getBatchType().toString());
+        switch (batchDetail.getBatchType()){
+            case PRODUCTION:
+                showBatchType = false;
+                batch_type.setText(PRODUCTION_TEXT);
+                break;
+            case PRODUCTION_TEST:
+                showBatchType = true;
+                batch_type.setText(PRODUCTION_TEST_TEXT);
+                break;
+            case MOBILE_DEMO:
+                showBatchType = true;
+                batch_type.setText(MOBILE_DEMO_TEXT);
+                break;
+        }
         Timber.tag(TAG).d("...setValues");
     }
 
@@ -76,6 +101,12 @@ public class BatchDetailTitleLayoutComponents {
         batch_icon.setVisibility(View.VISIBLE);
         batch_title.setVisibility(View.VISIBLE);
         batch_description.setVisibility(View.VISIBLE);
+
+        if (showBatchType) {
+            batch_type.setVisibility(View.VISIBLE);
+        } else {
+            batch_type.setVisibility(View.GONE);
+        }
         Timber.tag(TAG).d("...setVisible");
     }
 
@@ -84,6 +115,7 @@ public class BatchDetailTitleLayoutComponents {
         batch_icon.setVisibility(View.INVISIBLE);
         batch_title.setVisibility(View.INVISIBLE);
         layout.setVisibility(View.INVISIBLE);
+        batch_type.setVisibility(View.GONE);
         Timber.tag(TAG).d("...set INVISIBLE");
     }
 
@@ -92,6 +124,7 @@ public class BatchDetailTitleLayoutComponents {
         batch_icon.setVisibility(View.GONE);
         batch_title.setVisibility(View.GONE);
         layout.setVisibility(View.GONE);
+        batch_type.setVisibility(View.GONE);
         Timber.tag(TAG).d("...set GONE");
     }
 
@@ -99,6 +132,7 @@ public class BatchDetailTitleLayoutComponents {
         batch_icon = null;
         batch_title = null;
         batch_description = null;
+        batch_type = null;
         layout = null;
         Timber.tag(TAG).d("components closed");
     }

@@ -21,13 +21,13 @@ public class BatchManageAlerts {
     private static final String TAG = "BatchManageAlerts";
     private static final int displayDuration = 2000;
 
-    public void showForfeitBatchAlert(AppCompatActivity activity, ForfeitBatchAlertHidden response) {
-        Timber.tag(TAG).d("showing Forfeit Batch Alert");
+    public void showForfeitBatchSuccessAlert(AppCompatActivity activity, ForfeitBatchAlertHidden response) {
+        Timber.tag(TAG).d("showing Forfeit Batch Success Alert");
         try {
             Alerter.create(activity)
-                    .setTitle("FORFEIT BATCH")
-                    .setText("You forfeited a batch.  Lazy sack of shit.")
-                    .setBackgroundColorRes(R.color.alerter_default_success_background)
+                    .setTitle(activity.getString(R.string.batch_manage_forfeit_batch_dialog_title))
+                    .setText(activity.getString(R.string.batch_manage_forfeit_alert_success_dialog_text))
+                    .setBackgroundColorRes(R.color.alerterGREEN)
                     .setIcon(R.drawable.ic_mood_black_24dp)
                     .setDuration(displayDuration)
                     .setOnHideListener(new ForfeitBatchHideAlertListener(response))
@@ -38,10 +38,84 @@ public class BatchManageAlerts {
         }
     }
 
+    public void showForfeitBatchAlertFailure(AppCompatActivity activity, ForfeitBatchAlertHidden response){
+        Timber.tag(TAG).d("showing Forfeit Batch Failure Alert");
+        try {
+            Alerter.create(activity)
+                    .setTitle(activity.getString(R.string.batch_manage_forfeit_batch_dialog_title))
+                    .setText(activity.getString(R.string.batch_manage_forfeit_alert_failure_dialog_text))
+                    .setBackgroundColorRes(R.color.alerterRED)
+                    .setIcon(R.drawable.ic_mood_bad_black_24dp)
+                    .setDuration(displayDuration)
+                    .setOnHideListener(new ForfeitBatchHideAlertListener(response))
+                    .show();
+
+        } catch (Exception e) {
+            Timber.tag(TAG).e(e);
+        }
+
+    }
+
+    public void showForfeitBatchAlertTimeout(AppCompatActivity activity, ForfeitBatchAlertHidden response){
+        Timber.tag(TAG).d("showing Forfeit Batch Timeout Alert");
+        try {
+            Alerter.create(activity)
+                    .setTitle(activity.getString(R.string.batch_manage_forfeit_batch_dialog_title))
+                    .setText(activity.getString(R.string.batch_manage_forfeit_alert_timeout_dialog_text))
+                    .setBackgroundColorRes(R.color.alerterORANGE)
+                    .setIcon(R.drawable.ic_mood_bad_black_24dp)
+                    .setDuration(displayDuration)
+                    .setOnHideListener(new ForfeitBatchHideAlertListener(response))
+                    .show();
+
+        } catch (Exception e) {
+            Timber.tag(TAG).e(e);
+        }
+    }
+
+    public void showForfeitBatchAlertDeniedWithoutReason(AppCompatActivity activity, ForfeitBatchAlertHidden response){
+        Timber.tag(TAG).d("showing Forfeit Batch Denied without reason Alert");
+        try {
+            Alerter.create(activity)
+                    .setTitle(activity.getString(R.string.batch_manage_forfeit_batch_dialog_title))
+                    .setText(activity.getString(R.string.batch_manage_forfeit_alert_denied_without_reason_dialog_text))
+                    .setBackgroundColorRes(R.color.alerterRED)
+                    .setIcon(R.drawable.ic_mood_bad_black_24dp)
+                    .setDuration(displayDuration)
+                    .setOnHideListener(new ForfeitBatchHideAlertListener(response))
+                    .show();
+
+        } catch (Exception e) {
+            Timber.tag(TAG).e(e);
+        }
+    }
+
+    public void showForfeitBatchAlertDeniedWithReason(AppCompatActivity activity, String reason, ForfeitBatchAlertHidden response){
+        Timber.tag(TAG).d("showing Forfeit Batch Denied with Reason Alert");
+        try {
+            String alertText = activity.getString(R.string.batch_manage_forfeit_alert_denied_with_reason_dialog_text)
+                    + System.getProperty("line.separator") + reason;
+
+            Alerter.create(activity)
+                    .setTitle(activity.getString(R.string.batch_manage_forfeit_batch_dialog_title))
+                    .setText(alertText)
+                    .setBackgroundColorRes(R.color.alerterRED)
+                    .setIcon(R.drawable.ic_mood_bad_black_24dp)
+                    .setDuration(displayDuration)
+                    .setOnHideListener(new ForfeitBatchHideAlertListener(response))
+                    .show();
+
+        } catch (Exception e) {
+            Timber.tag(TAG).e(e);
+        }
+    }
+
+
+
     public void showStartedBatchAlert(AppCompatActivity activity, StartedBatchAlertHidden response) {
         Alerter.create(activity)
-                .setTitle("BATCH STARTED")
-                .setText("You started a batch.  Don't wreck the car, bitch")
+                .setTitle(activity.getString(R.string.batch_manage_start_alert_dialog_title))
+                .setText(activity.getString(R.string.batch_manage_start_alert_dialog_text))
                 .setBackgroundColorRes(R.color.alerter_default_success_background)
                 .setIcon(R.drawable.ic_mood_black_24dp)
                 .setDuration(displayDuration)

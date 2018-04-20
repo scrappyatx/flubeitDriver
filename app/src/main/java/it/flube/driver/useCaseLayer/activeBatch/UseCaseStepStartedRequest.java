@@ -4,13 +4,19 @@
 
 package it.flube.driver.useCaseLayer.activeBatch;
 
+import java.util.ArrayList;
+
+import it.flube.driver.modelLayer.entities.driver.Driver;
+import it.flube.driver.modelLayer.interfaces.CloudActiveBatchInterface;
 import it.flube.libbatchdata.entities.LatLonLocation;
+import it.flube.libbatchdata.entities.RouteStop;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import it.flube.driver.modelLayer.interfaces.ActiveBatchForegroundServiceInterface;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import it.flube.driver.modelLayer.interfaces.LocationTelemetryInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
+import it.flube.libbatchdata.interfaces.ActiveBatchManageInterface;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import it.flube.driver.modelLayer.interfaces.RealtimeMessagingInterface;
 import timber.log.Timber;
@@ -22,17 +28,22 @@ import timber.log.Timber;
 
 public class UseCaseStepStartedRequest implements
         Runnable,
+        CloudActiveBatchInterface.GetServiceOrderListResponse,
+        CloudActiveBatchInterface.GetRouteStopListResponse,
+        CloudActiveBatchInterface.GetOrderStepListResponse,
         LocationTelemetryInterface.LocationTrackingStartResponse,
         ActiveBatchForegroundServiceInterface.StartActiveBatchForegroundServiceResponse,
         ActiveBatchForegroundServiceInterface.UpdateActiveBatchForegroundServiceResponse {
 
     private final static String TAG = "UseCaseStepStartedRequest";
 
-    private MobileDeviceInterface device;
+    private final MobileDeviceInterface device;
+    private final CloudActiveBatchInterface cloudActiveBatch;
+    private final Driver driver;
+    private final ActiveBatchManageInterface.ActorType actorType;
+    private final ActiveBatchManageInterface.ActionType actionType;
 
-    private CloudDatabaseInterface.ActorType actorType;
-    private CloudDatabaseInterface.ActionType actionType;
-
+    private String batchGuid;
     private BatchDetail batchDetail;
     private ServiceOrder serviceOrder;
     private OrderStepInterface step;
@@ -40,13 +51,15 @@ public class UseCaseStepStartedRequest implements
     private Response response;
 
     public UseCaseStepStartedRequest(MobileDeviceInterface device,
-                                     CloudDatabaseInterface.ActorType actorType, CloudDatabaseInterface.ActionType actionType,
+                                     ActiveBatchManageInterface.ActorType actorType, ActiveBatchManageInterface.ActionType actionType,
                                      BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step,
                                      Response response){
         this.device = device;
-
+        this.driver = device.getUser().getDriver();
+        this.cloudActiveBatch = device.getCloudActiveBatch();
         this.actorType = actorType;
         this.actionType = actionType;
+        this.batchGuid = batchDetail.getBatchGuid();
         this.batchDetail = batchDetail;
         this.serviceOrder = serviceOrder;
         this.step = step;
@@ -63,10 +76,9 @@ public class UseCaseStepStartedRequest implements
 
         // repopulate the service order, route list & step list
         Timber.tag(TAG).d("   repopulate the service order, route list & step list");
-        device.getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseGetServiceOrderList(device, batchDetail.getBatchGuid()));
-        device.getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseGetRouteStopList(device, batchDetail.getBatchGuid()));
-        device.getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseGetOrderStepList(device, batchDetail.getBatchGuid(), serviceOrder.getGuid()));
-
+        device.getCloudActiveBatch().getActiveBatchServiceOrderListRequest(driver, batchGuid, this);
+        device.getCloudActiveBatch().getActiveBatchRouteStopListRequest(driver, batchGuid,this);
+        device.getCloudActiveBatch().getActiveBatchOrderStepListRequest(driver, batchGuid, serviceOrder.getGuid(), this);
 
         Timber.tag(TAG).d("   start location tracking...");
         device.getLocationTelemetry().locationTrackingStartRequest(this);
@@ -103,20 +115,45 @@ public class UseCaseStepStartedRequest implements
         if (device.getLocationTelemetry().hasLastGoodPosition()){
             Timber.tag(TAG).d("   updating cloud database active batch node with position data...");
             LatLonLocation driverPosition = device.getLocationTelemetry().getLastGoodPosition();
-            device.getCloudDatabase().updateActiveBatchServerNodeStatus(batchDetail, serviceOrder, step, driverPosition);
+            device.getCloudActiveBatch().updateActiveBatchServerNodeStatus(driver, batchDetail, serviceOrder, step, driverPosition);
         } else {
             Timber.tag(TAG).d("   updating cloud database active batch node WITHOUT position data...");
-            device.getCloudDatabase().updateActiveBatchServerNodeStatus(batchDetail, serviceOrder, step);
+            device.getCloudActiveBatch().updateActiveBatchServerNodeStatus(driver, batchDetail, serviceOrder, step);
         }
 
         Timber.tag(TAG).d("   UseCase COMPLETE");
         response.startCurrentStepComplete();
     }
 
-    //public void activeBatchChannelConnectComplete(){
-    //    Timber.tag(TAG).d("   ...realtime messaging server connecting, sending current step title");
-     //   device.getRealtimeActiveBatchMessages().sendCurrentlyDoing(step.getTitle());
-    //}
+    public void cloudGetActiveBatchRouteStopListSuccess(ArrayList<RouteStop> stopList){
+        Timber.tag(TAG).d("   ...cloudGetActiveBatchRouteStopListSuccess");
+        device.getActiveBatch().setRouteStopList(stopList);
+    }
+
+    public void cloudGetActiveBatchRouteStopListFailure(){
+        Timber.tag(TAG).d("   ...cloudGetActiveBatchRouteStopListFailure");
+        device.getActiveBatch().setRouteStopList();
+    }
+
+    public void cloudGetActiveBatchServiceOrderListSuccess(ArrayList<ServiceOrder> orderList){
+        Timber.tag(TAG).d("   ...cloudGetActiveBatchServiceOrderListSuccess");
+        device.getActiveBatch().setServiceOrderList(orderList);
+    }
+
+    public void cloudGetActiveBatchServiceOrderListFailure(){
+        Timber.tag(TAG).d("   ...cloudGetActiveBatchServiceOrderListFailure");
+        device.getActiveBatch().setServiceOrderList();
+    }
+
+    public void cloudGetActiveBatchOrderStepListSuccess(ArrayList<OrderStepInterface> stepList){
+        Timber.tag(TAG).d("   ...cloudGetActiveBatchOrderStepListSuccess");
+        device.getActiveBatch().setOrderStepList(stepList);
+    }
+
+    public void cloudGetActiveBatchOrderStepListFailure(){
+        Timber.tag(TAG).d("   ...cloudGetActiveBatchOrderStepListFailure");
+        device.getActiveBatch().setOrderStepList();
+    }
 
     public void locationTrackingStartSuccess(){
         Timber.tag(TAG).d("   ...location tracking started SUCCESS");

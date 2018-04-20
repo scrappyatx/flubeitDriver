@@ -136,7 +136,7 @@ public class TabLocationsLayoutComponents
     }
     public void onPause() {
         mapView.onPause();
-        Timber.tag(TAG).d(TAG, "onPause");
+        Timber.tag(TAG).d( "onPause");
     }
 
     public void onResume(){

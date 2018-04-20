@@ -8,10 +8,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.libbatchdata.entities.batch.BatchDetail;
-import it.flube.driver.useCaseLayer.batchDetail.UseCaseGetBatchData;
-import it.flube.driver.useCaseLayer.claimOffer.UseCaseClaimDemoOfferRequest;
+import it.flube.driver.useCaseLayer.claimOffer.UseCaseClaimOfferRequest;
+import it.flube.driver.useCaseLayer.claimOffer.getOfferData.UseCaseGetOfferData;
+import it.flube.driver.userInterfaceLayer.activities.offers.OfferConstants;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
+import it.flube.libbatchdata.entities.batch.BatchDetail;
 import timber.log.Timber;
 
 /**
@@ -29,27 +30,21 @@ public class OfferClaimController {
         device = AndroidDevice.getInstance();
     }
 
-    public void getOfferData(String batchGuid, UseCaseGetBatchData.Response response){
+    public void getOfferData(String batchGuid, OfferConstants.OfferType offerType, UseCaseGetOfferData.Response response){
         Timber.tag(TAG).d("getOfferData START...");
-        useCaseExecutor.execute(new UseCaseGetBatchData(device, batchGuid, response));
+        Timber.tag(TAG).d("   ...batchGuid -> " + batchGuid);
+        Timber.tag(TAG).d("   ...offerType -> " + offerType);
+
+        useCaseExecutor.execute(new UseCaseGetOfferData(device, batchGuid, offerType, response));
     }
 
-    public void claimOfferRequest(BatchDetail batchDetail, UseCaseClaimDemoOfferRequest.Response response) {
+    public void claimOfferRequest(String batchGuid, OfferConstants.OfferType offerType, BatchDetail.BatchType batchType, UseCaseClaimOfferRequest.Response response) {
         Timber.tag(TAG).d("claimOfferRequest STARTED");
+        Timber.tag(TAG).d("   ...batchGuid -> " + batchGuid);
+        Timber.tag(TAG).d("   ...offerType -> " + offerType);
 
+        useCaseExecutor.execute(new UseCaseClaimOfferRequest(device, batchGuid, offerType, batchType, response));
 
-        switch (batchDetail.getBatchType()) {
-            case MOBILE_DEMO:
-                useCaseExecutor.execute(new UseCaseClaimDemoOfferRequest(device, batchDetail.getBatchGuid(), response));
-                break;
-            case PRODUCTION:
-            case PRODUCTION_TEST:
-                Timber.tag(TAG).d("tried to claim a production_test offer");
-
-            default:
-                //useCaseExecutor.execute(new UseCaseClaimOfferRequestDEPRECATED(device, batchDetail.getBatchGuid(), new ClaimPublicOfferResponseHandler()));
-                break;
-        }
     }
 
     public void close(){

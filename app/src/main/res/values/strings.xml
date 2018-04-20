@@ -196,8 +196,8 @@
     <string name="messages_activity_title">Messages</string>
 
     <!-- Strings related to public offers activity layout -->
-    <string name="offers_activity_title">Public Offers</string>
-    <string name="offers_activity_no_offers_available">There are no available public offers</string>
+    <string name="public_offers_activity_title">Public Offers</string>
+    <string name="public_offers_no_offers_available">There are no available public offers</string>
 
     <!-- Strings related to personal offers activity layout -->
     <string name="personal_offers_activity_title">Personal Offers</string>
@@ -209,6 +209,7 @@
     <string name="offer_claim_tab_zero_caption">Details</string>
     <string name="offer_claim_tab_one_caption">Orders</string>
     <string name="offer_claim_tab_two_caption">Locations</string>
+    <string name="offer_claim_request_banner_caption">Claiming Offer</string>
 
     <!-- Strings related to offer claim offer alerts -->
     <string name="offer_claim_alert_success_title">SUCCESS</string>
@@ -231,16 +232,27 @@
     <!-- Strings related to scheduled batches manage activity layout -->
     <string name="batch_manage_activity_title">Batch Manage</string>
     <string name="batch_manage_forfeit_batch_caption">Forfeit Batch</string>
+    <string name="batch_manage_forfeit_batch_banner">Forfeiting Batch</string>
+    <string name="batch_manage_start_batch_banner">Starting Batch</string>
     <string name="batch_manage_button_caption">SWIPE TO START</string>
     <string name="batch_manage_tab_zero_caption">Details</string>
     <string name="batch_manage_tab_one_caption">Orders</string>
     <string name="batch_manage_tab_two_caption">Locations</string>
+
     <string name="batch_manage_forfeit_batch_dialog_title">Forfeit Batch?</string>
     <string name="batch_manage_forfeit_batch_dialog_message">Are you sure you want to forfeit this batch?</string>
     <string name="batch_manage_forfeit_batch_positive_response">Yes, Forfeit Batch</string>
     <string name="batch_manage_forfeit_batch_negative_response">No, Keep Batch</string>
 
+    <string name="batch_manage_forfeit_alert_dialog_title">FORFEIT BATCH</string>
+    <string name="batch_manage_forfeit_alert_success_dialog_text">You successfully forfeited this batch</string>
+    <string name="batch_manage_forfeit_alert_failure_dialog_text">This forfeit attempt failed.  Try again</string>
+    <string name="batch_manage_forfeit_alert_timeout_dialog_text">Didn\'t receive a response to your batch forfeit request</string>
+    <string name="batch_manage_forfeit_alert_denied_with_reason_dialog_text">Your batch forfeit request was denied for this reason:</string>
+    <string name="batch_manage_forfeit_alert_denied_without_reason_dialog_text">Your batch forfeit request was denied</string>
 
+    <string name="batch_manage_start_alert_dialog_title">BATCH STARTED</string>
+    <string name="batch_manage_start_alert_dialog_text">Drive safely and have fun!</string>
 
     <!-- Strings related to scheduled batches map activity layout -->
     <string name="batch_map_activity_title">Batch Location</string>

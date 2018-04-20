@@ -21,12 +21,12 @@ public class RealtimeBatchMessages implements RealtimeMessagingInterface.BatchCh
     ///  Singleton class using Initialization-on-demand holder idiom
     ///  ref: https://en.wikipedia.org/wiki/Initialization-on-demand_holder_idiom
     private static class Loader {
-        static volatile RealtimeBatchMessages mInstance = new RealtimeBatchMessages();
+        static  RealtimeBatchMessages mInstance = new RealtimeBatchMessages();
     }
 
     private RealtimeBatchMessages() {
-        ablyChannel = new AblyChannel(AndroidDevice.getInstance().getAppRemoteConfig().getRealtimeMessagingBatchActivityChannelName(),
-                AndroidDevice.getInstance().getAppRemoteConfig().getRealtimeMessagingAuthTokenUrl());
+        ablyChannel = new AblyChannel(AndroidDevice.getInstance().getCloudConfig().getRealtimeMessagingBatchActivityChannelName(),
+                AndroidDevice.getInstance().getCloudConfig().getRealtimeMessagingAuthTokenUrl());
     }
 
     public static RealtimeBatchMessages getInstance() {

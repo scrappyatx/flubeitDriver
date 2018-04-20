@@ -66,11 +66,17 @@ public class BatchDetailTabLayoutComponents
 
     public void setInvisible(){
         tabLayout.setVisibility(View.INVISIBLE);
+        hideTab(tabLayout.getSelectedTabPosition());
+
         Timber.tag(TAG).d("...set INVISIBLE");
     }
 
     public void setGone(){
         tabLayout.setVisibility(View.GONE);
+        detailTab.setGone();
+        ordersTab.setGone();
+        locationsTab.setGone();
+
         Timber.tag(TAG).d("...set GONE");
     }
 
@@ -126,6 +132,7 @@ public class BatchDetailTabLayoutComponents
     }
 
 
+
     ///  TabLocationsLayoutComponents have to get every activity lifecycle
 
     public void onStart(){
@@ -134,7 +141,7 @@ public class BatchDetailTabLayoutComponents
     }
     public void onPause() {
         locationsTab.onPause();
-        Timber.tag(TAG).d(TAG, "onPause");
+        Timber.tag(TAG).d( "onPause");
     }
 
     public void onResume(){

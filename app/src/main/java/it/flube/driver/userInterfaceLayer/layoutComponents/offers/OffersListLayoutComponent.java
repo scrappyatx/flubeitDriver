@@ -81,10 +81,11 @@ public class OffersListLayoutComponent  {
 
     public void setVisible(){
         layout.setVisibility(View.VISIBLE);
-        offerListView.setVisibility(View.VISIBLE);
         if (hasOffers){
             offerListView.setVisibility(View.VISIBLE);
+            noOffers.setVisibility(View.GONE);
         } else {
+            offerListView.setVisibility(View.GONE);
             noOffers.setVisibility(View.VISIBLE);
         }
         Timber.tag(TAG).d("...set VISIBLE");

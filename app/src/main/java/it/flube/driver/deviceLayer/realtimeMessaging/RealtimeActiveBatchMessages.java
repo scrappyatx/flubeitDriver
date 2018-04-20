@@ -24,7 +24,7 @@ public class RealtimeActiveBatchMessages implements
     ///  Singleton class using Initialization-on-demand holder idiom
     ///  ref: https://en.wikipedia.org/wiki/Initialization-on-demand_holder_idiom
     private static class Loader {
-        static volatile RealtimeActiveBatchMessages instance = new RealtimeActiveBatchMessages();
+        static  RealtimeActiveBatchMessages instance = new RealtimeActiveBatchMessages();
     }
 
     private RealtimeActiveBatchMessages() {
@@ -61,7 +61,7 @@ public class RealtimeActiveBatchMessages implements
     public void attach(String batchGuid) {
         Timber.tag(TAG).d("attaching to : " + batchGuid);
         ablyChannel = new AblyChannel(batchGuid,
-                AndroidDevice.getInstance().getAppRemoteConfig().getRealtimeMessagingAuthTokenUrl());
+                AndroidDevice.getInstance().getCloudConfig().getRealtimeMessagingAuthTokenUrl());
         ablyChannel.channelConnectRequest(AndroidDevice.getInstance().getUser().getDriver().getClientId(), AndroidDevice.getInstance().getUser().getIdToken(), this);
     }
 

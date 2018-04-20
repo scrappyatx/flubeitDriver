@@ -40,8 +40,13 @@
     <color name="colorHomeSummaryTitle">@color/translucentBlackCC</color>
     <color name="colorHomeSummaryDescription">@color/translucentBlackAA</color>
 
+    <color name="colorOfferClaimRequestBanner">@color/translucentGreenCC</color>
+
     <color name="colorBatchDetailTitle">@color/translucentBlackCC</color>
+    <color name="colorBatchDetailBatchType">@color/translucentOrangeFF</color>
     <color name="colorBatchDetailDescription">@color/translucentBlackAA</color>
+    <color name="colorBatchDetailForfeitBanner">@color/translucentOrangeCC</color>
+    <color name="colorBatchDetailStartBanner">@color/translucentGreenCC</color>
 
     <color name="colorNavStepDestinationCaption">@color/colorTextPrimaryDark</color>
     <color name="colorNavStepDestinationAddress">@color/translucentBlackCC</color>
@@ -69,6 +74,11 @@
     <color name="translucentLightRed">#88EF5350</color>
     <color name="translucentBlackCC">#CC000000</color>
     <color name="translucentBlackAA">#AA000000</color>
+    <color name="translucentRedCC">#CCCC0000</color>
+    <color name="translucentOrangeCC">#CCFF8000</color>
+    <color name="translucentGreenCC">#CC009900</color>
+    <color name="translucentOrangeFF">#FFFF8000</color>
     <color name="alerterRED">#FFCC0000</color>
     <color name="alerterGREEN">#FF009900</color>
+    <color name="alerterORANGE">#FFFF8000</color>
 </resources>

@@ -5,8 +5,8 @@
 package it.flube.driver.useCaseLayer.generateDemoBatch;
 
 import it.flube.driver.modelLayer.entities.driver.Driver;
+import it.flube.driver.modelLayer.interfaces.CloudDemoOfferInterface;
 import it.flube.libbatchdata.entities.batch.BatchHolder;
-import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import it.flube.libbatchdata.interfaces.DemoBatchInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import timber.log.Timber;
@@ -17,9 +17,8 @@ import timber.log.Timber;
  */
 
 public class UseCaseMakeDemoBatchRequest implements
-    Runnable,
-    CloudDatabaseInterface.AddDemoOfferToOfferListResponse,
-    CloudDatabaseInterface.SaveBatchDataResponse {
+        Runnable,
+        CloudDemoOfferInterface.AddDemoOfferResponse {
 
     private final static String TAG = "UseCaseMakeDemoBatchRequest";
 
@@ -27,7 +26,7 @@ public class UseCaseMakeDemoBatchRequest implements
     private final Response response;
 
     private final Driver driver;
-    private final CloudDatabaseInterface cloudDb;
+    private final CloudDemoOfferInterface cloudDb;
 
     private BatchHolder demoBatchHolder;
 
@@ -37,26 +36,21 @@ public class UseCaseMakeDemoBatchRequest implements
         this.response = response;
 
         driver = device.getUser().getDriver();
-        cloudDb = device.getCloudDatabase();
+        cloudDb = device.getCloudDemoOffer();
     }
 
     public void run(){
         Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
         //Step 1 - create a demo batch
-        demoBatchHolder = demoMaker.createDemoBatch(driver.getClientId());
+        BatchHolder demoBatchHolder = demoMaker.createDemoBatch(driver.getClientId());
 
         Timber.tag(TAG).d("   batchGuid -> " + demoBatchHolder.getBatch().getGuid());
         //Step 2 - save the demo batch
-        cloudDb.saveBatchDataRequest(demoBatchHolder, this);
+        cloudDb.addDemoOfferRequest(driver, demoBatchHolder, this);
     }
 
-    public void cloudDatabaseBatchDataSaveComplete(){
-        //Step 3 - add to the demo offer list
-        cloudDb.addDemoOfferToOfferListRequest(demoBatchHolder.getBatch().getGuid(), this);
-        Timber.tag(TAG).d("   ...batchDataSaved");
-    }
 
-    public void cloudDatabaseAddDemoOfferToOfferListComplete(){
+    public void cloudAddDemoOfferComplete(){
         //Step 4 - we are done
         response.makeDemoBatchComplete();
         Timber.tag(TAG).d("   ...added to demo offer list");

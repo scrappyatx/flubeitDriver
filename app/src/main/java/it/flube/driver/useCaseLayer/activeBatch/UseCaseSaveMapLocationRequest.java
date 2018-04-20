@@ -4,6 +4,8 @@
 
 package it.flube.driver.useCaseLayer.activeBatch;
 
+import it.flube.driver.modelLayer.entities.driver.Driver;
+import it.flube.driver.modelLayer.interfaces.CloudActiveBatchInterface;
 import it.flube.libbatchdata.entities.LatLonLocation;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
@@ -16,12 +18,13 @@ import timber.log.Timber;
 
 public class UseCaseSaveMapLocationRequest implements
         Runnable,
-        CloudDatabaseInterface.SaveMapLocationResponse {
+        CloudActiveBatchInterface.SaveMapLocationResponse {
 
 
     private final static String TAG = "UseCaseSaveMapLocationRequest";
 
     private MobileDeviceInterface device;
+    private Driver driver;
     private String batchGuid;
     private String serviceOrderGuid;
     private String orderStepGuid;
@@ -33,6 +36,7 @@ public class UseCaseSaveMapLocationRequest implements
 
 
         this.device = device;
+        this.driver = device.getUser().getDriver();
         this.batchGuid = batchGuid;
         this.serviceOrderGuid = serviceOrderGuid;
         this.orderStepGuid = orderStepGuid;
@@ -46,11 +50,11 @@ public class UseCaseSaveMapLocationRequest implements
         //device.getRealtimeActiveBatchMessages().sendMsgLocationUpdate(location.getLatitude(), location.getLongitude());
 
         Timber.tag(TAG).d("   ...sending location to cloud database");
-        device.getCloudDatabase().saveMapLocationRequest(batchGuid, serviceOrderGuid, orderStepGuid, location, this);
+        device.getCloudActiveBatch().saveMapLocationRequest(driver, batchGuid, serviceOrderGuid, orderStepGuid, location, this);
 
     }
 
-    public void cloudDatabaseSaveMapLocationComplete(){
+    public void cloudActiveBatchSaveMapLocationComplete(){
         Timber.tag(TAG).d("   ...UseCase COMPLETE");
     }
 }

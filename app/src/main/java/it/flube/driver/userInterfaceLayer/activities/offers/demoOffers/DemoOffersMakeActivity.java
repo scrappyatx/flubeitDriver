@@ -49,7 +49,7 @@ public class DemoOffersMakeActivity extends AppCompatActivity
 
     @Override
     public void onPause() {
-        Timber.tag(TAG).d(TAG, "onPause");
+        Timber.tag(TAG).d( "onPause");
         controller.close();
         super.onPause();
 

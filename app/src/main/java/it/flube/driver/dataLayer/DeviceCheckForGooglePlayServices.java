@@ -44,16 +44,16 @@ public class DeviceCheckForGooglePlayServices {
         this.response = response;
         Timber.tag(TAG).d("about to get instance for google availability api");
         googleApi = GoogleApiAvailability.getInstance();
-        Timber.tag(TAG).d(TAG,"got instance for google availability api");
+        Timber.tag(TAG).d("got instance for google availability api");
 
         int resultCode = googleApi.isGooglePlayServicesAvailable(applicationContext);
 
         if (resultCode != ConnectionResult.SUCCESS) {
             // we DO NOT have Google Play Services available
-            Timber.tag(TAG).d(TAG,"Connection result = " + googleApi.getErrorString(resultCode));
+            Timber.tag(TAG).d("Connection result = " + googleApi.getErrorString(resultCode));
 
             if (errorDialog == null) {
-                Timber.tag(TAG).d(TAG,"creating error dialog");
+                Timber.tag(TAG).d("creating error dialog");
                 errorDialog = googleApi.getErrorDialog(activity, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST);
                 errorDialog.setCancelable(false);
                 errorDialog.setCanceledOnTouchOutside(false);
@@ -61,12 +61,12 @@ public class DeviceCheckForGooglePlayServices {
             }
 
             if (!errorDialog.isShowing()) {
-                Timber.tag(TAG).d(TAG,"showing error dialog");
+                Timber.tag(TAG).d("showing error dialog");
                 errorDialog.show();
             }
         } else {
             // we DO have googe play services available
-            Timber.tag(TAG).d(TAG,"google api AVAILABLE");
+            Timber.tag(TAG).d("google api AVAILABLE");
             response.deviceHasGooglePlayServices();
         }
 
@@ -74,7 +74,7 @@ public class DeviceCheckForGooglePlayServices {
 
     private class ErrorDialogListener implements DialogInterface.OnDismissListener {
         public void onDismiss(DialogInterface dialogInterface) {
-            Timber.tag(TAG).d(TAG,"error dialog was dismissed");
+            Timber.tag(TAG).d("error dialog was dismissed");
             if (googleApi.isGooglePlayServicesAvailable(applicationContext) == ConnectionResult.SUCCESS) {
                 response.deviceHasGooglePlayServices();
             } else {

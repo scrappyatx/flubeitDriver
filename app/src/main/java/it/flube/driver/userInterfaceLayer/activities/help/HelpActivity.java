@@ -53,7 +53,7 @@ public class HelpActivity extends AppCompatActivity {
         //EventBus.getDefault().unregister(this);
         drawer.close();
 
-        Timber.tag(TAG).d(TAG, "onPause");
+        Timber.tag(TAG).d( "onPause");
 
         super.onPause();
     }

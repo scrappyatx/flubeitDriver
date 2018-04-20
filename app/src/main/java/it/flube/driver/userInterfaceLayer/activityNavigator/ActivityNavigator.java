@@ -9,6 +9,8 @@ import android.content.Intent;
 
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.modelLayer.interfaces.ActiveBatchInterface;
+import it.flube.driver.userInterfaceLayer.activities.offers.OfferConstants;
+import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import it.flube.driver.userInterfaceLayer.activities.account.AccountActivity;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.batchItinerary.BatchItineraryActivity;
@@ -30,6 +32,16 @@ import it.flube.driver.userInterfaceLayer.activities.signIn.SignInAuthUiLaunchAc
 import it.flube.driver.userInterfaceLayer.activities.splashScreen.SplashScreenActivity;
 import timber.log.Timber;
 
+import static it.flube.driver.userInterfaceLayer.activities.offers.OfferConstants.CLAIM_OFFER_FAILURE_VALUE;
+import static it.flube.driver.userInterfaceLayer.activities.offers.OfferConstants.CLAIM_OFFER_RESULT_KEY;
+import static it.flube.driver.userInterfaceLayer.activities.offers.OfferConstants.CLAIM_OFFER_SUCCESS_VALUE;
+import static it.flube.driver.userInterfaceLayer.activities.offers.OfferConstants.CLAIM_OFFER_TIMEOUT_VALUE;
+import static it.flube.driver.userInterfaceLayer.activities.scheduledBatches.BatchConstants.BATCH_DEINED_REASON_KEY;
+import static it.flube.driver.userInterfaceLayer.activities.scheduledBatches.BatchConstants.FORFEIT_BATCH_FAILURE_VALUE;
+import static it.flube.driver.userInterfaceLayer.activities.scheduledBatches.BatchConstants.FORFEIT_BATCH_RESULT_KEY;
+import static it.flube.driver.userInterfaceLayer.activities.scheduledBatches.BatchConstants.FORFEIT_BATCH_SUCCESS_VALUE;
+import static it.flube.driver.userInterfaceLayer.activities.scheduledBatches.BatchConstants.FORFEIT_BATCH_TIMEOUT_VALUE;
+
 /**
  * Created on 6/18/2017
  * Project : Driver
@@ -37,8 +49,6 @@ import timber.log.Timber;
 
 public class ActivityNavigator {
     private static final String TAG = "ActivityNavigator";
-
-    private static final String BATCH_GUID_KEY = "batchGuid";
 
     public ActivityNavigator(){}
 
@@ -63,28 +73,8 @@ public class ActivityNavigator {
     }
 
     public void gotoActiveBatchStep(Context context){
-
-        ActiveBatchInterface activeBatch = AndroidDevice.getInstance().getActiveBatch();
-        if (activeBatch.hasActiveBatch()){
-            OrderStepInterface.TaskType taskType = activeBatch.getTaskType();
-
-            Timber.tag(TAG).d("gotoActiveBatchStep...");
-            switch (taskType){
-                case NAVIGATION:
-                    Timber.tag(TAG).d("  ...starting NavigationActivity.class");
-                    context.startActivity(new Intent(context, NavigationActivity.class));
-                    break;
-                case TAKE_PHOTOS:
-                    Timber.tag(TAG).d("  ...starting PhotoActivity.class");
-                    context.startActivity(new Intent(context, PhotoActivity.class));
-                    break;
-            }
-
-        } else {
-            Timber.tag(TAG).d("can't go to ActiveBatchStep, no active batch");
-            context.startActivity(new Intent(context, HomeActivity.class));
-        }
-
+        ActiveBatchNavigator.gotoActiveBatchStep(context);
+        Timber.tag(TAG).d("going to active batch step");
     }
 
     ///
@@ -119,6 +109,43 @@ public class ActivityNavigator {
         DemoOffersMakeNavigator.gotoActivityDemoOffersMake(context);
     }
 
+    //// PERSONAL OFFERS
+
+    public void gotoActivityPersonalOffers(Context context){
+        PersonalOffersNavigator.gotoActivityPersonalOffers(context);
+    }
+
+    public  void gotoActivityPersonalOffersAndShowOfferClaimedSuccessAlert(Context context){
+        PersonalOffersNavigator.gotoActivityPersonalOffersAndShowOfferClaimedSuccessAlert(context);
+    }
+
+    public void gotoActivityPersonalOffersAndShowOfferClaimedFailureAlert(Context context){
+        PersonalOffersNavigator.gotoActivityPersonalOffersAndShowOfferClaimedFailureAlert(context);
+    }
+
+    public void gotoActivityPersonalOffersAndShowOfferClaimedTimeoutAlert(Context context){
+        PersonalOffersNavigator.gotoActivityPersonalOffersAndShowOfferClaimedTimeoutAlert(context);
+    }
+
+    //// PUBLIC OFFERS
+
+    public void gotoActivityPublicOffers(Context context) {
+        PublicOffersNavigator.gotoActivityPublicOffers(context);
+    }
+
+    public void gotoActivityPublicOffersAndShowOfferClaimedSuccessAlert(Context context){
+        PublicOffersNavigator.gotoActivityPublicOffersAndShowOfferClaimedSuccessAlert(context);
+    }
+
+    public void gotoActivityPublicOffersAndShowOfferClaimedFailureAlert(Context context){
+        PublicOffersNavigator.gotoActivityPublicOffersAndShowOfferClaimedFailureAlert(context);
+    }
+
+    public void gotoActivityPublicOffersAndShowOfferClaimedTimeoutAlert(Context context){
+        PublicOffersNavigator.gotoActivityPublicOffersAndShowOfferClaimedTimeoutAlert(context);
+    }
+
+    /////
 
     public void gotoActivityEarnings(Context context) {
         context.startActivity(new Intent(context, EarningsActivity.class));
@@ -140,41 +167,57 @@ public class ActivityNavigator {
         Timber.tag(TAG).d("starting activity MessagesActivity.class");
     }
 
-    public void gotoActivityPersonalOffers(Context context){
-        context.startActivity(new Intent(context, PersonalOffersActivity.class));
-        Timber.tag(TAG).d("starting activity PersonalOffersActivity.class");
-    }
 
-    public void gotoActivityPublicOffers(Context context) {
-        context.startActivity(new Intent(context, PublicOffersActivity.class));
-        Timber.tag(TAG).d("starting activity PublicOffersActivity.class");
-    }
 
-    public void gotoActivityOfferClaim(Context context, String batchGuid) {
-        Intent i = new Intent(context, OfferClaimActivity.class);
-        i.putExtra(BATCH_GUID_KEY, batchGuid);
-        context.startActivity(i);
+    //// OFFER CLAIM
+
+    public void gotoActivityOfferClaim(Context context, OfferConstants.OfferType offerType, String batchGuid) {
+        OfferClaimNavigator.gotoActivityOfferClaim(context, offerType, batchGuid);
         Timber.tag(TAG).d("starting activity OfferClaimActivity.class");
     }
 
+
+    ///
+    /// SCHEDULED BATCHES
+    ///
     public void gotoActivityScheduledBatches(Context context) {
-        context.startActivity(new Intent(context, ScheduledBatchesActivity.class));
+        ScheduledBatchNavigator.gotoActivityScheduledBatches(context);
         Timber.tag(TAG).d("starting activity ScheduledBatchesActivity.class");
     }
 
+    public void gotoActivityScheduledBatchesAndShowBatchForfeitSuccessAlert(Context context){
+        ScheduledBatchNavigator.gotoActivityScheduledBatchesAndShowBatchForfeitSuccessAlert(context);
+        Timber.tag(TAG).d("starting activity ScheduledBatchesActivity.class AND show batch forfeit success");
+    }
+
+    public void gotoActivityScheduledBatchesAndShowBatchForfeitFailureAlert(Context context){
+        ScheduledBatchNavigator.gotoActivityScheduledBatchesAndShowBatchForfeitFailureAlert(context);
+        Timber.tag(TAG).d("starting activity ScheduledBatchesActivity.class AND show batch forfeit failure");
+    }
+
+    public void gotoActivityScheduledBatchesAndShowBatchForfeitTimeoutAlert(Context context){
+        ScheduledBatchNavigator.gotoActivityScheduledBatchesAndShowBatchForfeitTimeoutAlert(context);
+        Timber.tag(TAG).d("starting activity ScheduledBatchesActivity.class AND show batch forfeit timeout");
+    }
+
+    public void gotoActivityScheduledBatchesAndShowBatchForfeitDeniedAlert(Context context, String reason){
+        ScheduledBatchNavigator.gotoActivityScheduledBatchesAndShowBatchForfeitDeniedAlert(context, reason);
+        Timber.tag(TAG).d("starting activity ScheduledBatchesActivity.class AND show batch forfeit denied");
+    }
+
     public void gotoActivityBatchManage(Context context, String batchGuid) {
-        Intent i = new Intent(context, BatchManageActivity.class);
-        i.putExtra(BATCH_GUID_KEY, batchGuid);
-        context.startActivity(i);
+        ScheduledBatchNavigator.gotoActivityBatchManage(context, batchGuid);
         Timber.tag(TAG).d("starting activity BatchManageActivity.class");
     }
 
     public void gotoActivityBatchMap(Context context) {
-        context.startActivity(new Intent(context, BatchMapActivity.class));
+        ScheduledBatchNavigator.gotoActivityBatchMap(context);
         Timber.tag(TAG).d("starting activity BatchMapActivity.class");
     }
 
-
+    ///
+    /// SPLASH START UP SCREEN
+    ///
     public void gotoActivitySplashScreen(Context context) {
         context.startActivity(new Intent(context, SplashScreenActivity.class));
         Timber.tag(TAG).d("starting activity SplashScreenActivity.class");

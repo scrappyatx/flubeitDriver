@@ -81,7 +81,7 @@
         <activity android:name=".userInterfaceLayer.activities.activeBatch.orderItinerary.OrderItineraryActivity"
             android:noHistory="true" />
         <service
-            android:name=".deviceLayer.activeBatchForegroundService.ActiveBatchForegroundService"
+            android:name=".deviceLayer.deviceServices.activeBatchForegroundService.ActiveBatchForegroundService"
             android:enabled="true"
             android:exported="false"
             android:stopWithTask="true" />

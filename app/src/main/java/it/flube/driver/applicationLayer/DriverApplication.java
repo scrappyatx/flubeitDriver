@@ -4,26 +4,24 @@
 
 package it.flube.driver.applicationLayer;
 
+import android.content.res.Configuration;
 import android.support.multidex.MultiDexApplication;
 
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
-import com.mapbox.mapboxsdk.Mapbox;
 
 
 import org.greenrobot.eventbus.EventBus;
 
-import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.modelLayer.interfaces.ActiveBatchInterface;
-import it.flube.driver.modelLayer.interfaces.AppRemoteConfigInterface;
+import it.flube.driver.modelLayer.interfaces.CloudConfigInterface;
 import it.flube.driver.modelLayer.interfaces.AppUserInterface;
 import it.flube.driver.modelLayer.interfaces.CloudAuthInterface;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import it.flube.driver.modelLayer.interfaces.LocationTelemetryInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import it.flube.driver.modelLayer.interfaces.OffersInterface;
-import it.flube.driver.modelLayer.interfaces.RealtimeMessagingInterface;
 import it.flube.driver.modelLayer.interfaces.UseCaseInterface;
 import it.flube.driver.useCaseLayer.appLifecycle.UseCaseThingsToDoWhenApplicationPauses;
 import it.flube.driver.useCaseLayer.appLifecycle.UseCaseThingsToDoWhenApplicationResumes;
@@ -45,7 +43,7 @@ public class DriverApplication extends MultiDexApplication implements
     private CloudAuthInterface cloudAuth;
     private CloudDatabaseInterface cloudDb;
     private LocationTelemetryInterface locationTelemetry;
-    private AppRemoteConfigInterface remoteConfig;
+    private CloudConfigInterface remoteConfig;
     private UseCaseInterface useCaseEngine;
 
     private AppUserInterface appUser;
@@ -56,7 +54,10 @@ public class DriverApplication extends MultiDexApplication implements
     public void onCreate() {
         super.onCreate();
 
-        setupLocalDeviceLogging();
+        //initialize our device singleton
+        AndroidDevice.getInstance().initialize(getApplicationContext());
+
+        //now do setup work
         setupMemoryLeakDetectionAndThreadAndVmPolicies();
         setupEventBus();
         setupMapBox();
@@ -67,11 +68,34 @@ public class DriverApplication extends MultiDexApplication implements
 
         // set references to device & to cloud auth
         device = AndroidDevice.getInstance();
-        cloudAuth = device.getCloudAuth();
-        cloudDb = device.getCloudDatabase();
-        appUser = device.getUser();
-
     }
+
+    // Called by the system when the device configuration changes while your component is running.
+    // Overriding this method is totally optional!
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        Timber.tag(TAG).d("onConfigurationChanged");
+    }
+
+    // This is called when the overall system is running low on memory,
+    // and would like actively running processes to tighten their belts.
+    // Overriding this method is totally optional!
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Timber.tag(TAG).d("onLowMemory");
+    }
+
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        Timber.tag(TAG).d("onTrimMemory, level -> " + level);
+    }
+
+
+
 
     /**
      * Called right before the application is stopped.
@@ -92,7 +116,6 @@ public class DriverApplication extends MultiDexApplication implements
      */
     public void onApplicationPaused(){
         Timber.tag(TAG).d("onApplicationPaused");
-        setReferencesToSingletons();
         device.getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseThingsToDoWhenApplicationPauses(device));
     }
 
@@ -101,14 +124,7 @@ public class DriverApplication extends MultiDexApplication implements
      */
     public void onApplicationResumed(){
         Timber.tag(TAG).d("onApplicationResumed");
-        releaseReferencesToSingletons();
         device.getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseThingsToDoWhenApplicationResumes(device));
-    }
-
-
-    private void setupLocalDeviceLogging(){
-        AndroidDevice.getInstance().setApplicationContext(getApplicationContext());
-        AndroidDevice.getInstance().getAppLogging().initializeDeviceLogging();
     }
 
     private void setupMemoryLeakDetectionAndThreadAndVmPolicies(){
@@ -137,31 +153,5 @@ public class DriverApplication extends MultiDexApplication implements
         Iconify.with(new FontAwesomeModule());
     }
 
-    private void setReferencesToSingletons(){
-       locationTelemetry = device.getLocationTelemetry();
-       remoteConfig = device.getAppRemoteConfig();
-       useCaseEngine = device.getUseCaseEngine();
-
-       activeBatch = device.getActiveBatch();
-       offerLists = device.getOfferLists();
-
-       Timber.tag(TAG).d("set references to singletons");
-    }
-
-    private void releaseReferencesToSingletons(){
-        locationTelemetry = null;
-        remoteConfig = null;
-        useCaseEngine = null;
-
-        activeBatch = null;
-        offerLists = null;
-
-        Timber.tag(TAG).d("released references to singletons");
-
-    }
-
-    public MobileDeviceInterface getMobileDevice() {
-        return AndroidDevice.getInstance();
-    }
 
 }

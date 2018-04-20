@@ -4,43 +4,80 @@
 
 package it.flube.driver.useCaseLayer.claimOffer;
 
-import it.flube.libbatchdata.entities.batch.BatchDetail;
-import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
+import it.flube.driver.userInterfaceLayer.activities.offers.OfferConstants;
+import it.flube.libbatchdata.entities.batch.BatchDetail;
+import timber.log.Timber;
 
 /**
- * Created on 2/24/2018
+ * Created on 4/12/2018
  * Project : Driver
  */
-
 public class UseCaseClaimOfferRequest implements
-        Runnable,
-        CloudDatabaseInterface.ClaimOfferResponse {
+    Runnable,
+    UseCaseClaimDemoOfferRequest.Response,
+    UseCaseClaimPublicOfferRequest.Response,
+    UseCaseClaimPersonalOfferRequest.Response {
 
-    private final Response response;
+    private static final String TAG = "UseCaseClaimOfferRequest";
+
+    private final MobileDeviceInterface device;
     private final String batchGuid;
+    private final OfferConstants.OfferType offerType;
     private final BatchDetail.BatchType batchType;
+    private final Response response;
 
-    private final CloudDatabaseInterface cloudDb;
 
-    public UseCaseClaimOfferRequest(MobileDeviceInterface device, String batchGuid, Response response){
+    public UseCaseClaimOfferRequest(MobileDeviceInterface device, String batchGuid, OfferConstants.OfferType offerType, BatchDetail.BatchType batchType, Response response){
+        this.device = device;
         this.batchGuid = batchGuid;
+        this.offerType = offerType;
+        this.batchType = batchType;
         this.response = response;
-        this.batchType = BatchDetail.BatchType.PRODUCTION_TEST;
-        cloudDb = device.getCloudDatabase();
 
     }
 
     public void run(){
-        //make a request for this offer
-        cloudDb.claimOfferRequest(batchGuid, batchType, this);
+        Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
+        Timber.tag(TAG).d("   ...offerType -> " + offerType);
+
+        switch (offerType){
+            case DEMO:
+                new UseCaseClaimDemoOfferRequest(device, batchGuid, this).run();
+                break;
+            case PUBLIC:
+                new UseCaseClaimPublicOfferRequest(device, batchGuid, batchType, this).run();
+                break;
+            case PERSONAL:
+                new UseCaseClaimPersonalOfferRequest(device, batchGuid, batchType, this).run();
+                break;
+            default:
+                response.useCaseClaimOfferRequestFailure(batchGuid, offerType);
+                break;
+        }
     }
 
-    public void cloudDatabaseClaimOfferRequestComplete(){
-        response.useCaseClaimOfferRequestComplete(batchGuid);
+    /// responses
+    public void useCaseClaimOfferRequestSuccess(String batchGuid){
+        Timber.tag(TAG).d("   ...useCaseClaimOfferRequestSuccess");
+        response.useCaseClaimOfferRequestSuccess(batchGuid, offerType);
+    }
+
+    public void useCaseClaimOfferRequestFailure(String batchGuid){
+        Timber.tag(TAG).d("   ...useCaseClaimOfferRequestFailure");
+        response.useCaseClaimOfferRequestFailure(batchGuid, offerType);
+    }
+
+    public void useCaseClaimOfferRequestTimeout(String batchGuid){
+        Timber.tag(TAG).d("   ...useCaseClaimOfferRequestTimeout");
+        response.useCaseClaimOfferRequestTimeout(batchGuid, offerType);
     }
 
     public interface Response {
-        void useCaseClaimOfferRequestComplete(String batchGuid);
+        void useCaseClaimOfferRequestSuccess(String batchGuid, OfferConstants.OfferType offerType);
+
+        void useCaseClaimOfferRequestFailure(String batchGuid, OfferConstants.OfferType offerType);
+
+        void useCaseClaimOfferRequestTimeout(String batchGuid, OfferConstants.OfferType offerType);
     }
 }

@@ -4,8 +4,10 @@
 
 package it.flube.driver.useCaseLayer.claimOffer;
 
-import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
+import it.flube.driver.modelLayer.entities.driver.Driver;
+import it.flube.driver.modelLayer.interfaces.CloudDemoOfferInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
+import timber.log.Timber;
 
 /**
  * Created on 9/13/2017
@@ -13,39 +15,39 @@ import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
  */
 
 public class UseCaseClaimDemoOfferRequest implements
-    Runnable,
-    CloudDatabaseInterface.RemoveDemoOfferFromOfferListResponse,
-    CloudDatabaseInterface.AddDemoBatchToScheduledBatchListResponse {
+        Runnable,
+        CloudDemoOfferInterface.ClaimOfferResponse {
 
-    private final UseCaseClaimDemoOfferRequest.Response response;
+    private static final String TAG = "UseCaseClaimDemoOfferRequest";
+
+    private final Response response;
     private final String batchGuid;
 
-    private final CloudDatabaseInterface cloudDb;
+    private final CloudDemoOfferInterface demoOffer;
+    private final Driver driver;
 
-    public UseCaseClaimDemoOfferRequest(MobileDeviceInterface device, String batchGuid, UseCaseClaimDemoOfferRequest.Response response){
+    public UseCaseClaimDemoOfferRequest(MobileDeviceInterface device, String batchGuid, Response response){
         this.batchGuid = batchGuid;
         this.response = response;
-        cloudDb = device.getCloudDatabase();
-
+        demoOffer = device.getCloudDemoOffer();
+        driver = device.getUser().getDriver();
     }
 
     public void run(){
+        Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
         //remove this batch from demo offer list & add it to scheduled batch list
-        cloudDb.removeDemoOfferFromOfferListRequest(batchGuid, this);
+        demoOffer.claimOfferRequest(driver, batchGuid, this);
     }
 
-    public void cloudDatabaseRemoveDemoOfferFromOfferListComplete(){
-        cloudDb.addDemoBatchToScheduledBatchListRequest(batchGuid, this);
-    }
-
-    public void cloudDatabaseAddDemoBatchToScheduledBatchListComplete(){
-        response.useCaseClaimDemoOfferRequestSuccess(batchGuid);
+    public void cloudClaimOfferRequestSuccess(String batchGuid){
+        Timber.tag(TAG).d("...cloudClaimOfferRequest -> batchGuid = " + batchGuid);
+        response.useCaseClaimOfferRequestSuccess(batchGuid);
     }
 
     public interface Response {
-        void useCaseClaimDemoOfferRequestSuccess(String offerGUID);
+        void useCaseClaimOfferRequestSuccess(String batchGuid);
 
-        void useCaseClaimDemoOfferRequestFailure(String offerGUID);
+        void useCaseClaimOfferRequestFailure(String batchGuid);
     }
 
 }

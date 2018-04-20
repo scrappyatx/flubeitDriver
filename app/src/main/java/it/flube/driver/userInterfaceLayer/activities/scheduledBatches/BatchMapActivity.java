@@ -95,7 +95,7 @@ public class BatchMapActivity extends AppCompatActivity implements OnMapReadyCal
 
         super.onPause();
         mapView.onPause();
-        Timber.tag(TAG).d(TAG, "onPause");
+        Timber.tag(TAG).d( "onPause");
     }
 
     @Override

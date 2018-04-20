@@ -12,17 +12,21 @@ import android.view.View;
 import java.util.ArrayList;
 
 import it.flube.driver.R;
+import it.flube.driver.useCaseLayer.claimOffer.UseCaseClaimOfferRequest;
+import it.flube.driver.useCaseLayer.claimOffer.getOfferData.UseCaseGetOfferData;
+import it.flube.driver.userInterfaceLayer.activities.offers.OfferConstants;
 import it.flube.libbatchdata.entities.RouteStop;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
-import it.flube.driver.useCaseLayer.batchDetail.UseCaseGetBatchData;
-import it.flube.driver.useCaseLayer.claimOffer.UseCaseClaimDemoOfferRequest;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import it.flube.driver.userInterfaceLayer.layoutComponents.batchDetail.batchDetailTab.BatchDetailTabLayoutComponents;
 import it.flube.driver.userInterfaceLayer.layoutComponents.batchDetail.BatchDetailTitleLayoutComponents;
 import it.flube.driver.userInterfaceLayer.layoutComponents.offerClaim.OfferClaimLayoutComponents;
 import timber.log.Timber;
+
+import static it.flube.driver.userInterfaceLayer.activities.offers.OfferConstants.BATCH_GUID_KEY;
+import static it.flube.driver.userInterfaceLayer.activities.offers.OfferConstants.OFFER_TYPE_KEY;
 
 /**
  * Created on 7/22/2017
@@ -31,12 +35,10 @@ import timber.log.Timber;
 
 public class OfferClaimActivity extends AppCompatActivity
     implements
-        UseCaseGetBatchData.Response,
-        UseCaseClaimDemoOfferRequest.Response {
+        UseCaseGetOfferData.Response,
+        UseCaseClaimOfferRequest.Response {
 
     private static final String TAG = "OfferClaimActivity";
-
-    private static final String BATCH_GUID_KEY = "batchGuid";
 
     private ActivityNavigator navigator;
     private OfferClaimController controller;
@@ -86,7 +88,16 @@ public class OfferClaimActivity extends AppCompatActivity
             String batchGuid = getIntent().getStringExtra(BATCH_GUID_KEY);
             Timber.tag(TAG).d("batchGuid -> " + batchGuid);
 
-            controller.getOfferData(batchGuid, this);
+            if (getIntent().hasExtra(OFFER_TYPE_KEY)) {
+                String offerTypeString = getIntent().getStringExtra(OFFER_TYPE_KEY);
+                OfferConstants.OfferType offerType = OfferConstants.OfferType.valueOf(offerTypeString);
+                Timber.tag(TAG).d("offerType -> " + offerType);
+                controller.getOfferData(batchGuid, offerType, this);
+
+            } else {
+                Timber.tag(TAG).w("no offerType in the intent extras.  should never happen");
+            }
+
         } else {
             Timber.tag(TAG).w("no batch guid in the intent extras.  should never happen");
         }
@@ -97,26 +108,29 @@ public class OfferClaimActivity extends AppCompatActivity
     public void onPause() {
         drawer.close();
         controller.close();
-        Timber.tag(TAG).d(TAG, "onPause");
+        Timber.tag(TAG).d( "onPause");
         super.onPause();
     }
 
     public void clickClaimButton(View v) {
         Timber.tag(TAG).d("clicked claim button");
+        batchTab.setGone();
         offerClaimButton.offerClaimStarted();
-        controller.claimOfferRequest(offerClaimButton.getBatchDetail(), this);
+
+        controller.claimOfferRequest(offerClaimButton.getBatchDetail().getBatchGuid(),
+                offerClaimButton.getOfferType(),  offerClaimButton.getBatchDetail().getBatchType(), this);
     }
 
     ///
-    ///  UseCaseGetBatchData
+    ///  UseCaseGetOfferData
     ///
-    public void getBatchDataSuccess(BatchDetail batchDetail, ArrayList<ServiceOrder> orderList, ArrayList<RouteStop> routeList){
+    public void getOfferDataSuccess(OfferConstants.OfferType offerType, BatchDetail batchDetail, ArrayList<ServiceOrder> orderList, ArrayList<RouteStop> routeList){
         Timber.tag(TAG).d("got batch data");
 
         //set the values on display components
         batchTitle.setValues(this, batchDetail);
         batchTab.setValues(this, batchDetail, orderList, routeList);
-        offerClaimButton.setValues(batchDetail);
+        offerClaimButton.setValues(offerType, batchDetail);
 
         //make them visible();
         batchTitle.setVisible();
@@ -124,24 +138,69 @@ public class OfferClaimActivity extends AppCompatActivity
         offerClaimButton.setVisible();
     }
 
-    public void getBatchDataFailure(){
+    public void getOfferDataFailure(){
         Timber.tag(TAG).d("could not get batch data");
     }
 
     ///
-    ///  UseCaseClaimDemoOfferRequest
+    ///  UseCaseClaimOfferRequest RESPONSE
     ///
-    public void useCaseClaimDemoOfferRequestSuccess(String offerGUID) {
-        Timber.tag(TAG).d("user claim demo offer SUCCESS");
-        navigator.gotoActivityDemoOffersAndShowOfferClaimedSuccessAlert(this);
+    public void useCaseClaimOfferRequestSuccess(String batchGuid, OfferConstants.OfferType offerType){
+        Timber.tag(TAG).d("user claim offer SUCCESS, offerType -> " + offerType);
+        switch (offerType){
+            case DEMO:
+                navigator.gotoActivityDemoOffersAndShowOfferClaimedSuccessAlert(this);
+                break;
+            case PERSONAL:
+                navigator.gotoActivityPersonalOffersAndShowOfferClaimedSuccessAlert(this);
+                break;
+            case PUBLIC:
+                navigator.gotoActivityPublicOffersAndShowOfferClaimedSuccessAlert(this);
+                break;
+            default:
+                navigator.gotoActivityHome(this);
+                Timber.tag(TAG).w("...should never get here, offerType -> " + offerType);
+                break;
+        }
     }
 
-    // FAILURE - Someone else got offer
-    public void useCaseClaimDemoOfferRequestFailure(String offerGUID) {
-        Timber.tag(TAG).d("user claim demo offer FAILURE");
-        navigator.gotoActivityDemoOffersAndShowOfferClaimedFailureAlert(this);
+    public void useCaseClaimOfferRequestFailure(String batchGuid, OfferConstants.OfferType offerType){
+        Timber.tag(TAG).d("user claim offer FAILURE, offerType -> " + offerType);
+        switch (offerType){
+            case DEMO:
+                navigator.gotoActivityDemoOffersAndShowOfferClaimedFailureAlert(this);
+                break;
+            case PERSONAL:
+                navigator.gotoActivityPersonalOffersAndShowOfferClaimedFailureAlert(this);
+                break;
+            case PUBLIC:
+                navigator.gotoActivityPublicOffersAndShowOfferClaimedFailureAlert(this);
+                break;
+            default:
+                navigator.gotoActivityHome(this);
+                Timber.tag(TAG).w("...should never get here, offerType -> " + offerType);
+                break;
+        }
     }
 
+    public void useCaseClaimOfferRequestTimeout(String batchGuid, OfferConstants.OfferType offerType){
+        Timber.tag(TAG).d("user claim offer TIMEOUT, offerType -> " + offerType);
+        switch (offerType){
+            case DEMO:
+                navigator.gotoActivityDemoOffersAndShowOfferClaimedTimeoutAlert(this);
+                break;
+            case PERSONAL:
+                navigator.gotoActivityPersonalOffersAndShowOfferClaimedTimeoutAlert(this);
+                break;
+            case PUBLIC:
+                navigator.gotoActivityPublicOffersAndShowOfferClaimedTimeoutAlert(this);
+                break;
+            default:
+                navigator.gotoActivityHome(this);
+                Timber.tag(TAG).w("...should never get here, offerType -> " + offerType);
+                break;
+        }
+    }
 
     @Override
     public void onStop(){

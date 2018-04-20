@@ -75,10 +75,10 @@ public class RealtimeMessaging implements RealtimeMessagingInterface, AblyConnec
     ///
     ///  Loader class provides synchronization across threads
     ///  Lazy initialization since Loader class is only called when "getInstance" is called
-    ///  volatile keyword guarantees visibility of changes to variables across threads
+    ///   keyword guarantees visibility of changes to variables across threads
     ///
     private static class Loader {
-        static volatile RealtimeMessaging mInstance = new RealtimeMessaging();
+        static  RealtimeMessaging mInstance = new RealtimeMessaging();
     }
 
     ///

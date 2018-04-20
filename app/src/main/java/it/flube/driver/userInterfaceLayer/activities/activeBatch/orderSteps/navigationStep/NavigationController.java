@@ -10,8 +10,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 
-import com.mapbox.services.android.navigation.v5.navigation.MapboxNavigation;
-import com.mapbox.services.android.telemetry.location.LocationEngine;
+//import com.mapbox.services.android.navigation.v5.navigation.MapboxNavigation;
+//import com.mapbox.services.android.telemetry.location.LocationEngine;
 
 import com.mapbox.services.api.directions.v5.models.DirectionsRoute;
 
@@ -31,15 +31,14 @@ import timber.log.Timber;
  * Project : Driver
  */
 
-public class NavigationController implements
-        CalculateRoute.CalculateRouteResponse {
+public class NavigationController  {
 
     private final String TAG = "NavigationController";
     private ExecutorService useCaseExecutor;
     private MobileDeviceInterface device;
 
-    private MapboxNavigation navigation;
-    private LocationEngine locationEngine;
+    //private MapboxNavigation navigation;
+    //private LocationEngine locationEngine;
 
     private CalculateRoute calculateRoute;
     private String accessToken;
@@ -113,8 +112,8 @@ public class NavigationController implements
         Timber.tag(TAG).d("controller CLOSED");
     }
 
-    public void getRouteSuccess(DirectionsRoute directionsRoute) {
-        Timber.tag(TAG).d("...got a route!");
+    //public void getRouteSuccess(DirectionsRoute directionsRoute) {
+    //    Timber.tag(TAG).d("...got a route!");
 
         // Pass in your Amazon Polly pool id for speech synthesis using Amazon Polly
         // Set to null to use the default Android speech synthesizer
@@ -123,11 +122,11 @@ public class NavigationController implements
         //boolean simulateRoute = true;
 
 
-    }
+    //}
 
-    public void getRouteFailure() {
-        Timber.tag(TAG).d("... couldn't get a route");
-    }
+    //public void getRouteFailure() {
+    //    Timber.tag(TAG).d("... couldn't get a route");
+    //}
 
     private class YesClick implements DialogInterface.OnClickListener {
         private ServiceOrderNavigationStep step;

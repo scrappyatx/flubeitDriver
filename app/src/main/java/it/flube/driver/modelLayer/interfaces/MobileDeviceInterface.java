@@ -13,50 +13,40 @@ import it.flube.driver.modelLayer.entities.DeviceInfo;
 
 public interface MobileDeviceInterface {
 
-    String getDeviceGuid();
+    ///
+    /// app data structures
+    ///
 
-    void deviceInfoRequest(DeviceInfoRequestComplete response);
-
-    interface DeviceInfoRequestComplete {
-        void deviceInfoSuccess(DeviceInfo deviceInfo);
-
-        void deviceInfoFailure(Exception exception);
-    }
-
+    DeviceInfo getDeviceInfo();
+    AppUserInterface getUser();
     ActiveBatchInterface getActiveBatch();
-
-    ActiveBatchForegroundServiceInterface getActiveBatchForegroundServiceController();
-
     OffersInterface getOfferLists();
 
-    AppLoggingInterface getAppLogging();
+    ///
+    /// cloud services
+    ///
 
-    AppRemoteConfigInterface getAppRemoteConfig();
-
+    CloudConfigInterface getCloudConfig();
     CloudAuthInterface getCloudAuth();
+    CloudImageStorageInterface getCloudImageStorage();
+    CloudUserProfileInterface getCloudUserProfile();
+    CloudUserAndDeviceInfoStorageInterface getCloudUserAndDeviceInfoStorage();
 
-    CloudImageStorageInterface getCloudStorage();
+    CloudDemoOfferInterface getCloudDemoOffer();
+    CloudPersonalOfferInterface getCloudPersonalOffer();
+    CloudPublicOfferInterface getCloudPublicOffer();
 
-    CloudDatabaseInterface getCloudDatabase();
+    CloudScheduledBatchInterface getCloudScheduledBatch();
 
+    CloudActiveBatchInterface getCloudActiveBatch();
+
+    ///
+    /// device services
+    ///
+    ActiveBatchForegroundServiceInterface getActiveBatchForegroundServiceController();
     DeviceStorageInterface getDeviceStorage();
-
     DeviceImageStorageInterface getDeviceImageStorage();
-
-    UseCaseInterface getUseCaseEngine();
-
-    UserProfileInterface getUserProfile();
-
-    AppUserInterface getUser();
-
     LocationTelemetryInterface getLocationTelemetry();
-
-    //RealtimeMessagingInterface.Connection getRealtimeConnection();
-
-    //RealtimeMessagingInterface.OfferChannel getRealtimeOfferMessages();
-
-    //RealtimeMessagingInterface.BatchChannel getRealtimeBatchMessages();
-
-    //RealtimeMessagingInterface.ActiveBatchChannel getRealtimeActiveBatchMessages();
+    UseCaseInterface getUseCaseEngine();
 
 }

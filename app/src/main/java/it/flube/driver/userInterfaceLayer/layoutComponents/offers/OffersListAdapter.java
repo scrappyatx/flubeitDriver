@@ -123,6 +123,7 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Of
             String displayDescription = offer.getTitle();
             String displayTime = offer.getDisplayTiming().getHours();
             String displayDuration = offer.getDisplayTiming().getDuration();
+            //TODO do the number formatting into currency in the batch builder, then just get property here
             String displayBaseEarnings = NumberFormat.getCurrencyInstance(new Locale("en", "US"))
                     .format(offer.getPotentialEarnings().getPayRateInCents()/100);
             String displayExtraEarnings = "";

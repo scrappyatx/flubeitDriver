@@ -166,7 +166,7 @@ public class NavigationActivity extends AppCompatActivity implements
 
     @Override
     public void onPause() {
-        Timber.tag(TAG).d(TAG, "onPause");
+        Timber.tag(TAG).d( "onPause");
         super.onPause();
         mapView.onPause();
 
@@ -296,7 +296,8 @@ public class NavigationActivity extends AppCompatActivity implements
                 if (step != null){
                     Timber.tag(TAG).d("zooming map");
                     Double newZoom = CalculateDistance.getZoomLevel(currentUserLocation, step.getDestination().getTargetLatLon(),map.getMinZoomLevel(), map.getMaxZoomLevel());
-                    map.setZoom(newZoom);
+
+                    //map.setZoom(newZoom);
                 }
 
             } else {
@@ -608,7 +609,7 @@ public class NavigationActivity extends AppCompatActivity implements
                 .icon(IconFactory.getInstance(this).defaultMarker());
 
         try {
-            Drawable d = ContextCompat.getDrawable(this, R.drawable.mapbox_user_icon);
+            Drawable d = ContextCompat.getDrawable(this, R.drawable.exclamation_circle_red_1);
             Bitmap b = Bitmap.createBitmap(d.getIntrinsicWidth(), d.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
 
             Canvas canvas = new Canvas(b);

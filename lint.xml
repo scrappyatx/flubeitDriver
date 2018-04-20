@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2018. scrapdoodle, LLC.  All Rights Reserved
+  -->
+
+<lint>
+    <issue id="BinaryOperationInTimber" severity="ignore" />
+    <issue id="TimberTagLength" severity="ignore" />
+</lint>

@@ -4,6 +4,8 @@
 
 package it.flube.driver.useCaseLayer.activeBatch;
 
+import it.flube.driver.modelLayer.entities.driver.Driver;
+import it.flube.driver.modelLayer.interfaces.CloudActiveBatchInterface;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.driver.modelLayer.interfaces.ActiveBatchForegroundServiceInterface;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
@@ -21,17 +23,18 @@ public class UseCaseBatchFinishedRequest implements
     Runnable,
     LocationTelemetryInterface.LocationTrackingStopResponse,
     ActiveBatchForegroundServiceInterface.StopActiveBatchForegroundServiceResponse,
-    CloudDatabaseInterface.GetBatchDetailResponse,
-    CloudDatabaseInterface.AcknowledgeFinishedBatchResponse {
+    CloudActiveBatchInterface.AcknowledgeFinishedBatchResponse {
 
     private final static String TAG = "UseCaseBatchFinishedRequest";
 
-    private MobileDeviceInterface device;
-    private String batchGuid;
-    private Response response;
+    private final MobileDeviceInterface device;
+    private final Driver driver;
+    private final String batchGuid;
+    private final Response response;
 
     public UseCaseBatchFinishedRequest(MobileDeviceInterface device, String batchGuid, Response response){
         this.device = device;
+        this.driver = device.getUser().getDriver();
         this.batchGuid = batchGuid;
         this.response = response;
     }
@@ -51,25 +54,18 @@ public class UseCaseBatchFinishedRequest implements
         Timber.tag(TAG).d("   ...stop the active batch foreground service");
         device.getActiveBatchForegroundServiceController().stopActiveBatchForegroundServiceRequest(this);
 
-        // stop the active batch channel
-        //Timber.tag(TAG).d("   ...disconnect from active batch channel");
-        //device.getRealtimeActiveBatchMessages().disconnectRequest(this);
-
         //set the active batch server node to complete (null)
         Timber.tag(TAG).d("   ...set the active batch cloud database server node to complete");
-        device.getCloudDatabase().updateActiveBatchServerNodeStatus(batchGuid);
-        //TODO put a response interface here
+        device.getCloudActiveBatch().updateActiveBatchServerNodeStatus(driver, batchGuid);
 
-        //get the batch detail
-        Timber.tag(TAG).d("   ...get the detail for this batch");
-        device.getCloudDatabase().getBatchDetailRequest(batchGuid, this);
+        //set a node on the completed server node
+        device.getCloudActiveBatch().updateBatchCompletedServerNode(driver, batchGuid);
+
+        //acknowledge that batch is finished
+        device.getCloudActiveBatch().acknowledgeFinishedBatchRequest(driver, batchGuid,this);
 
     }
 
-    //public void activeBatchChannelDisconnectComplete(){
-        //do nothing
-    //    Timber.tag(TAG).d("   ...active batch channel disconnect complete");
-    //}
 
     public void locationTrackingStopComplete(){
         //do nothing
@@ -80,20 +76,7 @@ public class UseCaseBatchFinishedRequest implements
         Timber.tag(TAG).d("   ...active batch foreground service stopped");
     }
 
-    public void cloudDatabaseGetBatchDetailSuccess(BatchDetail batchDetail){
-        //add this batch to the batch completed server node & acknowledge the finished batch
-        Timber.tag(TAG).d("   ...cloud database getBatchDetail success");
-        device.getCloudDatabase().updateBatchCompletedServerNode(batchDetail);
-        device.getCloudDatabase().acknowledgeFinishedBatchRequest(this);
-    }
-
-    public void cloudDatabaseGetBatchDetailFailure(){
-        Timber.tag(TAG).w("   ...cloud database getBatchDetail failure");
-        //acknowledge the finished batch
-        device.getCloudDatabase().acknowledgeFinishedBatchRequest(this);
-    }
-
-    public void cloudDatabaseFinishedBatchAckComplete(){
+    public void cloudActiveBatchFinishedBatchAckComplete(){
         Timber.tag(TAG).d("   ...cloud database finished Batch acknowledgement COMPLETE");
         response.batchFinishedComplete();
     }

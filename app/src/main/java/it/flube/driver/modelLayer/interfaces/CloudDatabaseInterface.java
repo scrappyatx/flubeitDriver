@@ -14,6 +14,7 @@ import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.batch.BatchHolder;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
+import it.flube.libbatchdata.interfaces.ActiveBatchManageInterface;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
 
 /**
@@ -23,26 +24,13 @@ import it.flube.libbatchdata.interfaces.OrderStepInterface;
 
 public interface CloudDatabaseInterface {
 
+    /*
 
-    public enum ActionType {
-        BATCH_STARTED,
-        ORDER_STARTED,
-        STEP_STARTED,
-        BATCH_FINISHED,
-        BATCH_REMOVED,
-        NO_BATCH,
-        NOT_SPECIFIED
-    }
 
-    public enum ActorType {
-        MOBILE_USER,
-        SERVER_ADMIN,
-        NOT_SPECIFIED
-    }
     ///
     /// CONNECT & DISCONNECT
     ///
-    void connectDriverRequest(AppRemoteConfigInterface remoteConfig, Driver driver, ConnectResponse response);
+    void connectDriverRequest(CloudConfigInterface remoteConfig, Driver driver, ConnectResponse response);
 
     interface ConnectResponse {
         void cloudDatabaseConnectDriverComplete();
@@ -71,102 +59,12 @@ public interface CloudDatabaseInterface {
     }
 
     ///
-    /// USER PROFILE INFO
-    ///
-    void getUserProfileRequest(String clientId, String email, UserProfileResponse response);
-
-    interface UserProfileResponse {
-        void cloudDatabaseGetUserProfileSuccess(Driver driver);
-
-        void cloudDatabaseGetUserProfileNotFound();
-
-        void cloudDatabaseGetUserProfileAccessDenied();
-    }
-
-    //
-    //  USER INFO
-    //
-    void saveUserRequest(SaveResponse response);
-
-    interface SaveResponse {
-        void cloudDatabaseUserSaveComplete();
-    }
-
-    //
-    //  DEVICE INFO
-    //
-    void saveDeviceInfoRequest(DeviceInfo deviceInfo, SaveDeviceInfoResponse response);
-
-    interface SaveDeviceInfoResponse {
-        void cloudDatabaseDeviceInfoSaveComplete();
-    }
-
-    ///
-    ///  PUBLIC OFFER CLAIM REQUEST
-    ///  PERSONAL OFFER CLAIM REQUEST
-    ///
-    void claimOfferRequest(String batchGuid, BatchDetail.BatchType batchType, ClaimOfferResponse response);
-
-    interface ClaimOfferResponse {
-        void cloudDatabaseClaimOfferRequestComplete();
-    }
-    ///
-    ///
-    ///
-
-    ///
-    ///  DEMO OFFERS
-    ///
-    void addDemoOfferToOfferListRequest(String batchGuid, AddDemoOfferToOfferListResponse response);
-
-    interface AddDemoOfferToOfferListResponse {
-        void cloudDatabaseAddDemoOfferToOfferListComplete();
-    }
-
-    void removeDemoOfferFromOfferListRequest(String batchGuid, RemoveDemoOfferFromOfferListResponse response);
-
-    interface RemoveDemoOfferFromOfferListResponse {
-        void cloudDatabaseRemoveDemoOfferFromOfferListComplete();
-    }
-
-    ///
-    ///  DEMO BATCHES
-    ///
-    void addDemoBatchToScheduledBatchListRequest(String batchGuid, AddDemoBatchToScheduledBatchListResponse response);
-
-    interface AddDemoBatchToScheduledBatchListResponse {
-        void cloudDatabaseAddDemoBatchToScheduledBatchListComplete();
-    }
-
-    void removeDemoBatchFromScheduledBatchListRequest(String batchGuid, RemoveDemoBatchFromScheduledBatchListResponse response);
-
-    interface RemoveDemoBatchFromScheduledBatchListResponse {
-        void cloudDatabaseRemoveDemoBatchFromScheduledBatchListComplete();
-    }
-
-    ///
     /// BATCH FORFEIT REQUEST
     ///
     void batchForfeitRequest(String batchGuid, BatchDetail.BatchType batchType, BatchForfeitResponse response);
 
     interface BatchForfeitResponse {
         void cloudDatabaseBatchForfeitRequestComplete();
-    }
-
-    ///
-    ///  BATCH DATA
-    ///
-
-    void saveBatchDataRequest(BatchHolder batchHolder, SaveBatchDataResponse response);
-
-    interface SaveBatchDataResponse {
-        void cloudDatabaseBatchDataSaveComplete();
-    }
-
-    void deleteBatchDataRequest(String batchGuid, DeleteBatchDataResponse response);
-
-    interface DeleteBatchDataResponse {
-        void cloudDatabaseBatchDataDeleteComplete();
     }
 
     ///
@@ -238,11 +136,11 @@ public interface CloudDatabaseInterface {
     //}
 
     interface ActiveBatchUpdated {
-        void stepStarted(ActorType actorType, ActionType actionType, BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step);
+        void stepStarted(ActiveBatchManageInterface.ActorType actorType, ActiveBatchManageInterface.ActionType actionType, BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step);
 
-        void batchFinished(ActorType actorType, String batchGuid);
+        void batchFinished(ActiveBatchManageInterface.ActorType actorType, String batchGuid);
 
-        void batchRemoved(ActorType actorType, String batchGuid);
+        void batchRemoved(ActiveBatchManageInterface.ActorType actorType, String batchGuid);
 
         void noBatch();
     }
@@ -251,13 +149,13 @@ public interface CloudDatabaseInterface {
     ///   ACTIVE BATCH COMMANDS
     ///
 
-    void startScheduledBatchRequest(String batchGuid, ActorType actorType, StartScheduledBatchResponse response);
+    void startScheduledBatchRequest(String batchGuid, ActiveBatchManageInterface.ActorType actorType, StartScheduledBatchResponse response);
 
     interface StartScheduledBatchResponse {
         void cloudDatabaseStartScheduledBatchComplete();
     }
 
-    void removeActiveBatchRequest(ActorType actorType, RemoveActiveBatchResponse response);
+    void removeActiveBatchRequest(ActiveBatchManageInterface.ActorType actorType, RemoveActiveBatchResponse response);
 
     interface RemoveActiveBatchResponse {
         void cloudDatabaseRemoveActiveBatchComplete();
@@ -269,7 +167,7 @@ public interface CloudDatabaseInterface {
     ///    void cloudDatabaseStartActiveBatchStepComplete();
     ///}
 
-    void finishActiveBatchStepRequest(ActorType actorType, FinishActiveBatchStepResponse response);
+    void finishActiveBatchStepRequest(ActiveBatchManageInterface.ActorType actorType, FinishActiveBatchStepResponse response);
 
     interface FinishActiveBatchStepResponse {
         void cloudDatabaseFinishActiveBatchStepComplete();
@@ -294,44 +192,6 @@ public interface CloudDatabaseInterface {
         void cloudDatabaseSaveMapLocationComplete();
     }
 
-    ///
-    ///  File upload tasks -> for files uploading to storage
-    ///
-
-    void addPhotoUploadTaskToNotStartedRequest(String batchGuid, String serviceOrderGuid, String orderStepGuid, String photoRequestGuid,
-                                               String deviceGuid, String deviceAbsoluteFileName, String cloudStorageFileName,
-                                               AddPhotoUploadTaskResponse response);
-
-    interface AddPhotoUploadTaskResponse {
-        void cloudDatabaseAddPhotoUploadTaskComplete();
-    }
-
-    void movePhotoUploadTaskToInProgress(String batchGuid, String serviceOrderGuid, String orderStepGuid, String photoRequestGuid,
-                                         String deviceGuid, String deviceAbsoluteFileName, String cloudStorageFileName,
-                                         String sessionUriString, Double progress,
-                                         MovePhotoUploadTaskInProgressResponse response);
-
-    interface MovePhotoUploadTaskInProgressResponse {
-        void cloudDatabaseMovePhotoUploadTaskToInProgressComplete();
-    }
-
-    void movePhotoUploadTaskToFinished(String batchGuid, String serviceOrderGuid, String orderStepGuid, String photoRequestGuid,
-                                       String deviceGuid, String deviceAbsoluteFileName, String cloudStorageFileName,
-                                       MovePhotoUploadTaskFinishedResponse response);
-
-
-    interface MovePhotoUploadTaskFinishedResponse {
-        void cloudDatabaseMovePhotoUploadTaskFinishedComplete();
-    }
-
-    void movePhotoUploadTaskToFailed(String batchGuid, String serviceOrderGuid, String orderStepGuid, String photoRequestGuid,
-                                     String deviceGuid, String deviceAbsoluteFileName, String cloudStorageFileName,
-                                     MovePhotoUploadTaskFailedResponse response);
-
-
-    interface MovePhotoUploadTaskFailedResponse {
-        void cloudDatabaseMoveUploadTaskFailedComplete(Integer attempts);
-    }
 
     ///
     /// ActiveBatchNodes -> want to work these out of public interface
@@ -381,5 +241,8 @@ public interface CloudDatabaseInterface {
     ///    sets the server node for a completed batch
 
     void updateBatchCompletedServerNode(BatchDetail batchDetail);
+
+    */
+
 
 }

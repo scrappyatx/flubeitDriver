@@ -31,13 +31,18 @@ public class BatchManageLayoutComponents {
 
     private LottieAnimationView batchStartWaitingAnimation;
     private TextView batchForfeit;
+    private TextView batchForfeitBanner;
+    private TextView batchStartBanner;
     private SlideView batchStart;
+    private String batchGuid;
 
 
 
     public BatchManageLayoutComponents(AppCompatActivity activity, SlideView.OnSlideCompleteListener listener){
 
         batchForfeit = (TextView) activity.findViewById(R.id.batch_manage_forfeit);
+        batchForfeitBanner = (TextView) activity.findViewById(R.id.batch_manage_forfeit_banner);
+        batchStartBanner = (TextView) activity.findViewById(R.id.batch_manage_start_banner);
 
         // swipe to start button
         batchStart = (SlideView) activity.findViewById(R.id.batch_start_button);
@@ -48,15 +53,27 @@ public class BatchManageLayoutComponents {
         Timber.tag(TAG).d("...components created");
     }
 
-    public void setValuesAndShow(){
+    public void setValuesAndShow(String batchGuid){
+        this.batchGuid = batchGuid;
+
         batchForfeit.setVisibility(View.VISIBLE);
+        batchForfeitBanner.setVisibility(View.INVISIBLE);
+        batchStartBanner.setVisibility(View.INVISIBLE);
+
         batchStart.setVisibility(View.VISIBLE);
         batchStartWaitingAnimation.setVisibility(View.GONE);
         Timber.tag(TAG).d("...setValuesAndShow");
     }
 
+    public String getBatchGuid(){
+        return batchGuid;
+    }
+
     public void batchStarted(){
         batchForfeit.setVisibility(View.INVISIBLE);
+        batchForfeitBanner.setVisibility(View.INVISIBLE);
+        batchStartBanner.setVisibility(View.VISIBLE);
+
         batchStart.setVisibility(View.INVISIBLE);
 
         batchStartWaitingAnimation.setVisibility(View.VISIBLE);
@@ -65,8 +82,45 @@ public class BatchManageLayoutComponents {
         Timber.tag(TAG).d("...batchStarted");
     }
 
+    public void forfeitRequestAsk(){
+        batchForfeit.setVisibility(View.VISIBLE);
+        batchForfeitBanner.setVisibility(View.INVISIBLE);
+        batchStartBanner.setVisibility(View.INVISIBLE);
+
+        batchStart.setVisibility(View.VISIBLE);
+        batchStartWaitingAnimation.setVisibility(View.INVISIBLE);
+
+        Timber.tag(TAG).d("...forfeitRequestAsk");
+    }
+
+    public void forfeitRequestStart(){
+        batchForfeit.setVisibility(View.INVISIBLE);
+        batchForfeitBanner.setVisibility(View.VISIBLE);
+        batchStartBanner.setVisibility(View.INVISIBLE);
+
+        batchStart.setVisibility(View.INVISIBLE);
+
+        batchStartWaitingAnimation.setVisibility(View.VISIBLE);
+        batchStartWaitingAnimation.setProgress(0);
+        batchStartWaitingAnimation.playAnimation();
+        Timber.tag(TAG).d("...forfeitRequestStart");
+    }
+
+    public void setVisible(){
+        batchForfeit.setVisibility(View.VISIBLE);
+        batchForfeitBanner.setVisibility(View.INVISIBLE);
+        batchStartBanner.setVisibility(View.INVISIBLE);
+
+        batchStart.setVisibility(View.VISIBLE);
+        batchStartWaitingAnimation.setVisibility(View.GONE);
+        Timber.tag(TAG).d("...setVisible");
+    }
+
     public void setInvisible(){
         batchForfeit.setVisibility(View.INVISIBLE);
+        batchForfeitBanner.setVisibility(View.INVISIBLE);
+        batchStartBanner.setVisibility(View.INVISIBLE);
+
         batchStart.setVisibility(View.INVISIBLE);
         batchStartWaitingAnimation.setVisibility(View.INVISIBLE);
         Timber.tag(TAG).d("...set INVISIBLE");
@@ -74,6 +128,9 @@ public class BatchManageLayoutComponents {
 
     public void setGone(){
         batchForfeit.setVisibility(View.GONE);
+        batchForfeitBanner.setVisibility(View.GONE);
+        batchStartBanner.setVisibility(View.GONE);
+
         batchStart.setVisibility(View.GONE);
         batchStartWaitingAnimation.setVisibility(View.INVISIBLE);
         Timber.tag(TAG).d("...set GONE");
@@ -81,6 +138,9 @@ public class BatchManageLayoutComponents {
 
     public void close(){
         batchForfeit = null;
+        batchForfeitBanner = null;
+        batchStartBanner = null;
+
         batchStart = null;
         batchStartWaitingAnimation = null;
         Timber.tag(TAG).d("components closed");
