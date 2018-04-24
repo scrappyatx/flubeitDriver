@@ -4,12 +4,21 @@
 
 package it.flube.driver.deviceLayer.appDataStructures;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+
+import com.google.gson.Gson;
+
+import java.net.URL;
 
 import it.flube.libbatchdata.entities.batch.Batch;
 import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.interfaces.AppUserInterface;
 import timber.log.Timber;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created on 6/24/2017
@@ -19,74 +28,129 @@ import timber.log.Timber;
 public class AppUser implements AppUserInterface {
     private static final String TAG = "AppUser";
 
-    private  Driver driver;
-    private   Boolean signedIn;
-    private   Batch activeBatch;
-    private   String idToken;
+    private static final String PREFS_NAME = "AppUserPersistence";
 
-    public AppUser() {
+    private static final String DRIVER_FIELD = "driverJson";
+    private static final String SIGNED_IN_FIELD = "signedIn";
+    private static final String IDTOKEN_FIELD = "idToken";
+
+    /// data stored in this global
+    //private  Driver driver;
+    //private   Boolean signedIn;
+    //private   String idToken;
+
+    /// we persist in shared preferences
+    private SharedPreferences prefs;
+
+    public AppUser(Context applicationContext) {
+        prefs = applicationContext.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         clear();
     }
 
+    ////
+    ////  Interface methods to get/set data
+    ////
+
     public Driver getDriver() {
         Timber.tag(TAG).d("getDriver()");
-        if (driver != null) {
-            Timber.tag(TAG).d("...driver is : " + driver.getNameSettings().getDisplayName());
+        //if (driver != null) {
+        //    Timber.tag(TAG).d("...driver is : " + driver.getNameSettings().getDisplayName());
+        //} else {
+        //    Timber.tag(TAG).d("...driver is NULL!");
+        //}
+        //return driver;
+        if (getSignedInFromSharedPrefs()) {
+            return getDriverFromSharedPrefs();
         } else {
-            Timber.tag(TAG).d("...driver is NULL!");
+            return null;
         }
-        return driver;
     }
 
     public void setDriver(@NonNull Driver driver) {
-        this.driver = driver;
-        this.signedIn = true;
+        //this.driver = driver;
+        //this.signedIn = true;
+        saveDriverToSharedPrefs(driver, true);
         Timber.tag(TAG).d("setDriver : driver --> " + driver.getClientId() + " name --> " + driver.getNameSettings().getDisplayName());
     }
 
+
     public Boolean isSignedIn() {
+        Boolean signedIn = getSignedInFromSharedPrefs();
         Timber.tag(TAG).d("isSignedIn --> " + signedIn);
         return signedIn;
     }
 
-    public void setSignedIn(Boolean signedIn) {
-        this.signedIn = signedIn;
-        Timber.tag(TAG).d("setSignedIn --> " + signedIn);
-    }
-
-    public Boolean hasActiveBatch() {
-        Timber.tag(TAG).d("hasActiveBatch --> " + (activeBatch != null));
-        return (activeBatch != null);
-    }
-
-    public Batch getActiveBatch() {
-        Timber.tag(TAG).d("getActiveBatch --> " + activeBatch.getGuid());
-        return activeBatch;
-    }
-
-    public void setActiveBatch(@NonNull Batch batch) {
-        Timber.tag(TAG).d("setActiveBatch --> " + activeBatch.getGuid());
-        activeBatch = batch;
-    }
-
-    public void clearActiveBatch(){
-        Timber.tag(TAG).d("clearActiveBatch()");
-        activeBatch = null;
-    }
 
     public String getIdToken() {
-        return idToken;
+        return prefs.getString(IDTOKEN_FIELD,null);
     }
 
     public void setIdToken(String idToken) {
-        this.idToken = idToken;
+        saveIdTokenToSharedPrefs(idToken);
     }
 
     public void clear() {
-        driver = null;
-        signedIn=false;
-        activeBatch = null;
-        idToken = null;
+        //driver = null;
+        //signedIn=false;
+        //idToken = null;
+        deleteDriverFromSharedPrefs();
         Timber.tag(TAG).d("clear()");
+    }
+
+    ////
+    ////    Private methods to store/retrieve data
+    ////
+
+    private void saveIdTokenToSharedPrefs(String idToken){
+        SharedPreferences.Editor editor;
+        editor = prefs.edit();
+        editor.putString(IDTOKEN_FIELD, idToken);
+        editor.apply();
+    }
+    private void saveDriverToSharedPrefs(Driver driver, Boolean signedIn){
+        /// convert driver object to json string
+        Gson gson = new Gson();
+        String driverJson = gson.toJson(driver);
+
+        SharedPreferences.Editor editor;
+        editor = prefs.edit();
+        editor.putString(DRIVER_FIELD, driverJson);
+        editor.putBoolean(SIGNED_IN_FIELD, signedIn);
+        editor.apply();
+    }
+
+    private Boolean getSignedInFromSharedPrefs(){
+        return prefs.getBoolean(SIGNED_IN_FIELD, false);
+    }
+
+    private Driver getDriverFromSharedPrefs(){
+        String driverJson = prefs.getString(DRIVER_FIELD,null);
+        Gson gson = new Gson();
+        return gson.fromJson(driverJson, Driver.class);
+    }
+
+    private void deleteDriverFromSharedPrefs(){
+        SharedPreferences.Editor editor;
+        editor = prefs.edit();
+        editor.remove(DRIVER_FIELD);
+        editor.remove(SIGNED_IN_FIELD);
+        editor.remove(IDTOKEN_FIELD);
+        editor.apply();
+    }
+
+    // AsyncTask<Params, Progress, Result>.
+    //    Params – the type (Object/primitive) you pass to the AsyncTask from .execute()
+    //    Progress – the type that gets passed to onProgressUpdate()
+    //    Result – the type returns from doInBackground()
+    // Any of them can be String, Integer, Void, etc.
+
+    private class GetDriverDataTask extends AsyncTask<Void, Void, Driver> {
+        protected Driver doInBackground(Void... voids) {
+            // code that will run in the background
+            //get driver from shared preferences
+            String driverJson = prefs.getString(DRIVER_FIELD,null);
+            Gson gson = new Gson();
+            return gson.fromJson(driverJson, Driver.class);
+        }
     }
 }

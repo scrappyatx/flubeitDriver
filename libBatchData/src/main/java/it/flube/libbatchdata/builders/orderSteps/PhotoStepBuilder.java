@@ -2,7 +2,7 @@
  * Copyright (c) 2018. scrapdoodle, LLC.  All Rights Reserved
  */
 
-package it.flube.libbatchdata.builders;
+package it.flube.libbatchdata.builders.orderSteps;
 
 
 
@@ -12,6 +12,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.builders.TimestampBuilder;
 import it.flube.libbatchdata.entities.PhotoRequest;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderPhotoStep;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
@@ -23,6 +25,10 @@ import it.flube.libbatchdata.interfaces.OrderStepInterface;
  */
 
 public class PhotoStepBuilder {
+    private static final OrderStepInterface.TaskType TASK_TYPE = OrderStepInterface.TaskType.TAKE_PHOTOS;
+    private static final Integer DEFAULT_DURATION_MINUTES = 10;
+    private static final String DEFAULT_MILESTONE_WHEN_FINISHED = "Photos Taken";
+
     /// icon strings use fontawesome.io icon strings
     private static final String TASK_ICON_STRING = "{fa-camera}";
 
@@ -53,6 +59,10 @@ public class PhotoStepBuilder {
 
         public Builder(){
             photoStep = new ServiceOrderPhotoStep();
+            photoStep.setTaskType(TASK_TYPE);
+            photoStep.setDurationMinutes(DEFAULT_DURATION_MINUTES);
+            photoStep.setMilestoneWhenFinished(DEFAULT_MILESTONE_WHEN_FINISHED);
+
             photoStep.setGuid(BuilderUtilities.generateGuid());
             photoStep.setWorkStage(OrderStepInterface.WorkStage.NOT_STARTED);
             photoStep.setWorkTiming(OrderStepInterface.WorkTiming.ON_TIME);
@@ -108,7 +118,7 @@ public class PhotoStepBuilder {
             return this;
         }
 
-        public Builder batchDetaiGuid(String guid){
+        public Builder batchDetailGuid(String guid){
             this.photoStep.setBatchDetailGuid(guid);
             return this;
         }
@@ -191,27 +201,31 @@ public class PhotoStepBuilder {
         private void validate(ServiceOrderPhotoStep photoStep){
             // required PRESENT (must not be null)
             if (photoStep.getGuid() == null) {
-                throw new IllegalStateException("photoStep GUID is null");
+                throw new IllegalStateException("GUID is null");
             }
 
             if (photoStep.getTitle() == null) {
-                throw new IllegalStateException("photoStep title is null");
+                throw new IllegalStateException("title is null");
             }
 
             if (photoStep.getDescription() == null) {
-                throw new IllegalStateException("photoStep description is null");
+                throw new IllegalStateException("description is null");
             }
 
             if (photoStep.getStartTime() == null) {
-                throw new IllegalStateException("photoStep startTime is null");
+                throw new IllegalStateException("startTime is null");
             }
 
             if (photoStep.getFinishTime() == null) {
-                throw new IllegalStateException("photoStep finishTime is null");
+                throw new IllegalStateException("finishTime is null");
+            }
+
+            if (photoStep.getDurationMinutes() == null){
+                throw new IllegalStateException("duration minutes is null");
             }
 
             if (photoStep.getMilestoneWhenFinished() == null) {
-                throw new IllegalStateException("photoStep milestoneWhenFinished is null");
+                throw new IllegalStateException("milestoneWhenFinished is null");
             }
 
             if (photoStep.getPhotoRequestList() == null){

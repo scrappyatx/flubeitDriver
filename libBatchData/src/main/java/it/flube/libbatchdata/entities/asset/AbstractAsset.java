@@ -4,6 +4,8 @@
 
 package it.flube.libbatchdata.entities.asset;
 
+import it.flube.libbatchdata.interfaces.AssetInterface;
+
 /**
  * Created on 8/9/2017
  * Project : Driver
@@ -11,33 +13,31 @@ package it.flube.libbatchdata.entities.asset;
 
 public abstract class AbstractAsset {
 
-    private String assetGUID;
-    private String assetName;
-    private String assetDescription;
+    protected String guid;
+    protected String name;
+    protected String description;
 
-    protected void setAssetGUID(String assetGUID) {
-        this.assetGUID = assetGUID;
+    public String getGuid() {
+        return guid;
     }
 
-    protected String getAssetGUID(){
-        return assetGUID;
+    public void setGuid(String guid) {
+        this.guid = guid;
     }
 
-    protected void setAssetName(String assetName){
-        this.assetName = assetName;
+    public String getName() {
+        return name;
     }
 
-    protected String getAssetName(){
-        return assetName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    protected void setAssetDescription(String assetDescription){
-        this.assetDescription = assetDescription;
+    public String getDescription() {
+        return description;
     }
 
-    protected String getAssetDescription(){
-        return this.assetDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
-
-
 }

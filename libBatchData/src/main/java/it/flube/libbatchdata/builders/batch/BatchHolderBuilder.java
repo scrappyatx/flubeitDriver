@@ -2,12 +2,15 @@
  * Copyright (c) 2018. scrapdoodle, LLC.  All Rights Reserved
  */
 
-package it.flube.libbatchdata.builders;
+package it.flube.libbatchdata.builders.batch;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.builders.RouteStopBuilder;
+import it.flube.libbatchdata.builders.serviceOrder.ServiceOrderBuilder;
 import it.flube.libbatchdata.entities.ChatHistory;
 import it.flube.libbatchdata.entities.ChatMessage;
 import it.flube.libbatchdata.entities.FileAttachment;

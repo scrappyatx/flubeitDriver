@@ -2,13 +2,16 @@
  * Copyright (c) 2018. scrapdoodle, LLC.  All Rights Reserved
  */
 
-package it.flube.libbatchdata.builders;
+package it.flube.libbatchdata.builders.serviceOrder;
 
 
 
 import java.util.Date;
 import java.util.HashMap;
 
+import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.builders.StepIdBuilder;
+import it.flube.libbatchdata.builders.TimestampBuilder;
 import it.flube.libbatchdata.entities.orderStep.StepId;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrderScaffold;

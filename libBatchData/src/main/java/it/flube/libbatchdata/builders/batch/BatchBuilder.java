@@ -2,10 +2,11 @@
  * Copyright (c) 2018. scrapdoodle, LLC.  All Rights Reserved
  */
 
-package it.flube.libbatchdata.builders;
+package it.flube.libbatchdata.builders.batch;
 
 import java.util.Date;
 
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.entities.batch.Batch;
 import it.flube.libbatchdata.entities.DisplayDistance;
 import it.flube.libbatchdata.entities.DisplayTiming;

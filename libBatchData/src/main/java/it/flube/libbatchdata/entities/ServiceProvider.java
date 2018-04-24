@@ -13,7 +13,9 @@ public class ServiceProvider {
     private String iconURL;
     private String contactPhone;
     private String contactText;
-    private String contactName;
+    private ContactPerson contactPerson;
+    private AddressLocation addressLocation;
+    private LatLonLocation latLonLocation;
 
     public ServiceProvider() {}
 
@@ -49,12 +51,27 @@ public class ServiceProvider {
         this.contactText = contactText;
     }
 
-    public String getContactName() {
-        return contactName;
+    public ContactPerson getContactPerson() {
+        return contactPerson;
     }
 
-    public void setContactName(String contactName) {
-        this.contactName = contactName;
+    public void setContactPerson(ContactPerson contactPerson) {
+        this.contactPerson = contactPerson;
     }
 
+    public AddressLocation getAddressLocation() {
+        return addressLocation;
+    }
+
+    public void setAddressLocation(AddressLocation addressLocation) {
+        this.addressLocation = addressLocation;
+    }
+
+    public LatLonLocation getLatLonLocation() {
+        return latLonLocation;
+    }
+
+    public void setLatLonLocation(LatLonLocation latLonLocation) {
+        this.latLonLocation = latLonLocation;
+    }
 }

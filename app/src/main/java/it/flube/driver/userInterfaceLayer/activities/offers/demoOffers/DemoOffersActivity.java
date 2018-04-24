@@ -101,7 +101,6 @@ public class DemoOffersActivity extends AppCompatActivity implements
         Timber.tag(TAG).d("clicked MAKE DEMO OFFER");
         navigator.gotoActivityDemoOffersMake(this);
         //offersLayout.offerMakeStarted();
-        //controller.doMakeDemoOffer();
 
     }
 

@@ -22,8 +22,7 @@ public interface OrderStepInterface {
         WAIT_FOR_USER_TRIGGER,
         AUTHORIZE_PAYMENT,
         GIVE_ASSET,
-        RECEIVE_ASSET,
-        WAIT_FOR_SERVICE_ON_ASSET
+        RECEIVE_ASSET
     }
 
     TaskType getTaskType();
@@ -90,6 +89,9 @@ public interface OrderStepInterface {
 
     void setMilestoneWhenFinished(String milestoneWhenFinished);
     String getMilestoneWhenFinished();
+
+    void setDurationMinutes(Integer durationMinutes);
+    Integer getDurationMinutes();
 
     void setStartTime(Timestamp startTime);
     Timestamp getStartTime();

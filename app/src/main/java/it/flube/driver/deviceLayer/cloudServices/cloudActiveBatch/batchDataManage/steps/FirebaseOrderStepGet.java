@@ -88,10 +88,6 @@ public class FirebaseOrderStepGet implements ValueEventListener {
                                 orderStep = stepData.getValue(ServiceOrderNavigationStep.class);
                                 //TODO put in real class
                                 break;
-                            case WAIT_FOR_SERVICE_ON_ASSET:
-                                orderStep = stepData.getValue(ServiceOrderNavigationStep.class);
-                                //TODO put in real class
-                                break;
                             default:
                                 orderStep = stepData.getValue(ServiceOrderNavigationStep.class);
                                 //TODO put in real class

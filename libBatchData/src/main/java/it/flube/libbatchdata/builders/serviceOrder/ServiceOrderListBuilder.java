@@ -2,8 +2,9 @@
  * Copyright (c) 2018. scrapdoodle, LLC.  All Rights Reserved
  */
 
-package it.flube.libbatchdata.builders;
+package it.flube.libbatchdata.builders.serviceOrder;
 
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrderList;
 
 /**

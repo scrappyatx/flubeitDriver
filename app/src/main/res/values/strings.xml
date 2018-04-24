@@ -135,6 +135,7 @@
     <string name="demo_offers_make_instructions">Tap the type of demo offer to create</string>
     <string name="demo_offers_make_two_step_button_caption">Two Step Offer, with navigation step and simple photo step</string>
     <string name="demo_offers_make_auto_photos_button_caption">Two Step Offer, with navigation step and auto photo step</string>
+    <string name="demo_offers_make_oil_change">Oil Change Offer</string>
 
     <!-- Strings related to demo offer alerts -->
     <string name="demo_offers_alert_created_title">SUCCESS</string>

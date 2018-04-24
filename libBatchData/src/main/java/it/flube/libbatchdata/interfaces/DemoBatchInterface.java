@@ -14,13 +14,8 @@ import it.flube.libbatchdata.entities.batch.BatchHolder;
 
 public interface DemoBatchInterface {
 
-
     BatchHolder createDemoBatch(String clientId);
 
     BatchHolder createDemoBatch(String clientId, String batchGuid);
-
-    BatchHolder createDemoVehiclePhotoBatch(String clientId);
-
-    BatchHolder createDemoVehiclePhotoBatch(String clientId, String batchGuid);
 
 }

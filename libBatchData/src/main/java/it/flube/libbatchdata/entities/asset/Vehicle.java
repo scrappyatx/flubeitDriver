@@ -4,17 +4,24 @@
 
 package it.flube.libbatchdata.entities.asset;
 
+import it.flube.libbatchdata.interfaces.AssetInterface;
+import it.flube.libbatchdata.interfaces.AssetTransferInterface;
+
 /**
  * Created by Bryan on 3/21/2017.
  */
 
-public class Vehicle extends AbstractAsset {
+public class Vehicle extends AbstractAsset implements AssetInterface {
+    private static final AssetType ASSET_TYPE = AssetType.VEHICLE;
+
     private String make;
     private String model;
     private String year;
     private String color;
     private String licensePlate;
     private String licenseState;
+
+    public AssetType getAssetType(){ return ASSET_TYPE; }
 
     public String getMake() {
         return make;
@@ -64,35 +71,5 @@ public class Vehicle extends AbstractAsset {
         this.licenseState = licenseState;
     }
 
-    /// setters / getters for instance variables from abstract AbstractAsset class
-    @Override
-    public void setAssetGUID(String assetGUID){
-        super.setAssetGUID(assetGUID);
-    }
-
-    @Override
-    public String getAssetGUID(){
-        return super.getAssetGUID();
-    }
-
-    @Override
-    public void setAssetName(String assetName){
-        super.setAssetName(assetName);
-    }
-
-    @Override
-    public String getAssetName(){
-        return super.getAssetName();
-    }
-
-    @Override
-    public void setAssetDescription(String assetDescription){
-        super.setAssetDescription(assetDescription);
-    }
-
-    @Override
-    public String getAssetDescription(){
-        return super.getAssetDescription();
-    }
 
 }

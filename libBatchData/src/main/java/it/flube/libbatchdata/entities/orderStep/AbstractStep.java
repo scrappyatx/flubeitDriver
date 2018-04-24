@@ -10,46 +10,45 @@ import it.flube.libbatchdata.entities.Timestamp;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
 
 /**
- * Created on 10/25/2017
+ * Created on 4/23/2018
  * Project : Driver
  */
+public abstract class AbstractStep implements OrderStepInterface {
+    protected OrderStepInterface.TaskType taskType;
+    protected String taskTypeIconText;
 
-public class ServiceOrderGenericStep implements OrderStepInterface {
-    private TaskType taskType;
-    private String taskTypeIconText;
+    protected String guid;
+    protected String batchGuid;
+    protected String batchDetailGuid;
+    protected String serviceOrderGuid;
+    protected Integer sequence;
 
-    private String guid;
-    private String batchGuid;
-    private String batchDetailGuid;
-    private String serviceOrderGuid;
-    private Integer sequence;
+    protected OrderStepInterface.WorkTiming workTiming;
+    protected Map<String, String> workTimingIconTextMap;
 
-    private OrderStepInterface.WorkTiming workTiming;
-    private Map<String, String> workTimingIconTextMap;
+    protected OrderStepInterface.WorkStatus workStatus;
+    protected Map<String, String> workStatusIconTextMap;
 
-    private OrderStepInterface.WorkStatus workStatus;
-    private Map<String, String> workStatusIconTextMap;
+    protected OrderStepInterface.WorkStage workStage;
+    protected Map<String, String> workStageIconTextMap;
 
-    private OrderStepInterface.WorkStage workStage;
-    private Map<String, String> workStageIconTextMap;
+    protected String title;
+    protected String description;
+    protected String note;
+    protected String milestoneWhenFinished;
 
-    private String title;
-    private String description;
-    private String note;
-    private String milestoneWhenFinished;
+    protected Integer durationMinutes;
+    protected Timestamp startTime;
+    protected Timestamp finishTime;
 
-    private Integer durationMinutes;
-    private Timestamp startTime;
-    private Timestamp finishTime;
 
-    public void setTaskType(TaskType taskType){
-        this.taskType = taskType;
-    }
 
     public TaskType getTaskType(){
         return taskType;
     }
-
+    public void setTaskType(TaskType taskType){
+        this.taskType = taskType;
+    }
 
     public String getTaskTypeIconText() {
         return taskTypeIconText;
@@ -140,32 +139,32 @@ public class ServiceOrderGenericStep implements OrderStepInterface {
     }
 
 
-    public WorkTiming getWorkTiming() {
+    public OrderStepInterface.WorkTiming getWorkTiming() {
         return workTiming;
     }
 
 
-    public void setWorkTiming(WorkTiming workTiming) {
+    public void setWorkTiming(OrderStepInterface.WorkTiming workTiming) {
         this.workTiming = workTiming;
     }
 
 
-    public WorkStatus getWorkStatus() {
+    public OrderStepInterface.WorkStatus getWorkStatus() {
         return workStatus;
     }
 
 
-    public void setWorkStatus(WorkStatus workStatus) {
+    public void setWorkStatus(OrderStepInterface.WorkStatus workStatus) {
         this.workStatus = workStatus;
     }
 
 
-    public WorkStage getWorkStage() {
+    public OrderStepInterface.WorkStage getWorkStage() {
         return workStage;
     }
 
 
-    public void setWorkStage(WorkStage workStage) {
+    public void setWorkStage(OrderStepInterface.WorkStage workStage) {
         this.workStage = workStage;
     }
 
@@ -209,12 +208,12 @@ public class ServiceOrderGenericStep implements OrderStepInterface {
         this.milestoneWhenFinished = milestoneWhenFinished;
     }
 
-    public Integer getDurationMinutes() {
-        return durationMinutes;
-    }
 
-    public void setDurationMinutes(Integer durationMinutes) {
+    public void setDurationMinutes(Integer durationMinutes){
         this.durationMinutes = durationMinutes;
+    }
+    public Integer getDurationMinutes(){
+        return durationMinutes;
     }
 
     public Timestamp getStartTime() {
@@ -235,4 +234,5 @@ public class ServiceOrderGenericStep implements OrderStepInterface {
     public void setFinishTime(Timestamp finishTime) {
         this.finishTime = finishTime;
     }
+
 }

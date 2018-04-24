@@ -9,10 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import java.util.concurrent.ExecutorService;
 
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.libbatchdata.demoBatchCreation.DemoBatchNearbyPhotos;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
-import it.flube.driver.useCaseLayer.generateDemoBatch.UseCaseMakeDemoAutoBatchRequest;
 import it.flube.driver.useCaseLayer.generateDemoBatch.UseCaseMakeDemoBatchRequest;
+import it.flube.libbatchdata.demoBatchCreation.DemoBatchOilChange;
+import it.flube.libbatchdata.demoBatchCreation.DemoBatchSimpleTwoStep;
+import it.flube.libbatchdata.demoBatchCreation.DemoBatchTwoStepWithVehiclePhotos;
 import timber.log.Timber;
 
 /**
@@ -22,7 +23,6 @@ import timber.log.Timber;
 
 public class DemoOffersMakeController implements
         UseCaseMakeDemoBatchRequest.Response,
-        UseCaseMakeDemoAutoBatchRequest.Response,
         DemoOfferAlerts.DemoOfferCreatedAlertHidden {
 
     private final String TAG = "DemoOffersMakeController";
@@ -41,8 +41,18 @@ public class DemoOffersMakeController implements
     }
 
     public void doMakeTwoStepOffer(){
-        useCaseExecutor.execute(new UseCaseMakeDemoBatchRequest(device, new DemoBatchNearbyPhotos(), this));
+        useCaseExecutor.execute(new UseCaseMakeDemoBatchRequest(device, new DemoBatchSimpleTwoStep(), this));
         Timber.tag(TAG).d("make demo two step offer REQUEST...");
+    }
+
+    public void doMakeAutoStepOffer(){
+        useCaseExecutor.execute(new UseCaseMakeDemoBatchRequest(device, new DemoBatchTwoStepWithVehiclePhotos(), this));
+        Timber.tag(TAG).d("make demo auto batch offer REQUEST...");
+    }
+
+    public void doMakeOilChangeOffer(){
+        useCaseExecutor.execute(new UseCaseMakeDemoBatchRequest(device, new DemoBatchOilChange(), this));
+        Timber.tag(TAG).d("make oil change offer REQUEST...");
     }
 
     public void makeDemoBatchComplete(){
@@ -51,23 +61,10 @@ public class DemoOffersMakeController implements
         new DemoOfferAlerts().showDemoOfferCreatedAlert(activity, this);
     }
 
-
-    public void doMakeAutoStepOffer(){
-        useCaseExecutor.execute(new UseCaseMakeDemoAutoBatchRequest(device, new DemoBatchNearbyPhotos(), this));
-        Timber.tag(TAG).d("make demo auto batch offer REQUEST...");
-    }
-
-    public void makeDemoAutoBatchComplete(){
-        Timber.tag(TAG).d("...make demo auto batch COMPLETE!");
-        //EventBus.getDefault().postSticky(new ShowDemoOfferCreatedAlertEvent());
-        new DemoOfferAlerts().showDemoOfferCreatedAlert(activity, this);
-    }
-
     public void demoOfferCreatedAlertHidden(){
         //we are done, return to calling activity
         activityDone.allDone();
     }
-
 
     public void close(){
         activity = null;

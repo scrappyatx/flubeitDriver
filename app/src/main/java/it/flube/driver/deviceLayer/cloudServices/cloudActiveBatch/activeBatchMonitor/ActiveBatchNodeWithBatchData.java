@@ -33,7 +33,7 @@ public class ActiveBatchNodeWithBatchData implements
         FirebaseServiceOrderSetStatus.Response,
         FirebaseOrderStepSetWorkStage.Response {
 
-    private static final String TAG = "ActiveBatchNodeWithoutBatchData";
+    private static final String TAG = "ActiveBatchNodeWithBatchData";
 
     private DatabaseReference batchDataRef;
     private ActiveBatchNode nodeData;

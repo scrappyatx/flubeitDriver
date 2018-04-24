@@ -146,7 +146,7 @@ public class AndroidDevice implements
         cloudActiveBatch = new ActiveBatchFirebaseWrapper(cloudConfig);
 
         //initialize our user and device details
-        appUser = new AppUser();
+        appUser = new AppUser(applicationContext);
         deviceDetails = new DeviceDetails(applicationContext, this);
 
         // initialize app data structures

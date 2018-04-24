@@ -2,7 +2,7 @@
  * Copyright (c) 2018. scrapdoodle, LLC.  All Rights Reserved
  */
 
-package it.flube.libbatchdata.builders;
+package it.flube.libbatchdata.builders.orderSteps;
 
 
 
@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.builders.TimestampBuilder;
 import it.flube.libbatchdata.entities.Destination;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderNavigationStep;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
@@ -20,6 +22,10 @@ import it.flube.libbatchdata.interfaces.OrderStepInterface;
  */
 
 public class NavigationStepBuilder {
+    private static final OrderStepInterface.TaskType TASK_TYPE = OrderStepInterface.TaskType.NAVIGATION;
+    private static final Integer DEFAULT_DURATION_MINUTES = 30;
+    private static final String DEFAULT_MILESTONE_WHEN_FINISHED = "Arrived at Destination";
+
     /// icon strings use fontawesome.io icon strings
     private static final String TASK_ICON_STRING = "{fa-road}";
 
@@ -49,6 +55,10 @@ public class NavigationStepBuilder {
 
         public Builder(){
             navStep = new ServiceOrderNavigationStep();
+            navStep.setTaskType(TASK_TYPE);
+            navStep.setDurationMinutes(DEFAULT_DURATION_MINUTES);
+            navStep.setMilestoneWhenFinished(DEFAULT_MILESTONE_WHEN_FINISHED);
+
             navStep.setGuid(BuilderUtilities.generateGuid());
 
             navStep.setWorkStage(OrderStepInterface.WorkStage.NOT_STARTED);
@@ -188,31 +198,35 @@ public class NavigationStepBuilder {
         private void validateNavigationStep(ServiceOrderNavigationStep navStep) {
             // required PRESENT (must not be null)
             if (navStep.getGuid() == null) {
-                throw new IllegalStateException("navigation step GUID is null");
+                throw new IllegalStateException("GUID is null");
             }
 
             if (navStep.getTitle() == null) {
-                throw new IllegalStateException("navigation step title is null");
+                throw new IllegalStateException("title is null");
             }
 
             if (navStep.getDescription() == null) {
-                throw new IllegalStateException("navigation step description is null");
+                throw new IllegalStateException("description is null");
             }
 
             if (navStep.getDestination() == null) {
-                throw new IllegalStateException("navigation step destination is null");
+                throw new IllegalStateException("destination is null");
+            }
+
+            if (navStep.getDurationMinutes() == null){
+                throw new IllegalStateException("duration minutes is null");
             }
 
             if (navStep.getStartTime() == null) {
-                throw new IllegalStateException("navigation step startTime is null");
+                throw new IllegalStateException("startTime is null");
             }
 
             if (navStep.getFinishTime() == null) {
-                throw new IllegalStateException("navigation step finishTime is null");
+                throw new IllegalStateException("finishTime is null");
             }
 
             if (navStep.getMilestoneWhenFinished() == null) {
-                throw new IllegalStateException("navigation step milestoneWhenFinished is null");
+                throw new IllegalStateException("milestoneWhenFinished is null");
             }
 
             //required ABSENT (must be null)

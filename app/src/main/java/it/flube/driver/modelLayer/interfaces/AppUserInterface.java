@@ -22,16 +22,6 @@ public interface AppUserInterface {
 
     Boolean isSignedIn();
 
-    void setSignedIn(Boolean signedIn);
-
-    Boolean hasActiveBatch();
-
-    Batch getActiveBatch();
-
-    void setActiveBatch(Batch batch);
-
-    void clearActiveBatch();
-
     String getIdToken();
 
     void setIdToken(String idToken);

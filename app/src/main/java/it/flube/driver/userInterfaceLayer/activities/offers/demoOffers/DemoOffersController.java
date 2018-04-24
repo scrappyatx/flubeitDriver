@@ -32,7 +32,6 @@ import static it.flube.driver.userInterfaceLayer.activities.offers.OfferConstant
  */
 
 public class DemoOffersController implements
-        UseCaseMakeDemoBatchRequest.Response,
         OfferClaimAlerts.ClaimOfferSuccessAlertHidden,
         OfferClaimAlerts.ClaimOfferFailureAlertHidden,
         OfferClaimAlerts.ClaimOfferTimeoutAlertHidden  {
@@ -46,17 +45,6 @@ public class DemoOffersController implements
         useCaseExecutor = device.getUseCaseEngine().getUseCaseExecutor();
 
         Timber.tag(TAG).d("DemoOffersController CREATED");
-    }
-
-
-    public void doMakeDemoOffer(){
-        useCaseExecutor.execute(new UseCaseMakeDemoBatchRequest(device, new DemoBatchNearbyPhotos(), this));
-        Timber.tag(TAG).d("make demo offer REQUEST...");
-    }
-
-    public void makeDemoBatchComplete(){
-        Timber.tag(TAG).d("...make demo batch COMPLETE!");
-        EventBus.getDefault().postSticky(new ShowDemoOfferCreatedAlertEvent());
     }
 
     public void checkIfClaimAlertNeedsToBeShown(AppCompatActivity activity){

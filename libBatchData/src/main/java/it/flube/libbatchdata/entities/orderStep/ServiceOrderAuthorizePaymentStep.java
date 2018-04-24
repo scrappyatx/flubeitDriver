@@ -11,9 +11,16 @@ import it.flube.libbatchdata.interfaces.OrderStepInterface;
  * Project : Driver
  */
 
-public class ServiceOrderAuthorizePaymentStep extends ServiceOrderGenericStep
+public class ServiceOrderAuthorizePaymentStep extends AbstractStep
         implements OrderStepInterface {
 
+    private String maxPaymentAmount;
 
+    public String getMaxPaymentAmount() {
+        return maxPaymentAmount;
+    }
 
+    public void setMaxPaymentAmount(String maxPaymentAmount) {
+        this.maxPaymentAmount = maxPaymentAmount;
+    }
 }

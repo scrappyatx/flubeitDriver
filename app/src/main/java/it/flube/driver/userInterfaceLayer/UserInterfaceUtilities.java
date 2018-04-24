@@ -75,8 +75,6 @@ public class UserInterfaceUtilities {
                 return GIVE_ASSET_ICON;
             case RECEIVE_ASSET:
                 return RECEIVE_ASSET_ICON;
-            case WAIT_FOR_SERVICE_ON_ASSET:
-                return WAIT_FOR_SERVICE_ON_ASSET_ICON;
             default:
                 return "";
         }

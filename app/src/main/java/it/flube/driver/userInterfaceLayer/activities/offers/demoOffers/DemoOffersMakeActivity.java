@@ -67,6 +67,12 @@ public class DemoOffersMakeActivity extends AppCompatActivity
         controller.doMakeTwoStepOffer();
     }
 
+    public void onOilChangeClicked(View v){
+        Timber.tag(TAG).d("...clicked oil change button");
+        demoOffersMakeLayoutComponents.offerMakeStarted();
+        controller.doMakeOilChangeOffer();
+    }
+
     public void allDone(){
         //we are done, go to demo offers activity
         Timber.tag(TAG).d("...we are done, go to activity demo offers");

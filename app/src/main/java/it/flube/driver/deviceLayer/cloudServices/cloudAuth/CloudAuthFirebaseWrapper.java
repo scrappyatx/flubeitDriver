@@ -60,7 +60,7 @@ public class CloudAuthFirebaseWrapper implements
             auth.addAuthStateListener(this);
             Timber.tag(TAG).d("   ...started monitoring auth state changes");
         } else {
-            Timber.tag(TAG).w("   ...startMonitoring called when already monitoring");
+            Timber.tag(TAG).d("   ...startMonitoring called when already monitoring");
         }
         Timber.tag(TAG).d("...startMonitoringAuthStateChanges FINISHED");
         response.cloudAuthStartMonitoringComplete();
@@ -73,7 +73,7 @@ public class CloudAuthFirebaseWrapper implements
             isMonitoring = false;
             Timber.tag(TAG).d("   ...stopped monitoring auth state changes");
         } else {
-            Timber.tag(TAG).w("   ...stopMonitoring called when not monitoring");
+            Timber.tag(TAG).d("   ...stopMonitoring called when not monitoring");
         }
         Timber.tag(TAG).d("...stopMonitoringAuthStateChanges FINISHED");
         response.cloudAuthStopMonitoringComplete();

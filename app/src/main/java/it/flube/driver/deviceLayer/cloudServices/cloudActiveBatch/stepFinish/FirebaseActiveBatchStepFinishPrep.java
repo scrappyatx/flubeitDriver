@@ -61,12 +61,12 @@ public class FirebaseActiveBatchStepFinishPrep implements
     }
 
     public void batchRemoved(ActiveBatchManageInterface.ActorType actorType, String batchGuid){
-        Timber.tag(TAG).w("   ...got batchFinished -> this should never happen");
+        Timber.tag(TAG).w("   ...got batchRemoved -> this should never happen");
         response.cloudActiveBatchFinishStepComplete();
     }
 
     public void noBatch(){
-        Timber.tag(TAG).w("   ...got batchFinished -> this should never happen");
+        Timber.tag(TAG).w("   ...got noBatch -> this should never happen");
         response.cloudActiveBatchFinishStepComplete();
     }
 
