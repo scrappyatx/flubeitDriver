@@ -10,8 +10,12 @@ import java.util.ArrayList;
 
 import it.flube.libbatchdata.entities.RouteStop;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderAuthorizePaymentStep;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderGiveAssetStep;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderNavigationStep;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderPhotoStep;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderReceiveAssetStep;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderUserTriggerStep;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import it.flube.driver.modelLayer.interfaces.ActiveBatchInterface;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
@@ -115,6 +119,16 @@ public class ActiveBatch implements ActiveBatchInterface {
     public ServiceOrderPhotoStep getPhotoStep(){
         return (ServiceOrderPhotoStep) step;
     }
+
+    public ServiceOrderReceiveAssetStep getReceiveAssetStep() {
+        return (ServiceOrderReceiveAssetStep) step;
+    }
+
+    public ServiceOrderGiveAssetStep getGiveAssetStep() { return (ServiceOrderGiveAssetStep) step; }
+
+    public ServiceOrderUserTriggerStep getUserTriggerStep() { return (ServiceOrderUserTriggerStep) step; }
+
+    public ServiceOrderAuthorizePaymentStep getAuthorizePaymentStep() { return (ServiceOrderAuthorizePaymentStep) step; }
 
     /// task type
     public OrderStepInterface.TaskType getTaskType(){

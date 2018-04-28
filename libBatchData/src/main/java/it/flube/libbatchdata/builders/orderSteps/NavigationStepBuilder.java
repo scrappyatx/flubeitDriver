@@ -217,14 +217,6 @@ public class NavigationStepBuilder {
                 throw new IllegalStateException("duration minutes is null");
             }
 
-            if (navStep.getStartTime() == null) {
-                throw new IllegalStateException("startTime is null");
-            }
-
-            if (navStep.getFinishTime() == null) {
-                throw new IllegalStateException("finishTime is null");
-            }
-
             if (navStep.getMilestoneWhenFinished() == null) {
                 throw new IllegalStateException("milestoneWhenFinished is null");
             }

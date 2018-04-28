@@ -10,8 +10,12 @@ import java.util.ArrayList;
 
 import it.flube.libbatchdata.entities.RouteStop;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderAuthorizePaymentStep;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderGiveAssetStep;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderNavigationStep;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderPhotoStep;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderReceiveAssetStep;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderUserTriggerStep;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
 
@@ -41,6 +45,14 @@ public interface ActiveBatchInterface {
     ServiceOrderNavigationStep getNavigationStep();
 
     ServiceOrderPhotoStep getPhotoStep();
+
+    ServiceOrderReceiveAssetStep getReceiveAssetStep();
+
+    ServiceOrderGiveAssetStep getGiveAssetStep();
+
+    ServiceOrderUserTriggerStep getUserTriggerStep();
+
+    ServiceOrderAuthorizePaymentStep getAuthorizePaymentStep();
 
     // SERVICE ORDER LIST
 

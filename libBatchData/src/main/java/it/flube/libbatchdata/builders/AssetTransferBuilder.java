@@ -4,6 +4,7 @@
 
 package it.flube.libbatchdata.builders;
 
+import it.flube.libbatchdata.entities.asset.Vehicle;
 import it.flube.libbatchdata.entities.assetTransfer.AssetTransfer;
 import it.flube.libbatchdata.interfaces.AssetInterface;
 import it.flube.libbatchdata.interfaces.AssetTransferInterface;
@@ -31,7 +32,7 @@ public class AssetTransferBuilder {
             assetTransfer.setTransferStatus(AssetTransferInterface.TransferStatus.NOT_ATTEMPTED);
         }
 
-        public Builder asset(AssetInterface asset){
+        public Builder asset(Vehicle asset){
             this.assetTransfer.setAsset(asset);
             return this;
         }

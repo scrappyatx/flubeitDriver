@@ -212,14 +212,6 @@ public class PhotoStepBuilder {
                 throw new IllegalStateException("description is null");
             }
 
-            if (photoStep.getStartTime() == null) {
-                throw new IllegalStateException("startTime is null");
-            }
-
-            if (photoStep.getFinishTime() == null) {
-                throw new IllegalStateException("finishTime is null");
-            }
-
             if (photoStep.getDurationMinutes() == null){
                 throw new IllegalStateException("duration minutes is null");
             }

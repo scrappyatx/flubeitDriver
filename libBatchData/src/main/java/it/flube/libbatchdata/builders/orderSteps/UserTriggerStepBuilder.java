@@ -198,14 +198,6 @@ public class UserTriggerStepBuilder {
                 throw new IllegalStateException("description is null");
             }
 
-            if (triggerStep.getStartTime() == null) {
-                throw new IllegalStateException("startTime is null");
-            }
-
-            if (triggerStep.getFinishTime() == null) {
-                throw new IllegalStateException("finishTime is null");
-            }
-
             if (triggerStep.getDurationMinutes() == null){
                 throw new IllegalStateException("duration minutes is null");
             }

@@ -73,7 +73,7 @@ public class ActivityNavigator {
     }
 
     public void gotoActiveBatchStep(Context context){
-        ActiveBatchNavigator.gotoActiveBatchStep(context);
+        new ActiveBatchNavigator().gotoActiveBatchStep(context);
         Timber.tag(TAG).d("going to active batch step");
     }
 

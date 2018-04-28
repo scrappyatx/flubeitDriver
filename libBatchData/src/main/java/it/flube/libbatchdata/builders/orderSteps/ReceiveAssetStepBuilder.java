@@ -222,14 +222,6 @@ public class ReceiveAssetStepBuilder {
                 throw new IllegalStateException("description is null");
             }
 
-            if (receiveStep.getStartTime() == null) {
-                throw new IllegalStateException("startTime is null");
-            }
-
-            if (receiveStep.getFinishTime() == null) {
-                throw new IllegalStateException("finishTime is null");
-            }
-
             if (receiveStep.getDurationMinutes() == null){
                 throw new IllegalStateException("duration minutes is null");
             }

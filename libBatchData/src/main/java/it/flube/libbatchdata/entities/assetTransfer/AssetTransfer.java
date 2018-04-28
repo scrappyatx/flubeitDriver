@@ -5,6 +5,7 @@
 package it.flube.libbatchdata.entities.assetTransfer;
 
 import it.flube.libbatchdata.entities.asset.AbstractAsset;
+import it.flube.libbatchdata.entities.asset.Vehicle;
 import it.flube.libbatchdata.interfaces.AssetInterface;
 import it.flube.libbatchdata.interfaces.AssetTransferInterface;
 
@@ -15,15 +16,18 @@ import it.flube.libbatchdata.interfaces.AssetTransferInterface;
 
 public class AssetTransfer {
 
-    private AssetInterface asset;
+    ///TODO this should be AssetInterface but that makes reading in firebase realtime database more complex, for now just support vehicle
+    private Vehicle asset;
     private AssetTransferInterface.TransferStatus transferStatus;
 
 
-    public AssetInterface getAsset(){
+    public AssetTransfer(){}
+
+    public Vehicle getAsset(){
         return asset;
     }
 
-    public void setAsset(AssetInterface asset){
+    public void setAsset(Vehicle asset){
         this.asset = asset;
     }
 

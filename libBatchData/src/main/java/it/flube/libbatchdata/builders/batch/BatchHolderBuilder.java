@@ -213,7 +213,14 @@ public class BatchHolderBuilder {
             //set route stop & service order counts
             batchHolder.getBatchDetail().setServiceOrderCount(batchHolder.getServiceOrders().size());
             batchHolder.getBatchDetail().setRouteStopCount(batchHolder.getRouteStops().size());
+
+            //set expected Start & Finish time on the batch, batchDetail, serviceOrders, and each step
+            batchHolder = CalculateStartAndStopTimes.calculateStartAndStopTimes(batchHolder);
+
         }
+
+
+
 
         private void addNavigationStepDataToRouteStopList(Map<String, OrderStepInterface> steps){
 

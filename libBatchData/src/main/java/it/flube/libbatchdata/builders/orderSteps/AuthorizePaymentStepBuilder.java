@@ -206,14 +206,6 @@ public class AuthorizePaymentStepBuilder {
                 throw new IllegalStateException("description is null");
             }
 
-            if (paymentStep.getStartTime() == null) {
-                throw new IllegalStateException("startTime is null");
-            }
-
-            if (paymentStep.getFinishTime() == null) {
-                throw new IllegalStateException("finishTime is null");
-            }
-
             if (paymentStep.getDurationMinutes() == null){
                 throw new IllegalStateException("duration minutes is null");
             }

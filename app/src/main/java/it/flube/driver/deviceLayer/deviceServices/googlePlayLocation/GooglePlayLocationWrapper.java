@@ -34,9 +34,9 @@ public class GooglePlayLocationWrapper implements
 
     private static final String TAG = "GooglePlayLocationWrapper";
 
-    private static final long UPDATE_INTERVAL = 20 * 1000;              // want updates at least every 20 seconds
+    private static final long UPDATE_INTERVAL = 15 * 60 * 1000;         // want updates at least every 15 minutes
     private static final long FASTEST_UPDATE_INTERVAL = 5 * 1000;       // but will accept them as fast as every 5 seconds
-    private static final float MIN_DISTANCE_CHANGE_FOR_UPDATES = 0;      // but only if displacement is 3 meters or more
+    private static final float MIN_DISTANCE_CHANGE_FOR_UPDATES = 3;     // but only if displacement is 3 meters or more
 
 
     private final static boolean forceNetwork = false;

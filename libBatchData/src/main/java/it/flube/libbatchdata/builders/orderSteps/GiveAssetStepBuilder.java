@@ -223,14 +223,6 @@ public class GiveAssetStepBuilder {
                 throw new IllegalStateException("description is null");
             }
 
-            if (giveStep.getStartTime() == null) {
-                throw new IllegalStateException("startTime is null");
-            }
-
-            if (giveStep.getFinishTime() == null) {
-                throw new IllegalStateException("finishTime is null");
-            }
-
             if (giveStep.getDurationMinutes() == null){
                 throw new IllegalStateException("duration minutes is null");
             }

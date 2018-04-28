@@ -282,5 +282,22 @@
     <!-- Strings related to photo take activity layout -->
     <string name="photo_take_button_caption">{fa-camera}</string>
 
+    <!-- Strings related to receive asset step activity layout -->
+    <string name="receive_asset_step_activity_title">Receive Asset</string>
+    <string name="receive_asset_step_completed_step_button_caption">I\'m finished</string>
+
+    <!-- Strings related to give asset step activity layout -->
+    <string name="give_asset_step_activity_title">Give Asset</string>
+    <string name="give_asset_step_completed_step_button_caption">I\'m finished</string>
+
+    <!-- Strings related to user trigger step activity layout -->
+    <string name="user_trigger_step_activity_title">User Trigger</string>
+    <string name="user_trigger_step_completed_step_button_caption">I\'m finished</string>
+
+    <!-- Strings related to authorized payment step activity layout -->
+    <string name="authorize_payment_step_activity_title">Authorize Payment</string>
+    <string name="authorize_payment_completed_step_button_caption">I\'m finished</string>
+
+
 
 </resources>

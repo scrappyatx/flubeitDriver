@@ -51,21 +51,21 @@ public class ActiveBatchNode {
         this.actorType = actorType;
     }
 
-    Boolean hasAllBatchData() {
+    public Boolean hasAllBatchData() {
         return  ((batch != null) &&
                 (currentServiceOrderSequence != null) &&
                 (currentStepSequence != null));
     }
 
-    Boolean hasBatchGuid(){
+    public Boolean hasBatchGuid(){
         return (batch != null);
     }
 
-    String getBatchGuid() { return batch; }
-    Integer getServiceOrderSequence() { return currentServiceOrderSequence; }
-    Integer getStepSequence() { return currentStepSequence; }
+    public String getBatchGuid() { return batch; }
+    public Integer getServiceOrderSequence() { return currentServiceOrderSequence; }
+    public Integer getStepSequence() { return currentStepSequence; }
 
-    ActiveBatchManageInterface.ActionType getActionType(){ return (actionType != null) ? actionType : ActiveBatchManageInterface.ActionType.NOT_SPECIFIED;}
-    ActiveBatchManageInterface.ActorType getActorType() { return (actorType != null) ? actorType : ActiveBatchManageInterface.ActorType.NOT_SPECIFIED; }
+    public ActiveBatchManageInterface.ActionType getActionType(){ return (actionType != null) ? actionType : ActiveBatchManageInterface.ActionType.NOT_SPECIFIED;}
+    public ActiveBatchManageInterface.ActorType getActorType() { return (actorType != null) ? actorType : ActiveBatchManageInterface.ActorType.NOT_SPECIFIED; }
 
 }

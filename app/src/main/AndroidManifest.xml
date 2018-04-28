@@ -76,6 +76,18 @@
         <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.PhotoTakeActivity"
             android:noHistory="true" />
 
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep.ReceiveAssetActivity"
+            android:noHistory="true" />
+
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.giveAssetStep.GiveAssetActivity"
+            android:noHistory="true" />
+
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.userTriggerStep.UserTriggerActivity"
+            android:noHistory="true" />
+
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.AuthorizePaymentActivity"
+            android:noHistory="true" />
+
         <activity android:name=".userInterfaceLayer.activities.activeBatch.batchItinerary.BatchItineraryActivity"
             android:noHistory="true" />
         <activity android:name=".userInterfaceLayer.activities.activeBatch.orderItinerary.OrderItineraryActivity"

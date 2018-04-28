@@ -9,9 +9,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderAuthorizePaymentStep;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderGenericStep;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderGiveAssetStep;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderNavigationStep;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderPhotoStep;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderReceiveAssetStep;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderUserTriggerStep;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import timber.log.Timber;
 
@@ -73,20 +77,16 @@ public class FirebaseOrderStepGet implements ValueEventListener {
                                 //TODO put in real class
                                 break;
                             case WAIT_FOR_USER_TRIGGER:
-                                orderStep = stepData.getValue(ServiceOrderNavigationStep.class);
-                                //TODO put in real class
+                                orderStep = stepData.getValue(ServiceOrderUserTriggerStep.class);
                                 break;
                             case AUTHORIZE_PAYMENT:
-                                orderStep = stepData.getValue(ServiceOrderNavigationStep.class);
-                                //TODO put in real class
+                                orderStep = stepData.getValue(ServiceOrderAuthorizePaymentStep.class);
                                 break;
                             case GIVE_ASSET:
-                                orderStep = stepData.getValue(ServiceOrderNavigationStep.class);
-                                //TODO put in real class
+                                orderStep = stepData.getValue(ServiceOrderGiveAssetStep.class);
                                 break;
                             case RECEIVE_ASSET:
-                                orderStep = stepData.getValue(ServiceOrderNavigationStep.class);
-                                //TODO put in real class
+                                orderStep = stepData.getValue(ServiceOrderReceiveAssetStep.class);
                                 break;
                             default:
                                 orderStep = stepData.getValue(ServiceOrderNavigationStep.class);

@@ -21,6 +21,8 @@ public class Vehicle extends AbstractAsset implements AssetInterface {
     private String licensePlate;
     private String licenseState;
 
+    public Vehicle(){}
+
     public AssetType getAssetType(){ return ASSET_TYPE; }
 
     public String getMake() {

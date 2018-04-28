@@ -103,6 +103,14 @@ public interface CloudActiveBatchInterface {
     ////        BatchSummary, BatchDetail, ServiceOrderList, RouteStopList, OrderStepList
     ///
 
+    void getActiveBatchCurrentStepRequest(Driver driver, GetActiveBatchCurrentStepResponse response);
+
+    interface GetActiveBatchCurrentStepResponse {
+        void cloudGetActiveBatchCurrentStepSuccess(BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface orderStep);
+
+        void cloudGetActiveBatchCurrentStepFailure();
+    }
+
     void getActiveBatchSummaryRequest(Driver driver, String batchGuid, GetBatchSummaryResponse response);
 
     interface GetBatchSummaryResponse {

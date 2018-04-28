@@ -17,7 +17,7 @@ public class FirebaseRealtimeDatabaseWrapper {
     private static final String TAG = "FirebaseRealtimeDatabaseWrapper";
 
     public static void initializeDb(){
-       FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+       FirebaseDatabase.getInstance().setPersistenceEnabled(false);
        FirebaseDatabase.getInstance().goOnline();
        Timber.tag(TAG).d("persistence enabled & online");
     }
