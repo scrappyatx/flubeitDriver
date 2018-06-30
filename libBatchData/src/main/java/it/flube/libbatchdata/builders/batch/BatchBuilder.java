@@ -54,12 +54,6 @@ public class BatchBuilder {
         }
 
 
-
-        public Builder displayTiming(DisplayTiming displayTiming) {
-            this.batch.setDisplayTiming(displayTiming);
-            return this;
-        }
-
         public Builder displayDistance(DisplayDistance displayDistance) {
             this.batch.setDisplayDistance(displayDistance);
             return this;
@@ -90,6 +84,11 @@ public class BatchBuilder {
             return this;
         }
 
+        public Builder offerExpiryTime(Date offerExpiryTime){
+            this.batch.setOfferExpiryTime(offerExpiryTime);
+            return this;
+        }
+
         private void validate(Batch batch) {
             // required PRESENT (must not be null)
             if (batch.getGuid() == null) {
@@ -103,6 +102,10 @@ public class BatchBuilder {
 
             if (batch.getPotentialEarnings() == null) {
                 //throw new IllegalStateException("batch potentialEarnings is null");
+            }
+
+            if (batch.getOfferExpiryTime() == null) {
+                //throw new IllegalStateException("offer expiry is null");
             }
 
         }

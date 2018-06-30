@@ -41,20 +41,46 @@ public class UseCaseStartBatchRequest implements
     public void run(){
         Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
         Timber.tag(TAG).d("   ...batchGuid -> " + batchGuid);
-        cloudScheduledBatch.startScheduledBatchRequest(driver, batchGuid, this );
-    }
-
-    public void cloudStartScheduledBatchComplete(){
-        Timber.tag(TAG).d("   ...cloudStartScheduledBatchComplete");
+        Timber.tag(TAG).d("   ...making request to start active batch...");
         cloudActiveBatch.startActiveBatchRequest(driver, batchGuid, ActiveBatchManageInterface.ActorType.MOBILE_USER, this);
     }
 
-    public void cloudStartActiveBatchComplete(){
-        Timber.tag(TAG).d("   ...cloudStartActiveBatchComplete");
-        response.useCaseStartBatchComplete(batchGuid);
+
+
+    //// SUCCESS callback from active batch start request, now remove the batch from the scheduled batch list
+    public void cloudStartActiveBatchSuccess(String batchGuid) {
+        Timber.tag(TAG).d("   ...cloudStartActiveBatchSuccess");
+        Timber.tag(TAG).d("   ...now removing batch from scheduled batch list");
+        cloudScheduledBatch.startScheduledBatchRequest(driver, batchGuid, this );
+    }
+
+    /// callback from removing batch from scheduled batch list, we are done
+    public void cloudStartScheduledBatchComplete(){
+        Timber.tag(TAG).d("   ...cloudStartScheduledBatchComplete");
+        response.useCaseStartBatchSuccess(batchGuid);
+    }
+
+    ///// FAILURE callbacks from active batch start request
+
+    public void cloudStartActiveBatchFailure(String batchGuid) {
+        Timber.tag(TAG).d("   ...cloudStartActiveBatchFailure");
+        response.useCaseStartBatchFailure(batchGuid);
+    }
+
+    public void cloudStartActiveBatchTimeout(String batchGuid){
+        Timber.tag(TAG).d("   ...cloudStartActiveBatchTimeout");
+        response.useCaseStartBatchTimeout(batchGuid);
+    }
+
+    public void cloudStartActiveBatchDenied(String batchGuid, String reason){
+        Timber.tag(TAG).d("   ...cloudStartActiveBatchDenied, reason = " + reason);
+        response.useCaseStartBatchDenied(batchGuid, reason);
     }
 
     public interface Response {
-        void useCaseStartBatchComplete(String batchGuid);
+        void useCaseStartBatchSuccess(String batchGuid);
+        void useCaseStartBatchFailure(String batchGuid);
+        void useCaseStartBatchTimeout(String batchGuid);
+        void useCaseStartBatchDenied(String batchGuid, String reason);
     }
 }

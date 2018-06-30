@@ -46,6 +46,16 @@ public class ActiveBatchNodeWithoutBatchData {
                 }
                 break;
 
+            case BATCH_WAITING_TO_FINISH:
+                if (nodeData.hasBatchGuid()) {
+                    Timber.tag(TAG).d("         ...response -> batchWaitingToFinish");
+                    response.batchWaitingToFinish(nodeData.getActorType(), nodeData.getBatchGuid());
+                } else {
+                    Timber.tag(TAG).w("         ...batchWaitingToFinish, but nodeData is missing batchGuid");
+                    response.noBatch();
+                }
+                break;
+
             case BATCH_FINISHED:
                 if (nodeData.hasBatchGuid()) {
                     Timber.tag(TAG).d("         ...response -> batchFinished");

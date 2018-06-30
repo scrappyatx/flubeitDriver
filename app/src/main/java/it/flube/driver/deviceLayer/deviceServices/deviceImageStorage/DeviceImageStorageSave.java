@@ -33,6 +33,11 @@ public class DeviceImageStorageSave {
 
         //save the file
         try {
+            Timber.tag(TAG).d("   ...bitmap image info");
+            Timber.tag(TAG).d("          height        -> " + bitmap.getHeight());
+            Timber.tag(TAG).d("          width         -> " + bitmap.getWidth());
+            Timber.tag(TAG).d("          size (bytes) - > " + bitmap.getByteCount());
+
             //file name is the imageGuid
             File myFile = new File(cw.getDir(IMAGE_DIR, Context.MODE_PRIVATE), imageGuid);
             Timber.tag(TAG).d("   ...got file name --> " + myFile.getAbsoluteFile().toString());
@@ -40,14 +45,19 @@ public class DeviceImageStorageSave {
             FileOutputStream stream = new FileOutputStream(myFile);
             Timber.tag(TAG).d("   ...got output file stream");
 
-            bitmap.compress(Bitmap.CompressFormat.JPEG, IMAGE_QUALITY, stream);
             Timber.tag(TAG).d("   ...compressing bitmap");
+            bitmap.compress(Bitmap.CompressFormat.JPEG, IMAGE_QUALITY, stream);
 
             stream.flush();
             Timber.tag(TAG).d("   ...flushing stream");
 
             stream.close();
             Timber.tag(TAG).d("   ...file saved SUCCESS!");
+
+            Long fileSize = myFile.length();
+
+            Timber.tag(TAG).d("   ...file size bytes : " + fileSize.toString());
+
             response.deviceImageStorageSaveSuccess(myFile.getAbsoluteFile().toString());
 
         } catch (Exception e) {

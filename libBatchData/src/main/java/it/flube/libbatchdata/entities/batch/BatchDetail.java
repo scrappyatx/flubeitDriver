@@ -5,6 +5,7 @@
 package it.flube.libbatchdata.entities.batch;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import it.flube.libbatchdata.entities.DisplayDistance;
 import it.flube.libbatchdata.entities.DisplayTiming;
@@ -48,7 +49,16 @@ public class BatchDetail {
 
     private WorkStatus workStatus;
 
-    private DisplayTiming displayTiming;
+    private Integer earliestStartMinutesPrior;
+    private Integer latestStartMinutesAfter;
+
+    private Date expectedStartTime;
+    private Date expectedFinishTime;
+    private Date offerExpiryTime;
+
+    private Object actualFinishTime;
+    private Object actualStartTime;
+
     private DisplayDistance displayDistance;
     private PotentialEarnings potentialEarnings;
 
@@ -127,14 +137,6 @@ public class BatchDetail {
         this.iconUrl = iconUrl;
     }
 
-    public DisplayTiming getDisplayTiming() {
-        return displayTiming;
-    }
-
-    public void setDisplayTiming(DisplayTiming displayTiming) {
-        this.displayTiming = displayTiming;
-    }
-
     public DisplayDistance getDisplayDistance() {
         return displayDistance;
     }
@@ -167,4 +169,59 @@ public class BatchDetail {
         this.routeStopCount = routeStopCount;
     }
 
+    public Date getExpectedStartTime() {
+        return expectedStartTime;
+    }
+
+    public void setExpectedStartTime(Date expectedStartTime) {
+        this.expectedStartTime = expectedStartTime;
+    }
+
+    public Date getExpectedFinishTime() {
+        return expectedFinishTime;
+    }
+
+    public void setExpectedFinishTime(Date expectedFinishTime) {
+        this.expectedFinishTime = expectedFinishTime;
+    }
+
+    public Object getActualFinishTime() {
+        return actualFinishTime;
+    }
+
+    public void setActualFinishTime(Object actualFinishTime) {
+        this.actualFinishTime = actualFinishTime;
+    }
+
+    public Object getActualStartTime() {
+        return actualStartTime;
+    }
+
+    public void setActualStartTime(Object actualStartTime) {
+        this.actualStartTime = actualStartTime;
+    }
+
+    public Date getOfferExpiryTime() {
+        return offerExpiryTime;
+    }
+
+    public void setOfferExpiryTime(Date offerExpiryTime) {
+        this.offerExpiryTime = offerExpiryTime;
+    }
+
+    public Integer getEarliestStartMinutesPrior() {
+        return earliestStartMinutesPrior;
+    }
+
+    public void setEarliestStartMinutesPrior(Integer earliestStartMinutesPrior) {
+        this.earliestStartMinutesPrior = earliestStartMinutesPrior;
+    }
+
+    public Integer getLatestStartMinutesAfter() {
+        return latestStartMinutesAfter;
+    }
+
+    public void setLatestStartMinutesAfter(Integer latestStartMinutesAfter) {
+        this.latestStartMinutesAfter = latestStartMinutesAfter;
+    }
 }

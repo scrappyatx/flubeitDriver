@@ -162,12 +162,29 @@ public class BatchManageActivity extends AppCompatActivity
     ////
     ////    UseCaseStartBatchRequest response
     ////
-    public void useCaseStartBatchComplete(String batchGuid){
-        Timber.tag(TAG).d("startBatchComplete");
+    public void useCaseStartBatchSuccess(String batchGuid){
+        Timber.tag(TAG).d("useCaseStartBatchSuccess");
         new BatchManageAlerts().showStartedBatchAlert(this, this);
         //do nothing, listener should pick up that active batch is started and take over
 
     }
+
+
+    public void useCaseStartBatchFailure(String batchGuid){
+        Timber.tag(TAG).d("useCaseStartBatchFailure");
+        //TODO build alert to display to user when batch start failed
+    }
+
+    public void useCaseStartBatchTimeout(String batchGuid){
+        Timber.tag(TAG).d("useCaseStartBatchTimeout");
+        //TODO build alert to display to user when batch timeout
+    }
+
+    public void useCaseStartBatchDenied(String batchGuid, String reason){
+        Timber.tag(TAG).d("useCaseStartBatchDenied, reason -> " + reason);
+        //TODO build alert to display to user when batch start denied
+    }
+
 
     public void startedBatchAlertHidden(){
         Timber.tag(TAG).d("startedBatchAlertHidden");

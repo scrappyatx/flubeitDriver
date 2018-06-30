@@ -23,7 +23,7 @@ public class MovePhotoUploadTaskToInProgress implements
 
     private static final String TAG = "MovePhotoUploadTaskToInProgress";
 
-    CloudImageStorageInterface.MovePhotoUploadTaskInProgressResponse response;
+    MovePhotoUploadTaskToInProgressResponse response;
 
     private DatabaseReference batchDataNodeRef;
     private String batchGuid;
@@ -42,7 +42,7 @@ public class MovePhotoUploadTaskToInProgress implements
                                                 String batchGuid, String serviceOrderGuid, String orderStepGuid, String photoRequestGuid,
                                                 String deviceGuid, String deviceAbsoluteFileName, String cloudStorageFileName,
                                                 String sessionUriString, Double progress,
-                                                CloudImageStorageInterface.MovePhotoUploadTaskInProgressResponse response) {
+                                                MovePhotoUploadTaskToInProgressResponse response) {
 
 
         this.batchDataNodeRef = batchDataNodeRef;
@@ -77,7 +77,11 @@ public class MovePhotoUploadTaskToInProgress implements
 
     public void setNodeFailedComplete(Integer attemptCount){
         // we're done, return
-        response.cloudImageMovePhotoUploadTaskToInProgressComplete();
+        response.movePhotoUploadTaskToInProgressComplete();
+    }
+
+    public interface MovePhotoUploadTaskToInProgressResponse {
+        void movePhotoUploadTaskToInProgressComplete();
     }
 
 }

@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ServerValue;
 
 import java.util.HashMap;
 
@@ -24,6 +25,7 @@ public class FirebaseBatchDetailSetStatus implements OnCompleteListener<Void> {
     private static final String TAG = "FirebaseBatchDetailSetStatus";
     private static final String BATCH_DATA_BATCH_DETAIL_NODE = "batchDetail";
     private static final String STATUS_PROPERTY = "workStatus";
+    private static final String ACTUAL_FINISH_TIME_KEY = "actualFinishTime";
 
     private Response response;
 
@@ -36,6 +38,8 @@ public class FirebaseBatchDetailSetStatus implements OnCompleteListener<Void> {
 
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put(STATUS_PROPERTY, status);
+        data.put(ACTUAL_FINISH_TIME_KEY, ServerValue.TIMESTAMP);
+
         Timber.tag(TAG).d("...added key -> " + STATUS_PROPERTY + " value -> " + status.toString());
 
         batchDataRef.child(batchDetail.getBatchGuid()).child(BATCH_DATA_BATCH_DETAIL_NODE).updateChildren(data)

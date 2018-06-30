@@ -47,12 +47,17 @@ public class FirebaseActiveBatchStepFinishPrep implements
     }
 
     public void stepStarted(ActiveBatchManageInterface.ActorType actorType, ActiveBatchManageInterface.ActionType actionType,
-                            BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step){
+                            Boolean batchStarted, Boolean orderStarted, BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step){
 
         Timber.tag(TAG).d("   ...got active batch data, now finishing the step");
         new FirebaseActiveBatchStepFinish().finishStepRequest(activeBatchRef, batchDataRef, this.actorType,
                 batchDetail, serviceOrder, step, this.response);
 
+    }
+
+    public void batchWaitingToFinish(ActiveBatchManageInterface.ActorType actorType, String batchGuid){
+        Timber.tag(TAG).w("   ...got batchWaitingToFinish -> this should never happen");
+        response.cloudActiveBatchFinishStepComplete();
     }
 
     public void batchFinished(ActiveBatchManageInterface.ActorType actorType, String batchGuid){

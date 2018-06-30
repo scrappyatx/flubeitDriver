@@ -16,10 +16,9 @@ import it.flube.libbatchdata.entities.PhotoRequest;
  */
 
 public class PhotoRequestBuilder {
-    private static final String NO_ATTEMPTS_ICON_TEXT = "";
+    private static final String NO_ATTEMPTS_ICON_TEXT = "{fa-ban}";
     private static final String PHOTO_SUCCESS_ICON_TEXT = "{fa-check-circle}";
-    private static final String USER_SKIPPED_AFTER_FAILED_ATTEMPTS_ICON_TEXT = "{fa-question-circle-o}";
-    private static final String USER_SKIPPED_WITH_NO_ATTEMPTS_ICON_TEXT = "{fa-ban}";
+    private static final String FAILED_ATTEMPTS_ICON_TEXT = "{fa-question-circle-o}";
 
     private static final String DEFAULT_NO_ATTEMPT_IMAGE_URL= "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2Fno_attempts_photo_image_2.png?alt=media&token=82c4c53a-371a-4122-9d11-249344f22557";
 
@@ -45,8 +44,7 @@ public class PhotoRequestBuilder {
             HashMap<String, String> statusIconText = new HashMap<String, String>();
             statusIconText.put(PhotoRequest.PhotoStatus.NO_ATTEMPTS.toString(), NO_ATTEMPTS_ICON_TEXT);
             statusIconText.put(PhotoRequest.PhotoStatus.PHOTO_SUCCESS.toString(), PHOTO_SUCCESS_ICON_TEXT);
-            statusIconText.put(PhotoRequest.PhotoStatus.USER_SKIPPED_AFTER_FAILED_ATTEMPTS.toString(), USER_SKIPPED_AFTER_FAILED_ATTEMPTS_ICON_TEXT);
-            statusIconText.put(PhotoRequest.PhotoStatus.USER_SKIPPED_WITH_NO_ATTEMPTS.toString(), USER_SKIPPED_WITH_NO_ATTEMPTS_ICON_TEXT);
+            statusIconText.put(PhotoRequest.PhotoStatus.FAILED_ATTEMPTS.toString(), FAILED_ATTEMPTS_ICON_TEXT);
             photoRequest.setStatusIconText(statusIconText);
 
             photoRequest.setAttemptCount(0);
@@ -76,6 +74,11 @@ public class PhotoRequestBuilder {
 
         public Builder description(String description){
             this.photoRequest.setDescription(description);
+            return this;
+        }
+
+        public Builder sequence(Integer sequence){
+            this.photoRequest.setSequence(sequence);
             return this;
         }
 
@@ -114,6 +117,10 @@ public class PhotoRequestBuilder {
             if (photoRequest.getDescription() == null){
                 throw new IllegalStateException("description is null");
             }
+
+            ///if (photoRequest.getSequence() == null){
+            ///    throw new IllegalStateException("sequence is null");
+            ///}
 
             //required SPECIFIC VALUE
             if (photoRequest.getStatus() != PhotoRequest.PhotoStatus.NO_ATTEMPTS) {

@@ -15,16 +15,16 @@ import org.greenrobot.eventbus.ThreadMode;
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.ActiveBatchAlerts;
-import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.userTriggerStep.UserTriggerController;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailCompleteButtonComponents;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailSwipeCompleteButtonComponent;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
-import it.flube.driver.userInterfaceLayer.layoutComponents.orderStep.StepDetailCompleteLayoutComponents;
-import it.flube.driver.userInterfaceLayer.layoutComponents.orderStep.StepDetailDueByLayoutComponents;
-import it.flube.driver.userInterfaceLayer.layoutComponents.orderStep.StepDetailTitleLayoutComponents;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailDueByLayoutComponents;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailTitleLayoutComponents;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.batchAlerts.ShowCompletedServiceOrderAlertEvent;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderAuthorizePaymentStep;
-import it.flube.libbatchdata.entities.orderStep.ServiceOrderUserTriggerStep;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
+import ng.max.slideview.SlideView;
 import timber.log.Timber;
 
 /**
@@ -32,6 +32,7 @@ import timber.log.Timber;
  * Project : Driver
  */
 public class AuthorizePaymentActivity extends AppCompatActivity implements
+        SlideView.OnSlideCompleteListener,
         ActiveBatchAlerts.ServiceOrderCompletedAlertHidden {
 
     private static final String TAG = "AuthorizePaymentActivity";
@@ -42,7 +43,7 @@ public class AuthorizePaymentActivity extends AppCompatActivity implements
 
     private StepDetailTitleLayoutComponents stepTitle;
     private StepDetailDueByLayoutComponents stepDueBy;
-    private StepDetailCompleteLayoutComponents stepComplete;
+    private StepDetailSwipeCompleteButtonComponent stepComplete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,7 @@ public class AuthorizePaymentActivity extends AppCompatActivity implements
 
         stepTitle = new StepDetailTitleLayoutComponents(this);
         stepDueBy = new StepDetailDueByLayoutComponents(this);
-        stepComplete = new StepDetailCompleteLayoutComponents(this, getResources().getString(R.string.authorize_payment_completed_step_button_caption));
+        stepComplete = new StepDetailSwipeCompleteButtonComponent(this, getResources().getString(R.string.authorize_payment_completed_step_button_caption), this);
 
     }
 
@@ -101,11 +102,10 @@ public class AuthorizePaymentActivity extends AppCompatActivity implements
         }
     }
 
+    public void onSlideComplete(SlideView v){
+        Timber.tag(TAG).d("swiped step complete button");
 
-    public void clickStepCompleteButton(View v) {
-        Timber.tag(TAG).d("clicked step complete button");
-
-        stepComplete.buttonWasClicked();
+        stepComplete.showWaitingAnimationAndBanner(getString(R.string.authorize_payment_completed_banner_text));
 
         String milestoneEvent;
         if (AndroidDevice.getInstance().getActiveBatch().hasActiveBatch()) {

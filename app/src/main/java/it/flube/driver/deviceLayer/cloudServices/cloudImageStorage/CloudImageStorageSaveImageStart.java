@@ -35,14 +35,14 @@ public class CloudImageStorageSaveImageStart implements
 
     private String deviceStorageAbsoluteFileName;
     private String cloudStorageFileName;
-    private CloudImageStorageInterface.SaveStartResponse response;
+    private SaveImageResponse response;
 
     public CloudImageStorageSaveImageStart() {
         Timber.tag(TAG).d("created...");
     }
 
     public void saveImageStartRequest(FirebaseStorage storage, String deviceStorageAbsoluteFileName, String cloudStorageFileName,
-                                      CloudImageStorageInterface.SaveStartResponse response){
+                                      SaveImageResponse response){
 
         Timber.tag(TAG).d("saveImageStartRequest START...");
 
@@ -101,10 +101,10 @@ public class CloudImageStorageSaveImageStart implements
             Timber.tag(TAG).d("   ...progress = " + progress.toString());
             Timber.tag(TAG).d("   ...sessionUriString = " + sessionUriString);
 
-            response.cloudImageStorageSavePaused(sessionUriString, cloudStorageFileName, progress);
+            response.imageStorageSavePaused(sessionUriString, cloudStorageFileName, progress);
         } catch (Exception e){
             Timber.tag(TAG).w("   ...ERROR updating progress");
-            response.cloudImageStorageSaveFailure();
+            response.imageStorageSaveFailure();
         }
     }
 
@@ -113,13 +113,13 @@ public class CloudImageStorageSaveImageStart implements
         Timber.tag(TAG).d("   ...deviceStorageAbsoluteFileName -> " + deviceStorageAbsoluteFileName);
 
         try {
-            String downloadUrl = taskSnapshot.getDownloadUrl().toString();
+            String downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
             Timber.tag(TAG).d("   ...downloadUrl -> " + downloadUrl);
-            response.cloudImageStorageSaveSuccess(downloadUrl);
+            response.imageStorageSaveSuccess(downloadUrl);
         } catch (Exception e) {
             Timber.tag(TAG).w(" ...ERROR getting downloadUrl");
             Timber.tag(TAG).e(e);
-            response.cloudImageStorageSaveFailure();
+            response.imageStorageSaveFailure();
         }
     }
 
@@ -127,7 +127,13 @@ public class CloudImageStorageSaveImageStart implements
         Timber.tag(TAG).d("...onFailure");
         Timber.tag(TAG).d("   ...deviceStorageAbsoluteFileName -> " + deviceStorageAbsoluteFileName);
         Timber.tag(TAG).e(exception);
-        response.cloudImageStorageSaveFailure();
+        response.imageStorageSaveFailure();
     }
 
+    public interface SaveImageResponse {
+        void imageStorageSaveSuccess(String downloadUrl);
+        void imageStorageSavePaused(String sessionUriString, String cloudStorageFileName, double progress);
+        void imageStorageSaveFailure();
+
+    }
 }

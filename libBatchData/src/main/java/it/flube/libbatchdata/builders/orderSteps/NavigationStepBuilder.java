@@ -23,7 +23,7 @@ import it.flube.libbatchdata.interfaces.OrderStepInterface;
 
 public class NavigationStepBuilder {
     private static final OrderStepInterface.TaskType TASK_TYPE = OrderStepInterface.TaskType.NAVIGATION;
-    private static final Integer DEFAULT_DURATION_MINUTES = 30;
+    private static final Integer DEFAULT_DURATION_MINUTES = 20;
     private static final String DEFAULT_MILESTONE_WHEN_FINISHED = "Arrived at Destination";
 
     /// icon strings use fontawesome.io icon strings

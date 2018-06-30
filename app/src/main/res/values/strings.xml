@@ -74,6 +74,11 @@
     <string name="nav_menu_account">Account</string>
     <string name="nav_menu_help">Help</string>
     <string name="nav_menu_demo">Demo Offers</string>
+    <string name="nav_menu_dev_section_title">Developer Tools</string>
+    <string name="nav_menu_qa_section_title">QA Tools</string>
+    <string name="nav_menu_dev_offers">Make Test Offers</string>
+    <string name="nav_menu_dev_earnings">Test Earnings</string>
+
 
     <!-- Strings related to toolbar -->
     <string name="toolbar_switch_looking_for_work_OFF">Search for Offers</string>
@@ -143,6 +148,18 @@
 
     <!-- Strings related to earnings activity layout -->
     <string name="earnings_activity_title">Earnings</string>
+
+    <!-- Strings related to test earnings activity layout -->
+    <string name="test_earnings_activity_title">Test Earnings</string>
+
+    <!-- Strings related to test offers activity layout -->
+    <string name="test_offers_activity_title">Make Test Offers</string>
+
+    <!-- Strings related to test offers created alerts -->
+    <string name="test_offer_created_success_title">SUCCESS</string>
+    <string name="test_offer_created_success_message">You created a test offer!</string>
+    <string name="test_offer_created_failure_title">FAILURE</string>
+    <string name="test_offer_created_failure_message">Unable to create the test offer</string>
 
     <!-- Strings related to help activity layout -->
     <string name="help_activity_title">Help</string>
@@ -223,8 +240,21 @@
     <!-- Strings related to active batch alerts -->
     <string name="active_batch_completed_service_order_alert_title">Order Complete</string>
     <string name="active_batch_completed_service_order_alert_message">You completed an order!</string>
+
     <string name="active_batch_completed_batch_alert_title">Batch Complete</string>
     <string name="active_batch_completed_batch_alert_message">You completed a batch!</string>
+
+    <string name="active_batch_completed_by_user_alert_title">Batch Complete</string>
+    <string name="active_batch_completed_by_user_alert_message">You completed a batch!</string>
+
+    <string name="active_batch_completed_by_admin_alert_title">Batch Completed by Admin</string>
+    <string name="active_batch_completed_by_admin_alert_message">Your batch has been completed by a system administrator</string>
+
+    <string name="active_batch_removed_by_user_alert_title">Batch Removed</string>
+    <string name="active_batch_removed_by_user_alert_message">You\'ve successfully removed your batch</string>
+
+    <string name="active_batch_removed_by_admin_alert_title">Batch Removed by Admin</string>
+    <string name="active_batch_removed_by_admin_alert_message">Your batch has been removed by a system administrator</string>
 
     <!-- Strings related to scheduled batches activity layout -->
     <string name="scheduled_batches_activity_title">Scheduled Batches</string>
@@ -258,12 +288,10 @@
     <!-- Strings related to scheduled batches map activity layout -->
     <string name="batch_map_activity_title">Batch Location</string>
 
-    <!-- Strings related to navigation step activity layout -->
-    <string name="navigation_step_activity_title">Navigation Map</string>
-    <string name="navigation_step_destination_caption">Destination: </string>
-    <string name="navigation_step_start_navigation_button_caption">Start Navigation</string>
-    <string name="navigation_step_calculate_route_button_caption">Calculate Route</string>
-    <string name="navigation_step_user_has_arrived_button_caption">I\'ve arrived</string>
+    <!-- Strings related to batch_waiting_to_finish activity layout -->
+    <string name="batch_waiting_to_finish_activity_title">Finishing Batch</string>
+    <string name="batch_waiting_to_finish_banner">Finishing Batch...</string>
+    <string name="batch_waiting_to_finish_complete_banner">Finished!</string>
 
     <!-- Strings related to batch itinerary activity layout -->
     <string name="batch_itinerary_activity_title">Batch Itinerary</string>
@@ -275,9 +303,20 @@
     <string name="order_itinerary_tab_zero_caption">Tasks</string>
     <string name="order_itinerary_tab_one_caption">Locations</string>
 
+    <!-- Strings related to navigation step activity layout -->
+    <string name="navigation_step_activity_title">Navigation Map</string>
+    <string name="navigation_step_destination_caption">Destination: </string>
+    <string name="navigation_step_start_navigation_button_caption">Start Navigation</string>
+    <string name="navigation_step_calculate_route_button_caption">Calculate Route</string>
+    <string name="navigation_step_user_has_arrived_button_caption">I\'ve arrived</string>
+
     <!-- Strings related to photo step activity layout -->
     <string name="photo_step_activity_title">Photos</string>
     <string name="photo_step_completed_step_button_caption">I\'m finished</string>
+    <string name="photo_step_completed_banner_text">Finishing...</string>
+
+    <!-- Strings related to photo detail activity layout -->
+    <string name="photo_detail_activity_title">Photo Detail</string>
 
     <!-- Strings related to photo take activity layout -->
     <string name="photo_take_button_caption">{fa-camera}</string>
@@ -285,18 +324,30 @@
     <!-- Strings related to receive asset step activity layout -->
     <string name="receive_asset_step_activity_title">Receive Asset</string>
     <string name="receive_asset_step_completed_step_button_caption">I\'m finished</string>
+    <string name="receive_asset_step_completed_banner_text">Finishing...</string>
 
     <!-- Strings related to give asset step activity layout -->
     <string name="give_asset_step_activity_title">Give Asset</string>
     <string name="give_asset_step_completed_step_button_caption">I\'m finished</string>
+    <string name="give_asset_step_completed_banner_text">Finishing...</string>
+
+    <!-- Strings related to get signature activity layout -->
+    <string name="get_signature_save_button_caption">Save</string>
+    <string name="get_signature_clear_button_caption">Clear</string>
+    <string name="get_signature_activity_title">Signature</string>
+    <string name="get_signature_instructions_text">Sign below</string>
+    <string name="get_signature_saving_banner_text">Saving...</string>
+
 
     <!-- Strings related to user trigger step activity layout -->
     <string name="user_trigger_step_activity_title">User Trigger</string>
     <string name="user_trigger_step_completed_step_button_caption">I\'m finished</string>
+    <string name="user_trigger_step_completed_banner_text">Finishing...</string>
 
     <!-- Strings related to authorized payment step activity layout -->
     <string name="authorize_payment_step_activity_title">Authorize Payment</string>
     <string name="authorize_payment_completed_step_button_caption">I\'m finished</string>
+    <string name="authorize_payment_completed_banner_text">Finishing...</string>
 
 
 

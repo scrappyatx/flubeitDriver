@@ -11,6 +11,8 @@ import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import it.flube.driver.modelLayer.interfaces.CloudUserProfileInterface;
 import timber.log.Timber;
 
+import static it.flube.driver.deviceLayer.cloudServices.cloudUserProfile.CloudUserProfileConstants.USER_PROFILE_NODE;
+
 /**
  * Created on 3/13/2018
  * Project : Driver
@@ -21,10 +23,8 @@ public class UserProfileFirebaseWrapper implements
 
     private static final String TAG = "UserProfileFirebaseWrapper";
 
-    private static final String driverProfileNode = "userReadable/driverProfiles";
-
     public void getUserProfileRequest(String clientId, String email, CloudUserProfileInterface.UserProfileResponse response){
-        String driverProfileNode = "userReadable/driverProfiles";
+        String driverProfileNode = USER_PROFILE_NODE;
 
         new FirebaseDriverProfileGet().getDriverProfile(FirebaseDatabase.getInstance().getReference(driverProfileNode),
                 clientId, email, response);

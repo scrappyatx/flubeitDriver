@@ -126,12 +126,6 @@ public class BatchHolderBuilder {
             return this;
         }
 
-        public Builder displayTiming(DisplayTiming displayTiming){
-            this.batchHolder.getBatch().setDisplayTiming(displayTiming);
-            this.batchHolder.getBatchDetail().setDisplayTiming(displayTiming);
-            return this;
-        }
-
         public Builder displayDistance(DisplayDistance displayDistance){
             this.batchHolder.getBatch().setDisplayDistance(displayDistance);
             this.batchHolder.getBatchDetail().setDisplayDistance(displayDistance);
@@ -146,21 +140,31 @@ public class BatchHolderBuilder {
 
         public Builder expectedStartTime(Date expectedStartTime){
             this.batchHolder.getBatch().setExpectedStartTime(expectedStartTime);
+            this.batchHolder.getBatchDetail().setExpectedStartTime(expectedStartTime);
             return this;
         }
 
         public Builder expectedStartTime(Date expectedStartTime, Integer minutesToAdd){
             this.batchHolder.getBatch().setExpectedStartTime(BuilderUtilities.addMinutesToDate(expectedStartTime, minutesToAdd));
+            this.batchHolder.getBatchDetail().setExpectedStartTime(BuilderUtilities.addMinutesToDate(expectedStartTime, minutesToAdd));
             return this;
         }
 
         public Builder expectedFinishTime(Date expectedFinishTime){
             this.batchHolder.getBatch().setExpectedFinishTime(expectedFinishTime);
+            this.batchHolder.getBatchDetail().setExpectedFinishTime(expectedFinishTime);
             return this;
         }
 
         public Builder expectedFinishTime(Date expectedFinishTime, Integer minutesToAdd){
             this.batchHolder.getBatch().setExpectedFinishTime(BuilderUtilities.addMinutesToDate(expectedFinishTime, minutesToAdd));
+            this.batchHolder.getBatchDetail().setExpectedFinishTime(BuilderUtilities.addMinutesToDate(expectedFinishTime, minutesToAdd));
+            return this;
+        }
+
+        public Builder offerExpiryTime(Date offerExpiryTime){
+            this.batchHolder.getBatch().setOfferExpiryTime(offerExpiryTime);
+            this.batchHolder.getBatchDetail().setOfferExpiryTime(offerExpiryTime);
             return this;
         }
 
@@ -207,17 +211,7 @@ public class BatchHolderBuilder {
             return this;
         }
 
-        private void finalize(BatchHolder batchHolder){
 
-
-            //set route stop & service order counts
-            batchHolder.getBatchDetail().setServiceOrderCount(batchHolder.getServiceOrders().size());
-            batchHolder.getBatchDetail().setRouteStopCount(batchHolder.getRouteStops().size());
-
-            //set expected Start & Finish time on the batch, batchDetail, serviceOrders, and each step
-            batchHolder = CalculateStartAndStopTimes.calculateStartAndStopTimes(batchHolder);
-
-        }
 
 
 
@@ -245,12 +239,39 @@ public class BatchHolderBuilder {
             }
         }
 
+        private void prevalidationCheck(BatchHolder batchHolder){
+            //make batch has an expected start time & offerExpiry
+            if (batchHolder.getBatch().getExpectedStartTime() == null){
+                throw new IllegalStateException("expectedStartTime is null");
+            }
+
+            if (batchHolder.getBatch().getOfferExpiryTime() == null) {
+                throw new IllegalStateException("offerExpiryTime is null");
+            }
+
+        }
+
+        private void finalize(BatchHolder batchHolder){
+
+
+            //set route stop & service order counts
+            batchHolder.getBatchDetail().setServiceOrderCount(batchHolder.getServiceOrders().size());
+            batchHolder.getBatchDetail().setRouteStopCount(batchHolder.getRouteStops().size());
+
+            //set guids for all the steps
+            SetStepGuids.setStepGuids(batchHolder);
+
+            //set expected Start & Finish time on the batch, batchDetail, serviceOrders, and each step
+            CalculateStartAndStopTimes.calculateStartAndStopTimes(batchHolder);
+        }
+
         private void validate(BatchHolder batchHolder){
 
         }
 
         public BatchHolder build(){
             BatchHolder batchHolder = new BatchHolderBuilder(this).getBatchHolder();
+            prevalidationCheck(batchHolder);
             finalize(batchHolder);
             validate(batchHolder);
             return batchHolder;

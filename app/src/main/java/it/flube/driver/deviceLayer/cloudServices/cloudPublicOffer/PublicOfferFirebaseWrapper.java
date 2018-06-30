@@ -22,6 +22,10 @@ import it.flube.driver.modelLayer.interfaces.OffersInterface;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import timber.log.Timber;
 
+import static it.flube.driver.deviceLayer.cloudServices.cloudPublicOffer.PublicOfferFirebaseConstants.BASE_NODE_PUBLIC_OFFER_DATA;
+import static it.flube.driver.deviceLayer.cloudServices.cloudPublicOffer.PublicOfferFirebaseConstants.OFFER_CLAIM_REQUEST_NODE;
+import static it.flube.driver.deviceLayer.cloudServices.cloudPublicOffer.PublicOfferFirebaseConstants.OFFER_CLAIM_RESPONSE_NODE;
+
 /**
  * Created on 3/28/2018
  * Project : Driver
@@ -30,10 +34,6 @@ public class PublicOfferFirebaseWrapper implements
         CloudPublicOfferInterface {
 
     private static final String TAG = "PublicOfferFirebaseWrapper";
-
-    private static final String BASE_NODE_PUBLIC_OFFER_DATA = "userReadable/batchData";
-    private static final String OFFER_CLAIM_REQUEST_NODE = "userWriteable/claimOfferRequest";
-    private static final String OFFER_CLAIM_RESPONSE_NODE = "userReadable/claimOfferResponse";
 
     private final String baseNodePublicOffers;
 

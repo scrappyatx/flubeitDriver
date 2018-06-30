@@ -7,8 +7,7 @@ package it.flube.driver.userInterfaceLayer.activityNavigator;
 import android.content.Context;
 import android.content.Intent;
 
-import it.flube.driver.userInterfaceLayer.activities.offers.demoOffers.DemoOffersActivity;
-import it.flube.driver.userInterfaceLayer.activities.offers.demoOffers.DemoOffersMakeActivity;
+import it.flube.driver.userInterfaceLayer.activities.offers.demoOffers.demoOfferMake.DemoOffersMakeActivity;
 import timber.log.Timber;
 
 /**

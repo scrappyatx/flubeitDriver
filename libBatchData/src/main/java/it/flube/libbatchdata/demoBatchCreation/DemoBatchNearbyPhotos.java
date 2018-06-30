@@ -44,70 +44,7 @@ public class DemoBatchNearbyPhotos implements DemoBatchInterface {
 
     }
 
-    /// Vehicle Photo Batch
-    public BatchHolder createDemoVehiclePhotoBatch(String clientId){
-        return getDemoVehicleBatch(clientId, BuilderUtilities.generateGuid());
-    }
 
-    public BatchHolder createDemoVehiclePhotoBatch(String clientId, String batchGuid){
-        return getDemoVehicleBatch(clientId, batchGuid);
-    }
-
-    public BatchHolder getDemoVehicleBatch(String clientId, String batchGuid){
-
-        return new BatchHolderBuilder.Builder()
-                .batchType(BatchDetail.BatchType.MOBILE_DEMO)
-                .claimStatus(BatchDetail.ClaimStatus.NOT_CLAIMED)
-                .guid(batchGuid)
-                .title(BatchRandomTitleGenerator.getRandomTitle())
-                .description("pick up a vehicle")
-                .iconUrl(BatchIconGenerator.getRandomIconUrl())
-                .displayTiming(new DisplayTimingBuilder.Builder()
-                        .date("Today")
-                        .hours("9:30 am - 12:00 pm")
-                        .duration("2.5 hours")
-                        .offerExpiryDate("Claim by today, 3:00 pm")
-                        .build())
-                .displayDistance(new DisplayDistanceBuilder.Builder()
-                        .distanceToTravel("18 miles")
-                        .distanceIndicatorUrl(BatchIconGenerator.getRandomDistanceIndicatorUrl())
-                        .build())
-                .potentialEarnings(new PotentialEarningsBuilder.Builder()
-                        .payRateInCents(2800)
-                        .earningsType(PotentialEarnings.EarningsType.FIXED_FEE)
-                        .plusTips(true)
-                        .build())
-                .expectedStartTime(BuilderUtilities.getNowDate())
-                .expectedFinishTime(BuilderUtilities.getFutureDate(150))
-                .addServiceOrder(new ServiceOrderScaffoldBuilder.Builder()
-                        .title("DEMO ORDER")
-                        .description("Go to destination and take photos of a car")
-                        .startTime(BuilderUtilities.getNowDate())
-                        .finishTime(BuilderUtilities.getFutureDate(30))
-                        .addStep(new NavigationStepBuilder.Builder()
-                                .title("Go to end of street")
-                                .description("Navigate to the end of the street")
-                                .startTime(BuilderUtilities.getNowDate())
-                                .finishTime(BuilderUtilities.getNowDate(),10)
-                                .destination(new DestinationBuilder.Builder()
-                                        .targetAddress(BatchLocationAndAddressGenerator.getAddressByClientId(clientId))
-                                        .targetLatLon(BatchLocationAndAddressGenerator.getLatLonLocationByClientID(clientId))
-                                        .targetType(Destination.DestinationType.OTHER)
-                                        .build())
-                                .milestoneWhenFinished("Arrived At Destination")
-                                .build())
-                        .addStep(new PhotoStepBuilder.Builder()
-                                .title("Take three photos")
-                                .description("Take three photos of things around you")
-                                .startTime(BuilderUtilities.getNowDate(), 10)
-                                .finishTime(BuilderUtilities.getNowDate(), 20)
-                                .milestoneWhenFinished("Photos Taken")
-                                .addVehiclePhotoRequests(new PhotoRequestListForVehicleBuilder.Builder()
-                                        .build())
-                                .build())
-                        .build())
-                .build();
-    }
 
     /// 3 photo demo batch
 
@@ -130,12 +67,6 @@ public class DemoBatchNearbyPhotos implements DemoBatchInterface {
                 .title(BatchRandomTitleGenerator.getRandomTitle())
                 .description("some description text")
                 .iconUrl(BatchIconGenerator.getRandomIconUrl())
-                .displayTiming(new DisplayTimingBuilder.Builder()
-                        .date("Today")
-                        .hours("9:30 am - 12:00 pm")
-                        .duration("2.5 hours")
-                        .offerExpiryDate("Claim by today, 3:00 pm")
-                        .build())
                 .displayDistance(new DisplayDistanceBuilder.Builder()
                         .distanceToTravel("18 miles")
                         .distanceIndicatorUrl(BatchIconGenerator.getRandomDistanceIndicatorUrl())
@@ -147,6 +78,7 @@ public class DemoBatchNearbyPhotos implements DemoBatchInterface {
                         .build())
                 .expectedStartTime(BuilderUtilities.getNowDate())
                 .expectedFinishTime(BuilderUtilities.getFutureDate(150))
+                .offerExpiryTime(BuilderUtilities.getFutureDate(150))
                 .addServiceOrder(new ServiceOrderScaffoldBuilder.Builder()
                         .title("DEMO ORDER")
                         .description("Walk to the destination and take a photo")

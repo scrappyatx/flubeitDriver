@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import it.flube.driver.R;
+import it.flube.driver.userInterfaceLayer.layoutComponents.LayoutComponentUtilities;
 import it.flube.libbatchdata.entities.batch.Batch;
 import timber.log.Timber;
 
@@ -119,10 +120,11 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Of
 
         public void bindOffer(Batch offer) {
             this.offer = offer;
+            Timber.tag(TAG).d("offer guid -> " + offer.getGuid());
 
             String displayDescription = offer.getTitle();
-            String displayTime = offer.getDisplayTiming().getHours();
-            String displayDuration = offer.getDisplayTiming().getDuration();
+            String displayTime = LayoutComponentUtilities.getDisplayTiming(offer.getExpectedStartTime(), offer.getExpectedFinishTime());
+            String displayDuration = LayoutComponentUtilities.getDisplayDuration(offer.getExpectedStartTime(), offer.getExpectedFinishTime());
             //TODO do the number formatting into currency in the batch builder, then just get property here
             String displayBaseEarnings = NumberFormat.getCurrencyInstance(new Locale("en", "US"))
                     .format(offer.getPotentialEarnings().getPayRateInCents()/100);
@@ -142,11 +144,13 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Of
             extraEarnings.setText(displayExtraEarnings);
             distance.setText(displayDistance);
 
-            Picasso.with(activityContext)
+            //Picasso.with(activityContext)
+            Picasso.get()
                     .load(serviceProviderUrl)
                     .into(serviceProviderImage);
 
-            Picasso.with(activityContext)
+            //Picasso.with(activityContext)
+            Picasso.get()
                     .load(distanceUrl)
                     .into(distanceImage);
 

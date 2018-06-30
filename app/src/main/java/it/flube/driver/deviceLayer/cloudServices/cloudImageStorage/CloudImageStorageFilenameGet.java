@@ -23,24 +23,29 @@ public class CloudImageStorageFilenameGet {
     public CloudImageStorageFilenameGet(){
         Timber.tag(TAG).d("created...");
     }
-    public void getFileNameRequest(FirebaseStorage storage,
+
+    public void getFileNameRequest(StorageReference storageRef,
                                    String batchGuid, String serviceOrderGuid, String orderStepGuid, String photoRequestGuid,
-                                   CloudImageStorageInterface.GetFileNameResponse response){
+                                   GetFileNameResponse response){
 
         Timber.tag(TAG).d("getFileNameRequest START...");
-        Timber.tag(TAG).d("   ...storage                       -> " + storage.toString());
+        Timber.tag(TAG).d("   ...storageRef                       -> " + storageRef.toString());
         Timber.tag(TAG).d("   ...batchGuid                     -> " + batchGuid);
         Timber.tag(TAG).d("   ...serviceOrderGuid              -> " + serviceOrderGuid);
         Timber.tag(TAG).d("   ...orderStepGuid                 -> " + orderStepGuid);
         Timber.tag(TAG).d("   ...photoRequestGuid              -> " + photoRequestGuid);
 
         //determine cloud storage file name
-        StorageReference storageRef = storage.getReference().child(batchGuid).child(serviceOrderGuid).child(orderStepGuid).child(photoRequestGuid).child(CLOUD_FILE_NAME);
-        String cloudStorageFileName = storageRef.toString();
+        StorageReference fileRef = storageRef.child(batchGuid).child(serviceOrderGuid).child(orderStepGuid).child(photoRequestGuid).child(CLOUD_FILE_NAME);
+        String cloudStorageFileName = fileRef.toString();
 
         Timber.tag(TAG).d("   ...cloudStorageFileName          -> " + cloudStorageFileName);
-        response.cloudImageGetFileNameResponse(cloudStorageFileName);
+        response.fileNameGetComplete(cloudStorageFileName);
 
         Timber.tag(TAG).d("...getFileNameRequest COMPLETE");
+    }
+
+    public interface GetFileNameResponse {
+        void fileNameGetComplete(String cloudStorageFileName);
     }
 }

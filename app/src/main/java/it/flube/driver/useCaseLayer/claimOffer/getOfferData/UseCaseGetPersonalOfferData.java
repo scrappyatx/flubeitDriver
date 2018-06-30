@@ -68,6 +68,9 @@ public class UseCaseGetPersonalOfferData implements
         personalOffer.getRouteStopListRequest(driver, batchGuid, this);
     }
 
+    ////
+    //// An Offer may not have ANY route stops.
+    ////
     public void cloudGetPersonalOfferRouteStopListSuccess(ArrayList<RouteStop> routeList){
         Timber.tag(TAG).d("step 3 -> got route stop list!");
         this.routeList = new ArrayList<RouteStop>();
@@ -76,6 +79,13 @@ public class UseCaseGetPersonalOfferData implements
 
         response.getOfferDataSuccess(this.batchDetail, this.orderList, this.routeList);
     }
+
+    public void cloudGetPersonalOfferRouteStopListFailure(){
+        Timber.tag(TAG).w("couldn't get route stop list");
+        this.routeList = new ArrayList<RouteStop>();
+        response.getOfferDataSuccess(this.batchDetail, this.orderList, this.routeList);
+    }
+
 
     ///
     /// Failure Modes
@@ -91,10 +101,7 @@ public class UseCaseGetPersonalOfferData implements
         response.getOfferDataFailure();
     }
 
-    public void cloudGetPersonalOfferRouteStopListFailure(){
-        Timber.tag(TAG).w("couldn't get route stop list");
-        response.getOfferDataFailure();
-    }
+
 
     ///
     ///  Interface

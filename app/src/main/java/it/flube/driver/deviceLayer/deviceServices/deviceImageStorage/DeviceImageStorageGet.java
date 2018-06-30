@@ -36,6 +36,10 @@ public class DeviceImageStorageGet {
 
             Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(myFile));
             Timber.tag(TAG).d("   ...got bitmap SUCCESS!");
+            Timber.tag(TAG).d("          height        -> " + bitmap.getHeight());
+            Timber.tag(TAG).d("          width         -> " + bitmap.getWidth());
+            Timber.tag(TAG).d("          size (bytes) - > " + bitmap.getByteCount());
+
             response.deviceImageStorageGetSuccess(bitmap);
 
         } catch (FileNotFoundException e) {

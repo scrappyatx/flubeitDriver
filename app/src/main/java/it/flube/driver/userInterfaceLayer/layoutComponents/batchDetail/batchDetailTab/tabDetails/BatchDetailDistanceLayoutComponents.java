@@ -53,7 +53,8 @@ public class BatchDetailDistanceLayoutComponents {
     }
 
     public void setValues(AppCompatActivity activity, BatchDetail batchDetail){
-        Picasso.with(activity)
+        //Picasso.with(activity)
+        Picasso.get()
                 .load(batchDetail.getDisplayDistance().getDistanceIndicatorUrl())
                 .into(distance_icon);
 

@@ -22,19 +22,16 @@ public class UseCaseFinishCurrentStepRequest implements
 
     private MobileDeviceInterface device;
     private Driver driver;
-    private String milestoneEvent;
     private Response response;
 
     public UseCaseFinishCurrentStepRequest(MobileDeviceInterface device, String milestoneEvent, Response response){
         this.device = device;
         this.driver = device.getUser().getDriver();
-        this.milestoneEvent = milestoneEvent;
         this.response = response;
     }
 
     public void run(){
         device.getCloudActiveBatch().finishActiveBatchStepRequest(driver, ActiveBatchManageInterface.ActorType.MOBILE_USER, this);
-        //device.getRealtimeActiveBatchMessages().sendMilestoneEvent(milestoneEvent);
     }
 
     public void cloudActiveBatchFinishStepComplete() {

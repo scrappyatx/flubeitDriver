@@ -4,12 +4,14 @@
 
 package it.flube.driver.userInterfaceLayer.layoutComponents.batchDetail.batchDetailTab.tabDetails;
 
+import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
 import it.flube.driver.R;
+import it.flube.driver.userInterfaceLayer.layoutComponents.LayoutComponentUtilities;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import timber.log.Timber;
 
@@ -71,11 +73,11 @@ public class BatchDetailTimingLayoutComponents {
     }
 
 
-    public void setValues(BatchDetail batchDetail){
-        timing_display_date.setText(batchDetail.getDisplayTiming().getDate());
-        timing_display_duration.setText(batchDetail.getDisplayTiming().getDuration());
-        timing_display_time.setText(batchDetail.getDisplayTiming().getHours());
-        timing_display_expiry.setText(batchDetail.getDisplayTiming().getOfferExpiryDate());
+    public void setValues(Context context, BatchDetail batchDetail){
+        timing_display_date.setText(LayoutComponentUtilities.getDisplayDate(context, batchDetail.getExpectedStartTime()));
+        timing_display_duration.setText(LayoutComponentUtilities.getDisplayTiming(batchDetail.getExpectedStartTime(), batchDetail.getExpectedFinishTime()));
+        timing_display_time.setText(LayoutComponentUtilities.getDisplayDuration(batchDetail.getExpectedStartTime(), batchDetail.getExpectedFinishTime()));
+        timing_display_expiry.setText(LayoutComponentUtilities.getDisplayExpiry(context, batchDetail.getOfferExpiryTime()));
         Timber.tag(TAG).d("...setValues");
     }
 

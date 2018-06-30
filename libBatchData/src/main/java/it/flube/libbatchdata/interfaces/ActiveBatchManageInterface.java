@@ -14,6 +14,7 @@ public interface ActiveBatchManageInterface {
         BATCH_STARTED,
         ORDER_STARTED,
         STEP_STARTED,
+        BATCH_WAITING_TO_FINISH,
         BATCH_FINISHED,
         BATCH_REMOVED,
         NO_BATCH,

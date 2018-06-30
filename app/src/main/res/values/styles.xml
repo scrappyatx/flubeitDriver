@@ -143,6 +143,13 @@
         <item name="android:textColor">@color/colorBatchDetailStartBanner</item>
     </style>
 
+    <style name="BatchDetailWaitingToFinishBanner" parent="TextAppearance.AppCompat.Display2">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorBatchWaitingToFinishBanner</item>
+    </style>
+
     <!-- STEP sequence styles   -->
     <style name="StepSequenceStyle" parent="TextAppearance.AppCompat.Subhead">
         <item name="android:fontFamily">sans-serif</item>
@@ -172,6 +179,20 @@
         <item name="android:textColor">@color/colorStepCompleteBy</item>
     </style>
 
+    <!-- STEP DETAIL SWIPE COMPLETE STYLE -->
+    <style name="StepDetailCompleteSwipeBannerStyle" parent="TextAppearance.AppCompat.Display2">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorStepDetailSwipeCompleteBanner</item>
+    </style>
+
+    <style name="StepDetailCompleteBannerStyle" parent="TextAppearance.AppCompat.Display2">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorStepDetailCompleteBanner</item>
+    </style>
 
 
     <!-- STEP WorkTiming styles -->

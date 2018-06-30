@@ -38,7 +38,7 @@ public class CloudImageStorageSaveImageResume implements
         private String sessionUriString;
         private String deviceStorageAbsoluteFileName;
         private String cloudStorageFileName;
-        private CloudImageStorageInterface.SaveResumeResponse response;
+        private SaveImageResumeResponse response;
 
     public CloudImageStorageSaveImageResume() {
         Timber.tag(TAG).d("created...");
@@ -46,7 +46,7 @@ public class CloudImageStorageSaveImageResume implements
 
     public void saveImageResumeRequest(FirebaseStorage storage,
                                        String sessionUriString, String deviceStorageAbsoluteFileName, String cloudStorageFileName,
-                                       CloudImageStorageInterface.SaveResumeResponse response){
+                                       SaveImageResumeResponse response){
 
         Timber.tag(TAG).d("saveImageResumeRequest START...");
 
@@ -108,11 +108,11 @@ public class CloudImageStorageSaveImageResume implements
             Timber.tag(TAG).d("   ...progress = " + progress.toString());
             Timber.tag(TAG).d("   ...sessionUriString = " + sessionUriString);
 
-            response.cloudImageStorageResumePaused(sessionUriString, cloudStorageFileName, progress);
+            response.imageStorageResumePaused(sessionUriString, cloudStorageFileName, progress);
 
         } catch (Exception e){
             Timber.tag(TAG).w("   ...ERROR updating progress");
-            response.cloudImageStorageResumeFailure();
+            response.imageStorageResumeFailure();
         }
     }
 
@@ -121,13 +121,13 @@ public class CloudImageStorageSaveImageResume implements
         Timber.tag(TAG).d("   ...deviceStorageAbsoluteFileName -> " + deviceStorageAbsoluteFileName);
 
         try {
-            String downloadUrl = taskSnapshot.getDownloadUrl().toString();
+            String downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
             Timber.tag(TAG).d("   ...downloadUrl -> " + downloadUrl);
-            response.cloudImageStorageResumeSuccess(downloadUrl);
+            response.imageStorageResumeSuccess(downloadUrl);
         } catch (Exception e) {
             Timber.tag(TAG).w(" ...ERROR getting downloadUrl");
             Timber.tag(TAG).e(e);
-            response.cloudImageStorageResumeFailure();
+            response.imageStorageResumeFailure();
         }
     }
 
@@ -135,6 +135,12 @@ public class CloudImageStorageSaveImageResume implements
         Timber.tag(TAG).d("...onFailure");
         Timber.tag(TAG).d("   ...deviceStorageAbsoluteFileName -> " + deviceStorageAbsoluteFileName);
         Timber.tag(TAG).e(exception);
-        response.cloudImageStorageResumeFailure();
+        response.imageStorageResumeFailure();
+    }
+
+    public interface SaveImageResumeResponse {
+        void imageStorageResumeSuccess(String downloadUrl);
+        void imageStorageResumePaused(String sessionUriString, String cloudStorageFileName, double progress);
+        void imageStorageResumeFailure();
     }
 }

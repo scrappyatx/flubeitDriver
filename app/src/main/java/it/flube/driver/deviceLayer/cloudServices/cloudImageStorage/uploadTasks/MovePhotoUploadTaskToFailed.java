@@ -23,7 +23,7 @@ public class MovePhotoUploadTaskToFailed implements
 
     private static final String TAG = "MovePhotoUploadTaskToFailed";
 
-    CloudImageStorageInterface.MovePhotoUploadTaskFailedResponse response;
+    MovePhotoUploadTaskToFailedResponse response;
 
     private DatabaseReference batchDataNodeRef;
     private String batchGuid;
@@ -43,7 +43,7 @@ public class MovePhotoUploadTaskToFailed implements
     public void movePhotoUploadTaskToFailed(DatabaseReference batchDataNodeRef,
                                             String batchGuid, String serviceOrderGuid, String orderStepGuid, String photoRequestGuid,
                                                  String deviceGuid, String deviceAbsoluteFileName, String cloudStorageFileName,
-                                            CloudImageStorageInterface.MovePhotoUploadTaskFailedResponse response) {
+                                            MovePhotoUploadTaskToFailedResponse response) {
 
         this.batchDataNodeRef = batchDataNodeRef;
         this.batchGuid = batchGuid;
@@ -78,7 +78,11 @@ public class MovePhotoUploadTaskToFailed implements
 
     public void setNodeFinishedComplete(){
         // we're done, return
-        response.cloudImageMoveUploadTaskFailedComplete(attemptCount);
+        response.movePhotoUploadTaskToFailedComplete(attemptCount);
+    }
+
+    public interface MovePhotoUploadTaskToFailedResponse {
+        void movePhotoUploadTaskToFailedComplete(Integer attemptCount);
     }
 
 }

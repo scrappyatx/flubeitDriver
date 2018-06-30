@@ -127,6 +127,10 @@ public class ServiceOrderScaffoldBuilder {
             return this;
         }
 
+        private void finalize(ServiceOrderScaffold serviceOrder){
+
+        }
+
         private void validate(ServiceOrderScaffold serviceOrder){
             // required PRESENT (must not be null)
             if (serviceOrder.getGuid() == null) {
@@ -142,11 +146,11 @@ public class ServiceOrderScaffoldBuilder {
             }
 
             if (serviceOrder.getStartTime() == null) {
-                throw new IllegalStateException("startTime is null");
+                //throw new IllegalStateException("startTime is null");
             }
 
             if (serviceOrder.getFinishTime() == null) {
-                throw new IllegalStateException("finishTime is null");
+                //throw new IllegalStateException("finishTime is null");
             }
 
             /*

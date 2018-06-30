@@ -71,7 +71,8 @@ public class BatchDetailTitleLayoutComponents {
 
     public void setValues(AppCompatActivity activity, BatchDetail batchDetail){
         // title viewgroup elements
-        Picasso.with(activity)
+        //Picasso.with(activity)
+        Picasso.get()
                 .load(batchDetail.getIconUrl())
                 .into(batch_icon);
 

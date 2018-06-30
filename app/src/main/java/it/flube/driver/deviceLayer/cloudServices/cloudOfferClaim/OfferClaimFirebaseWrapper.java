@@ -11,6 +11,9 @@ import it.flube.driver.modelLayer.interfaces.CloudOfferClaimInterface;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import timber.log.Timber;
 
+import static it.flube.driver.deviceLayer.cloudServices.cloudOfferClaim.OfferClaimFirebaseConstants.OFFER_CLAIM_REQUEST_NODE;
+import static it.flube.driver.deviceLayer.cloudServices.cloudOfferClaim.OfferClaimFirebaseConstants.OFFER_CLAIM_RESPONSE_NODE;
+
 /**
  * Created on 3/19/2018
  * Project : Driver
@@ -27,10 +30,10 @@ public class OfferClaimFirebaseWrapper implements
     public OfferClaimFirebaseWrapper(){
         Timber.tag(TAG).d("created");
 
-        offerClaimRequestNode = "/userWriteable/claimOfferRequest";
+        offerClaimRequestNode = OFFER_CLAIM_REQUEST_NODE;
         Timber.tag(TAG).d("offerClaimRequestNode = " + offerClaimRequestNode);
 
-        offerClaimResponseNode = "/userReadable/claimOfferResponse";
+        offerClaimResponseNode = OFFER_CLAIM_RESPONSE_NODE;
         Timber.tag(TAG).d("offerClaimResponseNode = " + offerClaimResponseNode);
 
     }

@@ -123,6 +123,8 @@ public class BatchManageAlerts {
                 .show();
     }
 
+
+
     public class ForfeitBatchHideAlertListener implements OnHideAlertListener {
         private ForfeitBatchAlertHidden response;
         public ForfeitBatchHideAlertListener(ForfeitBatchAlertHidden response){

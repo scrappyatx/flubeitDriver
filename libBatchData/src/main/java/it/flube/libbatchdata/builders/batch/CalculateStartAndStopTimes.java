@@ -34,24 +34,25 @@ public class CalculateStartAndStopTimes {
     ////    e.g., roundingMinutes = 15 will always set a expected finishTime on nearest 15 minute interval
     ////
 
-    public static BatchHolder calculateStartAndStopTimes(BatchHolder batchHolder){
-        return doCalc(batchHolder, DEFAULT_ROUNDING_MINUTES);
+    public static void calculateStartAndStopTimes(BatchHolder batchHolder){
+        doCalc(batchHolder, DEFAULT_ROUNDING_MINUTES);
     }
 
-    public static BatchHolder calculateStartAndStopTimes(BatchHolder batchHolder, Integer roundingMinutes){
-        return doCalc(batchHolder, roundingMinutes);
+    public static void calculateStartAndStopTimes(BatchHolder batchHolder, Integer roundingMinutes){
+        doCalc(batchHolder, roundingMinutes);
     }
 
-    private static BatchHolder doCalc(BatchHolder batchHolder, Integer roundingMinutes){
+    private static void doCalc(BatchHolder batchHolder, Integer roundingMinutes){
         //1. get the expectedStartTime from the batch
         Date startTime = batchHolder.getBatch().getExpectedStartTime();
+        batchHolder.getBatchDetail().setExpectedStartTime(startTime);
 
         //2. loop through all service orders by sequence
         ArrayList<ServiceOrder> serviceOrderList = getServiceOrdersSortedBySequence(batchHolder);
         for ( ServiceOrder thisOrder : serviceOrderList ){
 
             //calculate the start & finish times for this order, given the start time
-            batchHolder = CalcServiceOrderTimes(batchHolder, thisOrder.getGuid(), startTime);
+            CalcServiceOrderTimes(batchHolder, thisOrder.getGuid(), startTime);
 
             //set the start time for the next order to the finish time of the last one
             startTime = batchHolder.getBatch().getExpectedFinishTime();
@@ -59,14 +60,14 @@ public class CalculateStartAndStopTimes {
 
         //3. round up the expected finish time to the closest rounding minutes
         batchHolder.getBatch().setExpectedFinishTime(roundBatchFinishTime(batchHolder.getBatch().getExpectedFinishTime(), roundingMinutes));
-        return batchHolder;
+        batchHolder.getBatchDetail().setExpectedFinishTime(batchHolder.getBatch().getExpectedFinishTime());
     }
 
     private static Date roundBatchFinishTime(Date batchFinishTime, Integer roundingMinutes){
         return batchFinishTime;
     }
 
-    private static BatchHolder CalcServiceOrderTimes(BatchHolder batchHolder, String serviceOrderGuid, Date serviceOrderStartTime){
+    private static void CalcServiceOrderTimes(BatchHolder batchHolder, String serviceOrderGuid, Date serviceOrderStartTime){
         ///loop through all steps in this order, calcualte the startTime and endTime of each step
         ///at the end, set the endTime for the batch
 
@@ -100,8 +101,6 @@ public class CalculateStartAndStopTimes {
 
         //set the finish time of the batch to the stepFinishTime
         batchHolder.getBatch().setExpectedFinishTime(stepFinishTime);
-
-        return batchHolder;
     }
 
 

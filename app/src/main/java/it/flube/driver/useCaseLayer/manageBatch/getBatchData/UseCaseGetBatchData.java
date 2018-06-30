@@ -71,12 +71,21 @@ public class UseCaseGetBatchData implements
         cloudBatch.getScheduledBatchRouteStopListRequest(driver, batchGuid, this);
     }
 
+    ////
+    ////    A batch may not always have a route stop list (if there are no navigation steps in the service order)
+    ////
     public void cloudGetScheduledBatchRouteStopListSuccess(ArrayList<RouteStop> stopList){
         Timber.tag(TAG).d("step 3 -> got route stop list!");
         this.routeList = new ArrayList<RouteStop>();
         this.routeList.clear();
         this.routeList.addAll(routeList);
 
+        response.getBatchDataSuccess(this.batchDetail, this.orderList, this.routeList);
+    }
+
+    public void cloudGetScheduledBatchRouteStopListFailure(){
+        Timber.tag(TAG).w("couldn't get route stop list");
+        this.routeList = new ArrayList<RouteStop>();
         response.getBatchDataSuccess(this.batchDetail, this.orderList, this.routeList);
     }
 
@@ -93,10 +102,7 @@ public class UseCaseGetBatchData implements
         response.getBatchDataFailure();
     }
 
-    public void cloudGetScheduledBatchRouteStopListFailure(){
-        Timber.tag(TAG).w("couldn't get route stop list");
-        response.getBatchDataFailure();
-    }
+
 
 
     ///

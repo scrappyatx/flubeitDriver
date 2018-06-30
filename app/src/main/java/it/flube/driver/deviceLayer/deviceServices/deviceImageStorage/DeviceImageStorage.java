@@ -21,7 +21,7 @@ public class DeviceImageStorage implements
     private final static String TAG = "DeviceImageStorage";
 
     public final static String IMAGE_DIR = "imageDir";
-    public final static int IMAGE_QUALITY = 100;
+    public final static int IMAGE_QUALITY = 25;    /// range 0-100, 0 = MAX COMPRESSION, 100 = NO COMPRESSION
 
     private Context appContext;
 

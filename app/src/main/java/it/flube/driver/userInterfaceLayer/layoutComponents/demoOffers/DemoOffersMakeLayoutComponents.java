@@ -29,13 +29,16 @@ public class DemoOffersMakeLayoutComponents {
     private TextView instructions;
     private Button twoStepButton;
     private Button autoPhotoButton;
+    private Button oilChangeButton;
     private LottieAnimationView makeOfferWaitingAnimation;
 
     public DemoOffersMakeLayoutComponents(AppCompatActivity activity){
         instructions = (TextView) activity.findViewById(R.id.instructionText);
         makeOfferWaitingAnimation = (LottieAnimationView) activity.findViewById(R.id.demo_offer_make_animation);
+
         twoStepButton = (Button) activity.findViewById(R.id.button_two_step);
         autoPhotoButton = (Button) activity.findViewById(R.id.button_auto_photo);
+        oilChangeButton = (Button) activity.findViewById(R.id.button_oil_change);
 
         setInvisible();
         Timber.tag(TAG).d("...components created");
@@ -43,23 +46,26 @@ public class DemoOffersMakeLayoutComponents {
 
     public void setReadyToMake(){
         instructions.setVisibility(View.VISIBLE);
-        twoStepButton.setVisibility(View.VISIBLE);
-        autoPhotoButton.setVisibility(View.VISIBLE);
+        twoStepButton.setVisibility(View.GONE);
+        autoPhotoButton.setVisibility(View.GONE);
+        oilChangeButton.setVisibility(View.VISIBLE);
         makeOfferWaitingAnimation.setVisibility(View.GONE);
         Timber.tag(TAG).d("...setReadyToMake");
     }
 
     public void setTooManyOffers(){
         instructions.setVisibility(View.VISIBLE);
-        twoStepButton.setVisibility(View.INVISIBLE);
-        autoPhotoButton.setVisibility(View.INVISIBLE);
+        twoStepButton.setVisibility(View.GONE);
+        autoPhotoButton.setVisibility(View.GONE);
+        oilChangeButton.setVisibility(View.INVISIBLE);
         makeOfferWaitingAnimation.setVisibility(View.GONE);
         Timber.tag(TAG).d("...setTooManyOffers");
     }
 
     public void offerMakeStarted(){
-        twoStepButton.setVisibility(View.INVISIBLE);
-        autoPhotoButton.setVisibility(View.INVISIBLE);
+        twoStepButton.setVisibility(View.GONE);
+        autoPhotoButton.setVisibility(View.GONE);
+        oilChangeButton.setVisibility(View.INVISIBLE);
 
         makeOfferWaitingAnimation.setVisibility(View.VISIBLE);
         makeOfferWaitingAnimation.setProgress(0);
@@ -69,15 +75,19 @@ public class DemoOffersMakeLayoutComponents {
 
     public void setVisible(){
         instructions.setVisibility(View.VISIBLE);
-        twoStepButton.setVisibility(View.VISIBLE);
-        autoPhotoButton.setVisibility(View.VISIBLE);
+        twoStepButton.setVisibility(View.GONE);
+        autoPhotoButton.setVisibility(View.GONE);
+        oilChangeButton.setVisibility(View.VISIBLE);
+
         Timber.tag(TAG).d("...set VISIBLE");
     }
     public void setInvisible(){
         instructions.setVisibility(View.INVISIBLE);
         makeOfferWaitingAnimation.setVisibility(View.INVISIBLE);
-        twoStepButton.setVisibility(View.INVISIBLE);
-        autoPhotoButton.setVisibility(View.INVISIBLE);
+        twoStepButton.setVisibility(View.GONE);
+        autoPhotoButton.setVisibility(View.GONE);
+        oilChangeButton.setVisibility(View.INVISIBLE);
+
         Timber.tag(TAG).d("...set INVISIBLE");
     }
 
@@ -85,6 +95,8 @@ public class DemoOffersMakeLayoutComponents {
         instructions.setVisibility(View.GONE);
         twoStepButton.setVisibility(View.GONE);
         autoPhotoButton.setVisibility(View.GONE);
+        oilChangeButton.setVisibility(View.GONE);
+
         makeOfferWaitingAnimation.setVisibility(View.GONE);
         Timber.tag(TAG).d("...set GONE");
     }
@@ -93,6 +105,7 @@ public class DemoOffersMakeLayoutComponents {
         instructions =null;
         autoPhotoButton = null;
         twoStepButton = null;
+        oilChangeButton = null;
         makeOfferWaitingAnimation = null;
         Timber.tag(TAG).d("components closed");
     }

@@ -36,6 +36,21 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
+    <TextView
+        android:id="@+id/step_complete_banner"
+
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        tools:text="Banner Text"
+        android:textAlignment="center"
+
+        android:textAppearance="@style/StepDetailCompleteBannerStyle"
+        app:layout_constraintBottom_toTopOf="@+id/step_complete_animation"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="parent" />
+
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/step_complete_animation"
         android:layout_width="wrap_content"
@@ -45,10 +60,12 @@
         android:layout_marginTop="32dp"
         android:adjustViewBounds="true"
         android:scaleType="fitEnd"
+
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/step_complete_button"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+
         app:lottie_autoPlay="true"
         app:lottie_fileName="material_wave_loading.json"
         app:lottie_loop="true"

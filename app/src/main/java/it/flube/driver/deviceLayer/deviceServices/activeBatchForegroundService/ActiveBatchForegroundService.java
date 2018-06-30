@@ -27,7 +27,7 @@ import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseSaveMapLocationRequest;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.NavigationActivity;
-import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.PhotoActivity;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.photoList.PhotoActivity;
 import it.flube.driver.userInterfaceLayer.activities.home.HomeActivity;
 import timber.log.Timber;
 

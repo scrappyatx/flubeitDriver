@@ -33,7 +33,10 @@ import org.greenrobot.eventbus.ThreadMode;
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.modelLayer.entities.driver.Driver;
-import it.flube.driver.userInterfaceLayer.userInterfaceEvents.activeBatch.ActiveBatchUpdatedEvent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.activeBatch.ActiveBatchUpdatedBatchFinishedEvent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.activeBatch.ActiveBatchUpdatedBatchRemovedEvent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.activeBatch.ActiveBatchUpdatedBatchWaitingToFinishEvent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.activeBatch.ActiveBatchUpdatedStepStartedEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.DemoOfferCountUpdatedEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.PersonalOfferCountUpdatedEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.PublicOfferCountUpdatedEvent;
@@ -69,10 +72,11 @@ public class DrawerMenu {
     private static final Integer ID_ACCOUNT = 11;
     private static final Integer ID_HELP = 12;
 
-    private static final Integer ID_SYSTEM_STATUS = 13;
-    private static final Integer ID_OFFER_MESSAGING = 14;
-    private static final Integer ID_BATCH_MESSAGING = 15;
-    private static final Integer ID_ACTIVE_BATCH_MESSAGING = 16;
+    private static final Integer ID_DEV_TEST_OFFERS = 13;
+    private static final Integer ID_DEV_TEST_EARNINGS = 14;
+    //private static final Integer ID_BATCH_MESSAGING = 15;
+    //private static final Integer ID_ACTIVE_BATCH_MESSAGING = 16;
+
 
     private Drawer drawer;
     private AppCompatActivity activity;
@@ -147,6 +151,10 @@ public class DrawerMenu {
 
         if (device.getUser().getDriver().getUserRoles().getDev()) {
             addDeveloperToolsMenuItems();
+        } else {
+            if (device.getUser().getDriver().getUserRoles().getQa()){
+                addQaToolsMenuItems();
+            }
         }
 
         updatePersonalOffersCount();
@@ -231,19 +239,24 @@ public class DrawerMenu {
     }
 
     private void addDeveloperToolsMenuItems(){
-        drawer.addItem(new SectionDrawerItem().withName("Developer Tools"));
+        drawer.addItem(new SectionDrawerItem().withName(R.string.nav_menu_dev_section_title));
 
-        drawer.addItem(new SecondaryDrawerItem().withName("System Status").withIcon(FontAwesome.Icon.faw_wrench)
-                .withIdentifier(ID_SYSTEM_STATUS).withSelectable(false));
+        drawer.addItem(new SecondaryDrawerItem().withName(R.string.nav_menu_dev_offers).withIcon(FontAwesome.Icon.faw_wrench)
+                .withIdentifier(ID_DEV_TEST_OFFERS).withSelectable(false).withOnDrawerItemClickListener(new DevTestOffersClickListener()));
 
-        drawer.addItem(new SecondaryDrawerItem().withName("OFFER messaging").withIcon(FontAwesome.Icon.faw_wrench)
-                .withIdentifier(ID_OFFER_MESSAGING).withSelectable(false));
+        drawer.addItem(new SecondaryDrawerItem().withName(R.string.nav_menu_dev_earnings).withIcon(FontAwesome.Icon.faw_wrench)
+                .withIdentifier(ID_DEV_TEST_EARNINGS).withSelectable(false).withOnDrawerItemClickListener(new DevTestEarningsClickListener()));
 
-        drawer.addItem(new SecondaryDrawerItem().withName("BATCH messaging").withIcon(FontAwesome.Icon.faw_wrench)
-                .withIdentifier(ID_BATCH_MESSAGING).withSelectable(false));
+    }
 
-        drawer.addItem(new SecondaryDrawerItem().withName("ACTIVE BATCH messaging").withIcon(FontAwesome.Icon.faw_wrench)
-                .withIdentifier(ID_ACTIVE_BATCH_MESSAGING).withSelectable(false));
+    private void addQaToolsMenuItems(){
+        drawer.addItem(new SectionDrawerItem().withName(R.string.nav_menu_qa_section_title));
+
+        drawer.addItem(new SecondaryDrawerItem().withName(R.string.nav_menu_dev_offers).withIcon(FontAwesome.Icon.faw_wrench)
+                .withIdentifier(ID_DEV_TEST_OFFERS).withSelectable(false).withOnDrawerItemClickListener(new DevTestOffersClickListener()));
+
+        drawer.addItem(new SecondaryDrawerItem().withName(R.string.nav_menu_dev_earnings).withIcon(FontAwesome.Icon.faw_wrench)
+                .withIdentifier(ID_DEV_TEST_EARNINGS).withSelectable(false).withOnDrawerItemClickListener(new DevTestEarningsClickListener()));
 
     }
 
@@ -439,7 +452,6 @@ public class DrawerMenu {
 
     }
 
-
     private class ScheduledBatchesClickListener implements Drawer.OnDrawerItemClickListener {
 
         public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
@@ -450,18 +462,89 @@ public class DrawerMenu {
         }
     }
 
-    //// active batch step changed event
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(ActiveBatchUpdatedEvent event) {
-        Timber.tag(TAG).d("active batch current step changed!");
-        navigator.gotoActiveBatchStep(activity);
+    private class DevTestOffersClickListener implements Drawer.OnDrawerItemClickListener {
+
+        public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+            //do something with the clicked item
+            navigator.gotoActivityTestOffersMake(activity);
+            Timber.tag(TAG).d("clicked on dev test offers");
+            return false;
+        }
     }
 
+    private class DevTestEarningsClickListener implements Drawer.OnDrawerItemClickListener {
+
+        public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+            //do something with the clicked item
+            navigator.gotoActivityTestEarnings(activity);
+            Timber.tag(TAG).d("clicked on dev test earnings");
+            return false;
+        }
+    }
+
+    /////
+    //// ACTIVE BATCH UPDATED events
+    ////
+
+    /// step started
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ActiveBatchUpdatedStepStartedEvent event){
+        Timber.tag(TAG).d("received ActiveBatchUpdatedStepStartedEvent");
+        Timber.tag(TAG).d("   actorType        -> " + event.getActorType().toString());
+        Timber.tag(TAG).d("   actionType       -> " + event.getActionType().toString());
+        Timber.tag(TAG).d("   batchStarted     -> " + event.isBatchStarted());
+        Timber.tag(TAG).d("   orderStarted     -> " + event.isOrderStarted());
+        Timber.tag(TAG).d("   batchGuid        -> " + event.getBatchGuid());
+        Timber.tag(TAG).d("   serviceOrderGuid -> " + event.getServiceOrderGuid());
+        Timber.tag(TAG).d("   stepGuid         -> " + event.getStepGuid());
+        Timber.tag(TAG).d("   taskType         -> " + event.getTaskType().toString());
+
+        navigator.gotoActiveBatchStep(activity, event.getActorType(), event.getActionType(), event.isBatchStarted(), event.isOrderStarted(), event.getBatchGuid(), event.getServiceOrderGuid(), event.getStepGuid(), event.getTaskType());
+        EventBus.getDefault().removeStickyEvent(event);
+    }
+
+    /// batch finished
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ActiveBatchUpdatedBatchFinishedEvent event){
+        Timber.tag(TAG).d("received ActiveBatchUpdatedBatchFinishedEvent");
+        Timber.tag(TAG).d("   actorType        -> " + event.getActorType().toString());
+        Timber.tag(TAG).d("   batchGuid        -> " + event.getBatchGuid());
+
+        navigator.gotoActivityHomeAndShowBatchFinishedMessage(activity, event.getActorType(), event.getBatchGuid());
+        EventBus.getDefault().removeStickyEvent(event);
+    }
+
+    /// batch waiting to finish
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ActiveBatchUpdatedBatchWaitingToFinishEvent event){
+        Timber.tag(TAG).d("received ActiveBatchUpdatedBatchWaitingToFinishEvent");
+        Timber.tag(TAG).d("   actorType        -> " + event.getActorType().toString());
+        Timber.tag(TAG).d("   batchGuid        -> " + event.getBatchGuid());
+
+        navigator.gotoWaitingToFinishBatch(activity, event.getActorType(), event.getBatchGuid());
+        EventBus.getDefault().removeStickyEvent(event);
+    }
+
+    /// batch removed
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ActiveBatchUpdatedBatchRemovedEvent event){
+        Timber.tag(TAG).d("received ActiveBatchUpdatedBatchWaitingToFinishEvent");
+        Timber.tag(TAG).d("   actorType        -> " + event.getActorType().toString());
+        Timber.tag(TAG).d("   batchGuid        -> " + event.getBatchGuid());
+
+        navigator.gotoActivityHomeAndShowBatchRemovedMessage(activity, event.getActorType(), event.getBatchGuid());
+        EventBus.getDefault().removeStickyEvent(event);
+    }
+
+
+    /////
     //// UI update events - offer & batch counts
+    ////
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PublicOfferCountUpdatedEvent event) {
         Timber.tag(TAG).d("received public offers count updated event");
-        updatePersonalOffersCount();
+        updatePublicOffersCount();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -472,7 +555,7 @@ public class DrawerMenu {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(DemoOfferCountUpdatedEvent event) {
-        Timber.tag(TAG).d("received demmo offers count updated event");
+        Timber.tag(TAG).d("received demo offers count updated event");
         updateDemoOffersCount();
     }
 

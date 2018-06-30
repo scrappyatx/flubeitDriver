@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import it.flube.driver.R;
+import it.flube.driver.userInterfaceLayer.layoutComponents.LayoutComponentUtilities;
 import it.flube.libbatchdata.entities.batch.Batch;
 import timber.log.Timber;
 
@@ -116,8 +117,8 @@ public class BatchListAdapter extends RecyclerView.Adapter<BatchListAdapter.Batc
             this.batch = batch;
 
             String displayDescription = batch.getTitle();
-            String displayTime = batch.getDisplayTiming().getHours();
-            String displayDuration = batch.getDisplayTiming().getDuration();
+            String displayTime = LayoutComponentUtilities.getDisplayTiming(batch.getExpectedStartTime(), batch.getExpectedFinishTime());
+            String displayDuration = LayoutComponentUtilities.getDisplayDuration(batch.getExpectedStartTime(), batch.getExpectedFinishTime());
 
             //TODO do the number formatting into currency in the batch builder, then just get property here
             String displayBaseEarnings = NumberFormat.getCurrencyInstance(new Locale("en", "US"))
@@ -138,11 +139,13 @@ public class BatchListAdapter extends RecyclerView.Adapter<BatchListAdapter.Batc
             extraEarnings.setText(displayExtraEarnings);
             distance.setText(displayDistance);
 
-            Picasso.with(activityContext)
+            //Picasso.with(activityContext)
+            Picasso.get()
                     .load(serviceProviderUrl)
                     .into(serviceProviderImage);
 
-            Picasso.with(activityContext)
+            //Picasso.with(activityContext)
+            Picasso.get()
                     .load(distanceUrl)
                     .into(distanceImage);
 

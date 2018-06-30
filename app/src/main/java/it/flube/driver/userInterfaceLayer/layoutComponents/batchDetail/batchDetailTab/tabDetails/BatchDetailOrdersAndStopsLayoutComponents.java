@@ -53,7 +53,8 @@ public class BatchDetailOrdersAndStopsLayoutComponents {
     public void setValuesAndShow(AppCompatActivity activity, BatchDetail batchDetail){
 
         //orders & stops viewgroup elements
-        Picasso.with(activity)
+        //Picasso.with(activity)
+        Picasso.get()
                 .load(UserInterfaceUtilities.getCountIconUrl(batchDetail.getServiceOrderCount()))
                 .into(orders_count_icon);
 
@@ -64,7 +65,8 @@ public class BatchDetailOrdersAndStopsLayoutComponents {
         }
         order_view_button.setText("View");
 
-        Picasso.with(activity)
+        //Picasso.with(activity)
+        Picasso.get()
                 .load(UserInterfaceUtilities.getCountIconUrl(batchDetail.getRouteStopCount()))
                 .into(stops_count_icon);
 

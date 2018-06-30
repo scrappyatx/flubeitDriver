@@ -5,6 +5,8 @@
 package it.flube.libbatchdata.builders.batch;
 
 
+import java.util.Date;
+
 import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.DisplayDistance;
@@ -18,6 +20,9 @@ import it.flube.libbatchdata.entities.PotentialEarnings;
 
 public class BatchDetailBuilder {
     private BatchDetail batchDetail;
+
+    private static final Integer DEFAULT_EARLIEST_START_MINUTES_PRIOR = 15;
+    private static final Integer DEFAULT_LATEST_START_MINUTES_AFTER = 5;
 
     private BatchDetailBuilder(Builder builder){
         this.batchDetail = builder.batchDetail;
@@ -36,6 +41,8 @@ public class BatchDetailBuilder {
             this.batchDetail.setWorkStatus(BatchDetail.WorkStatus.NOT_STARTED);
             this.batchDetail.setBatchType(BatchDetail.BatchType.MOBILE_DEMO);
             this.batchDetail.setClaimStatus(BatchDetail.ClaimStatus.NOT_CLAIMED);
+            this.batchDetail.setEarliestStartMinutesPrior(DEFAULT_EARLIEST_START_MINUTES_PRIOR);
+            this.batchDetail.setLatestStartMinutesAfter(DEFAULT_LATEST_START_MINUTES_AFTER);
         }
 
         public Builder batchGuid(String guid){
@@ -61,11 +68,6 @@ public class BatchDetailBuilder {
 
         public Builder iconUrl(String iconUrl){
             this.batchDetail.setIconUrl(iconUrl);
-            return this;
-        }
-
-        public Builder displayTiming(DisplayTiming displayTiming){
-            this.batchDetail.setDisplayTiming(displayTiming);
             return this;
         }
 
@@ -109,8 +111,61 @@ public class BatchDetailBuilder {
             return this;
         }
 
-        private void validate(BatchDetail batchDetail){
+        public Builder expectedStartTime(Date expectedStartTime){
+            this.batchDetail.setExpectedStartTime(expectedStartTime);
+            return this;
+        }
 
+        public Builder expectedStartTime(Date initialTime, Integer minutesToAdd){
+            this.batchDetail.setExpectedStartTime(BuilderUtilities.addMinutesToDate(initialTime, minutesToAdd));
+            return this;
+        }
+
+        public Builder expectedFinishTime(Date expectedFinishTime){
+            this.batchDetail.setExpectedFinishTime(expectedFinishTime);
+            return this;
+        }
+
+        public Builder expectedFinishTime(Date initialTime, Integer minutesToAdd ) {
+            this.batchDetail.setExpectedFinishTime(BuilderUtilities.addMinutesToDate(initialTime, minutesToAdd));
+            return this;
+        }
+
+        public Builder offerExpiryTime(Date offerExpiryTime){
+            this.batchDetail.setOfferExpiryTime(offerExpiryTime);
+            return this;
+        }
+
+        public Builder earliestStartMinutesPrior(Integer earliestStartMinutesPrior){
+            this.batchDetail.setEarliestStartMinutesPrior(earliestStartMinutesPrior);
+            return this;
+        }
+
+        public Builder latestStartMinutesAfter(Integer latestStartMinutesAfter){
+            this.batchDetail.setLatestStartMinutesAfter(latestStartMinutesAfter);
+            return this;
+        }
+
+        private void validate(BatchDetail batchDetail){
+            if (batchDetail.getGuid() == null) {
+                throw new IllegalStateException("batch GUID is null");
+            }
+
+            if (batchDetail.getExpectedStartTime() == null) {
+                //throw new IllegalStateException("expected start time is null");
+            }
+
+            if (batchDetail.getOfferExpiryTime() == null) {
+                //throw new IllegalStateException("offer expiry is null");
+            }
+
+            if (batchDetail.getEarliestStartMinutesPrior() == null){
+                throw new IllegalStateException("earliestStartMinutesPrior is null");
+            }
+
+            if (batchDetail.getLatestStartMinutesAfter() == null){
+                throw new IllegalStateException("latestStartMinutesAfter is null");
+            }
         }
 
         public BatchDetail build(){

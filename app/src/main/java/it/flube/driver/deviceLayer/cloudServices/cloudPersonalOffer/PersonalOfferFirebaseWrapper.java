@@ -33,6 +33,10 @@ import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.batch.BatchHolder;
 import timber.log.Timber;
 
+import static it.flube.driver.deviceLayer.cloudServices.cloudPersonalOffer.PersonalOffersFirebaseConstants.BASE_NODE_PERSONAL_OFFER_DATA;
+import static it.flube.driver.deviceLayer.cloudServices.cloudPersonalOffer.PersonalOffersFirebaseConstants.OFFER_CLAIM_REQUEST_NODE;
+import static it.flube.driver.deviceLayer.cloudServices.cloudPersonalOffer.PersonalOffersFirebaseConstants.OFFER_CLAIM_RESPONSE_NODE;
+
 /**
  * Created on 3/28/2018
  * Project : Driver
@@ -41,10 +45,6 @@ public class PersonalOfferFirebaseWrapper implements
         CloudPersonalOfferInterface {
 
     private static final String TAG = "PersonalOfferFirebaseWrapper";
-
-    private static final String BASE_NODE_PERSONAL_OFFER_DATA = "userReadable/batchData";
-    private static final String OFFER_CLAIM_REQUEST_NODE = "userWriteable/claimOfferRequest";
-    private static final String OFFER_CLAIM_RESPONSE_NODE = "userReadable/claimOfferResponse";
 
     private final String baseNodePersonalOffers;
 

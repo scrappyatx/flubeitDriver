@@ -98,7 +98,7 @@ public class SetNodeInProgress implements
         response.setNodeInProgressComplete();
     }
 
-    interface Response {
+    public interface Response {
         void setNodeInProgressComplete();
     }
 

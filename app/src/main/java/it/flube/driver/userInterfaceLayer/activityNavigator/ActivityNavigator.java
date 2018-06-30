@@ -7,40 +7,19 @@ package it.flube.driver.userInterfaceLayer.activityNavigator;
 import android.content.Context;
 import android.content.Intent;
 
-import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.modelLayer.interfaces.ActiveBatchInterface;
 import it.flube.driver.userInterfaceLayer.activities.offers.OfferConstants;
-import it.flube.libbatchdata.entities.batch.BatchDetail;
-import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import it.flube.driver.userInterfaceLayer.activities.account.AccountActivity;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.batchItinerary.BatchItineraryActivity;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderItinerary.OrderItineraryActivity;
-import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.NavigationActivity;
-import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.PhotoActivity;
-import it.flube.driver.userInterfaceLayer.activities.home.HomeActivity;
-import it.flube.driver.userInterfaceLayer.activities.earnings.EarningsActivity;
+import it.flube.driver.userInterfaceLayer.activities.earnings.productionEarnings.EarningsActivity;
 import it.flube.driver.userInterfaceLayer.activities.help.HelpActivity;
-import it.flube.driver.userInterfaceLayer.activities.offers.claimOffer.OfferClaimActivity;
-import it.flube.driver.userInterfaceLayer.activities.offers.personalOffers.PersonalOffersActivity;
-import it.flube.driver.userInterfaceLayer.activities.offers.publicOffers.PublicOffersActivity;
-import it.flube.driver.userInterfaceLayer.activities.scheduledBatches.manageBatch.BatchManageActivity;
-import it.flube.driver.userInterfaceLayer.activities.scheduledBatches.BatchMapActivity;
 import it.flube.driver.userInterfaceLayer.activities.signIn.SignInActivity;
 import it.flube.driver.userInterfaceLayer.activities.messages.MessagesActivity;
-import it.flube.driver.userInterfaceLayer.activities.scheduledBatches.scheduledBatchList.ScheduledBatchesActivity;
 import it.flube.driver.userInterfaceLayer.activities.signIn.SignInAuthUiLaunchActivity;
 import it.flube.driver.userInterfaceLayer.activities.splashScreen.SplashScreenActivity;
+import it.flube.libbatchdata.interfaces.ActiveBatchManageInterface;
+import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import timber.log.Timber;
-
-import static it.flube.driver.userInterfaceLayer.activities.offers.OfferConstants.CLAIM_OFFER_FAILURE_VALUE;
-import static it.flube.driver.userInterfaceLayer.activities.offers.OfferConstants.CLAIM_OFFER_RESULT_KEY;
-import static it.flube.driver.userInterfaceLayer.activities.offers.OfferConstants.CLAIM_OFFER_SUCCESS_VALUE;
-import static it.flube.driver.userInterfaceLayer.activities.offers.OfferConstants.CLAIM_OFFER_TIMEOUT_VALUE;
-import static it.flube.driver.userInterfaceLayer.activities.scheduledBatches.BatchConstants.BATCH_DEINED_REASON_KEY;
-import static it.flube.driver.userInterfaceLayer.activities.scheduledBatches.BatchConstants.FORFEIT_BATCH_FAILURE_VALUE;
-import static it.flube.driver.userInterfaceLayer.activities.scheduledBatches.BatchConstants.FORFEIT_BATCH_RESULT_KEY;
-import static it.flube.driver.userInterfaceLayer.activities.scheduledBatches.BatchConstants.FORFEIT_BATCH_SUCCESS_VALUE;
-import static it.flube.driver.userInterfaceLayer.activities.scheduledBatches.BatchConstants.FORFEIT_BATCH_TIMEOUT_VALUE;
 
 /**
  * Created on 6/18/2017
@@ -52,10 +31,26 @@ public class ActivityNavigator {
 
     public ActivityNavigator(){}
 
+    ////
+    //// HOME
+    ////
     public void gotoActivityHome(Context context){
-        context.startActivity(new Intent(context, HomeActivity.class));
+        new HomeNavigator().gotoActivityHome(context);
         Timber.tag(TAG).d("starting activity HomeActivity.class");
     }
+
+    public void gotoActivityHomeAndShowBatchFinishedMessage(Context context, ActiveBatchManageInterface.ActorType actorType, String batchGuid) {
+        new HomeNavigator().gotoActivityHomeAndShowBatchFinishedMessage(context, actorType, batchGuid);
+        Timber.tag(TAG).d("starting activity HomeActivity.class");
+    }
+
+    public void gotoActivityHomeAndShowBatchRemovedMessage(Context context,  ActiveBatchManageInterface.ActorType actorType, String batchGuid){
+        new HomeNavigator().gotoActivityHomeAndShowBatchRemovedMessage(context, actorType, batchGuid);
+        Timber.tag(TAG).d("starting activity HomeActivity.class");
+    }
+
+
+    //// BATCH ITINERARY
 
     public void gotoBatchItinerary(Context context){
         context.startActivity(new Intent(context, BatchItineraryActivity.class));
@@ -72,9 +67,27 @@ public class ActivityNavigator {
         Timber.tag(TAG).d("starting activity AccountActivity.class");
     }
 
+    ///
+    /// ACTIVE BATCH
+    ///
     public void gotoActiveBatchStep(Context context){
         new ActiveBatchNavigator().gotoActiveBatchStep(context);
         Timber.tag(TAG).d("going to active batch step");
+    }
+
+    public void gotoActiveBatchStep(Context context, ActiveBatchManageInterface.ActorType actorType, ActiveBatchManageInterface.ActionType actionType,
+                                    Boolean batchStarted, Boolean orderStarted, String batchGuid, String serviceOrderGuid, String stepGuid, OrderStepInterface.TaskType taskType) {
+
+        new ActiveBatchNavigator().gotoActiveBatchStep(context, actorType, actionType, batchStarted, orderStarted, batchGuid, serviceOrderGuid,stepGuid,taskType);
+        Timber.tag(TAG).d("going to active batch step");
+    }
+
+    ///
+    /// WAITING TO FINISH BATCH
+    ///
+    public void gotoWaitingToFinishBatch(Context context, ActiveBatchManageInterface.ActorType actorType, String batchGuid){
+        new WaitingToFinishBatchNavigator().gotoWaitingToFinishBatch(context, actorType, batchGuid);
+        Timber.tag(TAG).d("going to WaitingToFinishBatch");
     }
 
     ///
@@ -145,7 +158,17 @@ public class ActivityNavigator {
         PublicOffersNavigator.gotoActivityPublicOffersAndShowOfferClaimedTimeoutAlert(context);
     }
 
-    /////
+    ///// TEST EARNINGS
+    public void gotoActivityTestEarnings(Context context){
+        DevTestEarningsNavigator.gotoActivityTestEarnings(context);
+        Timber.tag(TAG).d("starting TestEarningsActivity.class");
+    }
+
+    //// TEST OFFERS MAKE
+    public void gotoActivityTestOffersMake(Context context){
+        DevTestOffersMakeNavigator.gotoActivityTestOffersMake(context);
+        Timber.tag(TAG).d("starting TestOffersMakeActivity.class");
+    }
 
     public void gotoActivityEarnings(Context context) {
         context.startActivity(new Intent(context, EarningsActivity.class));
@@ -231,9 +254,20 @@ public class ActivityNavigator {
     }
 
     //// PHOTO STEP NAVIGATION
-    public void gotoActivityPhotoDetail(Context context, String photoRequestGuid){
-        PhotoStepNavigator.gotoActivityPhotoDetail(context, photoRequestGuid);
+
+    public void gotoActivityPhotoList(Context context, String batchGuid, String serviceOrderGuid, String orderStepGuid, OrderStepInterface.TaskType taskType){
+        PhotoStepNavigator.gotoActivityPhotoList(context, batchGuid, serviceOrderGuid, orderStepGuid, taskType);
+        Timber.tag(TAG).d("starting activity PhotoList");
+    }
+
+    public void gotoActivityPhotoDetail(Context context, String batchGuid, String orderStepGuid, String photoRequestGuid){
+        PhotoStepNavigator.gotoActivityPhotoDetail(context, batchGuid, orderStepGuid, photoRequestGuid);
         Timber.tag(TAG).d("starting activity PhotoDetail, photoRequestGuid -> " + photoRequestGuid);
+    }
+
+    public void gotoActivityPhotoTake(Context context, String batchGuid, String orderStepGuid, String photoRequestGuid){
+        PhotoStepNavigator.gotoActivityPhotoTake(context, batchGuid, orderStepGuid, photoRequestGuid);
+        Timber.tag(TAG).d("starting activity PhotoTake, photoRequestGuid -> " + photoRequestGuid);
     }
 
 }

@@ -35,7 +35,8 @@ import timber.log.Timber;
  */
 
 public class HomeActivity extends PermissionsCheckActivity implements
-        ActiveBatchAlerts.BatchCompletedAlertHidden {
+        ActiveBatchAlerts.BatchCompletedAlertHidden,
+        HomeUtilities.GetActivityLaunchInfoResponse {
 
     private static final String TAG = "HomeActivity";
 
@@ -99,6 +100,9 @@ public class HomeActivity extends PermissionsCheckActivity implements
 
         //update demo offers
         demoOffers.setValuesAndShow(this, AndroidDevice.getInstance().getOfferLists().getDemoOffers().size());
+
+        ///see if we need to display any messages to the user
+        new HomeUtilities().getActivityLaunchInfo(this, this);
 
     }
 
@@ -186,5 +190,31 @@ public class HomeActivity extends PermissionsCheckActivity implements
         Timber.tag(TAG).d("batch completed alert hidden");
     }
 
+    ////
+    //// HomeUtilities.GetActivityLaunchInfoResponse interface
+    ////
+    public void showBatchRemovedByAdmin(String batchGuid){
+        Timber.tag(TAG).d("...showBatchRemovedByAdmin");
+        new BatchRemovedAlerts().showBatchRemovedByAdminAlert(this);
+    }
+
+    public void showBatchRemovedByUser(String batchGuid){
+        Timber.tag(TAG).d("...showBatchRemovedByUser");
+        new BatchRemovedAlerts().showBatchRemovedByUserAlert(this);
+    }
+
+    public void showBatchFinishedByAdmin(String batchGuid){
+        Timber.tag(TAG).d("...showBatchFinishedByAdmin");
+        new BatchFinishedAlerts().showBatchFinishedByAdminAlert(this);
+    }
+
+    public void showBatchFinishedByUser(String batchGuid){
+        Timber.tag(TAG).d("...showBatchFinishedByUser");
+        new BatchFinishedAlerts().showBatchFinishedByUserAlert(this);
+    }
+
+    public void doNothing(){
+        Timber.tag(TAG).d("...doNothing");
+    }
 
 }

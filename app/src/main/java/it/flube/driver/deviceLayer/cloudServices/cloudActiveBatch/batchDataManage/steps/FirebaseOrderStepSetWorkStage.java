@@ -39,6 +39,7 @@ public class FirebaseOrderStepSetWorkStage implements OnCompleteListener<Void> {
         data.put(WORK_STAGE_PROPERTY, workStage);
         Timber.tag(TAG).d("...added key -> " + WORK_STAGE_PROPERTY + " value -> " + workStage.toString());
 
+        //TODO implement actual timestamps for start & finish time
         switch (workStage){
             case ACTIVE:
                 Timber.tag(TAG).d("...added key -> " + START_TIME_PROPERTY);

@@ -12,7 +12,8 @@ package it.flube.libbatchdata.entities;
 public class ContactPerson {
     public enum ContactRole {
         CUSTOMER,
-        SERVICE_PROVIDER
+        SERVICE_PROVIDER,
+        FLUBEIT_SUPPORT
     }
 
     private String displayName;

@@ -11,8 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.builders.SignatureRequestBuilder;
 import it.flube.libbatchdata.builders.TimestampBuilder;
 import it.flube.libbatchdata.entities.ContactPerson;
+import it.flube.libbatchdata.entities.SignatureRequest;
 import it.flube.libbatchdata.entities.assetTransfer.AssetTransfer;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderReceiveAssetStep;
 import it.flube.libbatchdata.interfaces.AssetTransferInterface;
@@ -24,8 +26,17 @@ import it.flube.libbatchdata.interfaces.OrderStepInterface;
  */
 public class ReceiveAssetStepBuilder {
     private static final OrderStepInterface.TaskType TASK_TYPE = OrderStepInterface.TaskType.RECEIVE_ASSET;
+
+    //step defaults
     private static final Integer DEFAULT_DURATION_MINUTES = 10;
     private static final String DEFAULT_MILESTONE_WHEN_FINISHED = "Items Received";
+
+    private static final OrderStepInterface.WorkStage DEFAULT_WORK_STAGE = OrderStepInterface.WorkStage.NOT_STARTED;
+    private static final OrderStepInterface.WorkTiming DEFAULT_WORK_TIMING = OrderStepInterface.WorkTiming.ON_TIME;
+    private static final OrderStepInterface.WorkStatus DEFAULT_WORK_STATUS = OrderStepInterface.WorkStatus.NORMAL;
+    private static final Boolean DEFAULT_SIGNATURE_REQUIRED = false;
+    private static final AssetTransferInterface.TransferType DEFAULT_TRANSFER_TYPE = AssetTransferInterface.TransferType.TRANSFER_FROM_CUSTOMER;
+
 
     /// icon strings use fontawesome.io icon strings
     private static final String TASK_ICON_STRING = "{fa-hand-o-left}";
@@ -59,12 +70,12 @@ public class ReceiveAssetStepBuilder {
 
             //generate guid & set work stage, work timing & work status
             this.receiveStep.setGuid(BuilderUtilities.generateGuid());
-            this.receiveStep.setWorkStage(OrderStepInterface.WorkStage.NOT_STARTED);
-            this.receiveStep.setWorkTiming(OrderStepInterface.WorkTiming.ON_TIME);
-            this.receiveStep.setWorkStatus(OrderStepInterface.WorkStatus.NORMAL);
+            this.receiveStep.setWorkStage(DEFAULT_WORK_STAGE);
+            this.receiveStep.setWorkTiming(DEFAULT_WORK_TIMING);
+            this.receiveStep.setWorkStatus(DEFAULT_WORK_STATUS);
 
             //create storage for asset list
-            this.receiveStep.setAssetList(new ArrayList<AssetTransfer>());
+            this.receiveStep.setAssetList(new HashMap<String, AssetTransfer>());
 
 
             //default task type icon string
@@ -91,7 +102,10 @@ public class ReceiveAssetStepBuilder {
             this.receiveStep.setWorkStageIconTextMap(workStageIconTextMap);
 
             //set default transfer type
-            this.receiveStep.setTransferType(AssetTransferInterface.TransferType.TRANSFER_FROM_CUSTOMER);
+            this.receiveStep.setTransferType(DEFAULT_TRANSFER_TYPE);
+
+            //set default signature request using builder method - this will set boolean & create signature request object (if required)
+            requireSignature(DEFAULT_SIGNATURE_REQUIRED);
 
         }
 
@@ -201,7 +215,22 @@ public class ReceiveAssetStepBuilder {
         }
 
         public Builder addAssetTransfer(AssetTransfer assetTransfer){
-            this.receiveStep.getAssetList().add(assetTransfer);
+            this.receiveStep.getAssetList().put(assetTransfer.getAsset().getGuid(), assetTransfer);
+            return this;
+        }
+
+        public Builder requireSignature(Boolean requireSignature){
+            this.receiveStep.setRequireSignature(requireSignature);
+            if (requireSignature){
+                this.receiveStep.setSignatureRequest(new SignatureRequestBuilder.Builder().build());
+            } else {
+                this.receiveStep.setSignatureRequest(null);
+            }
+            return this;
+        }
+
+        public Builder signatureRequest(SignatureRequest signatureRequest){
+            this.receiveStep.setSignatureRequest(signatureRequest);
             return this;
         }
         ////
@@ -239,6 +268,12 @@ public class ReceiveAssetStepBuilder {
             } else {
                 if (receiveStep.getAssetList().isEmpty()){
                     throw new IllegalStateException("assetList is empty");
+                }
+            }
+
+            if (receiveStep.getRequireSignature()){
+                if (receiveStep.getSignatureRequest() == null){
+                    throw new IllegalStateException("SignatureRequest is null");
                 }
             }
 

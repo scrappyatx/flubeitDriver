@@ -93,7 +93,7 @@ public class SetNodeNotStarted implements
         response.setNodeNotStartedComplete();
     }
 
-    interface Response {
+    public interface Response {
         void setNodeNotStartedComplete();
     }
 

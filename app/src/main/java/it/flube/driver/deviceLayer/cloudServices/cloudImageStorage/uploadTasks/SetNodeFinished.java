@@ -94,7 +94,7 @@ public class SetNodeFinished implements
         response.setNodeFinishedComplete();
     }
 
-    interface Response {
+    public interface Response {
         void setNodeFinishedComplete();
     }
 

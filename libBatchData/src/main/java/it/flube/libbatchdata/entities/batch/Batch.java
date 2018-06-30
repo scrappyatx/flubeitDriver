@@ -25,13 +25,13 @@ public class Batch {
     private String title;
     private String iconUrl;
 
-    private DisplayTiming displayTiming;
+
     private DisplayDistance displayDistance;
     private PotentialEarnings potentialEarnings;
 
     private Date expectedStartTime;
     private Date expectedFinishTime;
-
+    private Date offerExpiryTime;
 
     public void setGuid(String guid) {
         this.guid = guid;
@@ -57,10 +57,6 @@ public class Batch {
         this.iconUrl = iconURL;
     }
 
-    public void setDisplayTiming(DisplayTiming displayTiming) {
-        this.displayTiming = displayTiming;
-    }
-
     public DisplayDistance getDisplayDistance() {
         return displayDistance;
     }
@@ -68,11 +64,6 @@ public class Batch {
     public void setDisplayDistance(DisplayDistance displayDistance) {
         this.displayDistance = displayDistance;
     }
-
-    public DisplayTiming getDisplayTiming() {
-        return displayTiming;
-    }
-
 
     public PotentialEarnings getPotentialEarnings() {
         return potentialEarnings;
@@ -96,5 +87,13 @@ public class Batch {
 
     public void setExpectedFinishTime(Date expectedFinishTime) {
         this.expectedFinishTime = expectedFinishTime;
+    }
+
+    public Date getOfferExpiryTime() {
+        return offerExpiryTime;
+    }
+
+    public void setOfferExpiryTime(Date offerExpiryTime) {
+        this.offerExpiryTime = offerExpiryTime;
     }
 }

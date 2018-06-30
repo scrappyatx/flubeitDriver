@@ -5,6 +5,7 @@
 package it.flube.libbatchdata.builders;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import it.flube.libbatchdata.entities.PhotoRequest;
 
@@ -24,21 +25,21 @@ public class PhotoRequestListForVehicleBuilder {
     private static final String SIDE_PASSENGER_VIEW_HINT_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2FgenericAuto%2Fside_passenger_view.png?alt=media&token=828df158-f3e3-475f-955d-21a25a42c83a";
 
 
-    private ArrayList<PhotoRequest> photoList;
+    private HashMap<String, PhotoRequest> photoList;
 
     private PhotoRequestListForVehicleBuilder(Builder builder){
         this.photoList = builder.photoList;
     }
 
-    private ArrayList<PhotoRequest> getPhotoList(){
+    private HashMap<String, PhotoRequest> getPhotoList(){
         return photoList;
     }
 
     public static class Builder {
-        private ArrayList<PhotoRequest> photoList;
+        private HashMap<String, PhotoRequest> photoList;
 
         public Builder(){
-            photoList = new ArrayList<PhotoRequest>();
+            photoList = new HashMap<String, PhotoRequest>();
             addFrontCornerDriver();
             addFrontView();
             addFrontCornerPassenger();
@@ -52,78 +53,94 @@ public class PhotoRequestListForVehicleBuilder {
         }
 
         private void addFrontCornerDriver(){
-            this.photoList.add(new PhotoRequestBuilder.Builder()
+            PhotoRequest photoRequest = new PhotoRequestBuilder.Builder()
                             .title("Front Corner Driver")
                             .description("Take this photo facing the front corner of the vehicle on the driver side")
+                            .sequence(this.photoList.size()+1)
                             .photoHintUrl(FRONT_CORNER_DRIVER_VIEW_HINT_URL)
-                            .build());
+                            .build();
+            this.photoList.put(photoRequest.getGuid(), photoRequest);
         }
 
         private void addFrontCornerPassenger(){
-            this.photoList.add(new PhotoRequestBuilder.Builder()
+            PhotoRequest photoRequest = new PhotoRequestBuilder.Builder()
                     .title("Front Corner Passenger")
                     .description("Take this photo facing the front corner of the vehicle on the passenger side")
+                    .sequence(this.photoList.size()+1)
                     .photoHintUrl(FRONT_CORNER_PASSENGER_VIEW_HINT_URL)
-                    .build());
+                    .build();
+            this.photoList.put(photoRequest.getGuid(), photoRequest);
         }
 
         private void addFrontView(){
-            this.photoList.add(new PhotoRequestBuilder.Builder()
+            PhotoRequest photoRequest = new PhotoRequestBuilder.Builder()
                     .title("Front")
                     .description("Take this photo facing the front of the vehicle")
+                    .sequence(this.photoList.size()+1)
                     .photoHintUrl(FRONT_VIEW_HINT_URL)
-                    .build());
+                    .build();
+            this.photoList.put(photoRequest.getGuid(), photoRequest);
         }
 
         private void addRearCornerDriver(){
-            this.photoList.add(new PhotoRequestBuilder.Builder()
+            PhotoRequest photoRequest = new PhotoRequestBuilder.Builder()
                     .title("Rear Corner Driver")
                     .description("Take this photo facing the rear corner of the vehicle of the vehicle on the driver side")
+                    .sequence(this.photoList.size()+1)
                     .photoHintUrl(REAR_CORNER_DRIVER_VIEW_HINT_URL)
-                    .build());
+                    .build();
+            this.photoList.put(photoRequest.getGuid(), photoRequest);
         }
 
         private void addRearCornerPassenger(){
-            this.photoList.add(new PhotoRequestBuilder.Builder()
+            PhotoRequest photoRequest = new PhotoRequestBuilder.Builder()
                     .title("Rear Corner Passenger")
                     .description("Take this photo facing the rear corner of the vehicle on the passenger side")
+                    .sequence(this.photoList.size()+1)
                     .photoHintUrl(REAR_CORNER_PASSENGER_VIEW_HINT_URL)
-                    .build());
+                    .build();
+            this.photoList.put(photoRequest.getGuid(), photoRequest);
         }
 
         private void addRearView(){
-            this.photoList.add(new PhotoRequestBuilder.Builder()
+            PhotoRequest photoRequest = new PhotoRequestBuilder.Builder()
                     .title("Rear")
                     .description("Take this photo facing the rear of the vehicle")
+                    .sequence(this.photoList.size()+1)
                     .photoHintUrl(REAR_VIEW_HINT_URL)
-                    .build());
+                    .build();
+            this.photoList.put(photoRequest.getGuid(), photoRequest);
         }
 
         private void addSideDriver(){
-            this.photoList.add(new PhotoRequestBuilder.Builder()
+            PhotoRequest photoRequest = new PhotoRequestBuilder.Builder()
                     .title("Side Driver")
                     .description("Take this photo facing the side of the vehicle on the driver side")
+                    .sequence(this.photoList.size()+1)
                     .photoHintUrl(SIDE_DRIVER_VIEW_HINT_URL)
-                    .build());
+                    .build();
+            this.photoList.put(photoRequest.getGuid(), photoRequest);
         }
 
         private void addSidePassenger(){
-            this.photoList.add(new PhotoRequestBuilder.Builder()
+            PhotoRequest photoRequest = new PhotoRequestBuilder.Builder()
                     .title("Side Passenger")
                     .description("Take this photo facing the side of the vehicle on the passenger side")
+                    .sequence(this.photoList.size()+1)
                     .photoHintUrl(SIDE_PASSENGER_VIEW_HINT_URL)
-                    .build());
+                    .build();
+            this.photoList.put(photoRequest.getGuid(), photoRequest);
         }
 
-        private void validate(ArrayList<PhotoRequest> photoList){
+        private void validate(HashMap<String, PhotoRequest> photoList){
             // required PRESENT (must not be null)
             if (photoList.size() <= 0){
                 throw new IllegalStateException("no photos in photoList");
             }
         }
 
-        public ArrayList<PhotoRequest> build(){
-            ArrayList<PhotoRequest> photoList = new PhotoRequestListForVehicleBuilder(this).getPhotoList();
+        public HashMap<String, PhotoRequest> build(){
+            HashMap<String, PhotoRequest> photoList = new PhotoRequestListForVehicleBuilder(this).getPhotoList();
             validate(photoList);
             return photoList;
         }

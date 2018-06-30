@@ -41,7 +41,7 @@ public class TabDetailLayoutComponents {
     }
 
     public void setValues(AppCompatActivity activity, BatchDetail batchDetail){
-        timing.setValues(batchDetail);
+        timing.setValues(activity, batchDetail);
         earnings.setValues(batchDetail);
         distance.setValues(activity, batchDetail);
         Timber.tag(TAG).d("...setValues");

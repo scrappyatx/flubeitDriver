@@ -21,6 +21,9 @@ import it.flube.driver.modelLayer.interfaces.CloudScheduledBatchInterface;
 import it.flube.driver.modelLayer.interfaces.OffersInterface;
 import timber.log.Timber;
 
+import static it.flube.driver.deviceLayer.cloudServices.cloudScheduledBatch.ScheduledBatchFirebaseConstants.BATCH_FORFEIT_REQUEST_NODE;
+import static it.flube.driver.deviceLayer.cloudServices.cloudScheduledBatch.ScheduledBatchFirebaseConstants.BATCH_FORFEIT_RESPONSE_NODE;
+
 /**
  * Created on 3/29/2018
  * Project : Driver
@@ -29,9 +32,6 @@ public class ScheduledBatchFirebaseWrapper implements
         CloudScheduledBatchInterface {
 
     private static final String TAG = "ScheduledBatchFirebaseWrapper";
-
-    private static final String BATCH_FORFEIT_REQUEST_NODE = "userWriteable/batchForfeitRequest";
-    private static final String BATCH_FORFEIT_RESPONSE_NODE = "userReadable/batchForfeitResponse";
 
     private final String baseNodeBatchData;
     private final String baseNodeScheduledBatches;

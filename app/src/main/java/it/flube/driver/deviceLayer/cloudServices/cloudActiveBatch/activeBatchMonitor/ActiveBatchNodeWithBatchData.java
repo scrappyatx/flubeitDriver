@@ -43,6 +43,8 @@ public class ActiveBatchNodeWithBatchData implements
     private ServiceOrder serviceOrder;
     private OrderStepInterface step;
 
+    private Boolean batchStarted;
+    private Boolean orderStarted;
 
     public void processNode(DatabaseReference batchDataRef, ActiveBatchNode nodeData, CloudActiveBatchInterface.ActiveBatchUpdated response){
         Timber.tag(TAG).d("batchDataRef = " + batchDataRef.toString());
@@ -103,23 +105,30 @@ public class ActiveBatchNodeWithBatchData implements
         Timber.tag(TAG).d("         ...actionType -> " + nodeData.getActionType());
         Timber.tag(TAG).d("         ...actorType  -> " + nodeData.getActorType());
 
+        batchStarted = false;
+        orderStarted = false;
+
         switch (nodeData.getActionType()){
+            //TODO need to implement a way to set batch, order & step started timestamp ONE TIME ONLY, on the first time it is done.  This may be triggered many times, but only write timestamp on the first time
+
             case BATCH_STARTED:
+                batchStarted = true;
                 new FirebaseBatchDetailSetStatus().setBatchDetailStatusRequest(batchDataRef, batchDetail, BatchDetail.WorkStatus.ACTIVE, this);
                 break;
 
             case ORDER_STARTED:
+                orderStarted = true;
                 new FirebaseServiceOrderSetStatus().setServiceOrderStatusRequest(batchDataRef, serviceOrder, ServiceOrder.ServiceOrderStatus.ACTIVE, this);
                 break;
 
             case STEP_STARTED:
                 new FirebaseOrderStepSetWorkStage().setOrderStepSetWorkStageRequest(batchDataRef, step, OrderStepInterface.WorkStage.ACTIVE, this);
-                response.stepStarted(nodeData.getActorType(), nodeData.getActionType(), batchDetail, serviceOrder, step);
                 break;
 
             case NO_BATCH:
             case NOT_SPECIFIED:
             case BATCH_REMOVED:
+            case BATCH_WAITING_TO_FINISH:
             case BATCH_FINISHED:
                 // should never see these action types WITH batch data.
                 Timber.tag(TAG).w("         ...this action type should NEVER have batch data --> " + nodeData.getActionType().toString());
@@ -129,19 +138,22 @@ public class ActiveBatchNodeWithBatchData implements
         }
     }
 
+    //// response to BATCH STARTED
     public void setBatchDetailStatusComplete(){
         Timber.tag(TAG).d("         ...set batch detail workstatus ACTIVE");
         new FirebaseServiceOrderSetStatus().setServiceOrderStatusRequest(batchDataRef, serviceOrder, ServiceOrder.ServiceOrderStatus.ACTIVE, this);
     }
 
+    //// response to ORDER STARTED
     public void setServiceOrderStatusComplete(){
         Timber.tag(TAG).d("         ...set service order workstage ACTIVE");
         new FirebaseOrderStepSetWorkStage().setOrderStepSetWorkStageRequest(batchDataRef, step, OrderStepInterface.WorkStage.ACTIVE, this);
     }
 
+    //// response to STEP STARTED
     public void setOrderStepWorkStageComplete(){
         Timber.tag(TAG).d("         ...set step workstage ACTIVE");
-        response.stepStarted(nodeData.getActorType(), nodeData.getActionType(), batchDetail, serviceOrder, step);
+        response.stepStarted(nodeData.getActorType(), nodeData.getActionType(), batchStarted, orderStarted, batchDetail, serviceOrder, step);
     }
 
 }

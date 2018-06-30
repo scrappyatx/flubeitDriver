@@ -16,8 +16,7 @@ public class PhotoRequest {
 
     public enum PhotoStatus {
         PHOTO_SUCCESS,
-        USER_SKIPPED_WITH_NO_ATTEMPTS,
-        USER_SKIPPED_AFTER_FAILED_ATTEMPTS,
+        FAILED_ATTEMPTS,
         NO_ATTEMPTS
     }
 
@@ -26,6 +25,7 @@ public class PhotoRequest {
     private String batchDetailGuid;
     private String serviceOrderGuid;
     private String stepGuid;
+    private Integer sequence;
 
     private String title;
     private String description;
@@ -85,6 +85,14 @@ public class PhotoRequest {
 
     public void setStepGuid(String stepGuid) {
         this.stepGuid = stepGuid;
+    }
+
+    public Integer getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Integer sequence) {
+        this.sequence = sequence;
     }
 
     public String getTitle(){

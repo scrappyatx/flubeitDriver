@@ -41,6 +41,9 @@ public class FirebaseActiveBatchServerNode implements OnCompleteListener<Void> {
     private static final String SERVICE_ORDER_COUNT_PROPERTY = "serviceOrderCount";
     private static final String STEP_COUNT_PROPERTY = "stepCount";
     private static final String DRIVER_LOCATION_PROPERTY = "driverLocationWhenCurrentStepStarted";
+    private static final String UPDATE_TIMESTAMP = "timestamp";
+    private static final String CURRENT_STEP_SCHEDULED_START_TIME = "currentStepScheduledStartTime";
+    private static final String CURRENT_STEP_SCHEDULED_FINISH_TIME = "currentStepScheduledFinishTime";
 
 
     public void activeBatchServerNodeUpdateRequest(DatabaseReference activeBatchRef, Driver driver,
@@ -94,6 +97,11 @@ public class FirebaseActiveBatchServerNode implements OnCompleteListener<Void> {
         data.put(CURRENT_STEP_SEQUENCE_PROPERTY, step.getSequence());
         data.put(STEP_COUNT_PROPERTY, serviceOrder.getTotalSteps());
 
+        data.put(CURRENT_STEP_SCHEDULED_START_TIME, step.getStartTime().getScheduledTime());
+        data.put(CURRENT_STEP_SCHEDULED_FINISH_TIME, step.getFinishTime().getScheduledTime());
+
+        data.put(UPDATE_TIMESTAMP, ServerValue.TIMESTAMP);
+
         Timber.tag(TAG).d("   baseline data...");
         Timber.tag(TAG).d("         clientId             --> " + driver.getClientId());
         Timber.tag(TAG).d("         driver firstName     --> " + driver.getNameSettings().getFirstName());
@@ -111,6 +119,11 @@ public class FirebaseActiveBatchServerNode implements OnCompleteListener<Void> {
 
         Timber.tag(TAG).d("         stepSequence         --> " + step.getSequence());
         Timber.tag(TAG).d("         stepCount            --> " + serviceOrder.getTotalSteps());
+
+        Timber.tag(TAG).d("         step scheduled start time  --> " + step.getStartTime().getScheduledTime().toString());
+        Timber.tag(TAG).d("         step scheduled finish time --> " + step.getFinishTime().getScheduledTime().toString());
+
+
         return data;
     }
 

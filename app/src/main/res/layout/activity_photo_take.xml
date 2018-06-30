@@ -10,46 +10,61 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.wonderkiln.camerakit.CameraView
-        xmlns:camerakit="http://schemas.android.com/apk/res-auto"
+    <io.fotoapparat.view.CameraView
         android:id="@+id/camera"
+
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
 
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/photo_button"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+    />
 
-        camerakit:ckDoubleTapToToggleFacing="false"
-        camerakit:ckFacing="back"
-        camerakit:ckFlash="auto"
-        camerakit:ckFocus="tapWithMarker"
-        camerakit:ckMethod="standard"
-        camerakit:ckPinchToZoom="true"
-        camerakit:ckZoom="1.0"
-        camerakit:ckPermissions="strict"
-        camerakit:ckCropOutput="false"
-        camerakit:ckJpegQuality="100"
-        android:adjustViewBounds="true" />
+    <!--
+        <com.wonderkiln.camerakit.CameraView
+            xmlns:camerakit="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/camera"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
 
-    <com.joanzapata.iconify.widget.IconButton
-        android:id="@+id/photo_button"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/photo_button"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
 
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+            camerakit:ckDoubleTapToToggleFacing="false"
+            camerakit:ckFacing="back"
+            camerakit:ckFlash="auto"
+            camerakit:ckFocus="tapWithMarker"
+            camerakit:ckMethod="standard"
+            camerakit:ckPinchToZoom="true"
+            camerakit:ckZoom="1.0"
+            camerakit:ckPermissions="strict"
+            camerakit:ckCropOutput="false"
+            camerakit:ckJpegQuality="25"
+            android:adjustViewBounds="true" />
 
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+     -->
+
+        <com.joanzapata.iconify.widget.IconButton
+            android:id="@+id/photo_button"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
 
 
-        android:layout_marginBottom="10dp"
+            android:layout_marginBottom="10dp"
 
-        android:onClick="clickPhotoButton"
-        android:paddingBottom="25dp"
-        android:paddingTop="25dp"
+            android:onClick="clickPhotoButton"
+            android:paddingBottom="25dp"
+            android:paddingTop="25dp"
 
-        android:text="@string/photo_take_button_caption" />
+            android:text="@string/photo_take_button_caption" />
 
-</android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>

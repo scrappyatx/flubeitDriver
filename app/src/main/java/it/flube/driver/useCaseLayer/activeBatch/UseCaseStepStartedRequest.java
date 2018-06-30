@@ -6,8 +6,10 @@ package it.flube.driver.useCaseLayer.activeBatch;
 
 import java.util.ArrayList;
 
+import it.flube.driver.modelLayer.entities.DeviceInfo;
 import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.interfaces.CloudActiveBatchInterface;
+import it.flube.driver.modelLayer.interfaces.CloudImageStorageInterface;
 import it.flube.libbatchdata.entities.LatLonLocation;
 import it.flube.libbatchdata.entities.RouteStop;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
@@ -31,6 +33,7 @@ public class UseCaseStepStartedRequest implements
         CloudActiveBatchInterface.GetServiceOrderListResponse,
         CloudActiveBatchInterface.GetRouteStopListResponse,
         CloudActiveBatchInterface.GetOrderStepListResponse,
+        CloudImageStorageInterface.StartOrResumeResponse,
         LocationTelemetryInterface.LocationTrackingStartResponse,
         ActiveBatchForegroundServiceInterface.StartActiveBatchForegroundServiceResponse,
         ActiveBatchForegroundServiceInterface.UpdateActiveBatchForegroundServiceResponse {
@@ -40,6 +43,7 @@ public class UseCaseStepStartedRequest implements
     private final MobileDeviceInterface device;
     private final CloudActiveBatchInterface cloudActiveBatch;
     private final Driver driver;
+    private final DeviceInfo deviceInfo;
     private final ActiveBatchManageInterface.ActorType actorType;
     private final ActiveBatchManageInterface.ActionType actionType;
 
@@ -56,6 +60,7 @@ public class UseCaseStepStartedRequest implements
                                      Response response){
         this.device = device;
         this.driver = device.getUser().getDriver();
+        this.deviceInfo = device.getDeviceInfo();
         this.cloudActiveBatch = device.getCloudActiveBatch();
         this.actorType = actorType;
         this.actionType = actionType;
@@ -80,8 +85,12 @@ public class UseCaseStepStartedRequest implements
         device.getCloudActiveBatch().getActiveBatchRouteStopListRequest(driver, batchGuid,this);
         device.getCloudActiveBatch().getActiveBatchOrderStepListRequest(driver, batchGuid, serviceOrder.getGuid(), this);
 
+        // start location tracking
         Timber.tag(TAG).d("   start location tracking...");
         device.getLocationTelemetry().locationTrackingStartRequest(this);
+
+        // start or resume any file upload tasks
+        device.getCloudImageStorage().startOrResumeUploadingImagesForActiveBatch(driver, deviceInfo, batchDetail.getBatchGuid(), this);
 
         String notificationTitle;
         String notificationSubTitle;
@@ -161,6 +170,10 @@ public class UseCaseStepStartedRequest implements
 
     public void locationTrackingStartFailure(){
         Timber.tag(TAG).d("   ...location tracking started FAILURE");
+    }
+
+    public void cloudImageStorageStartOrResumeComplete(){
+        Timber.tag(TAG).d("   ...cloudImageStorageStartOrResumeComplete");
     }
 
     public void activeBatchForegroundServiceStarted(){

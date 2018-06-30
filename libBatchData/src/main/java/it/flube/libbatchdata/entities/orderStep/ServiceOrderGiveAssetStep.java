@@ -5,8 +5,10 @@
 package it.flube.libbatchdata.entities.orderStep;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import it.flube.libbatchdata.entities.ContactPerson;
+import it.flube.libbatchdata.entities.SignatureRequest;
 import it.flube.libbatchdata.entities.Timestamp;
 
 import it.flube.libbatchdata.entities.assetTransfer.AssetTransfer;
@@ -22,15 +24,19 @@ public class ServiceOrderGiveAssetStep extends AbstractStep
         implements OrderStepInterface {
 
     /// implement the getters/setters for the unique data in this step type
-    private ArrayList<AssetTransfer> assetList;
+    private HashMap<String, AssetTransfer> assetList;
     private ContactPerson contactPerson;
     private AssetTransferInterface.TransferType transferType;
 
-    public ArrayList<AssetTransfer> getAssetList(){
+    private Boolean requireSignature;
+    private SignatureRequest signatureRequest;
+
+
+    public HashMap<String, AssetTransfer> getAssetList(){
         return assetList;
     }
 
-    public void setAssetList(ArrayList<AssetTransfer> assetList){
+    public void setAssetList(HashMap<String, AssetTransfer> assetList){
         this.assetList = assetList;
     }
 
@@ -48,5 +54,21 @@ public class ServiceOrderGiveAssetStep extends AbstractStep
 
     public void setTransferType(AssetTransferInterface.TransferType transferType) {
         this.transferType = transferType;
+    }
+
+    public Boolean getRequireSignature() {
+        return requireSignature;
+    }
+
+    public void setRequireSignature(Boolean requireSignature) {
+        this.requireSignature = requireSignature;
+    }
+
+    public SignatureRequest getSignatureRequest() {
+        return signatureRequest;
+    }
+
+    public void setSignatureRequest(SignatureRequest signatureRequest) {
+        this.signatureRequest = signatureRequest;
     }
 }

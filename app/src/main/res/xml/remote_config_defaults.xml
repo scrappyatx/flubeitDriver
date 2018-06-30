@@ -27,42 +27,42 @@
     <!-- firebase database storage defaults -->
     <entry>
         <key>firebase_database_base_node_public_offers</key>
-        <value>userReadable</value>
+        <value>mobileData/userReadable</value>
     </entry>
 
     <entry>
         <key>firebase_database_base_node_personal_offers</key>
-        <value>userReadable/users</value>
+        <value>mobileData/userReadable/users</value>
     </entry>
 
     <entry>
         <key>firebase_database_base_node_demo_offers</key>
-        <value>userOwned/users</value>
+        <value>mobileData/userOwned/users</value>
     </entry>
 
     <entry>
         <key>firebase_database_base_node_scheduled_batches</key>
-        <value>userOwned/users</value>
+        <value>mobileData/userOwned/users</value>
     </entry>
 
     <entry>
         <key>firebase_database_base_node_active_batch</key>
-        <value>userOwned/users</value>
+        <value>mobileData/userOwned/users</value>
     </entry>
 
     <entry>
         <key>firebase_database_base_node_batch_data</key>
-        <value>userOwned/users</value>
+        <value>mobileData/userOwned/users</value>
     </entry>
 
     <entry>
         <key>firebase_database_base_node_user_data</key>
-        <value>userWriteable/users</value>
+        <value>mobileData/userWriteable/users</value>
     </entry>
 
     <entry>
         <key>firebase_database_base_node_device_data</key>
-        <value>userWriteable/users</value>
+        <value>mobileData/userWriteable/users</value>
     </entry>
 
 

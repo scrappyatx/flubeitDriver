@@ -52,8 +52,11 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" tools:targetApi="lollipop"/>
 
-    <include layout="@layout/step_detail_complete"
-        android:id="@+id/step_detail_complete"
+
+
+
+    <include layout="@layout/step_detail_swipe_complete"
+        android:id="@+id/step_detail_swipe_complete"
 
         android:layout_width="0dp"
         android:layout_height="wrap_content"

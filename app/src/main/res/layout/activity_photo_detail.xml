@@ -11,103 +11,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/photo_list_sequence"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+    <include layout="@layout/toolbar"
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
 
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
-        android:background="@drawable/step_work_stage_circle_not_started"
-        android:gravity="center"
-        android:textAppearance="@style/PhotoRequestRowSequence"
+    <include layout="@layout/photo_request_detail"
+        android:id="@+id/photo_request_detail"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintBottom_toTopOf="@+id/step_detail_complete"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_bias="0.0"/>
+
+    <include layout="@layout/step_detail_complete"
+        android:id="@+id/step_detail_complete"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="@+id/vGuideline10"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="1" />
-
-    <TextView
-        android:id="@+id/photo_list_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        tools:text="Front of Car"
-        android:textAppearance="@style/PhotoRequestRowTitle"
-
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/photo_list_description"
-        app:layout_constraintLeft_toRightOf="@+id/vGuideline10"
-
-
-        android:layout_marginTop="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp" />
-
-    <TextView
-        android:id="@+id/photo_list_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        tools:text="This is the front of car photo"
-        android:textAppearance="@style/PhotoRequestRowDescription"
-
-        app:layout_constraintTop_toBottomOf="@+id/photo_list_title"
-        app:layout_constraintLeft_toRightOf="@+id/vGuideline10"
-
-
-        android:layout_marginTop="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp" />
-
-    <ImageView
-        android:id="@+id/image_photo_hint"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="4dp"
-
-        android:adjustViewBounds="true"
-        android:cropToPadding="true"
-        android:scaleType="fitCenter"
-
-        tools:src="@mipmap/jiffylube"
-
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/vGuideline70"
-        app:layout_constraintRight_toLeftOf="@+id/vGuideline90"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-    <ImageView
-        android:id="@+id/image_photo_actual"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="4dp"
-
-        android:adjustViewBounds="true"
-        android:cropToPadding="true"
-        android:scaleType="fitCenter"
-
-        tools:src="@mipmap/jiffylube"
-
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/vGuideline70"
-        app:layout_constraintRight_toLeftOf="@+id/vGuideline90"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-
+        app:layout_constraintRight_toRightOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>

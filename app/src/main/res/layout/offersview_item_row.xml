@@ -76,7 +76,7 @@
         android:layout_gravity="center|start"
         android:layout_weight="1"
         tools:text="Oil Change"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@+id/guideline20"
         app:layout_constraintRight_toLeftOf="@+id/guideline50"

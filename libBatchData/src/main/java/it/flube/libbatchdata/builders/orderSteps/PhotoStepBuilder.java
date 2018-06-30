@@ -26,7 +26,7 @@ import it.flube.libbatchdata.interfaces.OrderStepInterface;
 
 public class PhotoStepBuilder {
     private static final OrderStepInterface.TaskType TASK_TYPE = OrderStepInterface.TaskType.TAKE_PHOTOS;
-    private static final Integer DEFAULT_DURATION_MINUTES = 10;
+    private static final Integer DEFAULT_DURATION_MINUTES = 5;
     private static final String DEFAULT_MILESTONE_WHEN_FINISHED = "Photos Taken";
 
     /// icon strings use fontawesome.io icon strings
@@ -67,7 +67,7 @@ public class PhotoStepBuilder {
             photoStep.setWorkStage(OrderStepInterface.WorkStage.NOT_STARTED);
             photoStep.setWorkTiming(OrderStepInterface.WorkTiming.ON_TIME);
             photoStep.setWorkStatus(OrderStepInterface.WorkStatus.NORMAL);
-            photoStep.setPhotoRequestList(new ArrayList<PhotoRequest>());
+            photoStep.setPhotoRequestList(new HashMap<String, PhotoRequest>());
 
             //default task type icon string
             photoStep.setTaskTypeIconText(TASK_ICON_STRING);
@@ -189,12 +189,17 @@ public class PhotoStepBuilder {
         }
 
         public Builder addPhotoRequest(PhotoRequest photoRequest){
-            this.photoStep.getPhotoRequestList().add(photoRequest);
+            ///calculate sequence number for this photoRequest if one is not provided
+            if (photoRequest.getSequence()==null){
+                photoRequest.setSequence(this.photoStep.getPhotoRequestList().size()+1);
+            }
+            //now add it to photoRequest list
+            this.photoStep.getPhotoRequestList().put(photoRequest.getGuid(), photoRequest);
             return this;
         }
 
-        public Builder addVehiclePhotoRequests(ArrayList<PhotoRequest> photoList){
-            this.photoStep.getPhotoRequestList().addAll(photoList);
+        public Builder addVehiclePhotoRequests(HashMap<String, PhotoRequest> photoList){
+            this.photoStep.getPhotoRequestList().putAll(photoList);
             return this;
         }
 

@@ -107,7 +107,7 @@ public class AndroidDevice implements
     private UseCaseEngine useCaseEngine;
 
     //// application data
-    private  AppUser appUser;
+    private AppUser appUser;
     private DeviceDetails deviceDetails;
     private ActiveBatch activeBatch;
     private OfferLists offerLists;
@@ -133,7 +133,7 @@ public class AndroidDevice implements
         //initialize firebase realtime database before using any classes that reference it
         FirebaseRealtimeDatabaseWrapper.initializeDb();
 
-        cloudImageStorage = new CloudImageStorageFirebaseWrapper();
+        cloudImageStorage = new CloudImageStorageFirebaseWrapper(cloudConfig);
         cloudUserProfile = new UserProfileFirebaseWrapper();
         cloudUserAndDeviceInfoStorage = new UserAndDeviceInfoStorageFirestoreWrapper();
 

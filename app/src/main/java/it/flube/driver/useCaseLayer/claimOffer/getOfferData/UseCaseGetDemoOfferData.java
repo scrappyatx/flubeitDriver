@@ -71,6 +71,9 @@ public class UseCaseGetDemoOfferData implements
         demoOffer.getRouteStopListRequest(driver, batchGuid, this);
     }
 
+    ////
+    //// An Offer may not have ANY route stops.
+    ////
     public void cloudGetDemoRouteStopListSuccess(ArrayList<RouteStop> routeList){
         Timber.tag(TAG).d("step 3 -> got route stop list!");
         this.routeList = new ArrayList<RouteStop>();
@@ -79,6 +82,13 @@ public class UseCaseGetDemoOfferData implements
 
         response.getOfferDataSuccess(this.batchDetail, this.orderList, this.routeList);
     }
+
+    public void cloudGetDemoRouteStopListFailure(){
+        Timber.tag(TAG).w("couldn't get route stop list");
+        this.routeList = new ArrayList<RouteStop>();
+        response.getOfferDataSuccess(this.batchDetail, this.orderList, this.routeList);
+    }
+
 
     ///
     /// Failure Modes
@@ -94,10 +104,7 @@ public class UseCaseGetDemoOfferData implements
         response.getOfferDataFailure();
     }
 
-    public void cloudGetDemoRouteStopListFailure(){
-        Timber.tag(TAG).w("couldn't get route stop list");
-        response.getOfferDataFailure();
-    }
+
 
     ///
     ///  Interface

@@ -5,6 +5,7 @@
 package it.flube.libbatchdata.entities.orderStep;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -21,7 +22,7 @@ public class ServiceOrderPhotoStep extends AbstractStep implements OrderStepInte
     private static final OrderStepInterface.TaskType TASK_TYPE = TaskType.TAKE_PHOTOS;
     private static final Integer DEFAULT_DURATION_MINUTES = 10;
 
-    private ArrayList<PhotoRequest> photoRequestList;
+    private HashMap<String, PhotoRequest> photoRequestList;
 
     /// return the constants for this step type
     public TaskType getTaskType() {
@@ -31,11 +32,13 @@ public class ServiceOrderPhotoStep extends AbstractStep implements OrderStepInte
     public Integer getDefaultDurationMinutes() { return DEFAULT_DURATION_MINUTES; }
 
     /// implement the getters/setters for the unique data in this step type
-    public ArrayList<PhotoRequest> getPhotoRequestList() {
+
+
+    public HashMap<String, PhotoRequest> getPhotoRequestList() {
         return photoRequestList;
     }
 
-    public void setPhotoRequestList(ArrayList<PhotoRequest> photoRequestList) {
+    public void setPhotoRequestList(HashMap<String, PhotoRequest> photoRequestList) {
         this.photoRequestList = photoRequestList;
     }
 }

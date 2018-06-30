@@ -126,7 +126,7 @@ public class SetNodeFailed implements
         response.setNodeFailedComplete(attemptCount);
     }
 
-    interface Response {
+    public interface Response {
         void setNodeFailedComplete(Integer attemptCount);
     }
 

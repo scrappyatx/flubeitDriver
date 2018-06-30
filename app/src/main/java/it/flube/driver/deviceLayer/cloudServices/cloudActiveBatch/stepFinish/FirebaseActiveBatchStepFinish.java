@@ -27,7 +27,6 @@ import timber.log.Timber;
 public class FirebaseActiveBatchStepFinish implements
         FirebaseOrderStepSetWorkStage.Response,
         FirebaseServiceOrderSetStatus.Response,
-        FirebaseBatchDetailSetStatus.Response,
         FirebaseActiveBatchSetData.Response {
 
     private static final String TAG = "FirebaseActiveBatchStepFinish";
@@ -90,14 +89,13 @@ public class FirebaseActiveBatchStepFinish implements
         } else {
             //finished with the batch
             Timber.tag(TAG).d("   ...batch is finished");
-            responseCounter = new ResponseCounter(4);
+            responseCounter = new ResponseCounter(3);
 
             new FirebaseOrderStepSetWorkStage().setOrderStepSetWorkStageRequest(batchDataRef, step, OrderStepInterface.WorkStage.COMPLETED, this);
             new FirebaseServiceOrderSetStatus().setServiceOrderStatusRequest(batchDataRef, serviceOrder,ServiceOrder.ServiceOrderStatus.COMPLETED, this);
-            new FirebaseBatchDetailSetStatus().setBatchDetailStatusRequest(batchDataRef, batchDetail, BatchDetail.WorkStatus.COMPLETED_SUCCESS, this);
 
             new FirebaseActiveBatchSetData().setDataRequest(activeBatchRef, batchDetail.getBatchGuid(), null, null,
-                    ActiveBatchManageInterface.ActionType.BATCH_FINISHED, actorType, this);
+                    ActiveBatchManageInterface.ActionType.BATCH_WAITING_TO_FINISH, actorType, this);
         }
         Timber.tag(TAG).d("...finishStepRequest COMPLETE");
     }
@@ -123,18 +121,17 @@ public class FirebaseActiveBatchStepFinish implements
     }
 
     public void setOrderStepWorkStageComplete() {
+        Timber.tag(TAG).d("   ...setOrderStepWorkStageComplete");
        checkIfFinished();
     }
 
     public void setServiceOrderStatusComplete() {
-        checkIfFinished();
-    }
-
-    public void setBatchDetailStatusComplete() {
+        Timber.tag(TAG).d("   ...setServiceOrderStatusComplete");
         checkIfFinished();
     }
 
     public void setDataComplete() {
+        Timber.tag(TAG).d("   ...setDataComplete");
         checkIfFinished();
     }
 

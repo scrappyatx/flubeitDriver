@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.libbatchdata.entities.LatLonLocation;
+import it.flube.libbatchdata.entities.PhotoRequest;
 import it.flube.libbatchdata.entities.RouteStop;
 import it.flube.libbatchdata.entities.batch.Batch;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
@@ -38,7 +39,9 @@ public interface CloudActiveBatchInterface {
 
 
     interface ActiveBatchUpdated {
-        void stepStarted(ActiveBatchManageInterface.ActorType actorType, ActiveBatchManageInterface.ActionType actionType, BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step);
+        void stepStarted(ActiveBatchManageInterface.ActorType actorType, ActiveBatchManageInterface.ActionType actionType, Boolean batchStarted, Boolean orderStarted, BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step);
+
+        void batchWaitingToFinish(ActiveBatchManageInterface.ActorType actorType, String batchGuid);
 
         void batchFinished(ActiveBatchManageInterface.ActorType actorType, String batchGuid);
 
@@ -53,7 +56,13 @@ public interface CloudActiveBatchInterface {
     void startActiveBatchRequest(Driver driver, String batchGuid, ActiveBatchManageInterface.ActorType actorType, StartActiveBatchResponse response);
 
     interface StartActiveBatchResponse {
-        void cloudStartActiveBatchComplete();
+        void cloudStartActiveBatchSuccess(String batchGuid);
+
+        void cloudStartActiveBatchFailure(String batchGuid);
+
+        void cloudStartActiveBatchTimeout(String batchGuid);
+
+        void cloudStartActiveBatchDenied(String batchGuid, String reason);
     }
 
     ////
@@ -63,6 +72,12 @@ public interface CloudActiveBatchInterface {
 
     interface FinishActiveBatchStepResponse {
         void cloudActiveBatchFinishStepComplete();
+    }
+
+    void finishActiveBatchRequest(Driver driver, ActiveBatchManageInterface.ActorType actorType, String batchGuid, FinishActiveBatchResponse response);
+
+    interface FinishActiveBatchResponse {
+        void cloudActiveBatchFinished();
     }
 
     void acknowledgeFinishedBatchRequest(Driver driver, String batchGuid, AcknowledgeFinishedBatchResponse response);
@@ -85,6 +100,15 @@ public interface CloudActiveBatchInterface {
     }
 
     ////
+    //// UPDATING THE ACTIVE BATCH
+    ////
+    void updatePhotoRequestDeviceAbsoluteFileNameRequest(Driver driver, PhotoRequest photoRequest, String absoluteFileName, Boolean hasFile, PhotoRequestDeviceAbsoluteFileNameResponse response);
+
+    interface PhotoRequestDeviceAbsoluteFileNameResponse {
+        void cloudActiveBatchUpdatePhotoRequestDeviceAbsoluteFilenameComplete();
+    }
+
+    ////
     //// STATUS MONITORING & TRACKING OF THE ACTIVE BATCH
     ////
 
@@ -103,12 +127,28 @@ public interface CloudActiveBatchInterface {
     ////        BatchSummary, BatchDetail, ServiceOrderList, RouteStopList, OrderStepList
     ///
 
+    void getActiveBatchPhotoRequestRequest(Driver driver, String batchGuid, String orderStepGuid, String photoRequestGuid, GetActiveBatchPhotoRequestResponse response);
+
+    interface GetActiveBatchPhotoRequestResponse {
+        void cloudGetActiveBatchPhotoRequestSuccess(PhotoRequest photoRequest);
+
+        void cloudGetActiveBatchPhotoRequestFailure();
+    }
+
     void getActiveBatchCurrentStepRequest(Driver driver, GetActiveBatchCurrentStepResponse response);
 
     interface GetActiveBatchCurrentStepResponse {
         void cloudGetActiveBatchCurrentStepSuccess(BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface orderStep);
 
         void cloudGetActiveBatchCurrentStepFailure();
+    }
+
+    void getActiveBatchStepRequest(Driver driver, String batchGuid, String stepGuid, GetActiveBatchStepResponse response);
+
+    interface GetActiveBatchStepResponse {
+        void cloudGetActiveBatchStepSuccess(OrderStepInterface step);
+
+        void cloudGetActiveBatchStepFailure();
     }
 
     void getActiveBatchSummaryRequest(Driver driver, String batchGuid, GetBatchSummaryResponse response);
