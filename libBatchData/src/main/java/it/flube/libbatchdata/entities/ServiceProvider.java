@@ -11,8 +11,6 @@ package it.flube.libbatchdata.entities;
 public class ServiceProvider {
     private String name;
     private String iconURL;
-    private String contactPhone;
-    private String contactText;
     private ContactPerson contactPerson;
     private AddressLocation addressLocation;
     private LatLonLocation latLonLocation;
@@ -33,22 +31,6 @@ public class ServiceProvider {
 
     public void setIconURL(String iconURL) {
         this.iconURL = iconURL;
-    }
-
-    public String getContactPhone() {
-        return contactPhone;
-    }
-
-    public void setContactPhone(String contactPhone) {
-        this.contactPhone = contactPhone;
-    }
-
-    public String getContactText() {
-        return contactText;
-    }
-
-    public void setContactText(String contactText) {
-        this.contactText = contactText;
     }
 
     public ContactPerson getContactPerson() {

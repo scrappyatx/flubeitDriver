@@ -6,6 +6,14 @@ package it.flube.driver.userInterfaceLayer.activities.messages;
 
 import android.util.Log;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import it.flube.driver.dataLayer.AndroidDevice;
+import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
+import it.flube.driver.useCaseLayer.messages.UseCaseGetContactPersons;
+import timber.log.Timber;
+
 /**
  * Created on 5/29/2017
  * Project : Driver
@@ -14,7 +22,23 @@ import android.util.Log;
 public class MessagesController {
     private final String TAG = "MessagesController";
 
+    private ExecutorService useCaseExecutor;
+    private MobileDeviceInterface device;
+
     public MessagesController() {
-        Log.d(TAG, "MessagesController Controller CREATED");
+        useCaseExecutor = Executors.newSingleThreadExecutor();
+        device = AndroidDevice.getInstance();
+
+        Timber.tag(TAG).d("created");
+    }
+
+    public void getContactPersonInfo(UseCaseGetContactPersons.Response response){
+        Timber.tag(TAG).d("getContactPersonInfo");
+        useCaseExecutor.execute(new UseCaseGetContactPersons(device, response));
+    }
+
+    public void close(){
+        device = null;
+        useCaseExecutor = null;
     }
 }

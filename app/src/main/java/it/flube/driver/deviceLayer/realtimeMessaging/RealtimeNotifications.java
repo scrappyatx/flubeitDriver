@@ -23,8 +23,9 @@ public class RealtimeNotifications implements RealtimeMessagingInterface.Notific
     }
 
     private RealtimeNotifications() {
-        ablyChannel = new AblyChannel(AndroidDevice.getInstance().getCloudConfig().getRealtimeMessagingLookingForOffersChannelName(),
-                AndroidDevice.getInstance().getCloudConfig().getRealtimeMessagingAuthTokenUrl());
+        //ablyChannel = new AblyChannel(AndroidDevice.getInstance().getCloudConfig().getRealtimeMessagingLookingForOffersChannelName(),
+               // AndroidDevice.getInstance().getCloudConfig().getRealtimeMessagingAuthTokenUrl());
+        ablyChannel = new AblyChannel("xxx", "yyy");
     }
 
     public static RealtimeNotifications getInstance() {

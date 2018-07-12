@@ -13,6 +13,7 @@ import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchStart.Fir
 import it.flube.driver.deviceLayer.cloudServices.cloudScheduledBatch.batchForfeit.productionBatch.BatchForfeitRequestWrite;
 import it.flube.driver.deviceLayer.cloudServices.cloudScheduledBatch.batchForfeit.productionBatch.BatchForfeitResponseMonitor;
 import it.flube.driver.deviceLayer.cloudServices.cloudScheduledBatch.batchForfeit.productionBatch.FirebaseProductionBatchForfeit;
+import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.forfeitBatch.ForfeitBatchResponse;
 import it.flube.libbatchdata.entities.startBatch.StartBatchResponse;
@@ -40,13 +41,15 @@ public class FirebaseProductionBatchStart implements
     }
 
     public void startBatchRequest(DatabaseReference activeBatchRef, DatabaseReference batchStartRequestRef, DatabaseReference batchStartResponseRef,
-                                  String clientId, BatchDetail batchDetail, Response response){
+                                  Driver driver, BatchDetail batchDetail, Response response){
 
         Timber.tag(TAG).d("startBatchRequest START...");
         Timber.tag(TAG).d("   ...activeBatchRef          = " + activeBatchRef.toString());
         Timber.tag(TAG).d("   ...batchStartRequestRef    = " + batchStartRequestRef.toString());
         Timber.tag(TAG).d("   ...batchStartResponseRef   = " + batchStartResponseRef.toString());
-        Timber.tag(TAG).d("   ...clientId                = " + clientId);
+        Timber.tag(TAG).d("   ...driver clientId         = " + driver.getClientId());
+        Timber.tag(TAG).d("   ...driver displayName      = " + driver.getNameSettings().getDisplayName());
+        Timber.tag(TAG).d("   ...driver dialNumber       = " + driver.getPhoneSettings().getDialNumber());
         Timber.tag(TAG).d("   ...batchGuid               = " + batchDetail.getBatchGuid());
         Timber.tag(TAG).d("   ...batchType               = " + batchDetail.getBatchType().toString());
         Timber.tag(TAG).d("   ...expectedStartTime       = " + batchDetail.getExpectedStartTime().toString());
@@ -60,7 +63,7 @@ public class FirebaseProductionBatchStart implements
         Timber.tag(TAG).d("   ...requestGuid             = " + requestGuid);
 
         //write the request
-        new BatchStartRequestWrite().writeStartRequest(batchStartRequestRef, clientId, batchDetail, requestGuid, this);
+        new BatchStartRequestWrite().writeStartRequest(batchStartRequestRef, driver, batchDetail, requestGuid, this);
 
         //start monitoring for a response
         startResponseMonitor = new BatchStartResponseMonitor(batchStartResponseRef, batchGuid, requestGuid, this);

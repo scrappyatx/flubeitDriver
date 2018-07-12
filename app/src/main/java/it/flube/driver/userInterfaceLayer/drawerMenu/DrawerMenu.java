@@ -140,6 +140,8 @@ public class DrawerMenu {
 
         addHomeMenuItems();
 
+        addMessageMenuItems();
+
         if (device.getActiveBatch().hasActiveBatch()){
             addActiveBatchMenuItems();
         }
@@ -171,6 +173,13 @@ public class DrawerMenu {
         drawer.addItem( new DividerDrawerItem());
     }
 
+    private void addMessageMenuItems(){
+        drawer.addItem(new PrimaryDrawerItem().withName(R.string.nav_menu_messages).withIcon(FontAwesome.Icon.faw_comments)
+                .withIdentifier(ID_MESSAGES).withSelectable(false).withOnDrawerItemClickListener(new MessagesItemClickListener()));
+
+        drawer.addItem( new DividerDrawerItem());
+    }
+
     private void addActiveBatchMenuItems(){
 
         drawer.addItem(new PrimaryDrawerItem().withName(R.string.nav_menu_batch_itinerary).withIcon(FontAwesome.Icon.faw_list_alt)
@@ -181,9 +190,6 @@ public class DrawerMenu {
 
         drawer.addItem(new PrimaryDrawerItem().withName(R.string.nav_menu_current_step).withIcon(FontAwesome.Icon.faw_shopping_bag)
                 .withIdentifier(ID_ORDER_STEP).withSelectable(false).withOnDrawerItemClickListener(new CurrentStepItemClickListener()));
-
-        drawer.addItem(new PrimaryDrawerItem().withName(R.string.nav_menu_messages).withIcon(FontAwesome.Icon.faw_comments)
-                .withIdentifier(ID_MESSAGES).withSelectable(false).withOnDrawerItemClickListener(new MessagesItemClickListener()));
 
         drawer.addItem( new DividerDrawerItem());
     }

@@ -15,7 +15,7 @@ import timber.log.Timber;
  */
 
 public class HomeController {
-    private final String TAG = "HomeNABController";
+    private final String TAG = "HomeController";
 
     public HomeController() {
         Timber.tag(TAG).d( "HomeController CREATED");

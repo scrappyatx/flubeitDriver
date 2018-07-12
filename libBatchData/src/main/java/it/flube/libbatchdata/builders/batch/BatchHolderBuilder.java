@@ -13,6 +13,7 @@ import it.flube.libbatchdata.builders.RouteStopBuilder;
 import it.flube.libbatchdata.builders.serviceOrder.ServiceOrderBuilder;
 import it.flube.libbatchdata.entities.ChatHistory;
 import it.flube.libbatchdata.entities.ChatMessage;
+import it.flube.libbatchdata.entities.ContactPerson;
 import it.flube.libbatchdata.entities.FileAttachment;
 import it.flube.libbatchdata.entities.MapPing;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
@@ -67,6 +68,10 @@ public class BatchHolderBuilder {
             // a batch can have multiple stepIds & steps
             this.batchHolder.setStepIds(new HashMap<String, StepId>());
             this.batchHolder.setSteps(new HashMap<String, OrderStepInterface>());
+
+            // a batch can have multiple contact persons
+            this.batchHolder.setContactPersons(new HashMap<String, ContactPerson>());
+            this.batchHolder.setContactPersonsByServiceOrder(new HashMap<String, Map<String, ContactPerson>>());
 
             // a batch can have multiple mapPings
             this.batchHolder.setMapPings(new HashMap<String, MapPing>());
@@ -205,6 +210,9 @@ public class BatchHolderBuilder {
             this.batchHolder.getStepIds().putAll(serviceOrderScaffold.getStepIds());
             this.batchHolder.getSteps().putAll(serviceOrderScaffold.getSteps());
 
+            // create hash map for ContactPersons in this service order
+            this.batchHolder.getContactPersonsByServiceOrder().put(serviceOrder.getGuid(), new HashMap<String, ContactPerson>());
+
             //add all the navigation steps to route stop list
             addNavigationStepDataToRouteStopList(serviceOrderScaffold.getSteps());
 
@@ -261,12 +269,21 @@ public class BatchHolderBuilder {
             //set guids for all the steps
             SetStepGuids.setStepGuids(batchHolder);
 
+            //add all contact persons to the contactPersonsByServiceOrder hashmap
+            ExtractContactPersonsFromSteps.extractContactPersonsFromSteps(batchHolder);
+
             //set expected Start & Finish time on the batch, batchDetail, serviceOrders, and each step
             CalculateStartAndStopTimes.calculateStartAndStopTimes(batchHolder);
         }
 
         private void validate(BatchHolder batchHolder){
 
+            if (!ValidateBatchHolder.isServiceOrderCountValid(batchHolder)){
+                throw new IllegalStateException("too many service orders in this batch");
+            }
+            if (!ValidateBatchHolder.isContactPersonCountValid(batchHolder)){
+                throw new IllegalStateException("too many ContactPersons in one or more service orders");
+            }
         }
 
         public BatchHolder build(){

@@ -25,8 +25,9 @@ public class RealtimeBatchMessages implements RealtimeMessagingInterface.BatchCh
     }
 
     private RealtimeBatchMessages() {
-        ablyChannel = new AblyChannel(AndroidDevice.getInstance().getCloudConfig().getRealtimeMessagingBatchActivityChannelName(),
-                AndroidDevice.getInstance().getCloudConfig().getRealtimeMessagingAuthTokenUrl());
+        //ablyChannel = new AblyChannel(AndroidDevice.getInstance().getCloudConfig().getRealtimeMessagingBatchActivityChannelName(),
+        //        AndroidDevice.getInstance().getCloudConfig().getRealtimeMessagingAuthTokenUrl());
+        ablyChannel = new AblyChannel("xxx", "yyy");
     }
 
     public static RealtimeBatchMessages getInstance() {

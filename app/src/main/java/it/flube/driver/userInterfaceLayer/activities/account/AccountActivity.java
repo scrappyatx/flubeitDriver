@@ -110,6 +110,7 @@ public class AccountActivity extends AppCompatActivity {
                 + "Email --> " + event.getDriver().getEmail() + System.getProperty("line.separator")+ System.getProperty("line.separator")
                 + "Client ID --> "  + event.getDriver().getClientId() + System.getProperty("line.separator")+ System.getProperty("line.separator")
                 + "Photo Url --> "  + event.getDriver().getPhotoUrl() + System.getProperty("line.separator")+ System.getProperty("line.separator")
+                + "DisplayNumber --> " + event.getDriver().getPhoneSettings().getDisplayNumber() + System.getProperty("line.separator") + System.getProperty("line.separator")
                 + "isDev --> " + event.getDriver().getUserRoles().getDev() + System.getProperty("line.separator")
                 + "isQA --> " + event.getDriver().getUserRoles().getQa() + System.getProperty("line.separator")+ System.getProperty("line.separator")
                 + "publicOffersNode --> " + event.getDriver().getCloudDatabaseSettings().getPublicOffersNode() + System.getProperty("line.separator")

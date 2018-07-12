@@ -24,7 +24,8 @@ public class AblyConnectionWrapper implements
     }
 
     private AblyConnectionWrapper() {
-        ablyConnection = new AblyConnection(AndroidDevice.getInstance().getCloudConfig().getRealtimeMessagingAuthTokenUrl());
+        //ablyConnection = new AblyConnection(AndroidDevice.getInstance().getCloudConfig().getRealtimeMessagingAuthTokenUrl());
+        ablyConnection = new AblyConnection("xxx");
     }
 
     public static AblyConnectionWrapper getInstance() {

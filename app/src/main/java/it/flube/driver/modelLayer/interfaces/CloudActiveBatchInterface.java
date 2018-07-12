@@ -7,6 +7,7 @@ package it.flube.driver.modelLayer.interfaces;
 import java.util.ArrayList;
 
 import it.flube.driver.modelLayer.entities.driver.Driver;
+import it.flube.libbatchdata.entities.ContactPersonsByServiceOrder;
 import it.flube.libbatchdata.entities.LatLonLocation;
 import it.flube.libbatchdata.entities.PhotoRequest;
 import it.flube.libbatchdata.entities.RouteStop;
@@ -189,5 +190,13 @@ public interface CloudActiveBatchInterface {
         void cloudGetActiveBatchOrderStepListSuccess(ArrayList<OrderStepInterface> stepList);
 
         void cloudGetActiveBatchOrderStepListFailure();
+    }
+
+    void getActiveBatchContactPersonsByServiceOrder(Driver driver, String batchGuid, GetContactPersonsByServiceOrderResponse response);
+
+    interface GetContactPersonsByServiceOrderResponse {
+        void cloudGetActiveBatchContactPersonsByServiceOrderSuccess(ContactPersonsByServiceOrder contactList);
+
+        void cloudGetActiveBatchContactPersonsByServiceOrderFailure();
     }
 }

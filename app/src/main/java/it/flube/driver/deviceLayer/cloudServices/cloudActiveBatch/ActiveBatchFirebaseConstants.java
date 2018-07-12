@@ -24,4 +24,7 @@ public class ActiveBatchFirebaseConstants {
     public static final String BATCH_START_RESPONSE_NODE = "mobileData/userReadable/batchStartResponse";
 
 
+    public static final String BATCH_DATA_SERVICE_ORDER_NODE = "serviceOrders";
+    public static final String BATCH_DATA_CONTACT_PERSONS_BY_SERVICE_ORDER_NODE = "contactPersonsByServiceOrder";
+
 }

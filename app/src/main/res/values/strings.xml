@@ -350,5 +350,18 @@
     <string name="authorize_payment_completed_banner_text">Finishing...</string>
 
 
+    <!-- Strings related to contact person info panel.xml -->
+    <string name="contact_person_call_button_caption">{fa-phone} Call</string>
+    <string name="contact_person_text_button_caption">{fa-comment} Text</string>
+
+    <!-- Strings related to Communications Activity -->
+    <string name="communication_activity_title">Communication</string>
+    <string name="communication_activity_tab_zero_caption">Order 1</string>
+    <string name="communication_activity_tab_one_caption">Order 2</string>
+    <string name="communication_activity_tab_two_caption">Order 3</string>
+    <string name="communication_activity_tab_three_caption">Order 4</string>
+    <string name="communication_activity_tab_four_caption">Order 5</string>
+    <string name="communication_activity_banner_caption_calling">Calling...</string>
+    <string name="communication_activity_banner_caption_texting">Texting...</string>
 
 </resources>

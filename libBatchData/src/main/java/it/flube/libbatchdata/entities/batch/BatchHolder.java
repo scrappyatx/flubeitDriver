@@ -9,6 +9,7 @@ import java.util.Map;
 
 import it.flube.libbatchdata.entities.ChatHistory;
 import it.flube.libbatchdata.entities.ChatMessage;
+import it.flube.libbatchdata.entities.ContactPerson;
 import it.flube.libbatchdata.entities.FileAttachment;
 import it.flube.libbatchdata.entities.MapPing;
 import it.flube.libbatchdata.entities.RouteStop;
@@ -27,6 +28,9 @@ public class BatchHolder {
 
     private Map<String, RouteStop> routeStops;
     private Map<String, ServiceOrder> serviceOrders;
+
+    private Map<String, ContactPerson> contactPersons;
+    private Map<String, Map<String, ContactPerson>> contactPersonsByServiceOrder;
 
     private Map<String, StepId> stepIds;
     private Map<String, OrderStepInterface> steps;
@@ -71,6 +75,22 @@ public class BatchHolder {
 
     public void setServiceOrders(Map<String, ServiceOrder> serviceOrders) {
         this.serviceOrders = serviceOrders;
+    }
+
+    public Map<String, ContactPerson> getContactPersons() {
+        return contactPersons;
+    }
+
+    public void setContactPersons(Map<String, ContactPerson> contactPersons) {
+        this.contactPersons = contactPersons;
+    }
+
+    public Map<String, Map<String, ContactPerson>> getContactPersonsByServiceOrder() {
+        return contactPersonsByServiceOrder;
+    }
+
+    public void setContactPersonsByServiceOrder(Map<String, Map<String, ContactPerson>> contactPersonsByServiceOrder) {
+        this.contactPersonsByServiceOrder = contactPersonsByServiceOrder;
     }
 
     public Map<String, StepId> getStepIds() {

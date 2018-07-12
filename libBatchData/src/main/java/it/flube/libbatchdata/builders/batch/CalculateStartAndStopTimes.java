@@ -107,7 +107,7 @@ public class CalculateStartAndStopTimes {
 
     private static ArrayList<ServiceOrder> getServiceOrdersSortedBySequence(BatchHolder batchHolder){
         /// build a list of service orders sorted by sequence
-        /// uses a TreeMap with an integey key, the key will be the serviceOrder sequence.
+        /// uses a TreeMap with an integer key, the key will be the serviceOrder sequence.
         /// since TreeMap sorts by key, this will give us a list of service orders sorted by sequence
 
         Map<Integer, ServiceOrder> orderMap = new TreeMap<Integer, ServiceOrder>();

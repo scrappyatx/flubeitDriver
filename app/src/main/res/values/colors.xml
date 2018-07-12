@@ -62,7 +62,13 @@
     <color name="colorPhotoRequestRowStatus">@color/translucentBlackAA</color>
     <color name="colorPhotoRequestImageBackground">@color/lightgrey</color>
 
+    <color name="colorCommunicationsDisplayName">@color/colorPrimaryDark</color>
+    <color name="colorCommunicationsDisplayPhoneNumber">@color/colorPrimary</color>
+    <color name="colorCommunicationsTab">@color/colorPrimaryDark</color>
+    <color name="colorCommunicationsBanner">@color/translucentGreenCC</color>
 
+
+    <!-- COLOR PALLETE -->
 
     <color name="grey">#788FA0</color>
     <color name="lightblue">#77CEE7</color>

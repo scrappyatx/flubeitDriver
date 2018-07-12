@@ -17,14 +17,33 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import it.flube.driver.BuildConfig;
-import it.flube.driver.R;
 import it.flube.driver.modelLayer.interfaces.CloudConfigInterface;
+import it.flube.libbatchdata.builders.ContactPersonBuilder;
+import it.flube.libbatchdata.entities.ContactPerson;
 import timber.log.Timber;
 
 import static com.google.firebase.remoteconfig.FirebaseRemoteConfig.LAST_FETCH_STATUS_FAILURE;
 import static com.google.firebase.remoteconfig.FirebaseRemoteConfig.LAST_FETCH_STATUS_NO_FETCH_YET;
 import static com.google.firebase.remoteconfig.FirebaseRemoteConfig.LAST_FETCH_STATUS_SUCCESS;
 import static com.google.firebase.remoteconfig.FirebaseRemoteConfig.LAST_FETCH_STATUS_THROTTLED;
+
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FIREBASE_DATABASE_BASE_NODE_ACTIVE_BATCH;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FIREBASE_DATABASE_BASE_NODE_BATCH_DATA;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FIREBASE_DATABASE_BASE_NODE_DEMO_OFFERS;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FIREBASE_DATABASE_BASE_NODE_DEVICE_DATA;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FIREBASE_DATABASE_BASE_NODE_PERSONAL_OFFERS;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FIREBASE_DATABASE_BASE_NODE_PUBLIC_OFFERS;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FIREBASE_DATABASE_BASE_NODE_SCHEDULED_BATCHES;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FIREBASE_DATABASE_BASE_NODE_USER_DATA;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FLUBE_IT_SUPPORT_CAN_SMS_KEY;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FLUBE_IT_SUPPORT_CAN_VOICE_KEY;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FLUBE_IT_SUPPORT_CONTACT_NUMBER_KEY;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FLUBE_IT_SUPPORT_DISPLAY_ICON_URL_KEY;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FLUBE_IT_SUPPORT_DISPLAY_NAME_KEY;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.LOGGLY_DEBUG_ACTIVE_KEY;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.LOGGLY_RELEASE_ACTIVE_KEY;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.ROLLBAR_DEBUG_ACTIVE_KEY;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.ROLLBAR_RELEASE_ACTIVE_KEY;
 
 /**
  * Created on 6/24/2017
@@ -36,39 +55,6 @@ public class FirebaseRemoteConfigWrapper implements
         OnCompleteListener<Void> {
 
     private static final String TAG = "FirebaseRemoteConfigWrapper";
-
-    private static final String BASE_URL_KEY = "base_url";
-    private static final String FIREBASE_AUTH_TOKEN_PATH_KEY="firebase_auth_token_path";
-    private static final String DRIVER_PROFILE_PATH_KEY = "driver_profile_path";
-    private static final String ABLY_AUTH_TOKEN_PATH_KEY = "ably_auth_token_path";
-
-    private static final String LOGGLY_DEBUG_ACTIVE_KEY = "loggly_debug_active";
-    private static final String LOGGLY_RELEASE_ACTIVE_KEY = "loggly_release_active";
-    private static final String ROLLBAR_DEBUG_ACTIVE_KEY = "rollbar_debug_active";
-    private static final String ROLLBAR_RELEASE_ACTIVE_KEY = "rollbar_release_active";
-
-    private static final String ABLY_CHANNEL_NAME_LOOKING_FOR_OFFERS_KEY = "ably_channel_name_looking_for_offers";
-    private static final String ABLY_CHANNEL_NAME_BATCH_ACTIVITY_KEY="ably_channel_name_batch_activity";
-    private static final String ABLY_CHANNEL_NAME_LOOKING_FOR_OFFERS_DEMO_KEY="ably_channel_name_looking_for_offers_demo";
-
-    private static final String FIREBASE_DATABASE_BASE_NODE_PUBLIC_OFFERS = "firebase_database_base_node_public_offers";
-    private static final String FIREBASE_DATABASE_BASE_NODE_PERSONAL_OFFERS = "firebase_database_base_node_personal_offers";
-    private static final String FIREBASE_DATABASE_BASE_NODE_DEMO_OFFERS = "firebase_database_base_node_demo_offers";
-    private static final String FIREBASE_DATABASE_BASE_NODE_SCHEDULED_BATCHES = "firebase_database_base_node_scheduled_batches";
-    private static final String FIREBASE_DATABASE_BASE_NODE_ACTIVE_BATCH = "firebase_database_base_node_active_batch";
-    private static final String FIREBASE_DATABASE_BASE_NODE_BATCH_DATA = "firebase_database_base_node_batch_data";
-    private static final String FIREBASE_DATABASE_BASE_NODE_USER_DATA = "firebase_database_base_node_user_data";
-    private static final String FIREBASE_DATABASE_BASE_NODE_DEVICE_DATA = "firebase_database_base_node_device_data";
-
-
-    private static final String APP_COLORS_COLOR_PRIMARY_KEY = "app_colors_colorPrimary";
-    private static final String APP_COLORS_COLOR_PRIMARY_DARK_KEY = "app_colors_colorPrimaryDark";
-    private static final String APP_COLORS_COLOR_ACCENT_KEY = "app_colors_colorAccent";
-    private static final String APP_COLORS_COLOR_BUTTON_KEY = "app_colors_colorButton";
-    private static final String APP_COLORS_COLOR_ERROR_TEXT_KEY = "app_colors_colorErrorText";
-    private static final String APP_COLORS_COLOR_CONTROL_ACTIVATED_KEY = "app_colors_colorControlActivated";
-    private static final String APP_COLORS_COLOR_ACTIVITY_BACKGROUND_KEY = "app_colors_colorActivityBackground";
-    private static final String APP_COLORS_COLOR_SPLASH_SCEEN_BACKGROUND_KEY = "app_colors_colorSplashScreenBackground";
 
     private FirebaseRemoteConfig remoteConfig;
     private long cacheExpiry;
@@ -96,7 +82,8 @@ public class FirebaseRemoteConfigWrapper implements
 
     private void setDefaultValues(){
         // set the default parameter values
-        remoteConfig.setDefaults(R.xml.remote_config_defaults);
+        //remoteConfig.setDefaults(R.xml.remote_config_defaults);
+        remoteConfig.setDefaults(FirebaseRemoteConfigDefaults.getDefaults());
         Timber.tag(TAG).d("set default values");
 
         //set value for cache expiry
@@ -131,7 +118,7 @@ public class FirebaseRemoteConfigWrapper implements
     }
 
     private String getLastFetchStatusDescription() {
-        String result = "UNDETERMINED";
+        String result;
         switch (remoteConfig.getInfo().getLastFetchStatus()) {
             case LAST_FETCH_STATUS_SUCCESS:
                 result = "SUCCESS";
@@ -144,6 +131,9 @@ public class FirebaseRemoteConfigWrapper implements
                 break;
             case LAST_FETCH_STATUS_NO_FETCH_YET:
                 result =  "NO FETCH YET";
+                break;
+            default:
+                result = "UNDETERMINED";
                 break;
         }
         return result;
@@ -168,7 +158,7 @@ public class FirebaseRemoteConfigWrapper implements
             try {
                 throw task.getException();
             } catch (FirebaseRemoteConfigFetchException e) {
-                Timber.tag(TAG).w("         ...FETCH EXCEPTION -> " + e.getMessage());
+                Timber.tag(TAG).w("         ...FirebaseRemoteConfigException -> " + e.getMessage());
                 Timber.tag(TAG).e(e);
             }
             catch (Exception e) {
@@ -178,18 +168,20 @@ public class FirebaseRemoteConfigWrapper implements
         }
     }
 
-
-    public String getDriverProfileUrl() {
-        return remoteConfig.getString(BASE_URL_KEY) + remoteConfig.getString(DRIVER_PROFILE_PATH_KEY);
+    //// flube it support
+    public ContactPerson getFlubeItSupportContactPerson(){
+        return new ContactPersonBuilder.Builder()
+                .contactRole(ContactPerson.ContactRole.FLUBEIT_SUPPORT)
+                .displayIconUrl(remoteConfig.getString(FLUBE_IT_SUPPORT_DISPLAY_ICON_URL_KEY))
+                .displayName(remoteConfig.getString(FLUBE_IT_SUPPORT_DISPLAY_NAME_KEY))
+                .dialPhoneNumber(remoteConfig.getString(FLUBE_IT_SUPPORT_CONTACT_NUMBER_KEY))
+                .canSMS(remoteConfig.getBoolean(FLUBE_IT_SUPPORT_CAN_SMS_KEY))
+                .canVoice(remoteConfig.getBoolean(FLUBE_IT_SUPPORT_CAN_VOICE_KEY))
+                .build();
     }
 
-    public String getRealtimeMessagingAuthTokenUrl() {
-        return remoteConfig.getString(BASE_URL_KEY) + remoteConfig.getString(ABLY_AUTH_TOKEN_PATH_KEY);
-    }
 
-    public String getCloudStorageAuthTokenUrl() {
-        return FirebaseRemoteConfig.getInstance().getString(BASE_URL_KEY) + remoteConfig.getString(FIREBASE_AUTH_TOKEN_PATH_KEY);
-    }
+    //// logging settings
 
     public Boolean getLoggingDebugActive() {
         return remoteConfig.getBoolean(LOGGLY_DEBUG_ACTIVE_KEY);
@@ -207,17 +199,7 @@ public class FirebaseRemoteConfigWrapper implements
         return remoteConfig.getBoolean(ROLLBAR_RELEASE_ACTIVE_KEY);
     }
 
-    public String getRealtimeMessagingLookingForOffersChannelName() {
-        return remoteConfig.getString(ABLY_CHANNEL_NAME_LOOKING_FOR_OFFERS_KEY);
-    }
-
-    public String getRealtimeMessagingBatchActivityChannelName() {
-        return remoteConfig.getString(ABLY_CHANNEL_NAME_BATCH_ACTIVITY_KEY);
-    }
-
-    public String getRealtimeMessagingLookingForOffersDemoChannelName() {
-        return remoteConfig.getString(ABLY_CHANNEL_NAME_LOOKING_FOR_OFFERS_DEMO_KEY);
-    }
+    //// database settings
 
     public String getCloudDatabaseBaseNodePublicOffers() {
         return remoteConfig.getString(FIREBASE_DATABASE_BASE_NODE_PUBLIC_OFFERS);

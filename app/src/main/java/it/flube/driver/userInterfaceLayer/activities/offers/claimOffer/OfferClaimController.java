@@ -48,7 +48,7 @@ public class OfferClaimController {
     }
 
     public void close(){
-        useCaseExecutor.shutdown();
+        useCaseExecutor = null;
         device = null;
     }
 

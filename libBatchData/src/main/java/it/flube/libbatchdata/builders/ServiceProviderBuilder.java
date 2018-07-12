@@ -46,16 +46,6 @@ public class ServiceProviderBuilder {
             return this;
         }
 
-        public Builder contactPhone(String contactPhone){
-            this.serviceProvider.setContactPhone(contactPhone);
-            return this;
-        }
-
-        public Builder contactText(String contactText){
-            this.serviceProvider.setContactText(contactText);
-            return this;
-        }
-
         public Builder contactPerson(ContactPerson contactPerson) {
             this.serviceProvider.setContactPerson(contactPerson);
             return this;
@@ -84,8 +74,8 @@ public class ServiceProviderBuilder {
                 throw new IllegalStateException("iconURL is null");
             }
 
-            if (serviceProvider.getContactPhone() == null){
-                throw new IllegalStateException("contact phone is null");
+            if (serviceProvider.getContactPerson() == null) {
+                throw new IllegalStateException("contact person is null");
             }
 
         }

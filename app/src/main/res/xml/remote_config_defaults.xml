@@ -2,27 +2,34 @@
 <!-- START xml_defaults -->
 <defaultsMap>
 
-    <!-- user profile interface with cloud conceirge defaults -->
 
+    <!-- flube.it support contact info -->
     <entry>
-        <key>base_url</key>
-        <value>http://develop.api.flube.it/concierge-oil-service/</value>
+        <key>flube_it_support_contact_number</key>
+        <value>5125732942</value>
     </entry>
 
     <entry>
-        <key>driver_profile_path</key>
-        <value>ably/clientId</value>
+        <key>flube_it_support_display_icon_url</key>
+        <value>https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/contactPersonImages%2Fflubeit_support.png?alt=media&amp;token=5c4a0bf0-ac4b-486f-9ed5-1ea9f3381623</value>
     </entry>
 
     <entry>
-        <key>ably_auth_token_path</key>
-        <value>ably/token</value>
+        <key>flube_it_support_can_voice</key>
+        <value>true</value>
     </entry>
 
     <entry>
-        <key>firebase_auth_token_path</key>
-        <value>firebase/token</value>
+        <key>flube_it_support_can_sms</key>
+        <value>true</value>
     </entry>
+
+    <entry>
+        <key>flube_it_support_display_name</key>
+        <value>flube.it support</value>
+    </entry>
+
+
 
     <!-- firebase database storage defaults -->
     <entry>
@@ -67,7 +74,6 @@
 
 
     <!-- logging and crash reporting defaults -->
-
     <entry>
         <key>loggly_debug_active</key>
         <value>true</value>
@@ -86,65 +92,6 @@
     <entry>
         <key>rollbar_release_active</key>
         <value>false</value>
-    </entry>
-
-    <!-- ably realtime communication defaults -->
-
-    <entry>
-        <key>ably_channel_name_looking_for_offers</key>
-        <value>LookingForOffers</value>
-    </entry>
-
-    <entry>
-        <key>ably_channel_name_batch_activity</key>
-        <value>BatchActivity</value>
-    </entry>
-
-    <entry>
-        <key>ably_channel_name_looking_for_offers_demo</key>
-        <value>LookingForOffersDemo</value>
-    </entry>
-
-    <!-- application color defaults -->
-
-    <entry>
-        <key>app_colors_colorPrimary</key>
-        <value>#009CC8</value>
-    </entry>
-
-    <entry>
-        <key>app_colors_colorPrimaryDark</key>
-        <value>#005989</value>
-    </entry>
-
-    <entry>
-        <key>app_colors_colorAccent</key>
-        <value>#FACF00</value>
-    </entry>
-
-    <entry>
-        <key>app_colors_colorButton</key>
-        <value>#FACF00</value>
-    </entry>
-
-    <entry>
-        <key>app_colors_colorErrorText</key>
-        <value>#EF5350</value>
-    </entry>
-
-    <entry>
-        <key>app_colors_colorControlActivated</key>
-        <value>#FACF00</value>
-    </entry>
-
-    <entry>
-        <key>app_colors_colorActivityBackground</key>
-        <value>#F3F3F3</value>
-    </entry>
-
-    <entry>
-        <key>app_colors_colorSplashScreenBackground</key>
-        <value>#77CEE7</value>
     </entry>
 
 

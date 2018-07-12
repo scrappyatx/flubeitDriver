@@ -68,68 +68,12 @@ public class DemoBatchOilChange implements DemoBatchInterface {
         ///     10. TAKE_PHOTOS                  (take photos of vehicle)
         ///     11. GIVE_ASSET                   (give vehicle to customer)
 
+        ContactPerson customerPerson = DemoBatchUtilities.getCustomerContactPerson();
+        AddressLocation customerAddress = DemoBatchUtilities.getCustomerAddress();
+        LatLonLocation customerLatLon = DemoBatchUtilities.getCustomerLatLon();
+        Vehicle customerVehicle = DemoBatchUtilities.getCustomerVehicle();
 
-        ////
-        ////    CUSTOMER INFO
-        ////
-
-        //create customer
-        ContactPerson customerPerson = new ContactPersonBuilder.Builder()
-                .contactRole(ContactPerson.ContactRole.CUSTOMER)
-                .displayName("John Q. Customer")
-                .displayPhoneNumber("(512) 555-1212")
-                .build();
-
-        //create customer's vehicle
-        Vehicle customerVehicle = new VehicleBuilder.Builder()
-                .name("customer's vehicle")
-                .make("Audi")
-                .model("A6")
-                .year("2011")
-                .color("black")
-                .licenseState("TX")
-                .licensePlate("ATX 555")
-                .build();
-
-        //create customer location (both address & latitude / longitude)
-        AddressLocation customerAddress = new AddressLocationBuilder.Builder()
-                        .street("1606 Mohle Drive")
-                        .city("Austin")
-                        .state("TX")
-                        .zip("78703")
-                        .build();
-
-        LatLonLocation customerLatLon = new LatLonLocationBuilder.Builder()
-                        .location(30.3007342, -97.7545089)
-                        .build();
-
-
-        ////
-        ////    SERVICE PROVIDER INFO
-        ////
-
-        //create service provider
-        ServiceProvider oilChangeProvider = new ServiceProviderBuilder.Builder()
-                .iconURL(BatchIconGenerator.getRandomIconUrl())
-                .name("Slippery Lester's Quick Lube")
-                .contactPhone("(512) 555-1414")
-                .contactText("(512) 555-1515")
-                .addressLocation(new AddressLocationBuilder.Builder()
-                        .street("3700 North Lamar Blvd")
-                        .city("Austin")
-                        .state("TX")
-                        .zip("78705")
-                        .build())
-                .latLonLocation(new LatLonLocationBuilder.Builder()
-                        .location(30.3046318, -97.7438983)
-                        .build())
-                .contactPerson(new ContactPersonBuilder.Builder()
-                        .displayName("Billy Oilchange")
-                        .contactRole(ContactPerson.ContactRole.SERVICE_PROVIDER)
-                        .displayPhoneNumber("(512) 555-1414")
-                        .build())
-                .build();
-
+        ServiceProvider oilChangeProvider = DemoBatchUtilities.getServiceProvider();
 
         return new BatchHolderBuilder.Builder()
                 .batchType(BatchDetail.BatchType.MOBILE_DEMO)

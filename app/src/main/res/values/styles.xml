@@ -271,6 +271,33 @@
         <item name="android:textColor">@color/colorPhotoRequestRowStatus</item>
     </style>
 
+    <!-- COMMUNICATION ACTIVITY STYLES -->
+    <style name="CommunicationDisplayName" parent="TextAppearance.AppCompat.Title">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorCommunicationsDisplayName</item>
+    </style>
+
+    <style name="CommunicationDisplayPhoneNumber" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorCommunicationsDisplayPhoneNumber</item>
+    </style>
+
+    <style name="CommunicationTabTextAppearance" parent = "TextAppearance.AppCompat.Body1">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="textAllCaps">true</item>
+        <item name="android:textColor">@color/colorCommunicationsTab</item>
+    </style>
+
+    <style name="CommunicationBannerStyle" parent="TextAppearance.AppCompat.Display2">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorCommunicationsBanner</item>
+    </style>
+
 
     <!-- NOT USING MAPBOX NAVIGATION
        <style name="NavigationMapRoute">

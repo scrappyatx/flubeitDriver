@@ -14,9 +14,11 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import it.flube.driver.modelLayer.interfaces.CloudActiveBatchInterface;
-import it.flube.driver.modelLayer.interfaces.CloudScheduledBatchInterface;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import timber.log.Timber;
+
+import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseConstants.BATCH_DATA_CONTACT_PERSONS_BY_SERVICE_ORDER_NODE;
+import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseConstants.BATCH_DATA_SERVICE_ORDER_NODE;
 
 /**
  * Created on 4/1/2018
@@ -24,7 +26,6 @@ import timber.log.Timber;
  */
 public class FirebaseActiveBatchServiceOrderListGet implements ValueEventListener {
     private static final String TAG = "FirebaseActiveBatchServiceOrderListGet";
-    private static final String BATCH_DATA_SERVICE_ORDER_NODE = "serviceOrders";
 
     private CloudActiveBatchInterface.GetServiceOrderListResponse response;
 

@@ -17,6 +17,7 @@ public class Driver {
     private Boolean accessEnabled;
 
     private NameSettings nameSettings;
+    private PhoneSettings phoneSettings;
     private UserRoles userRoles;
     private CloudDatabaseSettings cloudDatabaseSettings;
 
@@ -74,5 +75,13 @@ public class Driver {
 
     public void setCloudDatabaseSettings(CloudDatabaseSettings cloudDatabaseSettings) {
         this.cloudDatabaseSettings = cloudDatabaseSettings;
+    }
+
+    public PhoneSettings getPhoneSettings() {
+        return phoneSettings;
+    }
+
+    public void setPhoneSettings(PhoneSettings phoneSettings) {
+        this.phoneSettings = phoneSettings;
     }
 }

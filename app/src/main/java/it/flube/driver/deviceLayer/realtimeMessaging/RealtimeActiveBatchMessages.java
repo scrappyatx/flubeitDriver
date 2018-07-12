@@ -60,8 +60,9 @@ public class RealtimeActiveBatchMessages implements
 
     public void attach(String batchGuid) {
         Timber.tag(TAG).d("attaching to : " + batchGuid);
-        ablyChannel = new AblyChannel(batchGuid,
-                AndroidDevice.getInstance().getCloudConfig().getRealtimeMessagingAuthTokenUrl());
+        //ablyChannel = new AblyChannel(batchGuid,
+                //AndroidDevice.getInstance().getCloudConfig().getRealtimeMessagingAuthTokenUrl());
+        ablyChannel = new AblyChannel(batchGuid, "xxx");
         ablyChannel.channelConnectRequest(AndroidDevice.getInstance().getUser().getDriver().getClientId(), AndroidDevice.getInstance().getUser().getIdToken(), this);
     }
 

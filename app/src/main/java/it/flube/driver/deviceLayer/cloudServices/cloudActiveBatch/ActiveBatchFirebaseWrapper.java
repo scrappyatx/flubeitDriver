@@ -8,6 +8,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.acknowledgeRemovedBatch.FirebaseActiveBatchAcknowledgeRemovedBatch;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.activeBatchMonitor.FirebaseActiveBatchNodeMonitor;
+import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataGet.FirebaseActiveBatchContactPersonsByServiceOrderGet;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataGet.FirebaseActiveBatchCurrentStepGet;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataGet.FirebaseActiveBatchDetailGet;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataGet.FirebaseActiveBatchOrderStepListGet;
@@ -153,7 +154,7 @@ public class ActiveBatchFirebaseWrapper implements
 
         new FirebaseActiveBatchStart().startBatchRequest(FirebaseDatabase.getInstance().getReference(activeBatchNode), FirebaseDatabase.getInstance().getReference(batchDataNode),
                                                             FirebaseDatabase.getInstance().getReference(batchStartRequestNode), FirebaseDatabase.getInstance().getReference(batchStartResponseNode),
-                                                            driver.getClientId(), batchGuid, actorType, response);
+                                                            driver, batchGuid, actorType, response);
     }
 
 
@@ -364,6 +365,15 @@ public class ActiveBatchFirebaseWrapper implements
         getNodes(driver);
 
         new FirebaseActiveBatchOrderStepListGet().getOrderStepList(FirebaseDatabase.getInstance().getReference(batchDataNode), batchGuid, serviceOrderGuid, response);
+    }
+
+    public void getActiveBatchContactPersonsByServiceOrder(Driver driver, String batchGuid, GetContactPersonsByServiceOrderResponse response){
+        Timber.tag(TAG).d("getActiveBatchContactPersonsByServiceOrder START...");
+
+        Timber.tag(TAG).d("   ...getNodes");
+        getNodes(driver);
+
+        new FirebaseActiveBatchContactPersonsByServiceOrderGet().getContactPersonsByServiceOrder(FirebaseDatabase.getInstance().getReference(batchDataNode), batchGuid, response);
     }
 
 

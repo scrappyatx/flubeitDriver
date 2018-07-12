@@ -4,6 +4,8 @@
 
 package it.flube.driver.modelLayer.interfaces;
 
+import it.flube.libbatchdata.entities.ContactPerson;
+
 /**
  * Created on 6/24/2017
  * Project : Driver
@@ -11,11 +13,7 @@ package it.flube.driver.modelLayer.interfaces;
 
 public interface CloudConfigInterface {
 
-    String getDriverProfileUrl();
-
-    String getRealtimeMessagingAuthTokenUrl();
-
-    String getCloudStorageAuthTokenUrl();
+    ContactPerson getFlubeItSupportContactPerson();
 
     String getCloudDatabaseBaseNodePublicOffers();
 
@@ -33,6 +31,7 @@ public interface CloudConfigInterface {
 
     String getCloudDatabaseBaseNodeDeviceData();
 
+
     Boolean getLoggingDebugActive();
 
     Boolean getLoggingReleaseActive();
@@ -40,13 +39,5 @@ public interface CloudConfigInterface {
     Boolean getErrorReportingDebugActive();
 
     Boolean getErrorReportingReleaseActive();
-
-    String getRealtimeMessagingLookingForOffersChannelName();
-
-    String getRealtimeMessagingBatchActivityChannelName();
-
-    String getRealtimeMessagingLookingForOffersDemoChannelName();
-
-
 
 }

@@ -12,6 +12,7 @@ import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchStart.pro
 import it.flube.driver.deviceLayer.cloudServices.cloudScheduledBatch.batchDataGet.FirebaseScheduledBatchDetailGet;
 import it.flube.driver.deviceLayer.cloudServices.cloudScheduledBatch.batchForfeit.demoBatch.FirebaseDemoBatchForfeit;
 import it.flube.driver.deviceLayer.cloudServices.cloudScheduledBatch.batchForfeit.productionBatch.FirebaseProductionBatchForfeit;
+import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.interfaces.CloudActiveBatchInterface;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import it.flube.driver.modelLayer.interfaces.CloudScheduledBatchInterface;
@@ -34,16 +35,16 @@ public class FirebaseActiveBatchStart implements
     private DatabaseReference batchDataRef;
     private DatabaseReference batchStartRequestRef;
     private DatabaseReference batchStartResponseRef;
-    private String clientId;
+    private Driver driver;
     private String batchGuid;
     private CloudActiveBatchInterface.StartActiveBatchResponse response;
 
     public void startBatchRequest(DatabaseReference activeBatchRef, DatabaseReference batchDataRef,
                                   DatabaseReference batchStartRequestRef, DatabaseReference batchStartResponseRef,
-                                  String clientId, String batchGuid, ActiveBatchManageInterface.ActorType actorType, CloudActiveBatchInterface.StartActiveBatchResponse response){
+                                  Driver driver, String batchGuid, ActiveBatchManageInterface.ActorType actorType, CloudActiveBatchInterface.StartActiveBatchResponse response){
 
         this.activeBatchRef = activeBatchRef;
-        this.clientId = clientId;
+        this.driver = driver;
         this.batchDataRef = batchDataRef;
         this.batchStartRequestRef = batchStartRequestRef;
         this.batchStartResponseRef = batchStartResponseRef;
@@ -53,9 +54,11 @@ public class FirebaseActiveBatchStart implements
 
         Timber.tag(TAG).d("activeBatchRef          = " + activeBatchRef.toString());
         Timber.tag(TAG).d("batchDataRef            = " + batchDataRef.toString());
-        Timber.tag(TAG).d("batchStartRequestRef  = " + batchStartRequestRef.toString());
-        Timber.tag(TAG).d("batchStartResponseRef = " + batchStartResponseRef.toString());
-        Timber.tag(TAG).d("clientId                = " + clientId);
+        Timber.tag(TAG).d("batchStartRequestRef    = " + batchStartRequestRef.toString());
+        Timber.tag(TAG).d("batchStartResponseRef   = " + batchStartResponseRef.toString());
+        Timber.tag(TAG).d("driver clientId         = " + driver.getClientId());
+        Timber.tag(TAG).d("driver displayName      = " + driver.getNameSettings().getDisplayName());
+        Timber.tag(TAG).d("driver dialNumber       = " + driver.getPhoneSettings().getDialNumber());
         Timber.tag(TAG).d("batchGuid               = " + batchGuid);
         Timber.tag(TAG).d("actorType               = " + actorType);
 
@@ -77,10 +80,10 @@ public class FirebaseActiveBatchStart implements
                 new FirebaseDemoBatchStart().startBatchRequest(activeBatchRef, batchGuid, ActiveBatchManageInterface.ActorType.MOBILE_USER, response);
                 break;
             case PRODUCTION:
-                new FirebaseProductionBatchStart().startBatchRequest(activeBatchRef, batchStartRequestRef, batchStartResponseRef,clientId, batchDetail,this);
+                new FirebaseProductionBatchStart().startBatchRequest(activeBatchRef, batchStartRequestRef, batchStartResponseRef, driver, batchDetail,this);
                 break;
             case PRODUCTION_TEST:
-                new FirebaseProductionBatchStart().startBatchRequest(activeBatchRef, batchStartRequestRef, batchStartResponseRef,clientId, batchDetail, this);
+                new FirebaseProductionBatchStart().startBatchRequest(activeBatchRef, batchStartRequestRef, batchStartResponseRef, driver, batchDetail, this);
                 break;
             default:
                 Timber.tag(TAG).w("      ...no batchType, should never get here");

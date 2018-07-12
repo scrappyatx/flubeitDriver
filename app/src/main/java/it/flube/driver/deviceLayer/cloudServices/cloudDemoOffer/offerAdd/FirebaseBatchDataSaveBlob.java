@@ -29,6 +29,8 @@ public class FirebaseBatchDataSaveBlob implements OnCompleteListener<Void> {
     private static final String SERVICE_ORDERS = "serviceOrders";
     private static final String STEP_IDS = "stepIds";
     private static final String STEPS = "steps";
+    private static final String CONTACT_PERSONS = "contactPersons";
+    private static final String CONTACT_PERSONS_BY_SERVICE_ORDER = "contactPersonsByServiceOrder";
     private static final String MAP_PINGS = "mapPings";
     private static final String CHAT_HISTORY = "chatHistory";
     private static final String DRIVER_CHAT = "driverChat";
@@ -58,6 +60,8 @@ public class FirebaseBatchDataSaveBlob implements OnCompleteListener<Void> {
         batchData.put(ROUTE_STOPS, batchHolder.getRouteStops());
         batchData.put(SERVICE_ORDERS, batchHolder.getServiceOrders());
         //batchData.put(STEP_IDS, batchHolder.getStepIds());
+        batchData.put(CONTACT_PERSONS, batchHolder.getContactPersons());
+        batchData.put(CONTACT_PERSONS_BY_SERVICE_ORDER, batchHolder.getContactPersonsByServiceOrder());
         batchData.put(STEPS, batchHolder.getSteps());
         batchData.put(MAP_PINGS, batchHolder.getMapPings());
 
