@@ -125,6 +125,39 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
+    <TextView
+        android:id="@+id/no_permission_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:text="@string/communication_activity_no_permission_text"
+
+        android:textAlignment="center"
+        android:textAppearance="@style/CommunicationNoPermissionStyle"
+
+        tools:visibility="gone"
+
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintBottom_toTopOf="@+id/settings_button"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/settings_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@+id/no_permission_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+
+        android:onClick="clickSettings"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+
+        android:text="@string/communication_activity_settings_caption" />
+
 
     <include
         android:id="@+id/contact_person_customer"

@@ -298,6 +298,54 @@
         <item name="android:textColor">@color/colorCommunicationsBanner</item>
     </style>
 
+    <style name="CommunicationNoPermissionStyle" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorCommunicationNoPermissionText</item>
+    </style>
+
+    <!-- ASSET TRANSFER STYLES -->
+
+    <style name="AssetTransferTypeStyle" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorAssetTransferType</item>
+    </style>
+
+    <style name="AssetTransferRowTitleStyle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorAssetTransferRowTitle</item>
+    </style>
+
+    <style name="AssetTransferRowStatusStyle" parent="TextAppearance.AppCompat.Display1">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorAssetTransferRowStatus</item>
+    </style>
+
+    <style name="AssetTransferNoPermissionStyle" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorAssetTransferNoPermissionText</item>
+
+    </style>
+
+    <!-- SIGNATURE REQUEST STYLES -->
+
+    <style name="SignatureRequestRowTitleStyle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorSignatureRequestRowTitle</item>
+    </style>
+
+    <style name="SignatureRequestRowStatusStyle" parent="TextAppearance.AppCompat.Display1">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorSignatureRequestRowStatus</item>
+    </style>
+
+
 
     <!-- NOT USING MAPBOX NAVIGATION
        <style name="NavigationMapRoute">

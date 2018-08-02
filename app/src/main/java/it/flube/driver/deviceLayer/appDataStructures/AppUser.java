@@ -44,7 +44,7 @@ public class AppUser implements AppUserInterface {
 
     public AppUser(Context applicationContext) {
         prefs = applicationContext.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        clear();
+        Timber.tag(TAG).d("   ...created");
     }
 
     ////
@@ -60,8 +60,10 @@ public class AppUser implements AppUserInterface {
         //}
         //return driver;
         if (getSignedInFromSharedPrefs()) {
+            Timber.tag(TAG).d("  ...driver info is stored in shared Prefs");
             return getDriverFromSharedPrefs();
         } else {
+            Timber.tag(TAG).w("  ...NO driver info is stored in shared Prefs, this should never happen");
             return null;
         }
     }
@@ -90,11 +92,11 @@ public class AppUser implements AppUserInterface {
     }
 
     public void clear() {
+        Timber.tag(TAG).d("clear()");
         //driver = null;
         //signedIn=false;
         //idToken = null;
         deleteDriverFromSharedPrefs();
-        Timber.tag(TAG).d("clear()");
     }
 
     ////
@@ -102,6 +104,7 @@ public class AppUser implements AppUserInterface {
     ////
 
     private void saveIdTokenToSharedPrefs(String idToken){
+        Timber.tag(TAG).d("   ...saveIdTokenToSharedPrefs");
         SharedPreferences.Editor editor;
         editor = prefs.edit();
         editor.putString(IDTOKEN_FIELD, idToken);
@@ -109,6 +112,7 @@ public class AppUser implements AppUserInterface {
     }
     private void saveDriverToSharedPrefs(Driver driver, Boolean signedIn){
         /// convert driver object to json string
+        Timber.tag(TAG).d("   ...saveDriverToSharedPrefs");
         Gson gson = new Gson();
         String driverJson = gson.toJson(driver);
 
@@ -120,16 +124,19 @@ public class AppUser implements AppUserInterface {
     }
 
     private Boolean getSignedInFromSharedPrefs(){
+        Timber.tag(TAG).d("   ...getSignedInFromSharedPrefs");
         return prefs.getBoolean(SIGNED_IN_FIELD, false);
     }
 
     private Driver getDriverFromSharedPrefs(){
+        Timber.tag(TAG).d("   ...getDriverFromSharedPrefs");
         String driverJson = prefs.getString(DRIVER_FIELD,null);
         Gson gson = new Gson();
         return gson.fromJson(driverJson, Driver.class);
     }
 
     private void deleteDriverFromSharedPrefs(){
+        Timber.tag(TAG).d("   ...deleteDriverFromSharedPrefs");
         SharedPreferences.Editor editor;
         editor = prefs.edit();
         editor.remove(DRIVER_FIELD);

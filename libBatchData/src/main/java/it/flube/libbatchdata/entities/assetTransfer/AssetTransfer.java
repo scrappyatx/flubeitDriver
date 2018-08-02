@@ -4,6 +4,8 @@
 
 package it.flube.libbatchdata.entities.assetTransfer;
 
+import java.util.Map;
+
 import it.flube.libbatchdata.entities.asset.AbstractAsset;
 import it.flube.libbatchdata.entities.asset.Vehicle;
 import it.flube.libbatchdata.interfaces.AssetInterface;
@@ -19,7 +21,7 @@ public class AssetTransfer {
     ///TODO this should be AssetInterface but that makes reading in firebase realtime database more complex, for now just support vehicle
     private Vehicle asset;
     private AssetTransferInterface.TransferStatus transferStatus;
-
+    private Map<String, String> statusIconText;
 
     public AssetTransfer(){}
 
@@ -39,4 +41,11 @@ public class AssetTransfer {
         this.transferStatus = transferStatus;
     }
 
+    public Map<String, String> getStatusIconText() {
+        return statusIconText;
+    }
+
+    public void setStatusIconText(Map<String, String> statusIconText) {
+        this.statusIconText = statusIconText;
+    }
 }

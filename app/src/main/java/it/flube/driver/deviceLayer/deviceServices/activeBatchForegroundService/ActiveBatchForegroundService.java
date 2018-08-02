@@ -103,7 +103,12 @@ public class ActiveBatchForegroundService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Timber.tag(TAG).d("onStartCommand() --> flags : " + Integer.toString(flags) + " startId : " + Integer.toString(startId));
-        handleIntent(intent);
+        if (intent != null) {
+            Timber.tag(TAG).d("   ...handling intent");
+            handleIntent(intent);
+        } else {
+            Timber.tag(TAG).d("   ...started with null intent");
+        }
         return START_STICKY;
     }
 

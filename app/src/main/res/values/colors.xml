@@ -8,7 +8,7 @@
     <color name="colorPrimaryDark">@color/darkblue</color>
     <color name="colorAccent">@color/yellow</color>
     <color name="colorButton">@color/yellow</color>
-    <color name="colorButtonText">@color/black</color>
+    <color name="colorButtonText">@color/darkblue</color>
     <color name="colorErrorText">@color/lightred</color>
     <color name="colorBackground">@color/translucentLightBlue</color>
     <color name="colorControlActivated">@color/yellow</color>
@@ -26,11 +26,11 @@
     <color name="colorOrderNotActive">@color/translucentMedBlue</color>
     <color name="colorOrderComplete">@color/alerterGREEN</color>
 
-    <color name="colorStepTitle">@color/translucentBlackCC</color>
-    <color name="colorStepDescription">@color/translucentBlackAA</color>
-    <color name="colorStepCompleteBy">@color/translucentBlackCC</color>
+    <color name="colorStepTitle">@color/colorPrimaryDark</color>
+    <color name="colorStepDescription">@color/colorPrimary</color>
+    <color name="colorStepCompleteBy">@color/colorPrimary</color>
 
-    <color name="colorStepStageNotStarted">@color/colorPrimary</color>
+    <color name="colorStepStageNotStarted">@color/colorPrimaryDark</color>
     <color name="colorStepStageActive">@color/alerterGREEN</color>
     <color name="colorStepStageComplete">@color/alerterGREEN</color>
 
@@ -66,6 +66,15 @@
     <color name="colorCommunicationsDisplayPhoneNumber">@color/colorPrimary</color>
     <color name="colorCommunicationsTab">@color/colorPrimaryDark</color>
     <color name="colorCommunicationsBanner">@color/translucentGreenCC</color>
+    <color name="colorCommunicationNoPermissionText">@color/colorPrimaryDark</color>
+
+    <color name="colorAssetTransferType">@color/colorPrimaryDark</color>
+    <color name="colorAssetTransferRowTitle">@color/colorPrimaryDark</color>
+    <color name="colorAssetTransferRowStatus">@color/colorPrimaryDark</color>
+    <color name="colorAssetTransferNoPermissionText">@color/colorPrimaryDark</color>
+
+    <color name="colorSignatureRequestRowTitle">@color/colorPrimaryDark</color>
+    <color name="colorSignatureRequestRowStatus">@color/colorPrimaryDark</color>
 
 
     <!-- COLOR PALLETE -->

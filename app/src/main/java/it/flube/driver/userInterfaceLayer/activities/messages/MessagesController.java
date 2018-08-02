@@ -22,23 +22,17 @@ import timber.log.Timber;
 public class MessagesController {
     private final String TAG = "MessagesController";
 
-    private ExecutorService useCaseExecutor;
-    private MobileDeviceInterface device;
 
     public MessagesController() {
-        useCaseExecutor = Executors.newSingleThreadExecutor();
-        device = AndroidDevice.getInstance();
-
         Timber.tag(TAG).d("created");
     }
 
     public void getContactPersonInfo(UseCaseGetContactPersons.Response response){
         Timber.tag(TAG).d("getContactPersonInfo");
-        useCaseExecutor.execute(new UseCaseGetContactPersons(device, response));
+        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseGetContactPersons(AndroidDevice.getInstance(), response));
     }
 
     public void close(){
-        device = null;
-        useCaseExecutor = null;
+
     }
 }

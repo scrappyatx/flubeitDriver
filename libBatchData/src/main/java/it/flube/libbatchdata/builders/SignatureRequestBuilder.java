@@ -4,7 +4,11 @@
 
 package it.flube.libbatchdata.builders;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import it.flube.libbatchdata.entities.SignatureRequest;
+import it.flube.libbatchdata.interfaces.AssetTransferInterface;
 
 
 /**
@@ -12,6 +16,9 @@ import it.flube.libbatchdata.entities.SignatureRequest;
  * Project : Driver
  */
 public class SignatureRequestBuilder {
+    private static final String NOT_ATTEMPTED_ICON_TEXT = "{fa-ban}";
+    private static final String COMPLETED_SUCCESS_ICON_TEXT = "{fa-check-circle}";
+    private static final String COMPLETED_FAILED_ICON_TEXT = "{fa-question-circle-o}";
 
     private SignatureRequest signatureRequest;
 
@@ -32,6 +39,17 @@ public class SignatureRequestBuilder {
             signatureRequest.setGuid(BuilderUtilities.generateGuid());
             signatureRequest.setHasCloudFile(false);
             signatureRequest.setHasDeviceFile(false);
+
+            //build default status icon text
+            HashMap<String, String> statusIconText = new HashMap<String, String>();
+            statusIconText.put(SignatureRequest.SignatureStatus.NOT_ATTEMPTED.toString(), NOT_ATTEMPTED_ICON_TEXT);
+            statusIconText.put(SignatureRequest.SignatureStatus.COMPLETED_SUCCESS.toString(), COMPLETED_SUCCESS_ICON_TEXT);
+            statusIconText.put(SignatureRequest.SignatureStatus.COMPLETED_FAILED.toString(), COMPLETED_FAILED_ICON_TEXT);
+            signatureRequest.setStatusIconText(statusIconText);
+
+            //set default signatureStatus
+            signatureRequest.setSignatureStatus(SignatureRequest.SignatureStatus.NOT_ATTEMPTED);
+
         }
 
         public Builder guid(String guid){
@@ -81,6 +99,16 @@ public class SignatureRequestBuilder {
 
         public Builder cloudStorageDownloadUrl(String cloudStorageDownloadUrl){
             this.signatureRequest.setCloudStorageDownloadUrl(cloudStorageDownloadUrl);
+            return this;
+        }
+
+        public Builder signatureStatus(SignatureRequest.SignatureStatus signatureStatus){
+            this.signatureRequest.setSignatureStatus(signatureStatus);
+            return this;
+        }
+
+        public Builder statusIconText(Map<String, String> statusIconText){
+            this.signatureRequest.setStatusIconText(statusIconText);
             return this;
         }
 

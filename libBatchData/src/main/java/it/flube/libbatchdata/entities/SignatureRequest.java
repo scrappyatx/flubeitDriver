@@ -4,11 +4,19 @@
 
 package it.flube.libbatchdata.entities;
 
+import java.util.Map;
+
 /**
  * Created on 6/23/2018
  * Project : Driver
  */
 public class SignatureRequest {
+    public enum SignatureStatus {
+        COMPLETED_SUCCESS,
+        COMPLETED_FAILED,
+        NOT_ATTEMPTED
+    }
+
     private String guid;
     private String batchGuid;
     private String batchDetailGuid;
@@ -21,6 +29,9 @@ public class SignatureRequest {
     private Boolean hasCloudFile;
     private String cloudStorageFileName;
     private String cloudStorageDownloadUrl;
+
+    private SignatureStatus signatureStatus;
+    private Map<String, String> statusIconText;
 
     public String getGuid() {
         return guid;
@@ -100,5 +111,21 @@ public class SignatureRequest {
 
     public void setCloudStorageDownloadUrl(String cloudStorageDownloadUrl) {
         this.cloudStorageDownloadUrl = cloudStorageDownloadUrl;
+    }
+
+    public SignatureStatus getSignatureStatus() {
+        return signatureStatus;
+    }
+
+    public void setSignatureStatus(SignatureStatus signatureStatus) {
+        this.signatureStatus = signatureStatus;
+    }
+
+    public Map<String, String> getStatusIconText() {
+        return statusIconText;
+    }
+
+    public void setStatusIconText(Map<String, String> statusIconText) {
+        this.statusIconText = statusIconText;
     }
 }

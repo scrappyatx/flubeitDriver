@@ -51,6 +51,7 @@ import it.flube.driver.modelLayer.interfaces.LocationTelemetryInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import it.flube.driver.modelLayer.interfaces.OffersInterface;
 import it.flube.driver.modelLayer.interfaces.UseCaseInterface;
+import timber.log.Timber;
 
 /**
  * Created on 7/3/2017
@@ -153,6 +154,7 @@ public class AndroidDevice implements
         offerLists = new OfferLists();
         activeBatch = new ActiveBatch();
 
+        Timber.tag(TAG).d("initialized");
     }
 
     public void deviceDetailsUpdateComplete(){
@@ -218,7 +220,15 @@ public class AndroidDevice implements
     ///
 
     public AppUserInterface getUser() {
-        return appUser;
+        Timber.tag(TAG).d("getUser");
+
+        if (appUser == null) {
+            Timber.tag(TAG).w("   ...appUser is null, this should never happen");
+            return null;
+        } else {
+            Timber.tag(TAG).d("   ...returning appUser");
+            return appUser;
+        }
     }
 
     public DeviceInfo getDeviceInfo(){

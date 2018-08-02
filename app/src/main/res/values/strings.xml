@@ -323,13 +323,34 @@
 
     <!-- Strings related to receive asset step activity layout -->
     <string name="receive_asset_step_activity_title">Receive Asset</string>
+
+
     <string name="receive_asset_step_completed_step_button_caption">I\'m finished</string>
     <string name="receive_asset_step_completed_banner_text">Finishing...</string>
+
+    <!-- Strings related to asset transfer -->
+    <string name="asset_transfer_type_to_customer">Give items to customer</string>"
+    <string name="asset_transfer_type_from_customer">Get items from customer</string>"
+    <string name="asset_transfer_type_to_service_provider">Give items to service provider</string>"
+    <string name="asset_transfer_type_from_service_provider">Get items from service provider</string>"
+    <string name="asset_transfer_no_permission_text">flube.it app doesn\'t have permission to make phone calls\n\nGo to App Info and enable the PHONE permission</string>
+    <string name="asset_transfer_settings_caption">APP INFO</string>
+    <plurals name="asset_transfer_items_available">
+        <item quantity="one">%d Item</item>
+        <item quantity="other">%d Items</item>
+    </plurals>
+
+    <!-- Strings related to signature request -->
+    <string name="signature_request_row_title">Signature</string>
 
     <!-- Strings related to give asset step activity layout -->
     <string name="give_asset_step_activity_title">Give Asset</string>
     <string name="give_asset_step_completed_step_button_caption">I\'m finished</string>
     <string name="give_asset_step_completed_banner_text">Finishing...</string>
+
+
+
+
 
     <!-- Strings related to get signature activity layout -->
     <string name="get_signature_save_button_caption">Save</string>
@@ -363,5 +384,9 @@
     <string name="communication_activity_tab_four_caption">Order 5</string>
     <string name="communication_activity_banner_caption_calling">Calling...</string>
     <string name="communication_activity_banner_caption_texting">Texting...</string>
+    <string name="communication_activity_no_permission_text">flube.it app doesn\'t have permission to make phone calls\n\nGo to App Info and enable the PHONE permission</string>
+    <string name="communication_activity_settings_caption">APP INFO</string>
+
+
 
 </resources>

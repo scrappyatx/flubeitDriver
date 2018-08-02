@@ -23,6 +23,7 @@ public class CommunicationActivityLayoutComponent {
     private ContactPersonSupportLayoutComponent support;
     private ServiceOrderTabLayoutComponent orderTab;
     private CommunicatingLayoutComponent waitingAnimation;
+    private PhoneCallPermissionComponent permission;
 
     private Boolean hasSupportContact;
     private Boolean hasOrderContacts;
@@ -31,12 +32,14 @@ public class CommunicationActivityLayoutComponent {
         support = new ContactPersonSupportLayoutComponent(activity);
         orderTab = new ServiceOrderTabLayoutComponent(activity);
         waitingAnimation = new CommunicatingLayoutComponent(activity);
+        permission = new PhoneCallPermissionComponent(activity);
 
         hasSupportContact= false;
         hasOrderContacts = false;
 
         support.setGone();
         orderTab.setGone();
+        permission.setGone();
         waitingAnimation.setGone();
 
         Timber.tag(TAG).d("...created");
@@ -70,6 +73,15 @@ public class CommunicationActivityLayoutComponent {
         Timber.tag(TAG).d("...showWaitingToText");
     }
 
+    public void showNoPermission(){
+        support.setGone();
+        orderTab.setGone();
+        waitingAnimation.setGone();
+
+        permission.setVisible();
+        Timber.tag(TAG).d("...showNoPermission");
+    }
+
     public void setVisible(){
         if (hasSupportContact) {
             support.setVisible();
@@ -79,6 +91,7 @@ public class CommunicationActivityLayoutComponent {
         }
 
         waitingAnimation.setGone();
+        permission.setGone();
         Timber.tag(TAG).d("...setVisible");
     }
 
@@ -86,6 +99,7 @@ public class CommunicationActivityLayoutComponent {
         support.setGone();
         orderTab.setGone();
         waitingAnimation.setGone();
+        permission.setGone();
         Timber.tag(TAG).d("...set INVISIBLE");
     }
 
@@ -93,6 +107,7 @@ public class CommunicationActivityLayoutComponent {
         support.setGone();
         orderTab.setGone();
         waitingAnimation.setGone();
+        permission.setGone();
         Timber.tag(TAG).d("...set GONE");
     }
 
@@ -112,6 +127,7 @@ public class CommunicationActivityLayoutComponent {
         support = null;
         orderTab = null;
         waitingAnimation = null;
+        permission = null;
 
         hasSupportContact = null;
         hasOrderContacts = null;

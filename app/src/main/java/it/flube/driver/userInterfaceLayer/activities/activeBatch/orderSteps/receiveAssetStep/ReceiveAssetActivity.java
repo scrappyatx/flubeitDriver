@@ -14,7 +14,9 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
+import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.ActiveBatchAlerts;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep.layoutComponents.ReceiveAssetLayoutComponents;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailCompleteButtonComponents;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailSwipeCompleteButtonComponent;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
@@ -22,7 +24,9 @@ import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailDueByLayoutComponents;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailTitleLayoutComponents;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.batchAlerts.ShowCompletedServiceOrderAlertEvent;
+import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderReceiveAssetStep;
+import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import ng.max.slideview.SlideView;
 import timber.log.Timber;
@@ -32,6 +36,7 @@ import timber.log.Timber;
  * Project : Driver
  */
 public class ReceiveAssetActivity extends AppCompatActivity implements
+        ReceiveAssetController.GetDriverAndActiveBatchStepResponse,
         SlideView.OnSlideCompleteListener,
         ActiveBatchAlerts.ServiceOrderCompletedAlertHidden {
 
@@ -41,9 +46,7 @@ public class ReceiveAssetActivity extends AppCompatActivity implements
     private ReceiveAssetController controller;
     private DrawerMenu drawer;
 
-    private StepDetailTitleLayoutComponents stepTitle;
-    private StepDetailDueByLayoutComponents stepDueBy;
-    private StepDetailSwipeCompleteButtonComponent stepComplete;
+    private ReceiveAssetLayoutComponents layoutComponents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,28 +54,19 @@ public class ReceiveAssetActivity extends AppCompatActivity implements
 
         setContentView(R.layout.activity_receive_asset_step);
 
-        stepTitle = new StepDetailTitleLayoutComponents(this);
-        stepDueBy = new StepDetailDueByLayoutComponents(this);
-        stepComplete = new StepDetailSwipeCompleteButtonComponent(this, getResources().getString(R.string.receive_asset_step_completed_step_button_caption), this);
+        layoutComponents = new ReceiveAssetLayoutComponents(this,getResources().getString(R.string.receive_asset_step_completed_step_button_caption), this);
 
+        navigator = new ActivityNavigator();
+        drawer = new DrawerMenu(this, navigator, R.string.receive_asset_step_activity_title);
+        controller = new ReceiveAssetController();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-        navigator = new ActivityNavigator();
-        drawer = new DrawerMenu(this, navigator, R.string.receive_asset_step_activity_title);
-        controller = new ReceiveAssetController();
-
-        updateValues();
-
-        stepTitle.setVisible();
-        stepDueBy.setVisible();
-        stepComplete.setVisible();
+        controller.getDriverAndActiveBatchStep(this);
 
         EventBus.getDefault().register(this);
-
         Timber.tag(TAG).d("onResume");
     }
 
@@ -87,37 +81,88 @@ public class ReceiveAssetActivity extends AppCompatActivity implements
         EventBus.getDefault().unregister(this);
     }
 
-    private void updateValues(){
-        Timber.tag(TAG).d("updating Values...");
-        if (AndroidDevice.getInstance().getActiveBatch().hasActiveBatch()) {
-            ServiceOrderReceiveAssetStep step = AndroidDevice.getInstance().getActiveBatch().getReceiveAssetStep();
-            OrderStepInterface oiStep = AndroidDevice.getInstance().getActiveBatch().getStep();
+    @Override
+    public void onStop(){
+        Timber.tag(TAG).d("onStop");
+        drawer.close();
+        controller.close();
+        super.onStop();
+    }
 
-            stepTitle.setValues(this, oiStep);
-            stepDueBy.setValues(this, oiStep);
+    ///
+    /// when user clicks asset transfer items
+    ///
 
-            Timber.tag(TAG).d("...values update complete");
-        } else {
-            Timber.tag(TAG).d("...no active batch");
-        }
+    public void gotoAssetList(View v){
+        Timber.tag(TAG).d("gotoAssetList");
+    }
+
+    ////
+    /// when user clicks signature
+    ////
+    public void gotoGetSignature(View v){
+        Timber.tag(TAG).d("gotoGetSignature");
+    }
+
+    ///
+    /// when user clicks call contact button
+    ///
+    public void clickContactCallButton(View v){
+        Timber.tag(TAG).d("clickContactCallButton");
+    }
+
+    /// when user clicks text contact button
+    ///
+    ///
+    public void clickContactTextButton(View v){
+        Timber.tag(TAG).d("clickContactTextButton");
+    }
+
+    /// when user clicks APP_INFO button
+    ///
+    ///
+    public void clickSettings(View v){
+        Timber.tag(TAG).d("clickSettings");
     }
 
 
+    ///
+    /// OnSlideCompleteListener
+    ///
     public void onSlideComplete(SlideView v){
         Timber.tag(TAG).d("clicked step complete button");
-
-        stepComplete.showWaitingAnimationAndBanner(getString(R.string.receive_asset_step_completed_banner_text));
-
-        String milestoneEvent;
-        if (AndroidDevice.getInstance().getActiveBatch().hasActiveBatch()) {
-            ServiceOrderReceiveAssetStep step = AndroidDevice.getInstance().getActiveBatch().getReceiveAssetStep();
-            milestoneEvent = step.getMilestoneWhenFinished();
-        } else {
-            milestoneEvent = "no milestone";
-        }
-        controller.stepFinished(milestoneEvent);
+        layoutComponents.showWaitingAnimationAndBanner(this);
+        controller.stepFinished(layoutComponents.getOrderStep().getMilestoneWhenFinished());
     }
 
+    ///
+    ///  ReceiveAssetController.GetDriverAndActiveBatchStepResponse interface
+    ///
+    public void gotDriverAndStep(Driver driver, BatchDetail batchDetail, ServiceOrder serviceOrder, ServiceOrderReceiveAssetStep orderStep){
+        Timber.tag(TAG).d("gotDriverAndStep");
+        layoutComponents.setValues(this,orderStep);
+        /// TODO check call permission
+        layoutComponents.setVisible(true);
+    }
+
+    public void gotNoDriver(){
+        Timber.tag(TAG).d("gotNoDriver");
+        navigator.gotoActivityLogin(this);
+    }
+
+    public void gotDriverButNoStep(Driver driver){
+        Timber.tag(TAG).d("gotDriverButNoStep");
+        navigator.gotoActivityHome(this);
+    }
+
+    public void gotStepMismatch(Driver driver, OrderStepInterface.TaskType taskType){
+        Timber.tag(TAG).d("gotStepMismatch, taskType -> " + taskType.toString());
+        navigator.gotoActiveBatchStep(this);
+    }
+
+    ////
+    ////  EventBus events
+    ////
 
     @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
     public void onEvent(ShowCompletedServiceOrderAlertEvent event) {

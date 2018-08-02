@@ -5,6 +5,7 @@
 package it.flube.driver.userInterfaceLayer.activities.messages;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -42,46 +43,49 @@ public class MessagesActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_communication);
 
-
-        Timber.tag(TAG).d("onCreate");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        //EventBus.getDefault().register(this);
-
         navigator = new ActivityNavigator();
         drawer = new DrawerMenu(this, navigator, R.string.communication_activity_title);
         controller = new MessagesController();
 
         layoutComponent = new CommunicationActivityLayoutComponent(this);
         checkCallPermission = new CheckCallPermission();
+
+        Timber.tag(TAG).d("onCreate");
+    }
+
+    @Override
+    public void onResume() {
+        Timber.tag(TAG).d("onResume");
+        super.onResume();
+
+        //see if we have permission to make a call
         checkCallPermission.checkCallPermissionRequest(this, this);
 
-
-        Timber.tag(TAG).d("onResume");
     }
 
     @Override
     public void onPause() {
-        //EventBus.getDefault().unregister(this);
-
-        drawer.close();
-        controller.close();
-        layoutComponent.close();
-        checkCallPermission.close();
-
         Timber.tag(TAG).d( "onPause");
         super.onPause();
     }
 
     @Override
     public void onStop(){
+        Timber.tag(TAG).d("onStop");
+
+        drawer.close();
+        controller.close();
+        layoutComponent.close();
+        checkCallPermission.close();
 
         super.onStop();
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult( int requestCode, @NonNull String permissions[], @NonNull int[] grantResults){
+        Timber.tag(TAG).d("onRequestPermissionsResult, requestCode -> " + requestCode);
+        checkCallPermission.onRequestPermissionResult(requestCode, permissions, grantResults);
     }
 
     //// CheckCallPermission.Response interface
@@ -91,8 +95,8 @@ public class MessagesActivity extends AppCompatActivity implements
     }
 
     public void callPermissionNo(){
-        Timber.tag(TAG).d("callPermissionYes");
-        //TODO show a dialog that says you have to have permission to use this screen
+        Timber.tag(TAG).d("callPermissionNo");
+        layoutComponent.showNoPermission();
     }
 
     /// UseCaseGetContactPersons interface
@@ -117,6 +121,7 @@ public class MessagesActivity extends AppCompatActivity implements
         Timber.tag(TAG).d("   display name      -> " +layoutComponent.getSupportContactPerson().getDisplayName());
         Timber.tag(TAG).d("   dial phone number -> " +layoutComponent.getSupportContactPerson().getDialPhoneNumber());
 
+        layoutComponent.showWaitingToCall();
         new MakePhoneCall().dialNumberRequest(this,layoutComponent.getSupportContactPerson().getDialPhoneNumber());
     }
 
@@ -126,6 +131,7 @@ public class MessagesActivity extends AppCompatActivity implements
         Timber.tag(TAG).d("   display name      -> " +layoutComponent.getSupportContactPerson().getDisplayName());
         Timber.tag(TAG).d("   dial phone number -> " +layoutComponent.getSupportContactPerson().getDialPhoneNumber());
 
+        layoutComponent.showWaitingToText();
         new SendTextMessage().sendTextRequest(this,layoutComponent.getSupportContactPerson().getDialPhoneNumber());
     }
 
@@ -135,7 +141,8 @@ public class MessagesActivity extends AppCompatActivity implements
         Timber.tag(TAG).d("   display name      -> " +layoutComponent.getCustomerContactPerson().getDisplayName());
         Timber.tag(TAG).d("   dial phone number -> " +layoutComponent.getCustomerContactPerson().getDialPhoneNumber());
 
-        new MakePhoneCall().dialNumberRequest(this,layoutComponent.getSupportContactPerson().getDialPhoneNumber());
+        layoutComponent.showWaitingToCall();
+        new MakePhoneCall().dialNumberRequest(this,layoutComponent.getCustomerContactPerson().getDialPhoneNumber());
     }
 
     public void clickCustomerTextButton(View v){
@@ -144,6 +151,7 @@ public class MessagesActivity extends AppCompatActivity implements
         Timber.tag(TAG).d("   display name      -> " +layoutComponent.getCustomerContactPerson().getDisplayName());
         Timber.tag(TAG).d("   dial phone number -> " +layoutComponent.getCustomerContactPerson().getDialPhoneNumber());
 
+        layoutComponent.showWaitingToText();
         new SendTextMessage().sendTextRequest(this, layoutComponent.getCustomerContactPerson().getDialPhoneNumber());
     }
 
@@ -153,7 +161,8 @@ public class MessagesActivity extends AppCompatActivity implements
         Timber.tag(TAG).d("   display name      -> " +layoutComponent.getServiceProviderContactPerson().getDisplayName());
         Timber.tag(TAG).d("   dial phone number -> " +layoutComponent.getServiceProviderContactPerson().getDialPhoneNumber());
 
-        new MakePhoneCall().dialNumberRequest(this,layoutComponent.getSupportContactPerson().getDialPhoneNumber());
+        layoutComponent.showWaitingToCall();
+        new MakePhoneCall().dialNumberRequest(this,layoutComponent.getServiceProviderContactPerson().getDialPhoneNumber());
     }
 
     public void clickServiceProviderTextButton(View v){
@@ -162,7 +171,13 @@ public class MessagesActivity extends AppCompatActivity implements
         Timber.tag(TAG).d("   display name      -> " +layoutComponent.getServiceProviderContactPerson().getDisplayName());
         Timber.tag(TAG).d("   dial phone number -> " +layoutComponent.getServiceProviderContactPerson().getDialPhoneNumber());
 
+        layoutComponent.showWaitingToText();
         new SendTextMessage().sendTextRequest(this,layoutComponent.getServiceProviderContactPerson().getDialPhoneNumber());
+    }
+
+    public void clickSettings(View v){
+        Timber.tag(TAG).d("clickServiceProviderTextButton");
+        checkCallPermission.gotoSettings(this);
     }
 
 }
