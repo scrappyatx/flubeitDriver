@@ -11,6 +11,8 @@ import it.flube.libbatchdata.entities.ContactPersonsByServiceOrder;
 import it.flube.libbatchdata.entities.LatLonLocation;
 import it.flube.libbatchdata.entities.PhotoRequest;
 import it.flube.libbatchdata.entities.RouteStop;
+import it.flube.libbatchdata.entities.SignatureRequest;
+import it.flube.libbatchdata.entities.assetTransfer.AssetTransfer;
 import it.flube.libbatchdata.entities.batch.Batch;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
@@ -109,10 +111,21 @@ public interface CloudActiveBatchInterface {
         void cloudActiveBatchUpdatePhotoRequestDeviceAbsoluteFilenameComplete();
     }
 
+    void updateSignatureRequestDeviceAbsoluteFileNameRequest(Driver driver, SignatureRequest signatureRequest, String absoluteFileName, Boolean hasFile, SignatureRequestDeviceAbsoluteFileNameResponse response);
+
+    interface SignatureRequestDeviceAbsoluteFileNameResponse {
+        void cloudActiveBatchUpdateSignatureRequestDeviceAbsoluteFilenameComplete();
+    }
+
+    void updateAssetTransferRequest(Driver driver, String batchGuid, String serviceOrderGuid, String stepGuid, AssetTransfer assetTransfer, UpdateAssetTransferResponse response);
+
+    interface UpdateAssetTransferResponse {
+        void cloudActiveBatchUpdateAssetTransferComplete();
+    }
+
     ////
     //// STATUS MONITORING & TRACKING OF THE ACTIVE BATCH
     ////
-
     void updateActiveBatchServerNodeStatus(Driver driver, BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step);
 
     void updateActiveBatchServerNodeStatus(Driver driver, BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step, LatLonLocation driverLocation);

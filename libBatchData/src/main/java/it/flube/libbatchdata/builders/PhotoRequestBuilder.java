@@ -8,6 +8,7 @@ package it.flube.libbatchdata.builders;
 import java.util.HashMap;
 import java.util.Map;
 
+import it.flube.libbatchdata.entities.ImageLabel;
 import it.flube.libbatchdata.entities.PhotoRequest;
 
 /**
@@ -18,9 +19,11 @@ import it.flube.libbatchdata.entities.PhotoRequest;
 public class PhotoRequestBuilder {
     private static final String NO_ATTEMPTS_ICON_TEXT = "{fa-ban}";
     private static final String PHOTO_SUCCESS_ICON_TEXT = "{fa-check-circle}";
-    private static final String FAILED_ATTEMPTS_ICON_TEXT = "{fa-question-circle-o}";
+    private static final String FAILED_ATTEMPTS_ICON_TEXT = "{fa-question-circle}";
 
     private static final String DEFAULT_NO_ATTEMPT_IMAGE_URL= "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2Fno_attempts_photo_image_2.png?alt=media&token=82c4c53a-371a-4122-9d11-249344f22557";
+    private static final Boolean DEFAULT_DO_DEVICE_IMAGE_DETECTION = true;
+
 
     private PhotoRequest photoRequest;
 
@@ -55,6 +58,10 @@ public class PhotoRequestBuilder {
 
             photoRequest.setHasDeviceFile(false);
             photoRequest.setHasCloudFile(false);
+
+            photoRequest.setDoDeviceImageDetection(DEFAULT_DO_DEVICE_IMAGE_DETECTION);
+            photoRequest.setHasLabelMap(false);
+            photoRequest.setLabelMap(new HashMap<String, ImageLabel>());
         }
 
         public Builder guid(String guid) {
@@ -101,6 +108,11 @@ public class PhotoRequestBuilder {
         public Builder noAttemptImageUrl(String noAttemptImageUrl){
             this.photoRequest.setNoAttemptImageUrl(noAttemptImageUrl);
             this.photoRequest.setHasNoAttemptImage(true);
+            return this;
+        }
+
+        public Builder doDeviceImageDetection(Boolean deviceImageDetection){
+            this.photoRequest.setDoDeviceImageDetection(deviceImageDetection);
             return this;
         }
 

@@ -40,6 +40,8 @@ public interface MobileDeviceInterface {
 
     CloudActiveBatchInterface getCloudActiveBatch();
 
+    CloudImageDetectionInterface getCloudImageDetection();
+
     ///
     /// device services
     ///

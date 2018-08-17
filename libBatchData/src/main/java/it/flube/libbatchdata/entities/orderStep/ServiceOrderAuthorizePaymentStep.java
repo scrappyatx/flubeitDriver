@@ -4,6 +4,10 @@
 
 package it.flube.libbatchdata.entities.orderStep;
 
+import java.util.Map;
+
+import it.flube.libbatchdata.entities.PaymentAuthorization;
+import it.flube.libbatchdata.entities.ReceiptRequest;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
 
 /**
@@ -14,13 +18,33 @@ import it.flube.libbatchdata.interfaces.OrderStepInterface;
 public class ServiceOrderAuthorizePaymentStep extends AbstractStep
         implements OrderStepInterface {
 
-    private String maxPaymentAmount;
 
-    public String getMaxPaymentAmount() {
-        return maxPaymentAmount;
+    private PaymentAuthorization paymentAuthorization;
+
+    private Boolean requireReceipt;
+    private ReceiptRequest receiptRequest;
+
+    public PaymentAuthorization getPaymentAuthorization() {
+        return paymentAuthorization;
     }
 
-    public void setMaxPaymentAmount(String maxPaymentAmount) {
-        this.maxPaymentAmount = maxPaymentAmount;
+    public void setPaymentAuthorization(PaymentAuthorization paymentAuthorization) {
+        this.paymentAuthorization = paymentAuthorization;
+    }
+
+    public Boolean getRequireReceipt() {
+        return requireReceipt;
+    }
+
+    public void setRequireReceipt(Boolean requireReceipt) {
+        this.requireReceipt = requireReceipt;
+    }
+
+    public ReceiptRequest getReceiptRequest() {
+        return receiptRequest;
+    }
+
+    public void setReceiptRequest(ReceiptRequest receiptRequest) {
+        this.receiptRequest = receiptRequest;
     }
 }

@@ -244,6 +244,60 @@
         <item name="android:textColor">@color/colorNavStepDestinationAddress</item>
     </style>
 
+    <!-- USER TRIGGER STEP styles -->
+
+    <style name="UserTriggerStepChronometerStyle" parent="TextAppearance.AppCompat.Display3">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorUserTriggerStepChronometer</item>
+    </style>
+
+    <style name="UserTriggerStepDisplayMessageStyle" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorUserTriggerDisplayMessage</item>
+    </style>
+
+    <!-- AUTHORIZE PAYMENT STEP styles -->
+    <style name="AuthorizePaymentStepPaymentTypeStyle" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorAuthorizePaymentType</item>
+    </style>
+
+    <style name="AuthorizePaymentStepDisplayAccountStyle" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorAuthorizePaymentDisplayAccount</item>
+    </style>
+
+    <style name="MaxPaymentAmountStyle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorMaxPaymentDisplay</item>
+    </style>
+
+    <style name="VerificationPaymentStatusStyle" parent="TextAppearance.AppCompat.Display1">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorVerificationPaymentStatus</item>
+    </style>
+
+    <style name="ReceiptRequestTitleStyle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorReceiptRequestTitle</item>
+    </style>
+
+    <style name="ReceiptRequestStatusStyle" parent="TextAppearance.AppCompat.Display1">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorReceiptRequestStatus</item>
+    </style>
+
+
+
+
     <!-- PHOTO STEP styles -->
     <style name="PhotoRequestRowSequence" parnet="TextAppearance.AppCompat.Title">
         <item name="android:fontFamily">sans-serif</item>
@@ -328,7 +382,25 @@
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/colorAssetTransferNoPermissionText</item>
+    </style>
 
+    <!-- ASSET TRANSFER TransferStatus styles -->
+    <style name="AssetTransferStatusStyle" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="AssetTransferStatusStyle.completedSuccess">
+        <item name="android:textColor">@color/colorAssetTransferStatusCompletedSuccess</item>
+    </style>
+
+    <style name="AssetTransferStatusStyle.completedFailed">
+        <item name="android:textColor">@color/colorAssetTransferStatusCompletedFailed</item>
+    </style>
+
+    <style name="AssetTransferStatusStyle.notAttempted">
+        <item name="android:textColor">@color/colorAssetTransferStatusNotAttempted</item>
     </style>
 
     <!-- SIGNATURE REQUEST STYLES -->
@@ -343,6 +415,42 @@
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/colorSignatureRequestRowStatus</item>
+    </style>
+
+    <style name="SignatureInstructionsStyle" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorSignatureRequestRowStatus</item>
+    </style>
+
+    <style name="SignatureRequestBannerStyle" parent="TextAppearance.AppCompat.Display2">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorSignatureRequestSavingBanner</item>
+
+    </style>
+
+    <!-- ASSET TRANSFER ITEM STYLES -->
+
+    <style name="AssetItemTitleStyle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorAssetItemTitle</item>
+    </style>
+
+    <style name="AssetItemDescriptionStyle" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorAssetItemDescription</item>
+    </style>
+
+    <style name="AssetItemIdentifierStyle" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorAssetItemIdentifier</item>
     </style>
 
 

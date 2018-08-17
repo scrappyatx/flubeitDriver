@@ -48,8 +48,8 @@ public class ReceiveAssetStepBuilder {
     private static final String STATUS_NORMAL_ICON_STRING = "";
     private static final String STATUS_CUSTOMER_SUPPORT_ICON_STRING = "{fa-exclamation-circle}";
 
-    private static final String STAGE_NOT_STARTED_ICON_STRING = "{fa-camera}";
-    private static final String STAGE_ACTIVE_ICON_STRING = "{fa-camera}";
+    private static final String STAGE_NOT_STARTED_ICON_STRING = "{fa-hand-o-left}";
+    private static final String STAGE_ACTIVE_ICON_STRING = "{fa-hand-o-left}";
     private static final String STAGE_COMPLETED_ICON_STRING = "{fa-check-circle}";
 
     private ServiceOrderReceiveAssetStep receiveStep;

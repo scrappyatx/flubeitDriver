@@ -18,18 +18,43 @@ public interface AssetInterface {
         VEHICLE
     }
 
+    ///
+    ///  fields shared by all assets
+    ///
+    ///  AssetType assetType;
+    ///  String guid
+    ///  String displayImageUrl
+    ///  String displayTitle
+    ///  String displayDescription
+    ///  String displayIdentifier
+    ///  String detailInfo
+
     AssetInterface.AssetType getAssetType();
+
+    void setAssetType(AssetInterface.AssetType assetType);
 
     String getGuid();
 
     void setGuid(String guid);
 
-    String getName();
+    String getDisplayImageUrl();
 
-    void setName(String name);
+    void setDisplayImageUrl(String displayImageUrl);
 
-    String getDescription();
+    String getDisplayTitle();
 
-    void setDescription(String description);
+    void setDisplayTitle(String displayTitle);
+
+    String getDisplayDescription();
+
+    void setDisplayDescription(String displayDescription);
+
+    String getDisplayIdentifier();
+
+    void setDisplayIdentifier(String displayIdentifier);
+
+    String getDetailInfo();
+
+    void setDetailInfo(String detailInfo);
 
 }

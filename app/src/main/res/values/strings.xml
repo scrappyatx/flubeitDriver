@@ -323,8 +323,6 @@
 
     <!-- Strings related to receive asset step activity layout -->
     <string name="receive_asset_step_activity_title">Receive Asset</string>
-
-
     <string name="receive_asset_step_completed_step_button_caption">I\'m finished</string>
     <string name="receive_asset_step_completed_banner_text">Finishing...</string>
 
@@ -340,8 +338,18 @@
         <item quantity="other">%d Items</item>
     </plurals>
 
+    <!-- Strings related to asset transfer item -->
+    <string name="asset_item_activity_title">Item</string>
+    <string name="asset_item_image_content_description">item image</string>
+    <string name="asset_item_have_item_button_caption">{fa-check-circle}</string>
+    <string name="asset_item_dont_have_item_button_caption">{fa-ban}</string>
+    <string name="asset_item_finished_button_caption">finished</string>
+    <string name="asset_item_have_item_text">I have this item</string>
+    <string name="asset_item_dont_have_item_text">I don\'t have this item</string>
+
     <!-- Strings related to signature request -->
     <string name="signature_request_row_title">Signature</string>
+    <string name="signature_request_saving_banner">Saving...</string>
 
     <!-- Strings related to give asset step activity layout -->
     <string name="give_asset_step_activity_title">Give Asset</string>
@@ -356,7 +364,7 @@
     <string name="get_signature_save_button_caption">Save</string>
     <string name="get_signature_clear_button_caption">Clear</string>
     <string name="get_signature_activity_title">Signature</string>
-    <string name="get_signature_instructions_text">Sign below</string>
+    <string name="get_signature_instructions_text">Use your finger to provide your signature</string>
     <string name="get_signature_saving_banner_text">Saving...</string>
 
 
@@ -365,10 +373,16 @@
     <string name="user_trigger_step_completed_step_button_caption">I\'m finished</string>
     <string name="user_trigger_step_completed_banner_text">Finishing...</string>
 
+
+
     <!-- Strings related to authorized payment step activity layout -->
     <string name="authorize_payment_step_activity_title">Authorize Payment</string>
     <string name="authorize_payment_completed_step_button_caption">I\'m finished</string>
     <string name="authorize_payment_completed_banner_text">Finishing...</string>
+    <string name="authorize_payment_payment_type_charge_to_account_text">Charge To Account</string>
+    <string name="authorize_payment_payment_type_charge_to_card_on_file_text">Charge to Card On File</string>
+    <string name="authorize_payment_receipt_request_row_text">Receipt Photo</string>
+    <string name="authorize_payment_amount_row_text">Max Payment %s"</string>
 
 
     <!-- Strings related to contact person info panel.xml -->

@@ -5,6 +5,7 @@
 package it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -19,11 +20,16 @@ import it.flube.driver.userInterfaceLayer.activities.activeBatch.ActiveBatchAler
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep.layoutComponents.ReceiveAssetLayoutComponents;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailCompleteButtonComponents;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailSwipeCompleteButtonComponent;
+import it.flube.driver.userInterfaceLayer.activities.messages.CheckCallPermission;
+import it.flube.driver.userInterfaceLayer.activities.messages.MakePhoneCall;
+import it.flube.driver.userInterfaceLayer.activities.messages.SendTextMessage;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailDueByLayoutComponents;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailTitleLayoutComponents;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.batchAlerts.ShowCompletedServiceOrderAlertEvent;
+import it.flube.libbatchdata.entities.ContactPerson;
+import it.flube.libbatchdata.entities.SignatureRequest;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderReceiveAssetStep;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
@@ -36,9 +42,9 @@ import timber.log.Timber;
  * Project : Driver
  */
 public class ReceiveAssetActivity extends AppCompatActivity implements
+        CheckCallPermission.Response,
         ReceiveAssetController.GetDriverAndActiveBatchStepResponse,
-        SlideView.OnSlideCompleteListener,
-        ActiveBatchAlerts.ServiceOrderCompletedAlertHidden {
+        ReceiveAssetLayoutComponents.Response {
 
     private static final String TAG = "ReceiveAssetActivity";
 
@@ -47,6 +53,9 @@ public class ReceiveAssetActivity extends AppCompatActivity implements
     private DrawerMenu drawer;
 
     private ReceiveAssetLayoutComponents layoutComponents;
+    private CheckCallPermission checkCallPermission;
+
+    private Boolean havePermissionToCall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,14 +68,24 @@ public class ReceiveAssetActivity extends AppCompatActivity implements
         navigator = new ActivityNavigator();
         drawer = new DrawerMenu(this, navigator, R.string.receive_asset_step_activity_title);
         controller = new ReceiveAssetController();
+
+        checkCallPermission = new CheckCallPermission();
+        havePermissionToCall = false;
+        Timber.tag(TAG).d("onCreate");
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults){
+        Timber.tag(TAG).d("onRequestPermissionsResult, requestCode -> " + requestCode);
+        checkCallPermission.onRequestPermissionResult(requestCode, permissions, grantResults);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        controller.getDriverAndActiveBatchStep(this);
+        //see if we have permission to make a call
+        checkCallPermission.checkCallPermissionRequest(this, this);
 
-        EventBus.getDefault().register(this);
         Timber.tag(TAG).d("onResume");
     }
 
@@ -78,7 +97,6 @@ public class ReceiveAssetActivity extends AppCompatActivity implements
         drawer.close();
         controller.close();
 
-        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -89,50 +107,67 @@ public class ReceiveAssetActivity extends AppCompatActivity implements
         super.onStop();
     }
 
-    ///
-    /// when user clicks asset transfer items
-    ///
+    //// CheckCallPermission.Response interface
+    public void callPermissionYes(){
+        Timber.tag(TAG).d("callPermissionYes");
+        havePermissionToCall=true;
+        controller.getDriverAndActiveBatchStep(this);
+    }
 
-    public void gotoAssetList(View v){
-        Timber.tag(TAG).d("gotoAssetList");
+    public void callPermissionNo(){
+        Timber.tag(TAG).d("callPermissionNo");
+        havePermissionToCall=false;
+        controller.getDriverAndActiveBatchStep(this);
     }
 
     ////
-    /// when user clicks signature
+    //// ReceiveAssetLayoutComponents interface
     ////
-    public void gotoGetSignature(View v){
-        Timber.tag(TAG).d("gotoGetSignature");
+    public void signatureRowClicked(SignatureRequest signatureRequest){
+        Timber.tag(TAG).d("signatureRowClicked");
+        navigator.gotoActivityReceiveAssetGetSignature(this);
     }
 
-    ///
-    /// when user clicks call contact button
-    ///
-    public void clickContactCallButton(View v){
-        Timber.tag(TAG).d("clickContactCallButton");
+    public void itemsRowClickedWithMultipleItems(){
+        Timber.tag(TAG).d("itemsRowClickedWithMultipleItems");
+        navigator.gotoActivityReceiveAssetItemList(this);
     }
 
-    /// when user clicks text contact button
-    ///
-    ///
-    public void clickContactTextButton(View v){
-        Timber.tag(TAG).d("clickContactTextButton");
+    public void itemsRowClickedWithOneItem(String assetGuid){
+        Timber.tag(TAG).d("itemsRowClickedWithOneItem");
+        navigator.gotoActivityReceiveAssetItem(this, assetGuid);
     }
 
-    /// when user clicks APP_INFO button
-    ///
-    ///
-    public void clickSettings(View v){
-        Timber.tag(TAG).d("clickSettings");
+    public void contactPersonCallClicked(ContactPerson contactPerson){
+        Timber.tag(TAG).d("contactPersonCallClicked");
+
+        Timber.tag(TAG).d("   ROLE              -> " + contactPerson.getContactRole());
+        Timber.tag(TAG).d("   display name      -> " + contactPerson.getDisplayName());
+        Timber.tag(TAG).d("   dial phone number -> " + contactPerson.getDialPhoneNumber());
+
+        layoutComponents.setCalling();
+        new MakePhoneCall().dialNumberRequest(this, contactPerson.getDialPhoneNumber());
     }
 
+    public void contactPersonTextClicked(ContactPerson contactPerson){
+        Timber.tag(TAG).d("contactPersonTextClicked");
 
-    ///
-    /// OnSlideCompleteListener
-    ///
-    public void onSlideComplete(SlideView v){
-        Timber.tag(TAG).d("clicked step complete button");
+        Timber.tag(TAG).d("   ROLE              -> " + contactPerson.getContactRole());
+        Timber.tag(TAG).d("   display name      -> " + contactPerson.getDisplayName());
+        Timber.tag(TAG).d("   dial phone number -> " + contactPerson.getDialPhoneNumber());
+
+        new SendTextMessage().sendTextRequest(this, contactPerson.getDialPhoneNumber());
+    }
+
+    public void appInfoClicked(){
+        Timber.tag(TAG).d("appInfoClicked");
+        checkCallPermission.gotoSettings(this);
+    }
+
+    public void stepCompleteClicked(String milestoneWhenFinished){
+        Timber.tag(TAG).d("stepCompleteClicked");
         layoutComponents.showWaitingAnimationAndBanner(this);
-        controller.stepFinished(layoutComponents.getOrderStep().getMilestoneWhenFinished());
+        controller.stepFinished(milestoneWhenFinished);
     }
 
     ///
@@ -141,8 +176,7 @@ public class ReceiveAssetActivity extends AppCompatActivity implements
     public void gotDriverAndStep(Driver driver, BatchDetail batchDetail, ServiceOrder serviceOrder, ServiceOrderReceiveAssetStep orderStep){
         Timber.tag(TAG).d("gotDriverAndStep");
         layoutComponents.setValues(this,orderStep);
-        /// TODO check call permission
-        layoutComponents.setVisible(true);
+        layoutComponents.setVisible(havePermissionToCall);
     }
 
     public void gotNoDriver(){
@@ -159,25 +193,6 @@ public class ReceiveAssetActivity extends AppCompatActivity implements
         Timber.tag(TAG).d("gotStepMismatch, taskType -> " + taskType.toString());
         navigator.gotoActiveBatchStep(this);
     }
-
-    ////
-    ////  EventBus events
-    ////
-
-    @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
-    public void onEvent(ShowCompletedServiceOrderAlertEvent event) {
-        EventBus.getDefault().removeStickyEvent(event);
-
-        Timber.tag(TAG).d("active batch -> service order completed!");
-
-        ActiveBatchAlerts alert = new ActiveBatchAlerts();
-        alert.showServiceOrderCompletedAlert(this, this);
-    }
-
-    public void serviceOrderCompletedAlertHidden() {
-        Timber.tag(TAG).d("service order completed alert hidden");
-    }
-
 
 
 }

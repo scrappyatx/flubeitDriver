@@ -20,7 +20,7 @@ import it.flube.libbatchdata.interfaces.AssetTransferInterface;
 public class AssetTransferBuilder {
     private static final String NOT_ATTEMPTED_ICON_TEXT = "{fa-ban}";
     private static final String COMPLETED_SUCCESS_ICON_TEXT = "{fa-check-circle}";
-    private static final String COMPLETED_FAILED_ICON_TEXT = "{fa-question-circle-o}";
+    private static final String COMPLETED_FAILED_ICON_TEXT = "{fa-question-circle}";
 
     private AssetTransfer assetTransfer;
 

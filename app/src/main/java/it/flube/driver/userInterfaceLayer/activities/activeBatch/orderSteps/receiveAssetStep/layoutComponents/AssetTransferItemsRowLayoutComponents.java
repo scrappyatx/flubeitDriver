@@ -4,6 +4,7 @@
 
 package it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep.layoutComponents;
 
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -26,27 +27,39 @@ import static it.flube.libbatchdata.interfaces.AssetTransferInterface.TransferSt
  * Created on 7/25/2018
  * Project : Driver
  */
-public class AssetTransferItemsRowLayoutComponents {
+public class AssetTransferItemsRowLayoutComponents implements
+    View.OnClickListener {
     private static final String TAG = "AssetTransferItemsRowLayoutComponents";
 
     private TextView title;
     private IconTextView overallStatus;
+    private ConstraintLayout itemRow;
 
+    private Response response;
     private Boolean allTransferComplete;
 
-    public AssetTransferItemsRowLayoutComponents(AppCompatActivity activity){
+    public AssetTransferItemsRowLayoutComponents(AppCompatActivity activity, Response response){
+        this.response = response;
         title = (TextView) activity.findViewById(R.id.asset_transfer_row_title);
         overallStatus = (IconTextView) activity.findViewById(R.id.asset_transfer_status);
-        Timber.tag(TAG).d("...created");
 
         allTransferComplete = false;
+
+        itemRow = (ConstraintLayout) activity.findViewById(R.id.asset_transfer_row_item);
+        itemRow.setClickable(true);
+        itemRow.setFocusable(true);
+        itemRow.setFocusableInTouchMode(true);
+        itemRow.setOnClickListener(this);
+
+        Timber.tag(TAG).d("...created");
     }
 
     public void setValues(AppCompatActivity activity, HashMap<String, AssetTransfer> assetTransferHashMap){
         Timber.tag(TAG).d("...setValues START");
+        Timber.tag(TAG).d("   ...assetTransferHashMap.size() -> " + assetTransferHashMap.size());
         ///
         ///  Set the title to the format '%s Items' based on number of items in the asset transfer hashmap
-        title.setText(activity.getResources().getQuantityString(R.plurals.asset_transfer_items_available, assetTransferHashMap.size()));
+        title.setText(activity.getResources().getQuantityString(R.plurals.asset_transfer_items_available, assetTransferHashMap.size(), assetTransferHashMap.size()));
         Timber.tag(TAG).d("   ...title -> " + title.getText());
 
         //set the overall status
@@ -117,18 +130,21 @@ public class AssetTransferItemsRowLayoutComponents {
     }
 
     public void setVisible(){
+        itemRow.setVisibility(View.VISIBLE);
         title.setVisibility(View.VISIBLE);
         overallStatus.setVisibility(View.VISIBLE);
         Timber.tag(TAG).d("...setVisible");
     }
 
     public void setInvisible(){
+        itemRow.setVisibility(View.INVISIBLE);
         title.setVisibility(View.INVISIBLE);
         overallStatus.setVisibility(View.INVISIBLE);
         Timber.tag(TAG).d("...set INVISIBLE");
     }
 
     public void setGone() {
+        itemRow.setVisibility(View.GONE);
         title.setVisibility(View.GONE);
         overallStatus.setVisibility(View.GONE);
         Timber.tag(TAG).d("...set GONE");
@@ -137,6 +153,20 @@ public class AssetTransferItemsRowLayoutComponents {
     public void close(){
         title=null;
         overallStatus=null;
+        response=null;
+        itemRow=null;
+    }
+
+    ///
+    /// View.OnClickInterface
+    ///
+    public void onClick(View v){
+        Timber.tag(TAG).d("onClick");
+        response.itemRowClicked();
+    }
+
+    public interface Response {
+        void itemRowClicked();
     }
 
 }

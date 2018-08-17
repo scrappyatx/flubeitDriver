@@ -21,13 +21,18 @@ import timber.log.Timber;
  * Created on 7/25/2018
  * Project : Driver
  */
-public class ContactPersonLayoutComponent {
+public class ContactPersonLayoutComponent implements
+    View.OnClickListener {
     private final String TAG="ContactPersonLayoutComponent";
 
     ///
     ///     wrapper class for the layout file:
     ///     contact_person_transfer_asset.xml
     ///
+
+    private static final String CALL_BUTTON_TAG="callButton";
+    private static final String TEXT_BUTTON_TAG="textButton";
+    private static final String APP_INFO_BUTTON_TAG="appInfoButton";
 
     private ImageView displayIcon;
     private TextView displayName;
@@ -38,17 +43,30 @@ public class ContactPersonLayoutComponent {
     private Button appInfoButton;
 
     private ContactPerson contactPerson;
+    private Response response;
 
-    public ContactPersonLayoutComponent(AppCompatActivity activity){
+    public ContactPersonLayoutComponent(AppCompatActivity activity, Response response){
+        this.response = response;
+
         displayIcon = (ImageView) activity.findViewById(R.id.contact_display_icon);
         displayName = (TextView) activity.findViewById(R.id.contact_display_name);
         displayPhoneNumber = (TextView) activity.findViewById(R.id.contact_display_phone_number);
+
         callButton = (IconButton) activity.findViewById(R.id.contact_call_button);
+        callButton.setTag(CALL_BUTTON_TAG);
+        callButton.setOnClickListener(this);
+
         textButton = (IconButton) activity.findViewById(R.id.contact_text_button);
+        textButton.setTag(TEXT_BUTTON_TAG);
+        textButton.setOnClickListener(this);
 
         permissionText = (TextView) activity.findViewById(R.id.no_permission_text);
+
         appInfoButton = (Button) activity.findViewById(R.id.app_info_button);
-        Timber.tag(TAG).d("...ContactPersonSupportLayoutComponent created");
+        appInfoButton.setOnClickListener(this);
+        appInfoButton.setTag(APP_INFO_BUTTON_TAG);
+
+        Timber.tag(TAG).d("created");
     }
 
     public void setValues(ContactPerson contactPerson){
@@ -62,10 +80,17 @@ public class ContactPersonLayoutComponent {
         displayPhoneNumber.setText(contactPerson.getDisplayPhoneNumber());
 
         this.contactPerson = contactPerson;
+        Timber.tag(TAG).d("setValues");
     }
 
     public ContactPerson getContactPerson(){
         return this.contactPerson;
+    }
+
+    public void setCalling(){
+        Timber.tag(TAG).d("setCalling");
+        callButton.setVisibility(View.INVISIBLE);
+        textButton.setVisibility(View.INVISIBLE);
     }
 
     public void setVisible(Boolean hasPermission){
@@ -95,15 +120,7 @@ public class ContactPersonLayoutComponent {
             } else {
                 Timber.tag(TAG).d("   ...can't set visible, contact person is null");
                 //permission text is invisible
-                permissionText.setVisibility(View.INVISIBLE);
-                appInfoButton.setVisibility(View.INVISIBLE);
-
-                //contact info is invisible
-                displayIcon.setVisibility(View.INVISIBLE);
-                displayName.setVisibility(View.INVISIBLE);
-                displayPhoneNumber.setVisibility(View.INVISIBLE);
-                callButton.setVisibility(View.INVISIBLE);
-                textButton.setVisibility(View.INVISIBLE);
+                setInvisible();
             }
         } else {
             Timber.tag(TAG).d("...hasPermission FALSE");
@@ -118,7 +135,7 @@ public class ContactPersonLayoutComponent {
             callButton.setVisibility(View.INVISIBLE);
             textButton.setVisibility(View.INVISIBLE);
         }
-        Timber.tag(TAG).d("...setVisible");
+        Timber.tag(TAG).d("setVisible");
     }
 
     public void setInvisible(){
@@ -129,7 +146,7 @@ public class ContactPersonLayoutComponent {
         textButton.setVisibility(View.INVISIBLE);
         permissionText.setVisibility(View.INVISIBLE);
         appInfoButton.setVisibility(View.INVISIBLE);
-        Timber.tag(TAG).d("...set INVISIBLE");
+        Timber.tag(TAG).d("setInvisible");
     }
 
     public void setGone(){
@@ -140,7 +157,7 @@ public class ContactPersonLayoutComponent {
         textButton.setVisibility(View.GONE);
         permissionText.setVisibility(View.GONE);
         appInfoButton.setVisibility(View.GONE);
-        Timber.tag(TAG).d("...set GONE");
+        Timber.tag(TAG).d("setGone");
     }
 
     public void close(){
@@ -153,7 +170,34 @@ public class ContactPersonLayoutComponent {
         appInfoButton = null;
 
         contactPerson = null;
-        Timber.tag(TAG).d("components closed");
+        response = null;
+        Timber.tag(TAG).d("close");
+    }
+
+    ///
+    /// OnClickListener interface
+    ///
+    public void onClick(View v){
+        Timber.tag(TAG).d("onClick, button tag -> " + v.getTag().toString());
+        switch (v.getTag().toString()){
+            case CALL_BUTTON_TAG:
+                response.callButtonClicked(contactPerson);
+                break;
+            case TEXT_BUTTON_TAG:
+                response.textButtonClicked(contactPerson);
+                break;
+            case APP_INFO_BUTTON_TAG:
+                response.appInfoButtonClicked();
+                break;
+        }
+    }
+
+    public interface Response {
+        void textButtonClicked(ContactPerson contactPerson);
+
+        void callButtonClicked(ContactPerson contactPerson);
+
+        void appInfoButtonClicked();
     }
 
 }

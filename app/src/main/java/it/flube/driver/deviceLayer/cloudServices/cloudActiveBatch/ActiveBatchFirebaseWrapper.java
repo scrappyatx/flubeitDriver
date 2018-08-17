@@ -17,7 +17,9 @@ import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataGet.F
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataGet.FirebaseActiveBatchServiceOrderListGet;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataGet.FirebaseActiveBatchStepGet;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataGet.FirebaseActiveBatchSummaryGet;
+import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebaseAssetTransfer;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebasePhotoRequestDeviceAbsoluteFilename;
+import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebaseSignatureRequestDeviceAbsoluteFilename;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchFinish.FirebaseActiveBatchFinishPrep;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchStart.FirebaseActiveBatchStart;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.saveMapLocation.FirebaseBatchDataSaveMapLocation;
@@ -31,6 +33,8 @@ import it.flube.driver.modelLayer.interfaces.CloudConfigInterface;
 import it.flube.driver.modelLayer.interfaces.OffersInterface;
 import it.flube.libbatchdata.entities.LatLonLocation;
 import it.flube.libbatchdata.entities.PhotoRequest;
+import it.flube.libbatchdata.entities.SignatureRequest;
+import it.flube.libbatchdata.entities.assetTransfer.AssetTransfer;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import it.flube.libbatchdata.interfaces.ActiveBatchManageInterface;
@@ -238,6 +242,23 @@ public class ActiveBatchFirebaseWrapper implements
 
     }
 
+    public void updateSignatureRequestDeviceAbsoluteFileNameRequest(Driver driver, SignatureRequest signatureRequest, String absoluteFileName, Boolean hasFile, SignatureRequestDeviceAbsoluteFileNameResponse response){
+        Timber.tag(TAG).d("updateSignatureRequestDeviceAbsoluteFileNameRequest START...");
+
+        Timber.tag(TAG).d("   ....getNodes");
+        getNodes(driver);
+        new FirebaseSignatureRequestDeviceAbsoluteFilename().updateSignatureRequestDeviceAbsoluteFilenameRequest(FirebaseDatabase.getInstance().getReference(batchDataNode),
+                signatureRequest, absoluteFileName, hasFile, response);
+    }
+
+    public void updateAssetTransferRequest(Driver driver, String batchGuid, String serviceOrderGuid, String stepGuid, AssetTransfer assetTransfer, UpdateAssetTransferResponse response){
+        Timber.tag(TAG).d("updateAssetTransferRequest START...");
+
+        Timber.tag(TAG).d("   ....getNodes");
+        getNodes(driver);
+        new FirebaseAssetTransfer().updateAssetTransferRequest(FirebaseDatabase.getInstance().getReference(batchDataNode), batchGuid, serviceOrderGuid, stepGuid, assetTransfer, response);
+    }
+
 
     ////
     //// STATUS MONITORING & TRACKING OF THE ACTIVE BATCH
@@ -249,7 +270,7 @@ public class ActiveBatchFirebaseWrapper implements
         Timber.tag(TAG).d("   ....getNodes");
         getNodes(driver);
 
-        new FirebaseActiveBatchServerNode().activeBatchServerNodeUpdateRequest(FirebaseDatabase.getInstance().getReference(activeBatchNotificationNode),
+        new FirebaseActiveBatchServerNode().activeBatchServerNodeUpdateRequest(FirebaseDatabase.getInstance().getReference(activeBatchNotificationNode),FirebaseDatabase.getInstance().getReference(batchDataNode),
                 driver, batchDetail, serviceOrder, step);
     }
 
@@ -259,7 +280,7 @@ public class ActiveBatchFirebaseWrapper implements
         Timber.tag(TAG).d("   ....getNodes");
         getNodes(driver);
 
-        new FirebaseActiveBatchServerNode().activeBatchServerNodeUpdateRequest(FirebaseDatabase.getInstance().getReference(activeBatchNotificationNode),
+        new FirebaseActiveBatchServerNode().activeBatchServerNodeUpdateRequest(FirebaseDatabase.getInstance().getReference(activeBatchNotificationNode),FirebaseDatabase.getInstance().getReference(batchDataNode),
                 driver, batchDetail, serviceOrder, step, driverLocation);
     }
 

@@ -25,6 +25,7 @@ public class ContactPerson {
     private String displayName;
     private String displayPhoneNumber;
     private String dialPhoneNumber;
+    private String email;
     private ContactRole contactRole;
 
     private Boolean canVoice;
@@ -68,6 +69,14 @@ public class ContactPerson {
 
     public void setDialPhoneNumber(String dialPhoneNumber) {
         this.dialPhoneNumber = dialPhoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public ContactRole getContactRole(){

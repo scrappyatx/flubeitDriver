@@ -176,7 +176,7 @@ public class MessagesActivity extends AppCompatActivity implements
     }
 
     public void clickSettings(View v){
-        Timber.tag(TAG).d("clickServiceProviderTextButton");
+        Timber.tag(TAG).d("clickSettings");
         checkCallPermission.gotoSettings(this);
     }
 

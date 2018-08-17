@@ -8,9 +8,16 @@ import java.util.concurrent.ExecutorService;
 
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.dataLayer.useCaseResponseHandlers.activeBatch.UseCaseFinishCurrentStepResponseHandler;
+import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseCompareActivtyLaunchDataToCurrentStep;
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseFinishCurrentStepRequest;
+import it.flube.driver.useCaseLayer.activeBatch.UseCaseGetDriverAndActiveBatchCurrentStep;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep.ReceiveAssetController;
+import it.flube.libbatchdata.entities.batch.BatchDetail;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderGiveAssetStep;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderReceiveAssetStep;
+import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import timber.log.Timber;
 
@@ -18,30 +25,65 @@ import timber.log.Timber;
  * Created on 4/28/2018
  * Project : Driver
  */
-public class GiveAssetController {
+public class GiveAssetController implements
+        UseCaseGetDriverAndActiveBatchCurrentStep.Response {
     private final String TAG = "GiveAssetController";
 
-    private ExecutorService useCaseExecutor;
-    private MobileDeviceInterface device;
+    private GetDriverAndActiveBatchStepResponse response;
+
 
     public GiveAssetController() {
         Timber.tag(TAG).d("controller CREATED");
-        device = AndroidDevice.getInstance();
-        useCaseExecutor = device.getUseCaseEngine().getUseCaseExecutor();
+
     }
 
-    public void compareActivityLaunchDataToCurrentStepData(String batchGuid, String serviceOrderGuid, String orderStepGuid, OrderStepInterface.TaskType taskType, UseCaseCompareActivtyLaunchDataToCurrentStep.Response response){
-        Timber.tag(TAG).d("compareActivityLaunchDataToCurrentStepData...");
-        useCaseExecutor.execute(new UseCaseCompareActivtyLaunchDataToCurrentStep(device,batchGuid, serviceOrderGuid, orderStepGuid, taskType, response));
+    public void getDriverAndActiveBatchStep(GetDriverAndActiveBatchStepResponse response){
+        Timber.tag(TAG).d("getDriverAndActiveBatchStep...");
+        this.response = response;
+        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseGetDriverAndActiveBatchCurrentStep(AndroidDevice.getInstance(), OrderStepInterface.TaskType.GIVE_ASSET, this));
+
     }
 
     public void stepFinished(String milestoneEvent){
         Timber.tag(TAG).d("finishing STEP");
-        useCaseExecutor.execute(new UseCaseFinishCurrentStepRequest(device, milestoneEvent, new UseCaseFinishCurrentStepResponseHandler()));
+        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseFinishCurrentStepRequest(AndroidDevice.getInstance(), milestoneEvent, new UseCaseFinishCurrentStepResponseHandler()));
     }
 
     public void close(){
-        useCaseExecutor = null;
-        device = null;
+        Timber.tag(TAG).d("close");
+    }
+
+    ///
+    /// UseCaseGetDriverAndActiveBatchCurrentStep response interface
+    ///
+    public void useCaseGetDriverAndActiveBatchCurrentStepSuccess(Driver driver, BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface orderStep){
+        Timber.tag(TAG).d("useCaseGetDriverAndActiveBatchCurrentStepSuccess");
+        response.gotDriverAndStep(driver, batchDetail, serviceOrder, (ServiceOrderGiveAssetStep) orderStep);
+    }
+
+    public void useCaseGetDriverAndActiveBatchCurrentStepFailureDriverOnly(Driver driver){
+        Timber.tag(TAG).d("useCaseGetDriverAndActiveBatchCurrentStepFailureDriverOnly");
+        response.gotDriverButNoStep(driver);
+    }
+
+    public void useCaseGetDriverAndActiveBatchCurrentStepFailureNoDriverNoStep(){
+        Timber.tag(TAG).d("useCaseGetDriverAndActiveBatchCurrentStepFailureNoDriverNoStep");
+        response.gotNoDriver();
+    }
+
+    public void useCaseGetDriverAndActiveBatchCurrentStepFailureStepMismatch(Driver driver, OrderStepInterface.TaskType foundTaskType){
+        Timber.tag(TAG).d("useCaseGetDriverAndActiveBatchCurrentStepFailureStepMismatch");
+        response.gotStepMismatch(driver, foundTaskType);
+    }
+
+
+    public interface GetDriverAndActiveBatchStepResponse {
+        void gotDriverAndStep(Driver driver, BatchDetail batchDetail, ServiceOrder serviceOrder, ServiceOrderGiveAssetStep orderStep);
+
+        void gotNoDriver();
+
+        void gotDriverButNoStep(Driver driver);
+
+        void gotStepMismatch(Driver driver, OrderStepInterface.TaskType taskType);
     }
 }

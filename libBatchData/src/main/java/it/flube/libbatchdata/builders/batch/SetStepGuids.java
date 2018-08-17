@@ -8,6 +8,7 @@ import java.util.Map;
 
 import it.flube.libbatchdata.entities.PhotoRequest;
 import it.flube.libbatchdata.entities.batch.BatchHolder;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderAuthorizePaymentStep;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderGiveAssetStep;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderPhotoStep;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderReceiveAssetStep;
@@ -38,7 +39,7 @@ public class SetStepGuids {
                     doPhotoStepGuids((ServiceOrderPhotoStep) thisStep.getValue());
                     break;
                 case AUTHORIZE_PAYMENT:
-                    //no guids in this object need to be set, we are done
+                    doAuthorizePaymentStepGuids((ServiceOrderAuthorizePaymentStep) thisStep.getValue());
                     break;
                 case WAIT_FOR_USER_TRIGGER:
                     break;
@@ -78,6 +79,24 @@ public class SetStepGuids {
             giveStep.getSignatureRequest().setBatchDetailGuid(giveStep.getBatchDetailGuid());
             giveStep.getSignatureRequest().setServiceOrderGuid(giveStep.getServiceOrderGuid());
             giveStep.getSignatureRequest().setStepGuid(giveStep.getGuid());
+        }
+    }
+
+    private static void doAuthorizePaymentStepGuids(ServiceOrderAuthorizePaymentStep paymentStep){
+        //if we have a paymentAuthorization, set the guids
+        if (paymentStep.getPaymentAuthorization() != null){
+            paymentStep.getPaymentAuthorization().setBatchGuid(paymentStep.getBatchGuid());
+            paymentStep.getPaymentAuthorization().setBatchDetailGuid(paymentStep.getBatchDetailGuid());
+            paymentStep.getPaymentAuthorization().setServiceOrderGuid(paymentStep.getServiceOrderGuid());
+            paymentStep.getPaymentAuthorization().setStepGuid(paymentStep.getGuid());
+        }
+
+        //ir we have a ReceiptRequest, set the guids
+        if (paymentStep.getReceiptRequest() != null){
+            paymentStep.getReceiptRequest().setBatchGuid(paymentStep.getBatchGuid());
+            paymentStep.getReceiptRequest().setBatchDetailGuid(paymentStep.getBatchDetailGuid());
+            paymentStep.getReceiptRequest().setServiceOrderGuid(paymentStep.getServiceOrderGuid());
+            paymentStep.getReceiptRequest().setStepGuid(paymentStep.getGuid());
         }
     }
 

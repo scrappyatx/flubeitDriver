@@ -14,13 +14,31 @@ import it.flube.libbatchdata.interfaces.OrderStepInterface;
 
 public class ServiceOrderUserTriggerStep extends AbstractStep implements OrderStepInterface {
 
-    private Boolean userHasTriggered;
+    private String displayMessage;
+    private Boolean showElapsedTime;
+    private long timerBase;
 
-    public Boolean getUserHasTriggered() {
-        return userHasTriggered;
+    public String getDisplayMessage() {
+        return displayMessage;
     }
 
-    public void setUserHasTriggered(Boolean userHasTriggered) {
-        this.userHasTriggered = userHasTriggered;
+    public void setDisplayMessage(String displayMessage) {
+        this.displayMessage = displayMessage;
+    }
+
+    public Boolean getShowElapsedTime() {
+        return showElapsedTime;
+    }
+
+    public void setShowElapsedTime(Boolean showElapsedTime) {
+        this.showElapsedTime = showElapsedTime;
+    }
+
+    public long getTimerBase() {
+        return timerBase;
+    }
+
+    public void setTimerBase(long timerBase) {
+        this.timerBase = timerBase;
     }
 }

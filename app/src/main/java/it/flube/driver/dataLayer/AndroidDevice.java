@@ -8,6 +8,7 @@ import android.content.Context;
 
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseWrapper;
 import it.flube.driver.deviceLayer.cloudServices.cloudDemoOffer.DemoOfferFirebaseWrapper;
+import it.flube.driver.deviceLayer.cloudServices.cloudImageDetection.ImageDetectionFirebaseWrapper;
 import it.flube.driver.deviceLayer.cloudServices.cloudImageStorage.CloudImageStorageFirebaseWrapper;
 import it.flube.driver.deviceLayer.cloudServices.cloudOfferClaim.OfferClaimFirebaseWrapper;
 import it.flube.driver.deviceLayer.cloudServices.cloudPersonalOffer.PersonalOfferFirebaseWrapper;
@@ -38,6 +39,7 @@ import it.flube.driver.modelLayer.interfaces.AppUserInterface;
 import it.flube.driver.modelLayer.interfaces.CloudAuthInterface;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import it.flube.driver.modelLayer.interfaces.CloudDemoOfferInterface;
+import it.flube.driver.modelLayer.interfaces.CloudImageDetectionInterface;
 import it.flube.driver.modelLayer.interfaces.CloudImageStorageInterface;
 import it.flube.driver.modelLayer.interfaces.CloudOfferClaimInterface;
 import it.flube.driver.modelLayer.interfaces.CloudPersonalOfferInterface;
@@ -189,6 +191,10 @@ public class AndroidDevice implements
     public CloudScheduledBatchInterface getCloudScheduledBatch() { return cloudScheduledBatch; }
 
     public CloudActiveBatchInterface getCloudActiveBatch() { return cloudActiveBatch; }
+
+    public CloudImageDetectionInterface getCloudImageDetection(){
+        return new ImageDetectionFirebaseWrapper();
+    }
 
     ///
     /// device services

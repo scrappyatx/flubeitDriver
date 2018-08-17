@@ -25,6 +25,8 @@ public class UserTriggerStepBuilder {
     private static final OrderStepInterface.TaskType TASK_TYPE = OrderStepInterface.TaskType.WAIT_FOR_USER_TRIGGER;
     private static final Integer DEFAULT_DURATION_MINUTES = 20;
     private static final String DEFAULT_MILESTONE_WHEN_FINISHED = "User Action Taken";
+    private static final String DEFAULT_DISPLAY_MESSAGE = "Wait for something to happen";
+    private static final Boolean DEFAULT_SHOW_ELAPSED_TIME = true;
 
     /// icon strings use fontawesome.io icon strings
     private static final String TASK_ICON_STRING = "{fa-thumbs-o-up}";
@@ -36,8 +38,8 @@ public class UserTriggerStepBuilder {
     private static final String STATUS_NORMAL_ICON_STRING = "";
     private static final String STATUS_CUSTOMER_SUPPORT_ICON_STRING = "{fa-exclamation-circle}";
 
-    private static final String STAGE_NOT_STARTED_ICON_STRING = "{fa-camera}";
-    private static final String STAGE_ACTIVE_ICON_STRING = "{fa-camera}";
+    private static final String STAGE_NOT_STARTED_ICON_STRING = "{fa-cogs}";
+    private static final String STAGE_ACTIVE_ICON_STRING = "{fa-cogs}";
     private static final String STAGE_COMPLETED_ICON_STRING = "{fa-check-circle}";
 
     private ServiceOrderUserTriggerStep triggerStep;
@@ -58,7 +60,9 @@ public class UserTriggerStepBuilder {
             triggerStep.setTaskType(TASK_TYPE);
             triggerStep.setDurationMinutes(DEFAULT_DURATION_MINUTES);
             triggerStep.setMilestoneWhenFinished(DEFAULT_MILESTONE_WHEN_FINISHED);
-            triggerStep.setUserHasTriggered(false);
+            triggerStep.setDisplayMessage(DEFAULT_DISPLAY_MESSAGE);
+            triggerStep.setShowElapsedTime(DEFAULT_SHOW_ELAPSED_TIME);
+            triggerStep.setTimerBase(0);
 
             triggerStep.setGuid(BuilderUtilities.generateGuid());
             triggerStep.setWorkStage(OrderStepInterface.WorkStage.NOT_STARTED);
@@ -184,8 +188,18 @@ public class UserTriggerStepBuilder {
             return this;
         }
 
+        public Builder displayMessage(String displayMessage){
+            this.triggerStep.setDisplayMessage(displayMessage);
+            return this;
+        }
+
+        public Builder showElapsedTime(Boolean showElapsedTime){
+            this.triggerStep.setShowElapsedTime(showElapsedTime);
+            return this;
+        }
+
         private void validate(ServiceOrderUserTriggerStep triggerStep){
-// required PRESENT (must not be null)
+            // required PRESENT (must not be null)
             if (triggerStep.getGuid() == null) {
                 throw new IllegalStateException("GUID is null");
             }

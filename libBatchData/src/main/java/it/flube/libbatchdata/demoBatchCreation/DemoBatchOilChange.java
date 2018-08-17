@@ -10,6 +10,7 @@ import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.builders.ContactPersonBuilder;
 import it.flube.libbatchdata.builders.DestinationBuilder;
 import it.flube.libbatchdata.builders.LatLonLocationBuilder;
+import it.flube.libbatchdata.builders.PaymentAuthorizationBuilder;
 import it.flube.libbatchdata.builders.PhotoRequestListForVehicleBuilder;
 import it.flube.libbatchdata.builders.PotentialEarningsBuilder;
 import it.flube.libbatchdata.builders.ServiceProviderBuilder;
@@ -181,7 +182,9 @@ public class DemoBatchOilChange implements DemoBatchInterface {
                                 //.startTime(BuilderUtilities.getNowDate())
                                 //.finishTime(BuilderUtilities.getNowDate(),10)
                                 .milestoneWhenFinished("Driver has paid for oil change")
-                                .maxPaymentAmount("$150.00")
+                                .paymentAuthorization(new PaymentAuthorizationBuilder.Builder()
+                                        .maxPaymentAmountCents(9200)
+                                        .build())
                                 .build())
 
                         /// STEP 8 -> RECEIVE ASSET (customer's vehicle)

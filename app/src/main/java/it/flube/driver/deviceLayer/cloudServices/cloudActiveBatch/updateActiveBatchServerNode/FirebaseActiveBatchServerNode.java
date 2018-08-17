@@ -13,7 +13,10 @@ import com.google.firebase.database.ServerValue;
 
 import java.util.HashMap;
 
+import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataGet.FirebaseActiveBatchContactPersonsByServiceOrderGet;
 import it.flube.driver.modelLayer.entities.driver.Driver;
+import it.flube.driver.modelLayer.interfaces.CloudActiveBatchInterface;
+import it.flube.libbatchdata.entities.ContactPersonsByServiceOrder;
 import it.flube.libbatchdata.entities.LatLonLocation;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
@@ -25,47 +28,66 @@ import timber.log.Timber;
  * Project : Driver
  */
 
-public class FirebaseActiveBatchServerNode implements OnCompleteListener<Void> {
+public class FirebaseActiveBatchServerNode implements
+        OnCompleteListener<Void>,
+        CloudActiveBatchInterface.GetContactPersonsByServiceOrderResponse {
+
     private static final String TAG = "FirebaseActiveBatchServerNode";
 
+    /// driverData node
+    private static final String DRIVER_DATA_NODE = "driverData";
     private static final String CLIENT_ID_PROPERTY = "clientId";
     private static final String FIRST_NAME_PROPERTY = "firstName";
-    private static final String BATCH_TYPE_PROPERTY = "batchType";
-    private static final String BATCH_TITLE = "batchTitle";
-    private static final String CURRENT_SERVICE_ORDER_TITLE = "currentServiceOrderTitle";
-    private static final String CURRENT_STEP_TITLE = "currentStepTitle";
-    private static final String CURRENT_STEP_TASK_TYPE_PROPERTY = "currentStepTaskType";
-    private static final String CURRENT_STEP_START_TIME_PROPERTY = "currentStepStartedTimestamp";
-    private static final String CURRENT_SERVICE_ORDER_SEQUENCE_PROPERTY = "currentServiceOrderSequence";
-    private static final String CURRENT_STEP_SEQUENCE_PROPERTY = "currentStepSequence";
-    private static final String SERVICE_ORDER_COUNT_PROPERTY = "serviceOrderCount";
-    private static final String STEP_COUNT_PROPERTY = "stepCount";
-    private static final String DRIVER_LOCATION_PROPERTY = "driverLocationWhenCurrentStepStarted";
-    private static final String UPDATE_TIMESTAMP = "timestamp";
-    private static final String CURRENT_STEP_SCHEDULED_START_TIME = "currentStepScheduledStartTime";
-    private static final String CURRENT_STEP_SCHEDULED_FINISH_TIME = "currentStepScheduledFinishTime";
 
+    /// currentBatch node
+    private static final String CURRENT_BATCH_NODE = "currentBatch";
+    private static final String BATCH_DETAIL_NODE = "batchDetail";
+    private static final String CONTACT_PERSONS_BY_SERVICE_ORDER_NODE = "contactPersonsByServiceOrder";
 
-    public void activeBatchServerNodeUpdateRequest(DatabaseReference activeBatchRef, Driver driver,
+    /// currentServiceOrder node
+    private static final String CURRENT_SERVICE_ORDER_NODE = "currentServiceOrder";
+    private static final String SERVICE_ORDER_NODE = "serviceOrder";
+
+    /// currentStep node
+    private static final String CURRENT_STEP_NODE = "currentStep";
+    private static final String ORDER_STEP_NODE = "step";
+
+    // driverLocation node
+    private static final String DRIVER_LOCATION_NODE = "driverLocation";
+    private static final String LAST_UPDATE_LOCATION = "lastUpdateLocation";
+    private static final String LAST_UPDATE_TIMESTAMP = "lastUpdateTimestamp";
+
+    private HashMap<String, Object> updateData;
+    private DatabaseReference activeBatchRef;
+    private String batchGuid;
+
+    ////
+    //// TODO this is inefficient, rewrites a lot of data on every update.  needs to be refactored with the "only start a step once" logic
+    ////
+
+    public void activeBatchServerNodeUpdateRequest(DatabaseReference activeBatchRef, DatabaseReference batchDataRef, Driver driver,
                                                    BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step){
 
         Timber.tag(TAG).d("activeBatchRef = " + activeBatchRef.toString());
+        Timber.tag(TAG).d("batchDataRef   = " + batchDataRef.toString());
+        this.activeBatchRef = activeBatchRef;
+        this.batchGuid = batchDetail.getBatchGuid();
 
-        HashMap<String, Object> data = getBaselineData(driver, batchDetail, serviceOrder, step);
-
-        activeBatchRef.child(batchDetail.getBatchGuid()).setValue(data).addOnCompleteListener(this);
+        updateData = getBaselineData(driver, batchDetail, serviceOrder, step);
+        getContactPersonData(batchDataRef, batchDetail);
     }
 
-    public void activeBatchServerNodeUpdateRequest(DatabaseReference activeBatchRef, Driver driver,
+    public void activeBatchServerNodeUpdateRequest(DatabaseReference activeBatchRef, DatabaseReference batchDataRef, Driver driver,
                                                    BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step, LatLonLocation driverLocation){
 
         Timber.tag(TAG).d("activeBatchRef = " + activeBatchRef.toString());
+        Timber.tag(TAG).d("batchDataRef   = " + batchDataRef.toString());
+        this.activeBatchRef = activeBatchRef;
+        this.batchGuid = batchDetail.getBatchGuid();
 
-        HashMap<String, Object> data = getBaselineData(driver, batchDetail, serviceOrder, step);
-        data.put(DRIVER_LOCATION_PROPERTY, driverLocation);
-
-        activeBatchRef.child(batchDetail.getBatchGuid()).setValue(data).addOnCompleteListener(this);
-
+        updateData = getBaselineData(driver, batchDetail, serviceOrder, step);
+        updateData.put(DRIVER_LOCATION_NODE, getDriverLocationNode(driverLocation));
+        getContactPersonData(batchDataRef, batchDetail);
     }
 
     public void activeBatchServerNodeUpdateRequest(DatabaseReference activeBatchRef, String batchGuid){
@@ -74,59 +96,91 @@ public class FirebaseActiveBatchServerNode implements OnCompleteListener<Void> {
         activeBatchRef.child(batchGuid).setValue(null).addOnCompleteListener(this);
     }
 
+
+    ////
+    //// private methods for building data hashmap
+    ////
+
     private HashMap<String, Object> getBaselineData(Driver driver,
                                                     BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step) {
 
         HashMap<String, Object> data = new HashMap<String, Object>();
 
-        data.put(CLIENT_ID_PROPERTY, driver.getClientId());
-        data.put(FIRST_NAME_PROPERTY, driver.getNameSettings().getFirstName());
+        ///put in driverData
+        data.put(DRIVER_DATA_NODE, getDriverDataNode(driver));
 
-        data.put(BATCH_TYPE_PROPERTY, batchDetail.getBatchType().toString());
+        ///put in currentBatch node
+        data.put(CURRENT_BATCH_NODE, getCurrentBatchNode(batchDetail));
 
-        data.put(BATCH_TITLE, batchDetail.getTitle());
-        data.put(CURRENT_SERVICE_ORDER_TITLE, serviceOrder.getTitle());
-        data.put(CURRENT_STEP_TITLE, step.getTitle());
+        //put in currentServiceOrder node
+        data.put(CURRENT_SERVICE_ORDER_NODE, getCurrentServiceOrderNode(serviceOrder));
 
-        data.put(CURRENT_STEP_TASK_TYPE_PROPERTY, step.getTaskType().toString());
-        data.put(CURRENT_STEP_START_TIME_PROPERTY, ServerValue.TIMESTAMP);
-
-        data.put(CURRENT_SERVICE_ORDER_SEQUENCE_PROPERTY, serviceOrder.getSequence());
-        data.put(SERVICE_ORDER_COUNT_PROPERTY, batchDetail.getServiceOrderCount());
-
-        data.put(CURRENT_STEP_SEQUENCE_PROPERTY, step.getSequence());
-        data.put(STEP_COUNT_PROPERTY, serviceOrder.getTotalSteps());
-
-        data.put(CURRENT_STEP_SCHEDULED_START_TIME, step.getStartTime().getScheduledTime());
-        data.put(CURRENT_STEP_SCHEDULED_FINISH_TIME, step.getFinishTime().getScheduledTime());
-
-        data.put(UPDATE_TIMESTAMP, ServerValue.TIMESTAMP);
+        //put in currentStep node
+        data.put(CURRENT_STEP_NODE, getCurrentStepNode(step));
 
         Timber.tag(TAG).d("   baseline data...");
-        Timber.tag(TAG).d("         clientId             --> " + driver.getClientId());
-        Timber.tag(TAG).d("         driver firstName     --> " + driver.getNameSettings().getFirstName());
-
-        Timber.tag(TAG).d("         batchType            --> " + batchDetail.getBatchType().toString());
-
-        Timber.tag(TAG).d("         batchTitle           --> " + batchDetail.getTitle());
-        Timber.tag(TAG).d("         serviceOrderTitle    --> " + serviceOrder.getTitle());
-        Timber.tag(TAG).d("         stepTitle            --> " + step.getTitle());
-
-        Timber.tag(TAG).d("         stepType             --> " + step.getTaskType().toString());
-
-        Timber.tag(TAG).d("         serviceOrderSequence --> " + serviceOrder.getSequence());
-        Timber.tag(TAG).d("         serviceOrderCount    --> " + batchDetail.getServiceOrderCount());
-
-        Timber.tag(TAG).d("         stepSequence         --> " + step.getSequence());
-        Timber.tag(TAG).d("         stepCount            --> " + serviceOrder.getTotalSteps());
-
-        Timber.tag(TAG).d("         step scheduled start time  --> " + step.getStartTime().getScheduledTime().toString());
-        Timber.tag(TAG).d("         step scheduled finish time --> " + step.getFinishTime().getScheduledTime().toString());
-
-
         return data;
     }
 
+    private HashMap<String, Object> getDriverDataNode(Driver driver){
+        HashMap<String, Object> data = new HashMap<String, Object>();
+        data.put(CLIENT_ID_PROPERTY, driver.getClientId());
+        data.put(FIRST_NAME_PROPERTY, driver.getNameSettings().getFirstName());
+        return data;
+    }
+
+    private HashMap<String, Object> getCurrentBatchNode(BatchDetail batchDetail){
+        HashMap<String, Object> data = new HashMap<String, Object>();
+        data.put(BATCH_DETAIL_NODE, batchDetail);
+        return data;
+    }
+
+    private HashMap<String, Object> getCurrentServiceOrderNode(ServiceOrder serviceOrder){
+        HashMap<String, Object> data = new HashMap<String, Object>();
+        data.put(SERVICE_ORDER_NODE, serviceOrder);
+        return data;
+    }
+
+    private HashMap<String, Object> getCurrentStepNode(OrderStepInterface step){
+        HashMap<String, Object> data = new HashMap<String, Object>();
+        data.put(ORDER_STEP_NODE, step);
+        return data;
+    }
+
+    private HashMap<String, Object> getDriverLocationNode(LatLonLocation driverLocation){
+        HashMap<String, Object> data = new HashMap<String, Object>();
+        data.put(LAST_UPDATE_LOCATION, driverLocation);
+        data.put(LAST_UPDATE_TIMESTAMP, ServerValue.TIMESTAMP);
+        return data;
+    }
+
+    private void getContactPersonData(DatabaseReference batchDataRef, BatchDetail batchDetail){
+        /// add in contact person data
+        new FirebaseActiveBatchContactPersonsByServiceOrderGet().getContactPersonsByServiceOrder(batchDataRef, batchDetail.getBatchGuid(), this);
+    }
+
+    ///
+    /// CloudActiveBatchInterface.GetContactPersonsByServiceOrderResponse
+    ///
+    public void cloudGetActiveBatchContactPersonsByServiceOrderSuccess(ContactPersonsByServiceOrder contactList){
+        // got data
+        Timber.tag(TAG).d("cloudGetActiveBatchContactPersonsByServiceOrderSuccess");
+
+        HashMap<String, Object> currentBatch = (HashMap<String, Object>) updateData.get(CURRENT_BATCH_NODE);
+        currentBatch.put(CONTACT_PERSONS_BY_SERVICE_ORDER_NODE, contactList.getContactPersonsByServiceOrder());
+
+        activeBatchRef.child(batchGuid).setValue(updateData).addOnCompleteListener(this);
+    }
+
+    public void cloudGetActiveBatchContactPersonsByServiceOrderFailure(){
+        ///didn't get any data
+        Timber.tag(TAG).d("cloudGetActiveBatchContactPersonsByServiceOrderFailure");
+        activeBatchRef.child(batchGuid).setValue(updateData).addOnCompleteListener(this);
+    }
+
+    ///
+    /// OnCompleteListener
+    ///
     public void onComplete(@NonNull Task<Void> task) {
         Timber.tag(TAG).d("   onComplete...");
 
@@ -143,4 +197,6 @@ public class FirebaseActiveBatchServerNode implements OnCompleteListener<Void> {
         }
         Timber.tag(TAG).d("COMPLETE");
     }
+
+
 }

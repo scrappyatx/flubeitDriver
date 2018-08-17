@@ -13,9 +13,23 @@ import it.flube.libbatchdata.interfaces.AssetInterface;
 
 public abstract class AbstractAsset {
 
+    protected AssetInterface.AssetType assetType;
     protected String guid;
-    protected String name;
-    protected String description;
+    protected String displayImageUrl;
+    protected String displayTitle;
+    protected String displayDescription;
+    protected String displayIdentifier;
+    protected String detailInfo;
+
+    public AbstractAsset(){ }
+
+    public AssetInterface.AssetType getAssetType() {
+        return assetType;
+    }
+
+    public void setAssetType(AssetInterface.AssetType assetType) {
+        this.assetType = assetType;
+    }
 
     public String getGuid() {
         return guid;
@@ -25,19 +39,43 @@ public abstract class AbstractAsset {
         this.guid = guid;
     }
 
-    public String getName() {
-        return name;
+    public String getDisplayImageUrl() {
+        return displayImageUrl;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDisplayImageUrl(String displayImageUrl) {
+        this.displayImageUrl = displayImageUrl;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDisplayTitle() {
+        return displayTitle;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDisplayTitle(String displayTitle) {
+        this.displayTitle = displayTitle;
+    }
+
+    public String getDisplayDescription() {
+        return displayDescription;
+    }
+
+    public void setDisplayDescription(String displayDescription) {
+        this.displayDescription = displayDescription;
+    }
+
+    public String getDisplayIdentifier() {
+        return displayIdentifier;
+    }
+
+    public void setDisplayIdentifier(String displayIdentifier) {
+        this.displayIdentifier = displayIdentifier;
+    }
+
+    public String getDetailInfo() {
+        return detailInfo;
+    }
+
+    public void setDetailInfo(String detailInfo) {
+        this.detailInfo = detailInfo;
     }
 }

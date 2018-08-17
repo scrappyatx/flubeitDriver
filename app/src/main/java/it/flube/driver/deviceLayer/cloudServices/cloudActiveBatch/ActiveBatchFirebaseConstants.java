@@ -14,9 +14,18 @@ public class ActiveBatchFirebaseConstants {
     public static final String COMPLETED_BATCH_SERVER_NOTIFICATION_NODE = "mobileData/userWriteable/completedBatches";
 
     public static final String BATCH_DATA_STEPS_NODE = "steps";
+
     public static final String PHOTO_REQUEST_LIST_NODE = "photoRequestList";
     public static final String PHOTO_REQUEST_HAS_DEVICE_FILE_NODE  = "hasDeviceFile";
     public static final String PHOTO_REQUEST_DEVICE_ABSOLUTE_FILENAME_NODE = "deviceAbsoluteFileName";
+    public static final String PHOTO_REQUEST_HAS_LABEL_MAP_NODE = "hasLabelMap";
+    public static final String PHOTO_REQUEST_LABEL_MAP_NODE = "labelMap";
+
+    public static final String SIGNATURE_REQUEST_NODE = "signatureRequest";
+    public static final String SIGNATURE_REQUEST_STATUS_NODE = "signatureStatus";
+    public static final String SIGNATURE_REQUEST_HAS_DEVICE_FILE_NODE = "hasDeviceFile";
+    public static final String SIGNATURE_REQUEST_DEVICE_ABSOLUTE_FILENAME_NODE = "deviceAbsoluteFileName";
+    public static final String SIGNATURE_REQUEST_ATTEMPT_COUNT_NODE = "attemptCount";
 
     public static final String SERVICE_ORDER_GUID = "serviceOrderGuid";
 
@@ -26,5 +35,9 @@ public class ActiveBatchFirebaseConstants {
 
     public static final String BATCH_DATA_SERVICE_ORDER_NODE = "serviceOrders";
     public static final String BATCH_DATA_CONTACT_PERSONS_BY_SERVICE_ORDER_NODE = "contactPersonsByServiceOrder";
+
+    public static final String BATCH_DATA_ASSET_LIST_NODE = "assetList";
+
+    public static final String ASSET_TRANSFER_STATUS_NODE = "transferStatus";
 
 }

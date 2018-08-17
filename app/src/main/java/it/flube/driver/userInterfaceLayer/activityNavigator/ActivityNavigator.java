@@ -270,4 +270,36 @@ public class ActivityNavigator {
         Timber.tag(TAG).d("starting activity PhotoTake, photoRequestGuid -> " + photoRequestGuid);
     }
 
+    //// RECEIVE ASSET STEP NAVIGATION
+    public void gotoActivityReceiveAssetGetSignature(Context context){
+        ReceiveAssetStepNavigator.gotoActivityReceiveAssetGetSignature(context);
+        Timber.tag(TAG).d("starting activity ReceiveAssetGetSignature");
+    }
+
+    public void gotoActivityReceiveAssetItem(Context context, String assetGuid){
+        ReceiveAssetStepNavigator.gotoActivityReceiveAssetItem(context, assetGuid);
+        Timber.tag(TAG).d("starting activity ReceiveAssetItem");
+    }
+
+    public void gotoActivityReceiveAssetItemList(Context context){
+        ReceiveAssetStepNavigator.gotoActivityReceiveAssetItemList(context);
+        Timber.tag(TAG).d("starting activity ReceiveAssetItemList");
+    }
+
+    /// GIVE ASSET STEP NAVIGATION
+    public void gotoActivityGiveAssetGetSignature(Context context){
+        GiveAssetStepNavigator.gotoActivityGiveAssetGetSignature(context);
+        Timber.tag(TAG).d("starting activity GiveAssetGetSignature");
+    }
+
+    public void gotoActivityGiveAssetItem(Context context, String assetGuid){
+        GiveAssetStepNavigator.gotoActivityGiveAssetItem(context, assetGuid);
+        Timber.tag(TAG).d("startign activity GiveAssetItem");
+    }
+
+    public void gotoActivityGiveAssetItemList(Context context){
+        GiveAssetStepNavigator.gotoActivityGiveAssetItemList(context);
+        Timber.tag(TAG).d("starting activity GiveAssetItemList");
+    }
+
 }

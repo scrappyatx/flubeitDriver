@@ -6,6 +6,7 @@ package it.flube.libbatchdata.demoBatchCreation;
 
 import it.flube.libbatchdata.builders.AssetTransferBuilder;
 import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.builders.PaymentAuthorizationBuilder;
 import it.flube.libbatchdata.builders.PotentialEarningsBuilder;
 import it.flube.libbatchdata.builders.batch.BatchHolderBuilder;
 import it.flube.libbatchdata.builders.orderSteps.AuthorizePaymentStepBuilder;
@@ -31,6 +32,8 @@ public class DemoBatchSingleStepAuthorizePayment implements DemoBatchInterface {
     private static final String STEP_TITLE = "Authorize Payment";
     private static final String STEP_DESCRIPTION = "Authorize Payment for Service";
     private static final String MILESTONE_WHEN_FINISHED = "Payment Authorized";
+    private static final Integer MAX_PAYMENT_AMOUNT_CENTS = 15000;
+    private static final Boolean REQUIRE_RECEIPT=true;
 
     public BatchHolder createDemoBatch(String clientId){
         return getDemoBatch(clientId, BuilderUtilities.generateGuid());
@@ -73,7 +76,11 @@ public class DemoBatchSingleStepAuthorizePayment implements DemoBatchInterface {
                             //.startTime(BuilderUtilities.getNowDate())
                             //.finishTime(BuilderUtilities.getNowDate(),10)
                             .milestoneWhenFinished(MILESTONE_WHEN_FINISHED)
-                            .maxPaymentAmount("$150.00")
+                            .paymentAuthorization(new PaymentAuthorizationBuilder.Builder()
+                                    .verifyPaymentAmount(true)
+                                    .maxPaymentAmountCents(MAX_PAYMENT_AMOUNT_CENTS)
+                                    .build())
+                            .requireReceipt(REQUIRE_RECEIPT)
                             .build())
 
                         .build())

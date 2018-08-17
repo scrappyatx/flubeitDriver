@@ -63,6 +63,11 @@ public class ContactPersonBuilder {
             return this;
         }
 
+        public Builder email(String email){
+            this.contactPerson.setEmail(email);
+            return this;
+        }
+
         public Builder contactRole(ContactPerson.ContactRole contactRole){
             this.contactPerson.setContactRole(contactRole);
 

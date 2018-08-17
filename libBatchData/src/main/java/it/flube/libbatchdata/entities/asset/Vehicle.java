@@ -12,7 +12,6 @@ import it.flube.libbatchdata.interfaces.AssetTransferInterface;
  */
 
 public class Vehicle extends AbstractAsset implements AssetInterface {
-    private static final AssetType ASSET_TYPE = AssetType.VEHICLE;
 
     private String make;
     private String model;
@@ -20,10 +19,9 @@ public class Vehicle extends AbstractAsset implements AssetInterface {
     private String color;
     private String licensePlate;
     private String licenseState;
+    private String engineDetail;
 
     public Vehicle(){}
-
-    public AssetType getAssetType(){ return ASSET_TYPE; }
 
     public String getMake() {
         return make;
@@ -73,5 +71,11 @@ public class Vehicle extends AbstractAsset implements AssetInterface {
         this.licenseState = licenseState;
     }
 
+    public String getEngineDetail() {
+        return engineDetail;
+    }
 
+    public void setEngineDetail(String engineDetail) {
+        this.engineDetail = engineDetail;
+    }
 }

@@ -14,7 +14,9 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
+import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.ActiveBatchAlerts;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.layoutComponents.AuthorizePaymentLayoutComponents;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailCompleteButtonComponents;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailSwipeCompleteButtonComponent;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
@@ -22,7 +24,11 @@ import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailDueByLayoutComponents;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailTitleLayoutComponents;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.batchAlerts.ShowCompletedServiceOrderAlertEvent;
+import it.flube.libbatchdata.entities.ReceiptRequest;
+import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderAuthorizePaymentStep;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderReceiveAssetStep;
+import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import ng.max.slideview.SlideView;
 import timber.log.Timber;
@@ -32,18 +38,15 @@ import timber.log.Timber;
  * Project : Driver
  */
 public class AuthorizePaymentActivity extends AppCompatActivity implements
-        SlideView.OnSlideCompleteListener,
-        ActiveBatchAlerts.ServiceOrderCompletedAlertHidden {
+        AuthorizePaymentLayoutComponents.Response,
+        AuthorizePaymentController.GetDriverAndActiveBatchStepResponse {
 
     private static final String TAG = "AuthorizePaymentActivity";
 
     private ActivityNavigator navigator;
     private AuthorizePaymentController controller;
     private DrawerMenu drawer;
-
-    private StepDetailTitleLayoutComponents stepTitle;
-    private StepDetailDueByLayoutComponents stepDueBy;
-    private StepDetailSwipeCompleteButtonComponent stepComplete;
+    private AuthorizePaymentLayoutComponents layoutComponents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,27 +54,18 @@ public class AuthorizePaymentActivity extends AppCompatActivity implements
 
         setContentView(R.layout.activity_authorize_payment_step);
 
-        stepTitle = new StepDetailTitleLayoutComponents(this);
-        stepDueBy = new StepDetailDueByLayoutComponents(this);
-        stepComplete = new StepDetailSwipeCompleteButtonComponent(this, getResources().getString(R.string.authorize_payment_completed_step_button_caption), this);
+        navigator = new ActivityNavigator();
+        drawer = new DrawerMenu(this, navigator, R.string.authorize_payment_step_activity_title);
+        controller = new AuthorizePaymentController();
+        layoutComponents = new AuthorizePaymentLayoutComponents(this, this);
+
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-        navigator = new ActivityNavigator();
-        drawer = new DrawerMenu(this, navigator, R.string.authorize_payment_step_activity_title);
-        controller = new AuthorizePaymentController();
-
-        updateValues();
-
-        stepTitle.setVisible();
-        stepDueBy.setVisible();
-        stepComplete.setVisible();
-
-        EventBus.getDefault().register(this);
+        controller.getDriverAndActiveBatchStep(this);
 
         Timber.tag(TAG).d("onResume");
     }
@@ -87,50 +81,54 @@ public class AuthorizePaymentActivity extends AppCompatActivity implements
         EventBus.getDefault().unregister(this);
     }
 
-    private void updateValues() {
-        Timber.tag(TAG).d("updating Values...");
-        if (AndroidDevice.getInstance().getActiveBatch().hasActiveBatch()) {
-            ServiceOrderAuthorizePaymentStep step = AndroidDevice.getInstance().getActiveBatch().getAuthorizePaymentStep();
-            OrderStepInterface oiStep = AndroidDevice.getInstance().getActiveBatch().getStep();
+    @Override
+    public void onStop(){
+        Timber.tag(TAG).d("onStop");
 
-            stepTitle.setValues(this, oiStep);
-            stepDueBy.setValues(this, oiStep);
+        drawer.close();
+        controller.close();
+        layoutComponents.close();
 
-            Timber.tag(TAG).d("...values update complete");
-        } else {
-            Timber.tag(TAG).d("...no active batch");
-        }
+        super.onStop();
     }
 
-    public void onSlideComplete(SlideView v){
-        Timber.tag(TAG).d("swiped step complete button");
-
-        stepComplete.showWaitingAnimationAndBanner(getString(R.string.authorize_payment_completed_banner_text));
-
-        String milestoneEvent;
-        if (AndroidDevice.getInstance().getActiveBatch().hasActiveBatch()) {
-            ServiceOrderAuthorizePaymentStep step = AndroidDevice.getInstance().getActiveBatch().getAuthorizePaymentStep();
-            milestoneEvent = step.getMilestoneWhenFinished();
-        } else {
-            milestoneEvent = "no milestone";
-        }
-        controller.stepFinished(milestoneEvent);
+    ///
+    /// AuthorizePaymentLayoutComponents.Response interface
+    ///
+    public void receiptRowClicked(ReceiptRequest receiptRequest){
+        Timber.tag(TAG).d("receiptRowClicked");
     }
 
-
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEvent(ShowCompletedServiceOrderAlertEvent event) {
-        EventBus.getDefault().removeStickyEvent(event);
-
-        Timber.tag(TAG).d("active batch -> service order completed!");
-
-        ActiveBatchAlerts alert = new ActiveBatchAlerts();
-        alert.showServiceOrderCompletedAlert(this, this);
+    public void stepCompleteClicked(String milestoneWhenFinished){
+        Timber.tag(TAG).d("stepCompleteClicked");
+        layoutComponents.showWaitingAnimationAndBanner(this);
+        controller.stepFinished(milestoneWhenFinished);
     }
 
-    public void serviceOrderCompletedAlertHidden() {
-        Timber.tag(TAG).d("service order completed alert hidden");
+    ///
+    ///  ReceiveAssetController.GetDriverAndActiveBatchStepResponse interface
+    ///
+    public void gotDriverAndStep(Driver driver, BatchDetail batchDetail, ServiceOrder serviceOrder, ServiceOrderAuthorizePaymentStep orderStep){
+        Timber.tag(TAG).d("gotDriverAndStep");
+        layoutComponents.setValues(this,orderStep);
+        layoutComponents.setVisible();
     }
+
+    public void gotNoDriver(){
+        Timber.tag(TAG).d("gotNoDriver");
+        navigator.gotoActivityLogin(this);
+    }
+
+    public void gotDriverButNoStep(Driver driver){
+        Timber.tag(TAG).d("gotDriverButNoStep");
+        navigator.gotoActivityHome(this);
+    }
+
+    public void gotStepMismatch(Driver driver, OrderStepInterface.TaskType taskType){
+        Timber.tag(TAG).d("gotStepMismatch, taskType -> " + taskType.toString());
+        navigator.gotoActiveBatchStep(this);
+    }
+
 }
 
 

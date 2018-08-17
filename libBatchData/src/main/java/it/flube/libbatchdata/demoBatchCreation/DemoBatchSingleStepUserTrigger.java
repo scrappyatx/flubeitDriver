@@ -31,6 +31,8 @@ public class DemoBatchSingleStepUserTrigger implements DemoBatchInterface {
     private static final String STEP_TITLE = "User Trigger";
     private static final String STEP_DESCRIPTION = "Wait for User Trigger";
     private static final String MILESTONE_WHEN_FINISHED = "User Completed Step";
+    private static final String DISPLAY_MESSAGE = "Wait for vehicle to be serviced";
+    private static final Boolean SHOW_ELAPSED_TIME = true;
 
     public BatchHolder createDemoBatch(String clientId){
         return getDemoBatch(clientId, BuilderUtilities.generateGuid());
@@ -73,6 +75,8 @@ public class DemoBatchSingleStepUserTrigger implements DemoBatchInterface {
                                 //.startTime(BuilderUtilities.getNowDate())
                                 //.finishTime(BuilderUtilities.getNowDate(),10)
                                 .milestoneWhenFinished(MILESTONE_WHEN_FINISHED)
+                                .displayMessage(DISPLAY_MESSAGE)
+                                .showElapsedTime(SHOW_ELAPSED_TIME)
                                 .build())
 
                         .build())

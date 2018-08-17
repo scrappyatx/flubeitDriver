@@ -11,7 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.builders.PaymentAuthorizationBuilder;
+import it.flube.libbatchdata.builders.ReceiptRequestBuilder;
 import it.flube.libbatchdata.builders.TimestampBuilder;
+import it.flube.libbatchdata.entities.PaymentAuthorization;
 import it.flube.libbatchdata.entities.assetTransfer.AssetTransfer;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderAuthorizePaymentStep;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderGiveAssetStep;
@@ -25,7 +28,9 @@ import it.flube.libbatchdata.interfaces.OrderStepInterface;
 public class AuthorizePaymentStepBuilder {
     private static final OrderStepInterface.TaskType TASK_TYPE = OrderStepInterface.TaskType.AUTHORIZE_PAYMENT;
     private static final Integer DEFAULT_DURATION_MINUTES = 5;
-    private static final String DEFAULT_MILESTONE_WHEN_FINISHED = "User has made payment";
+    private static final String DEFAULT_MILESTONE_WHEN_FINISHED = "Driver has made payment";
+
+    private static final Boolean DEFAULT_REQUIRE_RECEIPT = true;
 
     /// icon strings use fontawesome.io icon strings
     private static final String TASK_ICON_STRING = "{fa-thumbs-o-up}";
@@ -37,8 +42,8 @@ public class AuthorizePaymentStepBuilder {
     private static final String STATUS_NORMAL_ICON_STRING = "";
     private static final String STATUS_CUSTOMER_SUPPORT_ICON_STRING = "{fa-exclamation-circle}";
 
-    private static final String STAGE_NOT_STARTED_ICON_STRING = "{fa-camera}";
-    private static final String STAGE_ACTIVE_ICON_STRING = "{fa-camera}";
+    private static final String STAGE_NOT_STARTED_ICON_STRING = "{fa-credit-card}";
+    private static final String STAGE_ACTIVE_ICON_STRING = "{fa-credit-card}";
     private static final String STAGE_COMPLETED_ICON_STRING = "{fa-check-circle}";
 
     private ServiceOrderAuthorizePaymentStep paymentStep;
@@ -55,11 +60,17 @@ public class AuthorizePaymentStepBuilder {
         private ServiceOrderAuthorizePaymentStep paymentStep;
 
         public Builder(){
-            // create the asset receive step
+            // create the authorize payment step
             this.paymentStep = new ServiceOrderAuthorizePaymentStep();
             this.paymentStep.setTaskType(TASK_TYPE);
             this.paymentStep.setDurationMinutes(DEFAULT_DURATION_MINUTES);
             this.paymentStep.setMilestoneWhenFinished(DEFAULT_MILESTONE_WHEN_FINISHED);
+
+            //this will add the receiptRequest object if required
+            requireReceipt(DEFAULT_REQUIRE_RECEIPT);
+
+            //add the payment authorization object
+            this.paymentStep.setPaymentAuthorization(new PaymentAuthorizationBuilder.Builder().build());
 
             //generate guid & set work stage, work timing & work status
             this.paymentStep.setGuid(BuilderUtilities.generateGuid());
@@ -187,10 +198,21 @@ public class AuthorizePaymentStepBuilder {
             return this;
         }
 
-        public Builder maxPaymentAmount(String maxPaymentAmount){
-            this.paymentStep.setMaxPaymentAmount(maxPaymentAmount);
+        public Builder paymentAuthorization(PaymentAuthorization paymentAuthorization){
+            this.paymentStep.setPaymentAuthorization(paymentAuthorization);
             return this;
         }
+
+        public Builder requireReceipt(Boolean requireReceipt){
+            this.paymentStep.setRequireReceipt(requireReceipt);
+            if (requireReceipt) {
+                this.paymentStep.setReceiptRequest(new ReceiptRequestBuilder.Builder().build());
+            } else {
+                this.paymentStep.setReceiptRequest(null);
+            }
+            return this;
+        }
+
 
         private void validate(ServiceOrderAuthorizePaymentStep paymentStep){
             // required PRESENT (must not be null)
@@ -214,8 +236,8 @@ public class AuthorizePaymentStepBuilder {
                 throw new IllegalStateException("milestoneWhenFinished is null");
             }
 
-            if (paymentStep.getMaxPaymentAmount() == null) {
-                throw new IllegalStateException("maxPaymentAmount is null");
+            if (paymentStep.getPaymentAuthorization() == null) {
+                throw new IllegalStateException("paymentAuthorization is null");
             }
 
             //required ABSENT (must be null)

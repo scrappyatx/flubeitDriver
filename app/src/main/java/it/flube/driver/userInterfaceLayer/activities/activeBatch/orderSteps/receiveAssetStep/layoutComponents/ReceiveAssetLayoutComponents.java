@@ -14,6 +14,8 @@ import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.rece
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailDueByLayoutComponents;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailSwipeCompleteButtonComponent;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailTitleLayoutComponents;
+import it.flube.libbatchdata.entities.ContactPerson;
+import it.flube.libbatchdata.entities.SignatureRequest;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderReceiveAssetStep;
 import it.flube.libbatchdata.interfaces.AssetTransferInterface;
 import ng.max.slideview.SlideView;
@@ -23,7 +25,12 @@ import timber.log.Timber;
  * Created on 7/25/2018
  * Project : Driver
  */
-public class ReceiveAssetLayoutComponents {
+public class ReceiveAssetLayoutComponents implements
+        SlideView.OnSlideCompleteListener,
+        SignatureRequestRowLayoutComponents.Response,
+        AssetTransferItemsRowLayoutComponents.Response,
+        ContactPersonLayoutComponent.Response {
+
     private static final String TAG = "ReceiveAssetLayoutComponents";
 
     private static final String DEFAULT_TRANSFER_TYPE_DISPLAY_TEXT = "Unknown";
@@ -43,15 +50,21 @@ public class ReceiveAssetLayoutComponents {
     private StepDetailSwipeCompleteButtonComponent stepComplete;
 
     private ServiceOrderReceiveAssetStep orderStep;
+    private Response response;
 
-    public ReceiveAssetLayoutComponents(AppCompatActivity activity, String stepCompleteButtonCaption, SlideView.OnSlideCompleteListener listener){
+    public ReceiveAssetLayoutComponents(AppCompatActivity activity, String stepCompleteButtonCaption, Response response){
+        this.response = response;
+
         stepTitle = new StepDetailTitleLayoutComponents(activity);
         stepDueBy = new StepDetailDueByLayoutComponents(activity);
         transferType = (TextView) activity.findViewById(R.id.transfer_type_text);
-        itemsRow = new AssetTransferItemsRowLayoutComponents(activity);
-        signatureRow = new SignatureRequestRowLayoutComponents(activity);
-        stepComplete = new StepDetailSwipeCompleteButtonComponent(activity, stepCompleteButtonCaption, listener);
-        contact = new ContactPersonLayoutComponent(activity);
+        itemsRow = new AssetTransferItemsRowLayoutComponents(activity, this);
+        signatureRow = new SignatureRequestRowLayoutComponents(activity, this);
+        stepComplete = new StepDetailSwipeCompleteButtonComponent(activity, stepCompleteButtonCaption, this);
+        contact = new ContactPersonLayoutComponent(activity, this);
+
+        contact.setInvisible();
+
         Timber.tag(TAG).d("created");
     }
 
@@ -97,12 +110,23 @@ public class ReceiveAssetLayoutComponents {
 
     public void showWaitingAnimationAndBanner(AppCompatActivity activity){
         Timber.tag(TAG).d("showWaitingAnimationBanner");
+        itemsRow.setInvisible();
+        signatureRow.setInvisible();
+        contact.setInvisible();
         stepComplete.showWaitingAnimationAndBanner(activity.getString(R.string.receive_asset_step_completed_banner_text));
     }
 
     public ServiceOrderReceiveAssetStep getOrderStep(){
         Timber.tag(TAG).d("ServiceOrderReceiveAssetStep");
         return this.orderStep;
+    }
+
+    public void setCalling(){
+        contact.setCalling();
+    }
+
+    public ContactPerson getContactPerson(){
+        return contact.getContactPerson();
     }
 
     public void setVisible(Boolean hasPermissionToCall){
@@ -167,8 +191,70 @@ public class ReceiveAssetLayoutComponents {
         signatureRow=null;
         stepComplete=null;
         transferType=null;
+        response = null;
 
         Timber.tag(TAG).d("closed");
+    }
+
+    ///
+    /// interface for SignatureRequestRowLayoutComponents
+    ///
+    public void signatureRowClicked(SignatureRequest signatureRequest){
+        Timber.tag(TAG).d("signatureRowClicked");
+        response.signatureRowClicked(signatureRequest);
+    }
+
+    ///
+    /// interface for AssetTransferItemsRowLayoutComponents
+    ///
+    public void itemRowClicked(){
+        Timber.tag(TAG).d("itemRowClicked, number of items -> " + orderStep.getAssetList().size());
+        if (orderStep.getAssetList().size() > 1){
+            response.itemsRowClickedWithMultipleItems();
+        } else {
+            Timber.tag(TAG).d("  ...assetGuid -> " + orderStep.getAssetList().entrySet().iterator().next().getKey());
+            response.itemsRowClickedWithOneItem(orderStep.getAssetList().entrySet().iterator().next().getKey());
+        }
+    }
+
+    ///
+    /// interface for ContactPersonLayoutComponents.Response
+    ///
+    public void textButtonClicked(ContactPerson contactPerson){
+        Timber.tag(TAG).d("textButtonClicked");
+        response.contactPersonTextClicked(contactPerson);
+    }
+
+    public void callButtonClicked(ContactPerson contactPerson){
+        Timber.tag(TAG).d("callButtonClicked");
+        response.contactPersonCallClicked(contactPerson);
+    }
+
+    public void appInfoButtonClicked(){
+        Timber.tag(TAG).d("appInfoButtonClicked");
+        response.appInfoClicked();
+    }
+
+    /// OnSlideCompleteListener interface
+    public void onSlideComplete(SlideView v){
+        Timber.tag(TAG).d("onSlideComplete");
+        response.stepCompleteClicked(orderStep.getMilestoneWhenFinished());
+    }
+
+    public interface Response {
+        void signatureRowClicked(SignatureRequest signatureRequest);
+
+        void itemsRowClickedWithMultipleItems();
+
+        void itemsRowClickedWithOneItem(String assetGuid);
+
+        void contactPersonCallClicked(ContactPerson contactPerson);
+
+        void contactPersonTextClicked(ContactPerson contactPerson);
+
+        void stepCompleteClicked(String milestoneWhenFinished);
+
+        void appInfoClicked();
     }
 
 

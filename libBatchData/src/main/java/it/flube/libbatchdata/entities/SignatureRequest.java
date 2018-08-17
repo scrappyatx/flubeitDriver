@@ -26,6 +26,7 @@ public class SignatureRequest {
     private Boolean hasDeviceFile;
     private String deviceAbsoluteFileName;
 
+    private Integer attemptCount;
     private Boolean hasCloudFile;
     private String cloudStorageFileName;
     private String cloudStorageDownloadUrl;
@@ -87,6 +88,14 @@ public class SignatureRequest {
 
     public void setDeviceAbsoluteFileName(String deviceAbsoluteFileName) {
         this.deviceAbsoluteFileName = deviceAbsoluteFileName;
+    }
+
+    public Integer getAttemptCount() {
+        return attemptCount;
+    }
+
+    public void setAttemptCount(Integer attemptCount) {
+        this.attemptCount = attemptCount;
     }
 
     public Boolean getHasCloudFile() {

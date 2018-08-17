@@ -21,6 +21,7 @@ import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.batch.BatchHolder;
 import it.flube.libbatchdata.interfaces.DemoBatchInterface;
 
+import static it.flube.libbatchdata.interfaces.AssetTransferInterface.TransferType.TRANSER_TO_CUSTOMER;
 import static it.flube.libbatchdata.interfaces.AssetTransferInterface.TransferType.TRANSFER_FROM_CUSTOMER;
 
 /**
@@ -77,7 +78,7 @@ public class DemoBatchSingleStepGiveAssetWithSignature implements DemoBatchInter
                                 //.startTime(BuilderUtilities.getNowDate(), 10)
                                 //.finishTime(BuilderUtilities.getNowDate(),10)
                                 .milestoneWhenFinished(MILESTONE_WHEN_FINISHED)
-                                .transferType(TRANSFER_FROM_CUSTOMER)
+                                .transferType(TRANSER_TO_CUSTOMER)
                                 .contactPerson(DemoBatchUtilities.getCustomerContactPerson())
                                 .addAssetTransfer(new AssetTransferBuilder.Builder()
                                         .asset(DemoBatchUtilities.getCustomerVehicle())

@@ -4,6 +4,11 @@
   -->
 
 <resources>
+
+    <!-- COLOR DEFINITIONS (all colors here should be from the color palette)
+
+     -->
+
     <color name="colorPrimary">@color/mediumblue</color>
     <color name="colorPrimaryDark">@color/darkblue</color>
     <color name="colorAccent">@color/yellow</color>
@@ -17,14 +22,16 @@
     <color name="colorTextPrimaryDark">@color/colorPrimaryDark</color>
     <color name="colorTextPrimary">@color/colorPrimary</color>
 
+    <color name="colorOrderActive">@color/colorPrimary</color>
+    <color name="colorOrderNotActive">@color/translucentMedBlue</color>
+    <color name="colorOrderComplete">@color/alerterGREEN</color>
+
+
+    <!-- COLOR ASSIGNMENTS (all colors here should be a defined color) -->
     <color name="colorNavMenuPublicOfferHighlight">@color/colorPrimary</color>
     <color name="colorNavMenuPersonalOfferHighlight">@color/colorPrimary</color>
     <color name="colorNavMenuDemoOfferHighlight">@color/colorPrimary</color>
     <color name="colorNavMenuScheduledBatchHighlight">@color/colorPrimary</color>
-
-    <color name="colorOrderActive">@color/colorPrimary</color>
-    <color name="colorOrderNotActive">@color/translucentMedBlue</color>
-    <color name="colorOrderComplete">@color/alerterGREEN</color>
 
     <color name="colorStepTitle">@color/colorPrimaryDark</color>
     <color name="colorStepDescription">@color/colorPrimary</color>
@@ -56,6 +63,9 @@
     <color name="colorNavStepDestinationCaption">@color/colorTextPrimaryDark</color>
     <color name="colorNavStepDestinationAddress">@color/translucentBlackCC</color>
 
+    <color name="colorUserTriggerStepChronometer">@color/colorTextPrimaryDark</color>
+    <color name="colorUserTriggerDisplayMessage">@color/colorTextPrimary</color>
+
     <color name="colorPhotoRequestRowSequence">@color/colorTextPrimaryLight</color>
     <color name="colorPhotoRequestRowTitle">@color/translucentBlackCC</color>
     <color name="colorPhotoRequestRowDescription">@color/translucentBlackAA</color>
@@ -75,18 +85,40 @@
 
     <color name="colorSignatureRequestRowTitle">@color/colorPrimaryDark</color>
     <color name="colorSignatureRequestRowStatus">@color/colorPrimaryDark</color>
+    <color name="colorSignatureInstructions">@color/colorPrimaryDark</color>
+    <color name="colorSignatureRequestSavingBanner">@color/translucentGreenCC</color>
+
+    <color name="colorAssetItemTitle">@color/colorPrimaryDark</color>
+    <color name="colorAssetItemDescription">@color/colorPrimary</color>
+    <color name="colorAssetItemIdentifier">@color/colorPrimary</color>
+
+    <color name="colorAssetTransferStatusCompletedSuccess">@color/alerterGREEN</color>
+    <color name="colorAssetTransferStatusCompletedFailed">@color/yellow</color>
+    <color name="colorAssetTransferStatusNotAttempted">@color/alerterRED</color>
+
+    <color name="colorAuthorizePaymentType">@color/colorPrimaryDark</color>
+    <color name="colorAuthorizePaymentDisplayAccount">@color/colorPrimary</color>
+    <color name="colorMaxPaymentDisplay">@color/colorPrimaryDark</color>
+    <color name="colorVerificationPaymentStatus">@color/colorPrimaryDark</color>
+    <color name="colorReceiptRequestTitle">@color/colorPrimaryDark</color>
+    <color name="colorReceiptRequestStatus">@color/colorPrimaryDark</color>
 
 
-    <!-- COLOR PALLETE -->
+    <!-- COLOR PALETTE (all colors here should be in the form #TTRRGGBB)
+            TT = transparancy (00 = fully transparent, FF = fully opaque)
+            RR = red (00 -> FF)
+            GG = green (00 -> FF)
+            BB = blue (00 -> FF)
+     -->
 
-    <color name="grey">#788FA0</color>
-    <color name="lightblue">#77CEE7</color>
-    <color name="mediumblue">#009CC8</color>
-    <color name="darkblue">#005989</color>
-    <color name="yellow">#FACF00</color>
-    <color name="lightred">#EF5350</color>
-    <color name="white">#FFFFFF</color>
-    <color name="offwhite">#F3F3F3</color>
+    <color name="grey">#FF788FA0</color>
+    <color name="lightblue">#FF77CEE7</color>
+    <color name="mediumblue">#FF009CC8</color>
+    <color name="darkblue">#FF005989</color>
+    <color name="yellow">#FFFACF00</color>
+    <color name="lightred">#FFEF5350</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="offwhite">#FFF3F3F3</color>
     <color name="black">#FF000000</color>
     <color name="translucentLightBlue">#8877CEE7</color>
     <color name="translucentMedBlue">#88009CC8</color>

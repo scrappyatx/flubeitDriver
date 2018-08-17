@@ -4,6 +4,8 @@
 
 package it.flube.driver.useCaseLayer.photoStep;
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 
 import it.flube.driver.modelLayer.entities.DeviceInfo;
@@ -45,7 +47,6 @@ public class UseCaseAddAllPhotosToUploadList implements
         responseCounter = new ResponseCounter(photoList.size());
 
         for (PhotoRequest photoRequest : photoList){
-
             Timber.tag(TAG).d("   ...adding photo " + photoRequest.getSequence());
             device.getCloudImageStorage().addDeviceImageToActiveBatchUploadList(driver, deviceInfo, photoRequest.getDeviceAbsoluteFileName(),
                     photoRequest.getBatchGuid(), photoRequest.getServiceOrderGuid(), photoRequest.getStepGuid(), photoRequest.getGuid(),

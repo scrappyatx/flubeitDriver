@@ -7,6 +7,7 @@ package it.flube.libbatchdata.entities.assetTransfer;
 import java.util.Map;
 
 import it.flube.libbatchdata.entities.asset.AbstractAsset;
+import it.flube.libbatchdata.entities.asset.GenericAsset;
 import it.flube.libbatchdata.entities.asset.Vehicle;
 import it.flube.libbatchdata.interfaces.AssetInterface;
 import it.flube.libbatchdata.interfaces.AssetTransferInterface;
@@ -18,7 +19,7 @@ import it.flube.libbatchdata.interfaces.AssetTransferInterface;
 
 public class AssetTransfer {
 
-    ///TODO this should be AssetInterface but that makes reading in firebase realtime database more complex, for now just support vehicle
+    //TODO need to make this handle any asset that implements AssetInterface
     private Vehicle asset;
     private AssetTransferInterface.TransferStatus transferStatus;
     private Map<String, String> statusIconText;

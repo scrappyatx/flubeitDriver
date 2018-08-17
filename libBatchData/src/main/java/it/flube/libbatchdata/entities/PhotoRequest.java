@@ -47,6 +47,10 @@ public class PhotoRequest {
     private String cloudStorageFileName;
     private String cloudStorageDownloadUrl;
 
+    private Boolean doDeviceImageDetection;
+    private Boolean hasLabelMap;
+    private HashMap<String, ImageLabel> labelMap;
+
     public String getGuid() {
         return guid;
     }
@@ -205,5 +209,29 @@ public class PhotoRequest {
 
     public void setCloudStorageDownloadUrl(String cloudStorageDownloadUrl) {
         this.cloudStorageDownloadUrl = cloudStorageDownloadUrl;
+    }
+
+    public Boolean getDoDeviceImageDetection() {
+        return doDeviceImageDetection;
+    }
+
+    public void setDoDeviceImageDetection(Boolean doDeviceImageDetection) {
+        this.doDeviceImageDetection = doDeviceImageDetection;
+    }
+
+    public Boolean getHasLabelMap() {
+        return hasLabelMap;
+    }
+
+    public void setHasLabelMap(Boolean hasLabelMap) {
+        this.hasLabelMap = hasLabelMap;
+    }
+
+    public HashMap<String, ImageLabel> getLabelMap() {
+        return labelMap;
+    }
+
+    public void setLabelMap(HashMap<String, ImageLabel> labelMap) {
+        this.labelMap = labelMap;
     }
 }

@@ -5,12 +5,15 @@
 package it.flube.libbatchdata.builders;
 
 import it.flube.libbatchdata.entities.asset.Vehicle;
+import it.flube.libbatchdata.interfaces.AssetInterface;
 
 /**
  * Created on 4/23/2018
  * Project : Driver
  */
 public class VehicleBuilder {
+    private static final String DEFAULT_DISPLAY_IMAGE_URL="https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/orderStepImages%2FassetTransferImages%2Fasset_vehicle.jpg?alt=media&token=8c4a88f0-9000-4a3e-a368-fdbcecbb14bf";
+
     private Vehicle vehicle;
 
     private VehicleBuilder(Builder builder){
@@ -27,6 +30,12 @@ public class VehicleBuilder {
         public Builder(){
             vehicle = new Vehicle();
             vehicle.setGuid(BuilderUtilities.generateGuid());
+
+            //set the asset type
+            vehicle.setAssetType(AssetInterface.AssetType.VEHICLE);
+
+            //set the display image url
+            vehicle.setDisplayImageUrl(DEFAULT_DISPLAY_IMAGE_URL);
         }
 
         public Builder guid(String guid){
@@ -34,13 +43,8 @@ public class VehicleBuilder {
             return this;
         }
 
-        public Builder name(String name){
-            this.vehicle.setName(name);
-            return this;
-        }
-
-        public Builder description(String description){
-            this.vehicle.setDescription(description);
+        public Builder displayImageUrl(String displayImageUrl){
+            this.vehicle.setDisplayImageUrl(displayImageUrl);
             return this;
         }
 
@@ -74,14 +78,15 @@ public class VehicleBuilder {
             return this;
         }
 
+        public Builder engineDetail(String engineDetail){
+            this.vehicle.setEngineDetail(engineDetail);
+            return this;
+        }
+
         private void validate(Vehicle vehicle){
             // required PRESENT (must not be null)
             if (vehicle.getGuid()==null) {
                 throw new IllegalStateException("GUID is null");
-            }
-
-            if (vehicle.getName()==null){
-                throw new IllegalStateException("name is null");
             }
 
             if (vehicle.getMake()==null){
@@ -107,11 +112,26 @@ public class VehicleBuilder {
             if (vehicle.getLicensePlate()==null){
                 throw new IllegalStateException("license plate is null");
             }
+
+            if (vehicle.getDisplayImageUrl()==null){
+                throw new IllegalStateException("display image url is null");
+            }
+        }
+
+        private void postProcess(Vehicle vehicle){
+            ///
+            /// put the pertinent vehicle information into the "generic asset" fields shared by all assets
+            ///
+            vehicle.setDisplayTitle(vehicle.getYear() + " " + vehicle.getMake() + vehicle.getModel());
+            vehicle.setDisplayDescription(vehicle.getColor());
+            vehicle.setDisplayIdentifier(vehicle.getLicenseState() + " " + vehicle.getLicensePlate());
+            vehicle.setDetailInfo(vehicle.getEngineDetail());
         }
 
         public Vehicle build(){
             Vehicle vehicle = new VehicleBuilder(this).getVehicle();
             validate(vehicle);
+            postProcess(vehicle);
             return vehicle;
         }
 

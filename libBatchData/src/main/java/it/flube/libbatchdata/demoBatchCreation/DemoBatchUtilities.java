@@ -29,13 +29,13 @@ public class DemoBatchUtilities {
     private static final Boolean CUSTOMER_CAN_SMS = true;
     private static final Boolean CUSTOMER_CAN_VOICE = true;
 
-    private static final String CUSTOMER_VEHICLE_NAME = "customer's vehicle";
     private static final String CUSTOMER_VEHICLE_MAKE = "Audi";
     private static final String CUSTOMER_VEHICLE_MODEL = "A6";
     private static final String CUSTOMER_VEHICLE_YEAR = "2011";
     private static final String CUSTOMER_VEHICLE_COLOR = "black";
     private static final String CUSTOMER_VEHICLE_LICENSE_STATE = "TX";
     private static final String CUSTOMER_VEHICLE_LICENSE_PLATE = "ATX 555";
+    private static final String CUSTOMER_VEHICLE_ENGINE_DETAIL = "GS 1.6L MFI DOHC 4cyl";
 
     private static final Double CUSTOMER_LATITUDE = 30.3007342;
     private static final Double CUSTOMER_LONGITUDE = -97.7545089;
@@ -74,13 +74,13 @@ public class DemoBatchUtilities {
 
     public static Vehicle getCustomerVehicle(){
         return new VehicleBuilder.Builder()
-                .name(CUSTOMER_VEHICLE_NAME)
                 .make(CUSTOMER_VEHICLE_MAKE)
                 .model(CUSTOMER_VEHICLE_MODEL)
                 .year(CUSTOMER_VEHICLE_YEAR)
                 .color(CUSTOMER_VEHICLE_COLOR)
                 .licenseState(CUSTOMER_VEHICLE_LICENSE_STATE)
                 .licensePlate(CUSTOMER_VEHICLE_LICENSE_PLATE)
+                .engineDetail(CUSTOMER_VEHICLE_ENGINE_DETAIL)
                 .build();
     }
 

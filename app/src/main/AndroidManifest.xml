@@ -71,6 +71,7 @@
         <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.NavigationActivity"
             android:noHistory="true" />
 
+        <!-- RECEIVE ASSET ACTIVITIES -->
         <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.photoList.PhotoActivity"
             android:noHistory="true"/>
         <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.photoDetail.PhotoDetailActivity"
@@ -78,18 +79,34 @@
         <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.photoTake.PhotoTakeActivity"
             android:noHistory="true"/>
 
+        <!-- RECEIVE ASSET ACTIVITIES -->
         <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep.ReceiveAssetActivity"
             android:noHistory="true" />
-
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.giveAssetStep.GiveAssetActivity"
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep.getSignature.ReceiveAssetGetSignatureActivity"
+            android:noHistory="true" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep.itemList.ReceiveAssetItemListActivity"
+            android:noHistory="true" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep.itemDetail.ReceiveAssetItemActivity"
             android:noHistory="true" />
 
+        <!-- GIVE ASSET ACTIVITIES -->
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.giveAssetStep.GiveAssetActivity"
+            android:noHistory="true" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.giveAssetStep.itemDetail.GiveAssetItemActivity"
+            android:noHistory="true" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.giveAssetStep.getSignature.GiveAssetGetSignatureActivity"
+            android:noHistory="true" />
+
+
+        <!-- USER TRIGGER ACTIVITIES -->
         <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.userTriggerStep.UserTriggerActivity"
             android:noHistory="true" />
 
+        <!-- AUTHORIZE PAYMENT ACTIVITIES -->
         <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.AuthorizePaymentActivity"
             android:noHistory="true" />
 
+        <!-- WAITING TO FINISH BATCH ACTIVITIES -->
         <activity android:name=".userInterfaceLayer.activities.activeBatch.waitingToFinishBatch.WaitingToFinishBatchActivity"
             android:noHistory="true" />
 
@@ -112,6 +129,9 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="446b6885663a7a64836334f6e17af7a0b5d6d7c9" />
+        <meta-data
+            android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+            android:value="ocr, label" />
     </application>
 
 </manifest>

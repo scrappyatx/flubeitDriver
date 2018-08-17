@@ -93,7 +93,7 @@ public class DrawerMenu {
         this.activity = activity;
         this.navigator = navigator;
         device = AndroidDevice.getInstance();
-        createToolbar(titleId);
+        createToolbar(activity, titleId);
         createDrawer();
         EventBus.getDefault().register(this);
 
@@ -111,9 +111,15 @@ public class DrawerMenu {
         EventBus.getDefault().unregister(this);
     }
 
-    private void createToolbar(int titleId) {
+    private void createToolbar(AppCompatActivity activity, int titleId) {
         toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
-        toolbar.setTitle(titleId);
+
+
+        String toolbarTitle = activity.getResources().getString(titleId);
+        Timber.tag(TAG).d("....creating toolbar, title = " + toolbarTitle);
+        toolbar.setTitle(toolbarTitle);
+
+
         activity.setSupportActionBar(toolbar);
 
         toolbarSwitch = (SwitchCompat) activity.findViewById(R.id.switch_looking_for_work);
