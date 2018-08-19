@@ -20,13 +20,16 @@ import timber.log.Timber;
  * Created on 7/6/2018
  * Project : Driver
  */
-public class ContactPersonServiceProviderLayoutComponent {
+public class ContactPersonServiceProviderLayoutComponent implements
+    View.OnClickListener {
     private final String TAG="ContactPersonServiceProviderLayoutComponent";
 
     ///
     ///     wrapper class for the layout file:
     ///     service_provider_person_customer.xml
     ///
+    private static final String CALL_BUTTON_TAG = "callButton";
+    private static final String TEXT_BUTTON_TAG = "textButton";
 
     private ImageView displayIcon;
     private TextView displayName;
@@ -35,13 +38,22 @@ public class ContactPersonServiceProviderLayoutComponent {
     private IconButton textButton;
 
     private ContactPerson contactPerson;
+    private Response response;
 
-    public ContactPersonServiceProviderLayoutComponent(AppCompatActivity activity){
+    public ContactPersonServiceProviderLayoutComponent(AppCompatActivity activity, Response response){
+        this.response = response;
         displayIcon = (ImageView) activity.findViewById(R.id.service_provider_display_icon);
         displayName = (TextView) activity.findViewById(R.id.service_provider_display_name);
         displayPhoneNumber = (TextView) activity.findViewById(R.id.service_provider_display_phone_number);
+
         callButton = (IconButton) activity.findViewById(R.id.service_provider_call_button);
+        callButton.setOnClickListener(this);
+        callButton.setTag(CALL_BUTTON_TAG);
+
         textButton = (IconButton) activity.findViewById(R.id.service_provider_text_button);
+        textButton.setOnClickListener(this);
+        textButton.setTag(TEXT_BUTTON_TAG);
+
         Timber.tag(TAG).d("...ContactPersonServiceProviderLayoutComponent created");
     }
 
@@ -53,7 +65,13 @@ public class ContactPersonServiceProviderLayoutComponent {
 
 
         displayName.setText(contactPerson.getDisplayName());
-        displayPhoneNumber.setText(contactPerson.getDisplayPhoneNumber());
+
+        ////
+        //// We will only display phone number for a service provider IF there is a proxy phone number
+        ////
+        if (contactPerson.getHasProxyPhoneNumber()) {
+            displayPhoneNumber.setText(contactPerson.getProxyDisplayPhoneNumber());
+        }
 
         this.contactPerson = contactPerson;
     }
@@ -68,11 +86,11 @@ public class ContactPersonServiceProviderLayoutComponent {
             displayName.setVisibility(View.VISIBLE);
             displayPhoneNumber.setVisibility(View.VISIBLE);
 
-            if (contactPerson.getCanVoice()) {
+            if (contactPerson.getCanVoice() && contactPerson.getHasProxyPhoneNumber()) {
                 callButton.setVisibility(View.VISIBLE);
             }
 
-            if (contactPerson.getCanSMS()) {
+            if (contactPerson.getCanSMS()  && contactPerson.getHasProxyPhoneNumber()) {
                 textButton.setVisibility(View.VISIBLE);
             }
         } else {
@@ -106,7 +124,28 @@ public class ContactPersonServiceProviderLayoutComponent {
         callButton = null;
         textButton = null;
         contactPerson = null;
+        response = null;
         Timber.tag(TAG).d("components closed");
+    }
+
+    /// View.OnClick listener
+    public void onClick(View v){
+        Timber.tag(TAG).d("onClick");
+        switch (v.getTag().toString()){
+            case CALL_BUTTON_TAG:
+                response.serviceProviderCallButtonClicked(contactPerson.getProxyDialPhoneNumber());
+                break;
+            case TEXT_BUTTON_TAG:
+                response.serviceProviderTextButtonClicked(contactPerson.getProxyDialPhoneNumber());
+                break;
+        }
+
+    }
+
+    public interface Response {
+        void serviceProviderCallButtonClicked(String dialPhoneNumber);
+
+        void serviceProviderTextButtonClicked(String dialPhoneNumber);
     }
 
 }

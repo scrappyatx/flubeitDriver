@@ -15,14 +15,14 @@ import it.flube.libbatchdata.entities.PhotoRequest;
  */
 
 public class PhotoRequestListForVehicleBuilder {
-    private static final String FRONT_CORNER_DRIVER_VIEW_HINT_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2FgenericAuto%2Ffront_corner_driver_view.png?alt=media&token=0ee3734b-7164-44aa-bbda-d822fe9dc759";
-    private static final String FRONT_CORNER_PASSENGER_VIEW_HINT_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2FgenericAuto%2Ffront_corner_passenger_view.png?alt=media&token=ed1c4837-90a6-4c9b-8dba-8039de77ff0f";
-    private static final String FRONT_VIEW_HINT_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2FgenericAuto%2Ffront_view.png?alt=media&token=e0acc726-0c88-49ec-8651-3905a36a65b9";
-    private static final String REAR_CORNER_DRIVER_VIEW_HINT_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2FgenericAuto%2Frear_corner_driver_view.png?alt=media&token=5c12d346-ec46-489f-96d8-c74afa908c50";
-    private static final String REAR_CORNER_PASSENGER_VIEW_HINT_URL="https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2FgenericAuto%2Frear_corner_passenger_view.png?alt=media&token=7fa91969-30c7-4fc1-86ff-52abfe61985d";
-    private static final String REAR_VIEW_HINT_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2FgenericAuto%2Frear_view.png?alt=media&token=eb4b07c1-06f9-4aae-b9b1-a56143601a26";
-    private static final String SIDE_DRIVER_VIEW_HINT_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2FgenericAuto%2Fside_driver_view.png?alt=media&token=dff8e64e-7f15-467f-868a-5792ecead8c9";
-    private static final String SIDE_PASSENGER_VIEW_HINT_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2FgenericAuto%2Fside_passenger_view.png?alt=media&token=828df158-f3e3-475f-955d-21a25a42c83a";
+    private static final String FRONT_CORNER_DRIVER_VIEW_HINT_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2FgenericAutoSmall%2Ffront_corner_driver_view.jpg?alt=media&token=de13718e-1484-4d51-8ff3-93b50e333d8b";
+    private static final String FRONT_CORNER_PASSENGER_VIEW_HINT_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2FgenericAutoSmall%2Ffront_corner_passenger_view.jpg?alt=media&token=0579fbaa-2177-456c-88cc-7b55b2b4d836";
+    private static final String FRONT_VIEW_HINT_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2FgenericAutoSmall%2Ffront_view.jpg?alt=media&token=d7aa3c0c-4d0f-44df-889b-1b0f28b9441e";
+    private static final String REAR_CORNER_DRIVER_VIEW_HINT_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2FgenericAutoSmall%2Frear_corner_driver_view.jpg?alt=media&token=bdd59a46-c008-453c-94ab-8a3ef0a2339a";
+    private static final String REAR_CORNER_PASSENGER_VIEW_HINT_URL="https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2FgenericAutoSmall%2Frear_corner_passenger_view.jpg?alt=media&token=88322f4d-9d79-49a8-ad14-9a4462269e30";
+    private static final String REAR_VIEW_HINT_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2FgenericAutoSmall%2Frear_view.jpg?alt=media&token=9b1539e5-b458-4f68-a40d-c969fd0d15c8";
+    private static final String SIDE_DRIVER_VIEW_HINT_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2FgenericAutoSmall%2Fside_driver_view.jpg?alt=media&token=255a6147-7a2b-4911-95de-4488e8fe575b";
+    private static final String SIDE_PASSENGER_VIEW_HINT_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2FgenericAutoSmall%2Fside_passenger_view.jpg?alt=media&token=bf0529ef-de2e-4f95-b35f-5c8502f57703";
 
 
     private HashMap<String, PhotoRequest> photoList;

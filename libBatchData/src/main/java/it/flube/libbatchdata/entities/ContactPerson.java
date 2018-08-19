@@ -25,6 +25,11 @@ public class ContactPerson {
     private String displayName;
     private String displayPhoneNumber;
     private String dialPhoneNumber;
+
+    private Boolean hasProxyPhoneNumber;
+    private String proxyDisplayPhoneNumber;
+    private String proxyDialPhoneNumber;
+
     private String email;
     private ContactRole contactRole;
 
@@ -69,6 +74,30 @@ public class ContactPerson {
 
     public void setDialPhoneNumber(String dialPhoneNumber) {
         this.dialPhoneNumber = dialPhoneNumber;
+    }
+
+    public Boolean getHasProxyPhoneNumber() {
+        return hasProxyPhoneNumber;
+    }
+
+    public void setHasProxyPhoneNumber(Boolean hasProxyPhoneNumber) {
+        this.hasProxyPhoneNumber = hasProxyPhoneNumber;
+    }
+
+    public String getProxyDisplayPhoneNumber() {
+        return proxyDisplayPhoneNumber;
+    }
+
+    public void setProxyDisplayPhoneNumber(String proxyDisplayPhoneNumber) {
+        this.proxyDisplayPhoneNumber = proxyDisplayPhoneNumber;
+    }
+
+    public String getProxyDialPhoneNumber() {
+        return proxyDialPhoneNumber;
+    }
+
+    public void setProxyDialPhoneNumber(String proxyDialPhoneNumber) {
+        this.proxyDialPhoneNumber = proxyDialPhoneNumber;
     }
 
     public String getEmail() {

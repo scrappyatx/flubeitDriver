@@ -47,6 +47,22 @@ public class UpdateContactPerson {
 
                         //update batchHolder contactPersonsByServiceOrder hashMap
                         batchHolder.getContactPersonsByServiceOrder().get(giveStep.getServiceOrderGuid()).put(updatedContactPerson.getGuid(), updatedContactPerson);
+
+                        //update serviceOrder
+                        switch (updatedContactPerson.getContactRole()){
+                            case CUSTOMER:
+                                batchHolder.getServiceOrders().get(giveStep.getServiceOrderGuid()).setCustomerContactPerson(updatedContactPerson);
+                                break;
+                            case SERVICE_PROVIDER:
+                                batchHolder.getServiceOrders().get(giveStep.getServiceOrderGuid()).setServiceProviderContactPerson(updatedContactPerson);
+                                break;
+                            case DRIVER:
+                                break;
+                            case FLUBEIT_SUPPORT:
+                                break;
+                        }
+
+
                     }
 
                     break;
@@ -64,6 +80,20 @@ public class UpdateContactPerson {
 
                         //update batchHolder contactPersonsByServiceOrder hashmap
                         batchHolder.getContactPersonsByServiceOrder().get(receiveStep.getServiceOrderGuid()).put(updatedContactPerson.getGuid(), updatedContactPerson);
+
+                        //update serviceOrder
+                        switch(updatedContactPerson.getContactRole()){
+                            case CUSTOMER:
+                                batchHolder.getServiceOrders().get(receiveStep.getServiceOrderGuid()).setCustomerContactPerson(updatedContactPerson);
+                                break;
+                            case SERVICE_PROVIDER:
+                                batchHolder.getServiceOrders().get(receiveStep.getServiceOrderGuid()).setServiceProviderContactPerson(updatedContactPerson);
+                                break;
+                            case DRIVER:
+                                break;
+                            case FLUBEIT_SUPPORT:
+                                break;
+                        }
                     }
 
                     break;

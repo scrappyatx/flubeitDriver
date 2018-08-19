@@ -220,14 +220,14 @@ public class ReceiveAssetLayoutComponents implements
     ///
     /// interface for ContactPersonLayoutComponents.Response
     ///
-    public void textButtonClicked(ContactPerson contactPerson){
+    public void textButtonClicked(String dialPhoneNumber){
         Timber.tag(TAG).d("textButtonClicked");
-        response.contactPersonTextClicked(contactPerson);
+        response.contactPersonTextClicked(dialPhoneNumber);
     }
 
-    public void callButtonClicked(ContactPerson contactPerson){
+    public void callButtonClicked(String dialPhoneNumber){
         Timber.tag(TAG).d("callButtonClicked");
-        response.contactPersonCallClicked(contactPerson);
+        response.contactPersonCallClicked(dialPhoneNumber);
     }
 
     public void appInfoButtonClicked(){
@@ -248,9 +248,9 @@ public class ReceiveAssetLayoutComponents implements
 
         void itemsRowClickedWithOneItem(String assetGuid);
 
-        void contactPersonCallClicked(ContactPerson contactPerson);
+        void contactPersonCallClicked(String dialPhoneNumber);
 
-        void contactPersonTextClicked(ContactPerson contactPerson);
+        void contactPersonTextClicked(String dialPhoneNumber);
 
         void stepCompleteClicked(String milestoneWhenFinished);
 

@@ -17,7 +17,11 @@ import timber.log.Timber;
  * Created on 7/6/2018
  * Project : Driver
  */
-public class CommunicationActivityLayoutComponent {
+public class CommunicationActivityLayoutComponent implements
+    ContactPersonSupportLayoutComponent.Response,
+    ServiceOrderTabLayoutComponent.Response,
+    PhoneCallPermissionComponent.Response {
+
     private static final String TAG = "CommunicationActivityLayoutComponent";
 
     private ContactPersonSupportLayoutComponent support;
@@ -28,11 +32,15 @@ public class CommunicationActivityLayoutComponent {
     private Boolean hasSupportContact;
     private Boolean hasOrderContacts;
 
-    public CommunicationActivityLayoutComponent(AppCompatActivity activity){
-        support = new ContactPersonSupportLayoutComponent(activity);
-        orderTab = new ServiceOrderTabLayoutComponent(activity);
+    private Response response;
+
+    public CommunicationActivityLayoutComponent(AppCompatActivity activity, Response response){
+        this.response = response;
+
+        support = new ContactPersonSupportLayoutComponent(activity, this);
+        orderTab = new ServiceOrderTabLayoutComponent(activity, this);
         waitingAnimation = new CommunicatingLayoutComponent(activity);
-        permission = new PhoneCallPermissionComponent(activity);
+        permission = new PhoneCallPermissionComponent(activity, this);
 
         hasSupportContact= false;
         hasOrderContacts = false;
@@ -131,6 +139,62 @@ public class CommunicationActivityLayoutComponent {
 
         hasSupportContact = null;
         hasOrderContacts = null;
+
+        response = null;
+    }
+
+    /// PhoneCallPermissionComponent.Response interface
+    public void appInfoButtonClicked(){
+        Timber.tag(TAG).d("appInfoButtonClicked");
+        response.appInfoButtonClicked();
+    }
+
+    /// ContactPersonSupportLayoutComponent.Response interface
+    public void supportCallButtonClicked(String dialPhoneNumber){
+        Timber.tag(TAG).d("supportCallButtonClicked");
+        response.supportCallButtonClicked(dialPhoneNumber);
+    }
+
+    public void supportTextButtonClicked(String dialPhoneNumber){
+        Timber.tag(TAG).d("supportTextButtonClicked");
+        response.supportTextButtonClicked(dialPhoneNumber);
+    }
+
+    /// ServiceOrderTabLayoutComponent.Response interface
+    public void customerCallButtonClicked(String dialPhoneNumber){
+        Timber.tag(TAG).d("customerCallButtonClicked");
+        response.customerCallButtonClicked(dialPhoneNumber);
+    }
+
+    public void customerTextButtonClicked(String dialPhoneNumber){
+        Timber.tag(TAG).d("customerTextButtonClicked");
+        response.customerTextButtonClicked(dialPhoneNumber);
+    }
+
+    public void serviceProviderCallButtonClicked(String dialPhoneNumber){
+        Timber.tag(TAG).d("serviceProviderCallButtonClicked");
+        response.serviceProviderCallButtonClicked(dialPhoneNumber);
+    }
+
+    public void serviceProviderTextButtonClicked(String dialPhoneNumber){
+        Timber.tag(TAG).d("serviceProviderTextButtonClicked");
+        response.serviceProviderTextButtonClicked(dialPhoneNumber);
+    }
+
+    public interface Response {
+        void appInfoButtonClicked();
+
+        void supportCallButtonClicked(String dialPhoneNumber);
+
+        void supportTextButtonClicked(String dialPhoneNumber);
+
+        void customerCallButtonClicked(String dialPhoneNumber);
+
+        void customerTextButtonClicked(String dialPhoneNumber);
+
+        void serviceProviderCallButtonClicked(String dialPhoneNumber);
+
+        void serviceProviderTextButtonClicked(String dialPhoneNumber);
     }
 
 }

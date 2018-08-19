@@ -77,7 +77,13 @@ public class ContactPersonLayoutComponent implements
 
 
         displayName.setText(contactPerson.getDisplayName());
-        displayPhoneNumber.setText(contactPerson.getDisplayPhoneNumber());
+
+        ///
+        /// Only show proxy phone number for asset transfer contacts
+        ///
+        if (contactPerson.getHasProxyPhoneNumber()) {
+            displayPhoneNumber.setText(contactPerson.getProxyDisplayPhoneNumber());
+        }
 
         this.contactPerson = contactPerson;
         Timber.tag(TAG).d("setValues");
@@ -106,13 +112,13 @@ public class ContactPersonLayoutComponent implements
                 permissionText.setVisibility(View.INVISIBLE);
                 appInfoButton.setVisibility(View.INVISIBLE);
 
-                if (contactPerson.getCanVoice()) {
+                if (contactPerson.getCanVoice() && contactPerson.getHasProxyPhoneNumber()) {
                     callButton.setVisibility(View.VISIBLE);
                 } else {
                     callButton.setVisibility(View.INVISIBLE);
                 }
 
-                if (contactPerson.getCanSMS()) {
+                if (contactPerson.getCanSMS() && contactPerson.getHasProxyPhoneNumber()) {
                     textButton.setVisibility(View.VISIBLE);
                 } else {
                     textButton.setVisibility(View.INVISIBLE);
@@ -181,10 +187,10 @@ public class ContactPersonLayoutComponent implements
         Timber.tag(TAG).d("onClick, button tag -> " + v.getTag().toString());
         switch (v.getTag().toString()){
             case CALL_BUTTON_TAG:
-                response.callButtonClicked(contactPerson);
+                response.callButtonClicked(contactPerson.getProxyDialPhoneNumber());
                 break;
             case TEXT_BUTTON_TAG:
-                response.textButtonClicked(contactPerson);
+                response.textButtonClicked(contactPerson.getProxyDialPhoneNumber());
                 break;
             case APP_INFO_BUTTON_TAG:
                 response.appInfoButtonClicked();
@@ -193,9 +199,9 @@ public class ContactPersonLayoutComponent implements
     }
 
     public interface Response {
-        void textButtonClicked(ContactPerson contactPerson);
+        void textButtonClicked(String dialPhoneNumber);
 
-        void callButtonClicked(ContactPerson contactPerson);
+        void callButtonClicked(String dialPhoneNumber);
 
         void appInfoButtonClicked();
     }

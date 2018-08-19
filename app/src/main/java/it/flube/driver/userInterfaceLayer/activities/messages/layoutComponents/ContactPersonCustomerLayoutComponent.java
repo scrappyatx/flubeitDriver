@@ -20,13 +20,17 @@ import timber.log.Timber;
  * Created on 7/6/2018
  * Project : Driver
  */
-public class ContactPersonCustomerLayoutComponent {
+public class ContactPersonCustomerLayoutComponent implements
+    View.OnClickListener {
     private final String TAG="ContactPersonCustomerLayoutComponent";
 
     ///
     ///     wrapper class for the layout file:
     ///     contact_person_customer.xml
     ///
+
+    private static final String CALL_BUTTON_TAG = "callButton";
+    private static final String TEXT_BUTTON_TAG = "textButton";
 
     private ImageView displayIcon;
     private TextView displayName;
@@ -35,13 +39,23 @@ public class ContactPersonCustomerLayoutComponent {
     private IconButton textButton;
 
     private ContactPerson contactPerson;
+    private Response response;
 
-    public ContactPersonCustomerLayoutComponent(AppCompatActivity activity){
+    public ContactPersonCustomerLayoutComponent(AppCompatActivity activity, Response response){
+        this.response = response;
+
         displayIcon = (ImageView) activity.findViewById(R.id.customer_display_icon);
         displayName = (TextView) activity.findViewById(R.id.customer_display_name);
         displayPhoneNumber = (TextView) activity.findViewById(R.id.customer_display_phone_number);
+
         callButton = (IconButton) activity.findViewById(R.id.customer_call_button);
+        callButton.setOnClickListener(this);
+        callButton.setTag(CALL_BUTTON_TAG);
+
         textButton = (IconButton) activity.findViewById(R.id.customer_text_button);
+        textButton.setOnClickListener(this);
+        textButton.setTag(TEXT_BUTTON_TAG);
+
         Timber.tag(TAG).d("...ContactPersonCustomerLayoutComponent created");
     }
 
@@ -53,7 +67,13 @@ public class ContactPersonCustomerLayoutComponent {
 
 
         displayName.setText(contactPerson.getDisplayName());
-        displayPhoneNumber.setText(contactPerson.getDisplayPhoneNumber());
+
+        ////
+        //// We will only display phone number for a customer IF there is a proxy phone number
+        ////
+        if (contactPerson.getHasProxyPhoneNumber()) {
+            displayPhoneNumber.setText(contactPerson.getProxyDisplayPhoneNumber());
+        }
 
         this.contactPerson = contactPerson;
     }
@@ -68,15 +88,16 @@ public class ContactPersonCustomerLayoutComponent {
             displayName.setVisibility(View.VISIBLE);
             displayPhoneNumber.setVisibility(View.VISIBLE);
 
-            if (contactPerson.getCanVoice()) {
+            if (contactPerson.getCanVoice() && contactPerson.getHasProxyPhoneNumber()) {
                 callButton.setVisibility(View.VISIBLE);
             }
 
-            if (contactPerson.getCanSMS()) {
+            if (contactPerson.getCanSMS() && contactPerson.getHasProxyPhoneNumber()) {
                 textButton.setVisibility(View.VISIBLE);
             }
         } else {
             Timber.tag(TAG).d("   ...can't set visible, contact person is null");
+            setInvisible();
         }
         Timber.tag(TAG).d("...setVisible");
     }
@@ -106,7 +127,29 @@ public class ContactPersonCustomerLayoutComponent {
         callButton = null;
         textButton = null;
         contactPerson = null;
+        response = null;
+
         Timber.tag(TAG).d("components closed");
+    }
+
+    /// View.OnClick listener
+    public void onClick(View v){
+        Timber.tag(TAG).d("onClick");
+        switch (v.getTag().toString()){
+            case CALL_BUTTON_TAG:
+                response.customerCallButtonClicked(contactPerson.getProxyDialPhoneNumber());
+                break;
+            case TEXT_BUTTON_TAG:
+                response.customerTextButtonClicked(contactPerson.getProxyDialPhoneNumber());
+                break;
+        }
+
+    }
+
+    public interface Response {
+        void customerCallButtonClicked(String dialPhoneNumber);
+
+        void customerTextButtonClicked(String dialPhoneNumber);
     }
 
 }

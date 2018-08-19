@@ -20,13 +20,16 @@ import timber.log.Timber;
  * Created on 7/6/2018
  * Project : Driver
  */
-public class ContactPersonSupportLayoutComponent {
+public class ContactPersonSupportLayoutComponent implements
+    View.OnClickListener {
     private final String TAG="ContactPersonSupportLayoutComponent";
 
     ///
     ///     wrapper class for the layout file:
     ///     service_provider_person_customer.xml
     ///
+    private static final String CALL_BUTTON_TAG = "callButton";
+    private static final String TEXT_BUTTON_TAG = "textButton";
 
     private ImageView displayIcon;
     private TextView displayName;
@@ -35,13 +38,23 @@ public class ContactPersonSupportLayoutComponent {
     private IconButton textButton;
 
     private ContactPerson contactPerson;
+    private Response response;
 
-    public ContactPersonSupportLayoutComponent(AppCompatActivity activity){
+    public ContactPersonSupportLayoutComponent(AppCompatActivity activity, Response response){
+        this.response = response;
+
         displayIcon = (ImageView) activity.findViewById(R.id.support_display_icon);
         displayName = (TextView) activity.findViewById(R.id.support_display_name);
         displayPhoneNumber = (TextView) activity.findViewById(R.id.support_display_phone_number);
+
         callButton = (IconButton) activity.findViewById(R.id.support_call_button);
+        callButton.setOnClickListener(this);
+        callButton.setTag(CALL_BUTTON_TAG);
+
         textButton = (IconButton) activity.findViewById(R.id.support_text_button);
+        textButton.setOnClickListener(this);
+        textButton.setTag(TEXT_BUTTON_TAG);
+
         Timber.tag(TAG).d("...ContactPersonSupportLayoutComponent created");
     }
 
@@ -53,7 +66,15 @@ public class ContactPersonSupportLayoutComponent {
 
 
         displayName.setText(contactPerson.getDisplayName());
-        displayPhoneNumber.setText(contactPerson.getDisplayPhoneNumber());
+
+        ///
+        /// we will display a phone number for flube.it support whether proxy or not
+        ///
+        if (contactPerson.getHasProxyPhoneNumber()) {
+            displayPhoneNumber.setText(contactPerson.getProxyDisplayPhoneNumber());
+        } else {
+            displayPhoneNumber.setText(contactPerson.getDisplayPhoneNumber());
+        }
 
         this.contactPerson = contactPerson;
     }
@@ -107,6 +128,34 @@ public class ContactPersonSupportLayoutComponent {
         textButton = null;
         contactPerson = null;
         Timber.tag(TAG).d("components closed");
+    }
+
+    /// View.OnClick listener
+    public void onClick(View v){
+        Timber.tag(TAG).d("onClick");
+        switch (v.getTag().toString()){
+            case CALL_BUTTON_TAG:
+                if (contactPerson.getHasProxyPhoneNumber()) {
+                    response.supportCallButtonClicked(contactPerson.getProxyDialPhoneNumber());
+                } else {
+                    response.supportCallButtonClicked(contactPerson.getDialPhoneNumber());
+                }
+                break;
+            case TEXT_BUTTON_TAG:
+                if (contactPerson.getHasProxyPhoneNumber()) {
+                    response.supportTextButtonClicked(contactPerson.getProxyDialPhoneNumber());
+                } else {
+                    response.supportTextButtonClicked(contactPerson.getDialPhoneNumber());
+                }
+                break;
+        }
+
+    }
+
+    public interface Response {
+        void supportCallButtonClicked(String dialPhoneNumber);
+
+        void supportTextButtonClicked(String dialPhoneNumber);
     }
 
 }

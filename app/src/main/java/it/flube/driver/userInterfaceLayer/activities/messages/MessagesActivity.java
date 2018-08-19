@@ -27,7 +27,8 @@ import timber.log.Timber;
 
 public class MessagesActivity extends AppCompatActivity implements
         CheckCallPermission.Response,
-        UseCaseGetContactPersons.Response {
+        UseCaseGetContactPersons.Response,
+        CommunicationActivityLayoutComponent.Response {
     private static final String TAG = "MessagesActivity";
 
     private MessagesController controller;
@@ -47,7 +48,7 @@ public class MessagesActivity extends AppCompatActivity implements
         drawer = new DrawerMenu(this, navigator, R.string.communication_activity_title);
         controller = new MessagesController();
 
-        layoutComponent = new CommunicationActivityLayoutComponent(this);
+        layoutComponent = new CommunicationActivityLayoutComponent(this, this);
         checkCallPermission = new CheckCallPermission();
 
         Timber.tag(TAG).d("onCreate");
@@ -113,71 +114,48 @@ public class MessagesActivity extends AppCompatActivity implements
     }
 
     ////
-    //// button click handlers
+    //// CommunicationActivityLayoutComponent.Response interface
     ////
-    public void clickSupportCallButton(View v){
-        Timber.tag(TAG).d("clickSupportCallButton");
-        Timber.tag(TAG).d("   ROLE              -> " +layoutComponent.getSupportContactPerson().getContactRole());
-        Timber.tag(TAG).d("   display name      -> " +layoutComponent.getSupportContactPerson().getDisplayName());
-        Timber.tag(TAG).d("   dial phone number -> " +layoutComponent.getSupportContactPerson().getDialPhoneNumber());
 
-        layoutComponent.showWaitingToCall();
-        new MakePhoneCall().dialNumberRequest(this,layoutComponent.getSupportContactPerson().getDialPhoneNumber());
-    }
-
-    public void clickSupportTextButton(View v){
-        Timber.tag(TAG).d("clickSupportTextButton");
-        Timber.tag(TAG).d("   ROLE              -> " +layoutComponent.getSupportContactPerson().getContactRole());
-        Timber.tag(TAG).d("   display name      -> " +layoutComponent.getSupportContactPerson().getDisplayName());
-        Timber.tag(TAG).d("   dial phone number -> " +layoutComponent.getSupportContactPerson().getDialPhoneNumber());
-
-        layoutComponent.showWaitingToText();
-        new SendTextMessage().sendTextRequest(this,layoutComponent.getSupportContactPerson().getDialPhoneNumber());
-    }
-
-    public void clickCustomerCallButton(View v){
-        Timber.tag(TAG).d("clickCustomerCallButton");
-        Timber.tag(TAG).d("   ROLE              -> " +layoutComponent.getCustomerContactPerson().getContactRole());
-        Timber.tag(TAG).d("   display name      -> " +layoutComponent.getCustomerContactPerson().getDisplayName());
-        Timber.tag(TAG).d("   dial phone number -> " +layoutComponent.getCustomerContactPerson().getDialPhoneNumber());
-
-        layoutComponent.showWaitingToCall();
-        new MakePhoneCall().dialNumberRequest(this,layoutComponent.getCustomerContactPerson().getDialPhoneNumber());
-    }
-
-    public void clickCustomerTextButton(View v){
-        Timber.tag(TAG).d("clickCustomerTextButton");
-        Timber.tag(TAG).d("   ROLE              -> " +layoutComponent.getCustomerContactPerson().getContactRole());
-        Timber.tag(TAG).d("   display name      -> " +layoutComponent.getCustomerContactPerson().getDisplayName());
-        Timber.tag(TAG).d("   dial phone number -> " +layoutComponent.getCustomerContactPerson().getDialPhoneNumber());
-
-        layoutComponent.showWaitingToText();
-        new SendTextMessage().sendTextRequest(this, layoutComponent.getCustomerContactPerson().getDialPhoneNumber());
-    }
-
-    public void clickServiceProviderCallButton(View v){
-        Timber.tag(TAG).d("clickServiceProviderCallButton");
-        Timber.tag(TAG).d("   ROLE              -> " +layoutComponent.getServiceProviderContactPerson().getContactRole());
-        Timber.tag(TAG).d("   display name      -> " +layoutComponent.getServiceProviderContactPerson().getDisplayName());
-        Timber.tag(TAG).d("   dial phone number -> " +layoutComponent.getServiceProviderContactPerson().getDialPhoneNumber());
-
-        layoutComponent.showWaitingToCall();
-        new MakePhoneCall().dialNumberRequest(this,layoutComponent.getServiceProviderContactPerson().getDialPhoneNumber());
-    }
-
-    public void clickServiceProviderTextButton(View v){
-        Timber.tag(TAG).d("clickServiceProviderTextButton");
-        Timber.tag(TAG).d("   ROLE              -> " +layoutComponent.getServiceProviderContactPerson().getContactRole());
-        Timber.tag(TAG).d("   display name      -> " +layoutComponent.getServiceProviderContactPerson().getDisplayName());
-        Timber.tag(TAG).d("   dial phone number -> " +layoutComponent.getServiceProviderContactPerson().getDialPhoneNumber());
-
-        layoutComponent.showWaitingToText();
-        new SendTextMessage().sendTextRequest(this,layoutComponent.getServiceProviderContactPerson().getDialPhoneNumber());
-    }
-
-    public void clickSettings(View v){
-        Timber.tag(TAG).d("clickSettings");
+    public void appInfoButtonClicked(){
+        Timber.tag(TAG).d("appInfoButtonClicked");
         checkCallPermission.gotoSettings(this);
+    }
+
+    public void supportCallButtonClicked(String dialPhoneNumber){
+        Timber.tag(TAG).d("supportCallButtonClicked, dialPhoneNumber -> " + dialPhoneNumber);
+        layoutComponent.showWaitingToCall();
+        new MakePhoneCall().dialNumberRequest(this, dialPhoneNumber);
+    }
+
+    public void supportTextButtonClicked(String dialPhoneNumber){
+        Timber.tag(TAG).d("supportTextButtonClicked, dialPhoneNumber -> " + dialPhoneNumber);
+        layoutComponent.showWaitingToText();
+        new SendTextMessage().sendTextRequest(this, dialPhoneNumber);
+    }
+
+    public void customerCallButtonClicked(String dialPhoneNumber){
+        Timber.tag(TAG).d("customerCallButtonClicked, dialPhoneNumber -> " + dialPhoneNumber);
+        layoutComponent.showWaitingToCall();
+        new MakePhoneCall().dialNumberRequest(this, dialPhoneNumber);
+    }
+
+    public void customerTextButtonClicked(String dialPhoneNumber){
+        Timber.tag(TAG).d("customerTextButtonClicked, dialPhoneNumber -> " + dialPhoneNumber);
+        layoutComponent.showWaitingToText();
+        new SendTextMessage().sendTextRequest(this, dialPhoneNumber);
+    }
+
+    public void serviceProviderCallButtonClicked(String dialPhoneNumber){
+        Timber.tag(TAG).d("serviceProviderCallButtonClicked, dialPhoneNumber -> " + dialPhoneNumber);
+        layoutComponent.showWaitingToCall();
+        new MakePhoneCall().dialNumberRequest(this, dialPhoneNumber);
+    }
+
+    public void serviceProviderTextButtonClicked(String dialPhoneNumber){
+        Timber.tag(TAG).d("serviceProviderTextButtonClicked, dialPhoneNumber -> " + dialPhoneNumber);
+        layoutComponent.showWaitingToText();
+        new SendTextMessage().sendTextRequest(this, dialPhoneNumber);
     }
 
 }

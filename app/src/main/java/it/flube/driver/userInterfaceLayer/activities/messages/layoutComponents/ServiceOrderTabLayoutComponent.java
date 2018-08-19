@@ -22,7 +22,9 @@ import timber.log.Timber;
  * Project : Driver
  */
 public class ServiceOrderTabLayoutComponent
-        implements TabLayout.OnTabSelectedListener {
+        implements TabLayout.OnTabSelectedListener,
+        ContactPersonCustomerLayoutComponent.Response,
+        ContactPersonServiceProviderLayoutComponent.Response {
 
     private static final String TAG = "ServiceOrderTabLayoutComponent";
 
@@ -37,12 +39,16 @@ public class ServiceOrderTabLayoutComponent
     private ArrayList<String> serviceOrderList;
     private ContactPersonsByServiceOrder contactMap;
 
-    public ServiceOrderTabLayoutComponent(AppCompatActivity activity){
+    private Response response;
+
+    public ServiceOrderTabLayoutComponent(AppCompatActivity activity, Response response){
+        this.response = response;
+
         tabLayout = (TabLayout) activity.findViewById(R.id.service_order_tab);
         tabLayout.addOnTabSelectedListener(this);
 
-        customer = new ContactPersonCustomerLayoutComponent(activity);
-        serviceProvider = new ContactPersonServiceProviderLayoutComponent(activity);
+        customer = new ContactPersonCustomerLayoutComponent(activity, this);
+        serviceProvider = new ContactPersonServiceProviderLayoutComponent(activity, this);
 
         thisOrderHasCustomer = false;
         thisOrderHasServiceProvider = false;
@@ -101,6 +107,18 @@ public class ServiceOrderTabLayoutComponent
         Timber.tag(TAG).d("...set GONE");
     }
 
+    public void close(){
+        response = null;
+        tabLayout = null;
+        customer = null;
+        serviceProvider = null;
+        serviceOrderList = null;
+        contactMap = null;
+        thisOrderHasCustomer = null;
+        thisOrderHasServiceProvider = null;
+        Timber.tag(TAG).d("close");
+    }
+
     //// interface for TabLayout listener
 
     public void onTabSelected(TabLayout.Tab tab) {
@@ -148,6 +166,42 @@ public class ServiceOrderTabLayoutComponent
                     break;
             }
         }
+    }
+
+    ////
+    //// ContactPersonCustomerLayoutComponent interface
+    ////
+    public void customerCallButtonClicked(String dialPhoneNumber){
+        Timber.tag(TAG).d("customerCallButtonClicked");
+        response.customerCallButtonClicked(dialPhoneNumber);
+    }
+
+    public void customerTextButtonClicked(String dialPhoneNumber){
+        Timber.tag(TAG).d("customerTextButtonClicked");
+        response.customerTextButtonClicked(dialPhoneNumber);
+    }
+
+    ///
+    /// ContactPersonServiceProviderLayoutComponent interface
+    ///
+    public void serviceProviderCallButtonClicked(String dialPhoneNumber){
+        Timber.tag(TAG).d("serviceProviderCallButtonClicked");
+        response.serviceProviderCallButtonClicked(dialPhoneNumber);
+    }
+
+    public void serviceProviderTextButtonClicked(String dialPhoneNumber){
+        Timber.tag(TAG).d("serviceProviderTextButtonClicked");
+        response.serviceProviderTextButtonClicked(dialPhoneNumber);
+    }
+
+    public interface Response {
+        void customerCallButtonClicked(String dialPhoneNumber);
+
+        void customerTextButtonClicked(String dialPhoneNumber);
+
+        void serviceProviderCallButtonClicked(String dialPhoneNumber);
+
+        void serviceProviderTextButtonClicked(String dialPhoneNumber);
     }
 
 }

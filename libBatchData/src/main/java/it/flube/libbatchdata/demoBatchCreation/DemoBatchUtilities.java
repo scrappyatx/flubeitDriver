@@ -25,9 +25,13 @@ public class DemoBatchUtilities {
 
     private static final String CUSTOMER_CONTACT_PERSON_GUID = "8793eff8-b7f5-4360-98ea-5187fb2f0bef";
     private static final String CUSTOMER_CONTACT_PERSON_NAME = "John Q. Customer";
-    private static final String CUSTOMER_DIAL_PHONE_NUMBER = "5125732942"; // phone number of one of the dev phones
+    private static final String CUSTOMER_DIAL_PHONE_NUMBER = "5122979032"; // phone number of one of the dev phones
+    private static final String CUSTOMER_DISPLAY_PHONE_NUMBER = "(512) XXX-XXXX";
     private static final Boolean CUSTOMER_CAN_SMS = true;
     private static final Boolean CUSTOMER_CAN_VOICE = true;
+    private static final Boolean CUSTOMER_HAS_PROXY_PHONE_NUMBER = true;
+    private static final String CUSTOMER_CONTACT_PROXY_DIAL_PHONE_NUMBER = "5125732942";
+    private static final String CUSTOMER_CONTACT_PROXY_DISPLAY_PHONE_NUMBER = "(512) 573-2942";
 
     private static final String CUSTOMER_VEHICLE_MAKE = "Audi";
     private static final String CUSTOMER_VEHICLE_MODEL = "A6";
@@ -47,9 +51,15 @@ public class DemoBatchUtilities {
 
     private static final String SERVICE_PROVIDER_CONTACT_PERSON_GUID = "b898b9d5-2921-42e6-8404-a21a584889b6";
     private static final String SERVICE_PROVIDER_CONTACT_PERSON_NAME = "Billy Oilchange";
-    private static final String SERVICE_PROVIDER_DIAL_PHONE_NUMBER = "5125732942"; // phone number of one of the dev phones
+    private static final String SERVICE_PROVIDER_DIAL_PHONE_NUMBER = "5122979032"; // phone number of one of the dev phones
+    private static final String SERVICE_PROVIDER_DISPLAY_PHONE_NUMBER = "(512) XXX-XXXX";
     private static final Boolean SERVICE_PROVIDER_CAN_SMS = false;
     private static final Boolean SERVICE_PROVIDER_CAN_VOICE = true;
+    private static final Boolean SERVICE_PROVIDER_HAS_PROXY_PHONE_NUMBER = false;
+    private static final String SERVICE_PROVIDER_PROXY_DIAL_PHONE_NUMBER = "5127483079";
+    private static final String SERVICE_PROVIDER_PROXY_DISPLAY_PHONE_NUMBER = "(512) 748-3079";
+
+
 
     private static final String SERVICE_PROVIDER_NAME = "Slippery Lester's Quick Lube";
     private static final String SERVICE_PROVIDER_ADDRESS_STREET = "3700 North Lamar Blvd";
@@ -67,8 +77,12 @@ public class DemoBatchUtilities {
                 .contactRole(ContactPerson.ContactRole.CUSTOMER)
                 .displayName(CUSTOMER_CONTACT_PERSON_NAME)
                 .dialPhoneNumber(CUSTOMER_DIAL_PHONE_NUMBER)
+                .displayPhoneNumber(CUSTOMER_DISPLAY_PHONE_NUMBER)
                 .canSMS(CUSTOMER_CAN_SMS)
                 .canVoice(CUSTOMER_CAN_VOICE)
+                .hasProxyPhoneNumber(CUSTOMER_HAS_PROXY_PHONE_NUMBER)
+                .proxyDialPhoneNumber(CUSTOMER_CONTACT_PROXY_DIAL_PHONE_NUMBER)
+                .proxyDisplayPhoneNumber(CUSTOMER_CONTACT_PROXY_DISPLAY_PHONE_NUMBER)
                 .build();
     }
 
@@ -105,8 +119,12 @@ public class DemoBatchUtilities {
                 .displayName(SERVICE_PROVIDER_CONTACT_PERSON_NAME)
                 .contactRole(ContactPerson.ContactRole.SERVICE_PROVIDER)
                 .dialPhoneNumber(SERVICE_PROVIDER_DIAL_PHONE_NUMBER)
+                .displayPhoneNumber(SERVICE_PROVIDER_DISPLAY_PHONE_NUMBER)
                 .canSMS(SERVICE_PROVIDER_CAN_SMS)
                 .canVoice(SERVICE_PROVIDER_CAN_VOICE)
+                .hasProxyPhoneNumber(SERVICE_PROVIDER_HAS_PROXY_PHONE_NUMBER)
+                .proxyDisplayPhoneNumber(SERVICE_PROVIDER_PROXY_DISPLAY_PHONE_NUMBER)
+                .proxyDialPhoneNumber(SERVICE_PROVIDER_PROXY_DIAL_PHONE_NUMBER)
                 .build();
     }
 

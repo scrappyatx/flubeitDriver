@@ -141,25 +141,15 @@ public class GiveAssetActivity extends AppCompatActivity implements
         navigator.gotoActivityGiveAssetItem(this, assetGuid);
     }
 
-    public void contactPersonCallClicked(ContactPerson contactPerson){
-        Timber.tag(TAG).d("contactPersonCallClicked");
-
-        Timber.tag(TAG).d("   ROLE              -> " + contactPerson.getContactRole());
-        Timber.tag(TAG).d("   display name      -> " + contactPerson.getDisplayName());
-        Timber.tag(TAG).d("   dial phone number -> " + contactPerson.getDialPhoneNumber());
-
+    public void contactPersonCallClicked(String displayPhoneNumber){
+        Timber.tag(TAG).d("contactPersonCallClicked, displayPhoneNumber -> " + displayPhoneNumber);
         layoutComponents.setCalling();
-        new MakePhoneCall().dialNumberRequest(this, contactPerson.getDialPhoneNumber());
+        new MakePhoneCall().dialNumberRequest(this, displayPhoneNumber);
     }
 
-    public void contactPersonTextClicked(ContactPerson contactPerson){
-        Timber.tag(TAG).d("contactPersonTextClicked");
-
-        Timber.tag(TAG).d("   ROLE              -> " + contactPerson.getContactRole());
-        Timber.tag(TAG).d("   display name      -> " + contactPerson.getDisplayName());
-        Timber.tag(TAG).d("   dial phone number -> " + contactPerson.getDialPhoneNumber());
-
-        new SendTextMessage().sendTextRequest(this, contactPerson.getDialPhoneNumber());
+    public void contactPersonTextClicked(String displayPhoneNumber){
+        Timber.tag(TAG).d("contactPersonCallClicked, displayPhoneNumber -> " + displayPhoneNumber);
+        new SendTextMessage().sendTextRequest(this, displayPhoneNumber);
     }
 
     public void appInfoClicked(){

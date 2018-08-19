@@ -34,6 +34,23 @@ public class ExtractContactPersonsFromSteps {
 
                     //put into contactPersonsByServiceOrder hashmap
                     batchHolder.getContactPersonsByServiceOrder().get(giveStep.getServiceOrderGuid()).put(giveStep.getContactPerson().getGuid(), giveStep.getContactPerson());
+
+                    //put into serviceOrder
+                    switch(giveStep.getContactPerson().getContactRole()){
+                        case CUSTOMER:
+                            // add this contact person to service order
+                            batchHolder.getServiceOrders().get(giveStep.getServiceOrderGuid()).setCustomerContactPerson(giveStep.getContactPerson());
+                            break;
+                        case SERVICE_PROVIDER:
+                            //add this contact person to service order
+                            batchHolder.getServiceOrders().get(giveStep.getServiceOrderGuid()).setCustomerContactPerson(giveStep.getContactPerson());
+                            break;
+                        case FLUBEIT_SUPPORT:
+                            break;
+                        case DRIVER:
+                            break;
+                    }
+
                     break;
                 case RECEIVE_ASSET:
                     ServiceOrderReceiveAssetStep receiveStep = (ServiceOrderReceiveAssetStep) thisStep.getValue();
@@ -43,6 +60,24 @@ public class ExtractContactPersonsFromSteps {
 
                     //put into contactPersonsByServiceOrder hashmap
                     batchHolder.getContactPersonsByServiceOrder().get(receiveStep.getServiceOrderGuid()).put(receiveStep.getContactPerson().getGuid(), receiveStep.getContactPerson());
+
+                    //put into service order
+                    switch(receiveStep.getContactPerson().getContactRole()){
+                        case CUSTOMER:
+                            // add this contact person to service order
+                            batchHolder.getServiceOrders().get(receiveStep.getServiceOrderGuid()).setCustomerContactPerson(receiveStep.getContactPerson());
+                            break;
+                        case SERVICE_PROVIDER:
+                            //add this contact person to service order
+                            batchHolder.getServiceOrders().get(receiveStep.getServiceOrderGuid()).setCustomerContactPerson(receiveStep.getContactPerson());
+                            break;
+                        case FLUBEIT_SUPPORT:
+                            break;
+                        case DRIVER:
+                            break;
+                    }
+
+
 
                     break;
                 case TAKE_PHOTOS:

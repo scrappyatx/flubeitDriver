@@ -17,6 +17,10 @@ public class ContactPersonBuilder {
     private static final String DEFAULT_FLUBEIT_SUPPORT_ICON_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/contactPersonImages%2Fflubeit_support.png?alt=media&token=5c4a0bf0-ac4b-486f-9ed5-1ea9f3381623";
     private static final String DEFAULT_SERVICE_PROVIDER_ICON_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/contactPersonImages%2Fservice_provider.png?alt=media&token=4bd7bb42-0e27-4bb1-8e54-5e03836b4ed0";
 
+    private static final Boolean DEFAULT_CAN_VOICE = false;
+    private static final Boolean DEFAULT_CAN_SMS = false;
+    private static final Boolean DEFAULT_HAS_PROXY_PHONE_NUMBER = false;
+
     private ContactPerson contactPerson;
 
     private ContactPersonBuilder(Builder builder){
@@ -34,8 +38,9 @@ public class ContactPersonBuilder {
             this.contactPerson = new ContactPerson();
             this.contactPerson.setGuid(BuilderUtilities.generateGuid());
 
-            this.contactPerson.setCanVoice(false);
-            this.contactPerson.setCanSMS(false);
+            this.contactPerson.setCanVoice(DEFAULT_CAN_VOICE);
+            this.contactPerson.setCanSMS(DEFAULT_CAN_SMS);
+            this.contactPerson.setHasProxyPhoneNumber(DEFAULT_HAS_PROXY_PHONE_NUMBER);
         }
 
         public Builder guid(String guid){
@@ -55,16 +60,26 @@ public class ContactPersonBuilder {
 
         public Builder dialPhoneNumber(String dialPhoneNumber){
             this.contactPerson.setDialPhoneNumber(dialPhoneNumber);
-
-            //set the display phone number if the dial phone number is valid
-            if (BuilderUtilities.isDialPhoneNumberFormattedProperly(dialPhoneNumber)){
-                this.contactPerson.setDisplayPhoneNumber(BuilderUtilities.getFormattedDisplayPhoneNumber(dialPhoneNumber));
-            }
             return this;
         }
 
         public Builder email(String email){
             this.contactPerson.setEmail(email);
+            return this;
+        }
+
+        public Builder hasProxyPhoneNumber(Boolean hasProxyPhoneNumber){
+            this.contactPerson.setHasProxyPhoneNumber(hasProxyPhoneNumber);
+            return this;
+        }
+
+        public Builder proxyDisplayPhoneNumber(String proxyDisplayPhoneNumber){
+            this.contactPerson.setProxyDisplayPhoneNumber(proxyDisplayPhoneNumber);
+            return this;
+        }
+
+        public Builder proxyDialPhoneNumber(String proxyDialPhoneNumber){
+            this.contactPerson.setProxyDialPhoneNumber(proxyDialPhoneNumber);
             return this;
         }
 
