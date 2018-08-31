@@ -27,12 +27,12 @@ public class ActiveBatchForegroundServiceController implements
         this.appContext = appContext;
     }
 
-    public void startActiveBatchForegroundServiceRequest(String notificationText, String notificationSubText, OrderStepInterface.TaskType taskType,
+    public void startActiveBatchForegroundServiceRequest(String clientId, String batchGuid, String serviceOrderGuid, String orderStepGuid, String notificationText, String notificationSubText, OrderStepInterface.TaskType taskType,
                                                   StartActiveBatchForegroundServiceResponse response){
 
         Timber.tag(TAG).d("starting ActiveBatchForegroundService...");
 
-        Intent i = ActiveBatchForegroundService.startIntent(appContext, notificationText, notificationSubText, taskType);
+        Intent i = IntentUtilities.getStartIntent(appContext, clientId, batchGuid, serviceOrderGuid, orderStepGuid, notificationText, notificationSubText, taskType);
         Timber.tag(TAG).d("   ...made start intent");
 
         appContext.startService(i);
@@ -41,11 +41,11 @@ public class ActiveBatchForegroundServiceController implements
     }
 
 
-    public void updateActiveBatchForegroundServiceRequest(String notificationText, String notificationSubText, OrderStepInterface.TaskType taskType,
+    public void updateActiveBatchForegroundServiceRequest(String clientId, String batchGuid, String serviceOrderGuid, String orderStepGuid, String notificationText, String notificationSubText, OrderStepInterface.TaskType taskType,
                                                    UpdateActiveBatchForegroundServiceResponse response){
         Timber.tag(TAG).d("updating ActiveBatchForegroundService...");
 
-        Intent i = ActiveBatchForegroundService.updateIntent(appContext, notificationText, notificationSubText, taskType);
+        Intent i = IntentUtilities.getUpdateIntent(appContext, clientId, batchGuid, serviceOrderGuid, orderStepGuid, notificationText, notificationSubText, taskType);
         Timber.tag(TAG).d("   ...made update intent");
 
         appContext.startService(i);
@@ -56,7 +56,7 @@ public class ActiveBatchForegroundServiceController implements
     public void stopActiveBatchForegroundServiceRequest(StopActiveBatchForegroundServiceResponse response){
         Timber.tag(TAG).d("stopping ActiveBatchForegroundService...");
 
-        Intent i = ActiveBatchForegroundService.shutdownIntent(appContext);
+        Intent i = IntentUtilities.getShutdownIntent(appContext);
         Timber.tag(TAG).d("   ...made shutdown intent");
 
         appContext.startService(i);

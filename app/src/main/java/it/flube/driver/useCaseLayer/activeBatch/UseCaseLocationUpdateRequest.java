@@ -6,6 +6,7 @@ package it.flube.driver.useCaseLayer.activeBatch;
 
 import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.interfaces.CloudActiveBatchInterface;
+import it.flube.driver.modelLayer.interfaces.CloudServerMonitoringInterface;
 import it.flube.libbatchdata.entities.LatLonLocation;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
@@ -16,12 +17,13 @@ import timber.log.Timber;
  * Project : Driver
  */
 
-public class UseCaseSaveMapLocationRequest implements
+public class UseCaseLocationUpdateRequest implements
         Runnable,
-        CloudActiveBatchInterface.SaveMapLocationResponse {
+        CloudActiveBatchInterface.SaveMapLocationResponse,
+        CloudServerMonitoringInterface.LocationUpdateResponse {
 
 
-    private final static String TAG = "UseCaseSaveMapLocationRequest";
+    private final static String TAG = "UseCaseLocationUpdateRequest";
 
     private MobileDeviceInterface device;
     private Driver driver;
@@ -30,9 +32,11 @@ public class UseCaseSaveMapLocationRequest implements
     private String orderStepGuid;
     private LatLonLocation location;
 
-    public UseCaseSaveMapLocationRequest(MobileDeviceInterface device,
-                                       String batchGuid, String serviceOrderGuid, String orderStepGuid,
-                                       LatLonLocation location){
+    private Response response;
+
+    public UseCaseLocationUpdateRequest(MobileDeviceInterface device,
+                                        String batchGuid, String serviceOrderGuid, String orderStepGuid,
+                                        LatLonLocation location, Response response){
 
 
         this.device = device;
@@ -41,20 +45,29 @@ public class UseCaseSaveMapLocationRequest implements
         this.serviceOrderGuid = serviceOrderGuid;
         this.orderStepGuid = orderStepGuid;
         this.location = location;
+        this.response = response;
     }
 
     public void run(){
         Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
 
-        //Timber.tag(TAG).d("   ...sending location to realtime messaging");
-        //device.getRealtimeActiveBatchMessages().sendMsgLocationUpdate(location.getLatitude(), location.getLongitude());
-
+        ///save location update to batch data node
         Timber.tag(TAG).d("   ...sending location to cloud database");
         device.getCloudActiveBatch().saveMapLocationRequest(driver, batchGuid, serviceOrderGuid, orderStepGuid, location, this);
-
     }
 
     public void cloudActiveBatchSaveMapLocationComplete(){
         Timber.tag(TAG).d("   ...UseCase COMPLETE");
+        //now save date to server monitoring node
+        device.getCloudServerMonitoring().locationUpdateRequest(batchGuid, location, this);
+    }
+
+    public void cloudServerMonitoringLocationUpdateComplete(String batchGuid){
+        Timber.tag(TAG).d("cloudServerMonitoringLocationUpdateComplete");
+        response.useCaseLocationUpdateComplete();
+    }
+
+    public interface Response {
+        void useCaseLocationUpdateComplete();
     }
 }

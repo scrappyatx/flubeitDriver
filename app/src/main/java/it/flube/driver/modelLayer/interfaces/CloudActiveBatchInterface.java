@@ -59,7 +59,7 @@ public interface CloudActiveBatchInterface {
     void startActiveBatchRequest(Driver driver, String batchGuid, ActiveBatchManageInterface.ActorType actorType, StartActiveBatchResponse response);
 
     interface StartActiveBatchResponse {
-        void cloudStartActiveBatchSuccess(String batchGuid);
+        void cloudStartActiveBatchSuccess(String batchGuid, String driverProxyDialNumber, String driverProxyDisplayNumber);
 
         void cloudStartActiveBatchFailure(String batchGuid);
 
@@ -105,6 +105,11 @@ public interface CloudActiveBatchInterface {
     ////
     //// UPDATING THE ACTIVE BATCH
     ////
+    void updateDriverProxyInfoRequest(Driver driver, String batchGuid, String driverProxyDialNumber, String driverProxyDisplayNumber, UpdateDriverProxyInfoResponse response);
+
+    interface UpdateDriverProxyInfoResponse {
+        void cloudActiveBatchUpdateDriverProxyInfoComplete();
+    }
     void updatePhotoRequestDeviceAbsoluteFileNameRequest(Driver driver, PhotoRequest photoRequest, String absoluteFileName, Boolean hasFile, PhotoRequestDeviceAbsoluteFileNameResponse response);
 
     interface PhotoRequestDeviceAbsoluteFileNameResponse {
@@ -123,18 +128,7 @@ public interface CloudActiveBatchInterface {
         void cloudActiveBatchUpdateAssetTransferComplete();
     }
 
-    ////
-    //// STATUS MONITORING & TRACKING OF THE ACTIVE BATCH
-    ////
-    void updateActiveBatchServerNodeStatus(Driver driver, BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step);
 
-    void updateActiveBatchServerNodeStatus(Driver driver, BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step, LatLonLocation driverLocation);
-
-    void updateActiveBatchServerNodeStatus(Driver driver, String batchGuid);
-
-    ///    sets the server node for a completed batch
-
-     void updateBatchCompletedServerNode(Driver driver, String batchGuid);
 
     ///
     ///  GETTERS FOR ACTIVE BATCH DATA

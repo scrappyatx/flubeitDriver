@@ -9,6 +9,7 @@ import it.flube.libbatchdata.builders.ContactPersonBuilder;
 import it.flube.libbatchdata.builders.LatLonLocationBuilder;
 import it.flube.libbatchdata.builders.ServiceProviderBuilder;
 import it.flube.libbatchdata.builders.VehicleBuilder;
+import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import it.flube.libbatchdata.entities.AddressLocation;
 import it.flube.libbatchdata.entities.ContactPerson;
 import it.flube.libbatchdata.entities.LatLonLocation;
@@ -71,8 +72,8 @@ public class DemoBatchUtilities {
     private static final Double SERVICE_PROVIDER_LONGITUDE = -97.7438983;
 
 
-    public static ContactPerson getCustomerContactPerson(){
-        return new ContactPersonBuilder.Builder()
+    public static ContactPerson getCustomerContactPerson(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
+        return new ContactPersonBuilder.Builder(targetEnvironment)
                 .guid(CUSTOMER_CONTACT_PERSON_GUID)
                 .contactRole(ContactPerson.ContactRole.CUSTOMER)
                 .displayName(CUSTOMER_CONTACT_PERSON_NAME)
@@ -86,8 +87,8 @@ public class DemoBatchUtilities {
                 .build();
     }
 
-    public static Vehicle getCustomerVehicle(){
-        return new VehicleBuilder.Builder()
+    public static Vehicle getCustomerVehicle(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
+        return new VehicleBuilder.Builder(targetEnvironment)
                 .make(CUSTOMER_VEHICLE_MAKE)
                 .model(CUSTOMER_VEHICLE_MODEL)
                 .year(CUSTOMER_VEHICLE_YEAR)
@@ -113,8 +114,8 @@ public class DemoBatchUtilities {
                 .build();
     }
 
-    public static ContactPerson getServiceProviderContactPerson(){
-        return new ContactPersonBuilder.Builder()
+    public static ContactPerson getServiceProviderContactPerson(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
+        return new ContactPersonBuilder.Builder(targetEnvironment)
                 .guid(SERVICE_PROVIDER_CONTACT_PERSON_GUID)
                 .displayName(SERVICE_PROVIDER_CONTACT_PERSON_NAME)
                 .contactRole(ContactPerson.ContactRole.SERVICE_PROVIDER)
@@ -128,9 +129,9 @@ public class DemoBatchUtilities {
                 .build();
     }
 
-    public static ServiceProvider getServiceProvider(){
-        return new ServiceProviderBuilder.Builder()
-                .iconURL(BatchIconGenerator.getRandomIconUrl())
+    public static ServiceProvider getServiceProvider(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
+        return new ServiceProviderBuilder.Builder(targetEnvironment)
+                .iconURL(BatchIconGenerator.getRandomIconUrl(targetEnvironment))
                 .name(SERVICE_PROVIDER_NAME)
                 .addressLocation(new AddressLocationBuilder.Builder()
                         .street(SERVICE_PROVIDER_ADDRESS_STREET)
@@ -141,7 +142,7 @@ public class DemoBatchUtilities {
                 .latLonLocation(new LatLonLocationBuilder.Builder()
                         .location(SERVICE_PROVIDER_LATITUDE, SERVICE_PROVIDER_LONGITUDE)
                         .build())
-                .contactPerson(getServiceProviderContactPerson())
+                .contactPerson(getServiceProviderContactPerson(targetEnvironment))
                 .build();
     }
 }

@@ -41,6 +41,7 @@ public class UseCaseStartBatchRequest implements
     public void run(){
         Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
         Timber.tag(TAG).d("   ...batchGuid -> " + batchGuid);
+
         Timber.tag(TAG).d("   ...making request to start active batch...");
         cloudActiveBatch.startActiveBatchRequest(driver, batchGuid, ActiveBatchManageInterface.ActorType.MOBILE_USER, this);
     }
@@ -48,9 +49,11 @@ public class UseCaseStartBatchRequest implements
 
 
     //// SUCCESS callback from active batch start request, now remove the batch from the scheduled batch list
-    public void cloudStartActiveBatchSuccess(String batchGuid) {
+    public void cloudStartActiveBatchSuccess(String batchGuid, String driverProxyDialNumber, String driverProxyDisplayNumber) {
         Timber.tag(TAG).d("   ...cloudStartActiveBatchSuccess");
         Timber.tag(TAG).d("   ...now removing batch from scheduled batch list");
+
+        //// now remove the batch from the scheduled batch list
         cloudScheduledBatch.startScheduledBatchRequest(driver, batchGuid, this );
     }
 

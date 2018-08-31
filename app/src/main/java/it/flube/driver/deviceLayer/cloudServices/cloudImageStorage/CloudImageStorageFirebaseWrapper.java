@@ -15,10 +15,12 @@ import it.flube.driver.deviceLayer.cloudServices.cloudImageStorage.uploadList.Ad
 import it.flube.driver.deviceLayer.cloudServices.cloudImageStorage.uploadTasks.MovePhotoUploadTaskToFailed;
 import it.flube.driver.deviceLayer.cloudServices.cloudImageStorage.uploadTasks.MovePhotoUploadTaskToFinished;
 import it.flube.driver.deviceLayer.cloudServices.cloudImageStorage.uploadTasks.MovePhotoUploadTaskToInProgress;
+import it.flube.driver.deviceLayer.cloudServices.firebaseInitialization.FirebaseDbInitialization;
 import it.flube.driver.modelLayer.entities.DeviceInfo;
 import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.interfaces.CloudConfigInterface;
 import it.flube.driver.modelLayer.interfaces.CloudImageStorageInterface;
+import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import timber.log.Timber;
 
 import static it.flube.driver.deviceLayer.cloudServices.cloudImageStorage.CloudImageStorageConstants.MOBILE_UPLOAD_PATH;
@@ -32,7 +34,8 @@ public class CloudImageStorageFirebaseWrapper implements
         CloudImageStorageInterface {
 
     private static final String TAG = "CloudImageStorageFirebaseWrapper";
-
+    
+    private final String driverDb;
     private final String baseNodeBatchData;
     private final String baseNodeActiveBatch;
 
@@ -40,8 +43,9 @@ public class CloudImageStorageFirebaseWrapper implements
     private String batchDataNode;
 
 
-    public CloudImageStorageFirebaseWrapper(CloudConfigInterface cloudConfig){
+    public CloudImageStorageFirebaseWrapper(TargetEnvironmentConstants.TargetEnvironment targetEnvironment, CloudConfigInterface cloudConfig){
         Timber.tag(TAG).d("created");
+        driverDb = FirebaseDbInitialization.getFirebaseDriverDb(targetEnvironment);
 
         baseNodeBatchData = cloudConfig.getCloudDatabaseBaseNodeBatchData();
         Timber.tag(TAG).d("   baseNodeBatchData = " + baseNodeBatchData);
@@ -63,7 +67,7 @@ public class CloudImageStorageFirebaseWrapper implements
         Timber.tag(TAG).d("addDeviceImageToActiveBatchUploadList START...");
 
         getNodes(driver);
-        new AddDeviceImageToUploadList().addToList(FirebaseDatabase.getInstance().getReference(batchDataNode), FirebaseStorage.getInstance().getReference(MOBILE_UPLOAD_PATH),
+        new AddDeviceImageToUploadList().addToList(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), FirebaseStorage.getInstance().getReference(MOBILE_UPLOAD_PATH),
                                                     batchGuid, serviceOrderGuid, orderStepGuid, photoRequestGuid,
                                                     deviceStorageAbsoluteFileName, deviceInfo.getDeviceGUID(), response);
     }
@@ -117,7 +121,7 @@ public class CloudImageStorageFirebaseWrapper implements
                                                       AddPhotoUploadTaskNotStarted.AddPhotoUploadTaskNotStartedResponse response){
 
         Timber.tag(TAG).d("addPhotoUploadTaskToNotStartedRequest");
-        new AddPhotoUploadTaskNotStarted().addPhotoUploadTaskToNotStartedRequest(FirebaseDatabase.getInstance().getReference(batchDataNode),
+        new AddPhotoUploadTaskNotStarted().addPhotoUploadTaskToNotStartedRequest(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode),
                 batchGuid, serviceOrderGuid, orderStepGuid, photoRequestGuid, deviceGuid,
                 deviceAbsoluteFileName, cloudStorageFileName, response);
 
@@ -131,7 +135,7 @@ public class CloudImageStorageFirebaseWrapper implements
                                                 MovePhotoUploadTaskToInProgress.MovePhotoUploadTaskToInProgressResponse response){
 
         Timber.tag(TAG).d("movePhotoUploadTaskToInProgress");
-        new MovePhotoUploadTaskToInProgress().movePhotoUploadTaskToInProgress(FirebaseDatabase.getInstance().getReference(batchDataNode),
+        new MovePhotoUploadTaskToInProgress().movePhotoUploadTaskToInProgress(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode),
                 batchGuid, serviceOrderGuid, orderStepGuid, photoRequestGuid, deviceGuid,
                 deviceAbsoluteFileName, cloudStorageFileName,
                 sessionUriString, progress, response);
@@ -143,7 +147,7 @@ public class CloudImageStorageFirebaseWrapper implements
                                               MovePhotoUploadTaskToFinished.MovePhotoUploadTaskFinishedResponse response){
 
         Timber.tag(TAG).d("movePhotoUploadTaskToFinished");
-        new MovePhotoUploadTaskToFinished().movePhotoUploadTaskToFinished(FirebaseDatabase.getInstance().getReference(batchDataNode),
+        new MovePhotoUploadTaskToFinished().movePhotoUploadTaskToFinished(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode),
                 batchGuid, serviceOrderGuid, orderStepGuid, photoRequestGuid, deviceGuid,
                 deviceAbsoluteFileName, cloudStorageFileName, response);
 
@@ -154,7 +158,7 @@ public class CloudImageStorageFirebaseWrapper implements
                                             MovePhotoUploadTaskToFailed.MovePhotoUploadTaskToFailedResponse response){
 
         Timber.tag(TAG).d("movePhotoUploadTaskToFailed");
-        new MovePhotoUploadTaskToFailed().movePhotoUploadTaskToFailed(FirebaseDatabase.getInstance().getReference(batchDataNode),
+        new MovePhotoUploadTaskToFailed().movePhotoUploadTaskToFailed(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode),
                 batchGuid, serviceOrderGuid, orderStepGuid, photoRequestGuid, deviceGuid,
                 deviceAbsoluteFileName, cloudStorageFileName, response);
 

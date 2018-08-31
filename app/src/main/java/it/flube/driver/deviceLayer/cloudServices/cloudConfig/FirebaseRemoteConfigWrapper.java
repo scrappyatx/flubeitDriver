@@ -19,6 +19,7 @@ import java.util.TimeZone;
 import it.flube.driver.BuildConfig;
 import it.flube.driver.modelLayer.interfaces.CloudConfigInterface;
 import it.flube.libbatchdata.builders.ContactPersonBuilder;
+import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import it.flube.libbatchdata.entities.ContactPerson;
 import timber.log.Timber;
 
@@ -57,9 +58,11 @@ public class FirebaseRemoteConfigWrapper implements
     private static final String TAG = "FirebaseRemoteConfigWrapper";
 
     private FirebaseRemoteConfig remoteConfig;
+    private TargetEnvironmentConstants.TargetEnvironment targetEnvironment;
     private long cacheExpiry;
 
-    public FirebaseRemoteConfigWrapper(){
+    public FirebaseRemoteConfigWrapper(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
+        this.targetEnvironment = targetEnvironment;
         getFirebaseRemoteConfigInstance();
         setDefaultValues();
         activateLastFetchedValues();
@@ -170,7 +173,7 @@ public class FirebaseRemoteConfigWrapper implements
 
     //// flube it support
     public ContactPerson getFlubeItSupportContactPerson(){
-        return new ContactPersonBuilder.Builder()
+        return new ContactPersonBuilder.Builder(targetEnvironment)
                 .contactRole(ContactPerson.ContactRole.FLUBEIT_SUPPORT)
                 .displayIconUrl(remoteConfig.getString(FLUBE_IT_SUPPORT_DISPLAY_ICON_URL_KEY))
                 .displayName(remoteConfig.getString(FLUBE_IT_SUPPORT_DISPLAY_NAME_KEY))

@@ -5,6 +5,7 @@
 package it.flube.driver.modelLayer.interfaces;
 
 import it.flube.driver.modelLayer.entities.DeviceInfo;
+import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 
 /**
  * Created on 7/3/2017
@@ -39,12 +40,16 @@ public interface MobileDeviceInterface {
     CloudScheduledBatchInterface getCloudScheduledBatch();
 
     CloudActiveBatchInterface getCloudActiveBatch();
+    CloudServerMonitoringInterface getCloudServerMonitoring();
 
     CloudImageDetectionInterface getCloudImageDetection();
+    CloudRealTimeClockInterface getCloudRealTimeClock();
+
 
     ///
     /// device services
     ///
+    TargetEnvironmentConstants.TargetEnvironment getTargetEnvironment();
     ActiveBatchForegroundServiceInterface getActiveBatchForegroundServiceController();
     DeviceStorageInterface getDeviceStorage();
     DeviceImageStorageInterface getDeviceImageStorage();

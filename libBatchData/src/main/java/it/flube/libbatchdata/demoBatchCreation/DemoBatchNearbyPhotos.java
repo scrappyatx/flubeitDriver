@@ -6,29 +6,23 @@ package it.flube.libbatchdata.demoBatchCreation;
 
 
 
-import java.util.ArrayList;
-import java.util.Random;
-
-import it.flube.libbatchdata.builders.AddressLocationBuilder;
 import it.flube.libbatchdata.builders.batch.BatchHolderBuilder;
 import it.flube.libbatchdata.builders.BuilderUtilities;
-import it.flube.libbatchdata.builders.LatLonLocationBuilder;
 import it.flube.libbatchdata.builders.orderSteps.NavigationStepBuilder;
 import it.flube.libbatchdata.builders.PhotoRequestBuilder;
-import it.flube.libbatchdata.builders.PhotoRequestListForVehicleBuilder;
 import it.flube.libbatchdata.builders.orderSteps.PhotoStepBuilder;
 import it.flube.libbatchdata.builders.PotentialEarningsBuilder;
 import it.flube.libbatchdata.builders.serviceOrder.ServiceOrderScaffoldBuilder;
-import it.flube.libbatchdata.entities.AddressLocation;
+import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import it.flube.libbatchdata.entities.Destination;
 import it.flube.libbatchdata.entities.PotentialEarnings;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.batch.BatchHolder;
 import it.flube.libbatchdata.builders.DestinationBuilder;
 import it.flube.libbatchdata.entities.DisplayDistanceBuilder;
-import it.flube.libbatchdata.entities.DisplayTimingBuilder;
-import it.flube.libbatchdata.entities.LatLonLocation;
 import it.flube.libbatchdata.interfaces.DemoBatchInterface;
+
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_TARGET_ENVIRONMENT;
 
 
 /**
@@ -38,27 +32,30 @@ import it.flube.libbatchdata.interfaces.DemoBatchInterface;
 
 public class DemoBatchNearbyPhotos implements DemoBatchInterface {
 
-    private ArrayList<String> batchTitleList;
-
-    public DemoBatchNearbyPhotos(){
-
-    }
-
-
 
     /// 3 photo demo batch
 
+    /// DemoBatchInterface methods
     public BatchHolder createDemoBatch(String clientId) {
         // if user doesn't supply a batchGUID, we create one
-        return createBatch(clientId, BuilderUtilities.generateGuid());
+        return createBatch(clientId, BuilderUtilities.generateGuid(),DEFAULT_TARGET_ENVIRONMENT);
+    }
+
+    public BatchHolder createDemoBatch(String clientId, TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
+        return createBatch(clientId, BuilderUtilities.generateGuid(), targetEnvironment);
     }
 
     public BatchHolder createDemoBatch(String clientId, String batchGuid){
         //use the batchGuid the user supplied
-        return createBatch(clientId, batchGuid);
+        return createBatch(clientId, batchGuid, DEFAULT_TARGET_ENVIRONMENT);
     }
 
-    public BatchHolder createBatch(String clientId, String batchGuid) {
+    public BatchHolder createDemoBatch(String clientId, String batchGuid, TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
+        return createBatch(clientId, batchGuid, targetEnvironment);
+    }
+
+    //// batch generation
+    private BatchHolder createBatch(String clientId, String batchGuid, TargetEnvironmentConstants.TargetEnvironment targetEnvironment) {
 
         return new BatchHolderBuilder.Builder()
                 .batchType(BatchDetail.BatchType.MOBILE_DEMO)
@@ -66,10 +63,10 @@ public class DemoBatchNearbyPhotos implements DemoBatchInterface {
                 .guid(batchGuid)
                 .title(BatchRandomTitleGenerator.getRandomTitle())
                 .description("some description text")
-                .iconUrl(BatchIconGenerator.getRandomIconUrl())
+                .iconUrl(BatchIconGenerator.getRandomIconUrl(targetEnvironment))
                 .displayDistance(new DisplayDistanceBuilder.Builder()
                         .distanceToTravel("18 miles")
-                        .distanceIndicatorUrl(BatchIconGenerator.getRandomDistanceIndicatorUrl())
+                        .distanceIndicatorUrl(BatchIconGenerator.getRandomDistanceIndicatorUrl(targetEnvironment))
                         .build())
                 .potentialEarnings(new PotentialEarningsBuilder.Builder()
                         .payRateInCents(2800)
@@ -102,15 +99,15 @@ public class DemoBatchNearbyPhotos implements DemoBatchInterface {
                                 .startTime(BuilderUtilities.getNowDate(), 10)
                                 .finishTime(BuilderUtilities.getNowDate(), 20)
                                 .milestoneWhenFinished("Photos Taken")
-                                .addPhotoRequest(new PhotoRequestBuilder.Builder()
+                                .addPhotoRequest(new PhotoRequestBuilder.Builder(targetEnvironment)
                                         .title("First Photo")
                                         .description("This is the first photo to take")
                                         .build())
-                                .addPhotoRequest(new PhotoRequestBuilder.Builder()
+                                .addPhotoRequest(new PhotoRequestBuilder.Builder(targetEnvironment)
                                         .title("Second Photo")
                                         .description("This is the second photo to take")
                                         .build())
-                                .addPhotoRequest(new PhotoRequestBuilder.Builder()
+                                .addPhotoRequest(new PhotoRequestBuilder.Builder(targetEnvironment)
                                         .title("Third Photo")
                                         .description("This is the third photo to take")
                                         .build())

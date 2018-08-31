@@ -50,7 +50,7 @@ public class BatchManageActivity extends AppCompatActivity
         ForfeitBatchConfirmation.Response,
         UseCaseStartBatchRequest.Response,
         SlideView.OnSlideCompleteListener,
-        BatchManageAlerts.StartedBatchAlertHidden {
+        BatchStartAlerts.Response {
 
     private static final String TAG = "BatchManageActivity";
 
@@ -164,31 +164,41 @@ public class BatchManageActivity extends AppCompatActivity
     ////
     public void useCaseStartBatchSuccess(String batchGuid){
         Timber.tag(TAG).d("useCaseStartBatchSuccess");
-        new BatchManageAlerts().showStartedBatchAlert(this, this);
-        //do nothing, listener should pick up that active batch is started and take over
-
+        new BatchStartAlerts().showBatchStartedSuccess(this, this);
+        // don't set detail visible, keep waiting animation going while we wait for active batch listener to take over
     }
-
 
     public void useCaseStartBatchFailure(String batchGuid){
         Timber.tag(TAG).d("useCaseStartBatchFailure");
-        //TODO build alert to display to user when batch start failed
+        new BatchStartAlerts().showBatchStartedFailure(this, this);
+        batchTab.setVisible();
+        batchButtons.setVisible();
     }
 
     public void useCaseStartBatchTimeout(String batchGuid){
         Timber.tag(TAG).d("useCaseStartBatchTimeout");
-        //TODO build alert to display to user when batch timeout
+        new BatchStartAlerts().showBatchStartedTimeout(this, this);
+        batchTab.setVisible();
+        batchButtons.setVisible();
     }
 
     public void useCaseStartBatchDenied(String batchGuid, String reason){
         Timber.tag(TAG).d("useCaseStartBatchDenied, reason -> " + reason);
-        //TODO build alert to display to user when batch start denied
+        new BatchStartAlerts().showBatchStartedDenied(this, this, reason);
+        batchTab.setVisible();
+        batchButtons.setVisible();
     }
 
+    ////
+    //// BatchStartAlerts.Response
+    ////
+    public void batchStartAlertHidden(){
+        Timber.tag(TAG).d("batchStartAlertHidden");
+        //do nothing, listener should pick up that active batch is started and take over
+        //or user navigates away
 
-    public void startedBatchAlertHidden(){
-        Timber.tag(TAG).d("startedBatchAlertHidden");
     }
+
 
     ////
     ////    ForfeitBatchConfirmation response

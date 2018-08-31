@@ -10,4 +10,7 @@ package it.flube.driver.deviceLayer.cloudServices.cloudUserProfile;
  */
 public class CloudUserProfileConstants {
     public static final String USER_PROFILE_NODE = "mobileData/userReadable/driverProfiles";
+
+
+
 }

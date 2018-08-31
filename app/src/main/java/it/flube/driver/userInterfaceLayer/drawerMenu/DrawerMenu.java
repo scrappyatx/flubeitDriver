@@ -36,6 +36,7 @@ import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.activeBatch.ActiveBatchUpdatedBatchFinishedEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.activeBatch.ActiveBatchUpdatedBatchRemovedEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.activeBatch.ActiveBatchUpdatedBatchWaitingToFinishEvent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.activeBatch.ActiveBatchUpdatedNoBatchEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.activeBatch.ActiveBatchUpdatedStepStartedEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.DemoOfferCountUpdatedEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.PersonalOfferCountUpdatedEvent;
@@ -545,6 +546,14 @@ public class DrawerMenu {
         Timber.tag(TAG).d("   batchGuid        -> " + event.getBatchGuid());
 
         navigator.gotoActivityHomeAndShowBatchRemovedMessage(activity, event.getActorType(), event.getBatchGuid());
+        EventBus.getDefault().removeStickyEvent(event);
+    }
+
+    /// no batch
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ActiveBatchUpdatedNoBatchEvent event){
+        Timber.tag(TAG).d("received ActiveBatchUpdatedNoBatchEvent");
+        navigator.gotoActivityHome(activity);
         EventBus.getDefault().removeStickyEvent(event);
     }
 

@@ -38,13 +38,15 @@ public class AccountActivity extends AppCompatActivity {
     private DrawerMenu drawer;
 
     private TextView profileDetail;
-    private TextView softwareVersion;
 
     private Button logoutButton;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        TextView softwareVersion;
+        TextView buildFlavor;
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_account);
@@ -52,9 +54,13 @@ public class AccountActivity extends AppCompatActivity {
         profileDetail.setVisibility(View.INVISIBLE);
 
         softwareVersion = (TextView) findViewById(R.id.account_software_version);
-        softwareVersion.setText("Version : " + BuildConfig.VERSION_NAME);
+        softwareVersion.setText("version : " + BuildConfig.VERSION_NAME);
         softwareVersion.setVisibility(View.VISIBLE);
-        Timber.tag(TAG).d("software version = " + BuildConfig.VERSION_NAME);
+        Timber.tag(TAG).d("version" + BuildConfig.VERSION_NAME);
+
+        buildFlavor = (TextView) findViewById(R.id.account_build_flavor);
+        buildFlavor.setText(BuildConfig.FLAVOR + " " + BuildConfig.BUILD_TYPE);
+        buildFlavor.setVisibility(View.VISIBLE);
 
         logoutButton = (Button) findViewById(R.id.account_logout_button);
 

@@ -32,11 +32,31 @@ public class BuilderUtilities {
         return cal.getTime();
     }
 
-    public static Date addMinutesToDate(Date initialDate, Integer minutesToAdd){
+    /// add minutes to date can work with either Date or TimeInMillis
+    public static Long addMinutesToDate(Date initialDateInMillis, Integer minutesToAdd){
         Calendar cal = Calendar.getInstance();
-        cal.setTime(initialDate);
+        cal.setTime(initialDateInMillis);
         cal.add(Calendar.MINUTE, minutesToAdd);
-        return cal.getTime();
+        return cal.getTimeInMillis();
+    }
+
+    public static Long addMinutesToDate(Long initialDateInMillis, Integer minutesToAdd){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date(initialDateInMillis));
+        cal.add(Calendar.MINUTE, minutesToAdd);
+        return cal.getTimeInMillis();
+    }
+
+    /// convert a date to Millis
+    public static Long convertDateToMillis(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.getTimeInMillis();
+    }
+
+    /// convert millis to a Date
+    public static Date convertMillisToDate(Long millis){
+        return new Date(millis);
     }
 
     public static Boolean isDialPhoneNumberFormattedProperly(String dialPhoneNumber){

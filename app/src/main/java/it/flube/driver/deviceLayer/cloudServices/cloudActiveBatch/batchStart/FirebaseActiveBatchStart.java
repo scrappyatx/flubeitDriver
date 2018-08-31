@@ -77,13 +77,13 @@ public class FirebaseActiveBatchStart implements
         Timber.tag(TAG).d("      ...batchType = " + batchDetail.getBatchType().toString());
         switch (batchDetail.getBatchType()) {
             case MOBILE_DEMO:
-                new FirebaseDemoBatchStart().startBatchRequest(activeBatchRef, batchGuid, ActiveBatchManageInterface.ActorType.MOBILE_USER, response);
+                new FirebaseDemoBatchStart().startBatchRequest(activeBatchRef, batchDataRef, driver, batchGuid, ActiveBatchManageInterface.ActorType.MOBILE_USER, response);
                 break;
             case PRODUCTION:
-                new FirebaseProductionBatchStart().startBatchRequest(activeBatchRef, batchStartRequestRef, batchStartResponseRef, driver, batchDetail,this);
+                new FirebaseProductionBatchStart().startBatchRequest(activeBatchRef, batchDataRef, batchStartRequestRef, batchStartResponseRef, driver, batchDetail,this);
                 break;
             case PRODUCTION_TEST:
-                new FirebaseProductionBatchStart().startBatchRequest(activeBatchRef, batchStartRequestRef, batchStartResponseRef, driver, batchDetail, this);
+                new FirebaseProductionBatchStart().startBatchRequest(activeBatchRef, batchDataRef, batchStartRequestRef, batchStartResponseRef, driver, batchDetail, this);
                 break;
             default:
                 Timber.tag(TAG).w("      ...no batchType, should never get here");
@@ -99,9 +99,9 @@ public class FirebaseActiveBatchStart implements
     }
 
     //// PRODUCTION BATCH START RESULT
-    public void batchStartSuccess(String batchGuid){
+    public void batchStartSuccess(String batchGuid, String driverProxyDialNumber, String driverProxyDisplayNumber){
         Timber.tag(TAG).d("   ...production batchStartSuccess");
-        response.cloudStartActiveBatchSuccess(batchGuid);
+        response.cloudStartActiveBatchSuccess(batchGuid, driverProxyDialNumber, driverProxyDisplayNumber);
     }
 
     public void batchStartTimeout(String batchGuid){

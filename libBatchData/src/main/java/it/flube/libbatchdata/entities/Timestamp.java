@@ -12,22 +12,22 @@ import java.util.Date;
  */
 
 public class Timestamp {
-    private Date scheduledTime;
-    private Date actualTime;
+    private Long scheduledTime;
+    private Long actualTime;
 
-    public Date getScheduledTime(){
+    public Long getScheduledTime(){
         return scheduledTime;
     }
 
-    public void setScheduledTime(Date scheduledTime) {
+    public void setScheduledTime(Long scheduledTime) {
         this.scheduledTime = scheduledTime;
     }
 
-    public Date getActualTime(){
+    public Long getActualTime(){
         return actualTime;
     }
 
-    public void setActualTime(Date actualTime){
+    public void setActualTime(Long actualTime){
         this.actualTime = actualTime;
     }
 }

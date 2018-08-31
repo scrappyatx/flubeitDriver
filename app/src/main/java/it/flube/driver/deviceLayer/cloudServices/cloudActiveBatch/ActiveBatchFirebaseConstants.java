@@ -10,8 +10,12 @@ package it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch;
  */
 public class ActiveBatchFirebaseConstants {
 
-    public static final String ACTIVE_BATCH_SERVER_NOTIFICATION_NODE = "mobileData/userWriteable/activeBatches";
-    public static final String COMPLETED_BATCH_SERVER_NOTIFICATION_NODE = "mobileData/userWriteable/completedBatches";
+    //public static final String ACTIVE_BATCH_SERVER_NOTIFICATION_NODE = "mobileData/userWriteable/activeBatches";
+    //public static final String COMPLETED_BATCH_SERVER_NOTIFICATION_NODE = "mobileData/userWriteable/completedBatches";
+
+    //public static final String DRIVER_PROXY_INFO_NODE = "driverProxyInfo";
+    //public static final String DRIVER_PROXY_DIAL_NUMBER_NODE = "driverProxyDialNumber";
+    //public static final String DRIVER_PROXY_DISPLAY_NUMBER_NODE = "driverProxyDisplayNumber";
 
     public static final String BATCH_DATA_STEPS_NODE = "steps";
 
@@ -39,5 +43,8 @@ public class ActiveBatchFirebaseConstants {
     public static final String BATCH_DATA_ASSET_LIST_NODE = "assetList";
 
     public static final String ASSET_TRANSFER_STATUS_NODE = "transferStatus";
+
+    public static final String BATCH_DETAIL_NODE = "batchDetail";
+    public static final String DRIVER_INFO_NODE = "driverInfo";
 
 }

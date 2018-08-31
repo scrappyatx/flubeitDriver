@@ -8,8 +8,15 @@ package it.flube.libbatchdata.builders;
 import java.util.HashMap;
 import java.util.Map;
 
+import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import it.flube.libbatchdata.entities.ImageLabel;
 import it.flube.libbatchdata.entities.PhotoRequest;
+
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_NO_ATTEMPT_IMAGE_URL_DEMO;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_NO_ATTEMPT_IMAGE_URL_DEVELOPMENT;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_NO_ATTEMPT_IMAGE_URL_PRODUCTION;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_NO_ATTEMPT_IMAGE_URL_STAGING;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_TARGET_ENVIRONMENT;
 
 /**
  * Created on 9/2/2017
@@ -21,9 +28,7 @@ public class PhotoRequestBuilder {
     private static final String PHOTO_SUCCESS_ICON_TEXT = "{fa-check-circle}";
     private static final String FAILED_ATTEMPTS_ICON_TEXT = "{fa-question-circle}";
 
-    private static final String DEFAULT_NO_ATTEMPT_IMAGE_URL= "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2Fno_attempts_photo_image_2.png?alt=media&token=82c4c53a-371a-4122-9d11-249344f22557";
     private static final Boolean DEFAULT_DO_DEVICE_IMAGE_DETECTION = true;
-
 
     private PhotoRequest photoRequest;
 
@@ -38,7 +43,15 @@ public class PhotoRequestBuilder {
     public static class Builder {
         private PhotoRequest photoRequest;
 
-        public Builder(){
+        ///public Builder(){
+        ///    initializeStuff(DEFAULT_TARGET_ENVIRONMENT);
+        ///}
+
+        public Builder(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
+            initializeStuff(targetEnvironment);
+        }
+
+        private void initializeStuff(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
             photoRequest = new PhotoRequest();
             photoRequest.setGuid(BuilderUtilities.generateGuid());
             photoRequest.setStatus(PhotoRequest.PhotoStatus.NO_ATTEMPTS);
@@ -53,15 +66,29 @@ public class PhotoRequestBuilder {
             photoRequest.setAttemptCount(0);
             photoRequest.setHasPhotoHint(false);
 
-            photoRequest.setNoAttemptImageUrl(DEFAULT_NO_ATTEMPT_IMAGE_URL);
-            photoRequest.setHasNoAttemptImage(true);
-
             photoRequest.setHasDeviceFile(false);
             photoRequest.setHasCloudFile(false);
 
             photoRequest.setDoDeviceImageDetection(DEFAULT_DO_DEVICE_IMAGE_DETECTION);
             photoRequest.setHasLabelMap(false);
             photoRequest.setLabelMap(new HashMap<String, ImageLabel>());
+
+            photoRequest.setHasNoAttemptImage(true);
+            //set imageUrl based on target environment
+            switch (targetEnvironment){
+                case PRODUCTION:
+                    photoRequest.setNoAttemptImageUrl(DEFAULT_NO_ATTEMPT_IMAGE_URL_PRODUCTION);
+                    break;
+                case DEMO:
+                    photoRequest.setNoAttemptImageUrl(DEFAULT_NO_ATTEMPT_IMAGE_URL_DEMO);
+                    break;
+                case STAGING:
+                    photoRequest.setNoAttemptImageUrl(DEFAULT_NO_ATTEMPT_IMAGE_URL_STAGING);
+                    break;
+                case DEVELOPMENT:
+                    photoRequest.setNoAttemptImageUrl(DEFAULT_NO_ATTEMPT_IMAGE_URL_DEVELOPMENT);
+                    break;
+            }
         }
 
         public Builder guid(String guid) {

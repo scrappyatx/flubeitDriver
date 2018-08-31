@@ -10,11 +10,14 @@ import it.flube.libbatchdata.builders.PotentialEarningsBuilder;
 import it.flube.libbatchdata.builders.batch.BatchHolderBuilder;
 import it.flube.libbatchdata.builders.orderSteps.PhotoStepBuilder;
 import it.flube.libbatchdata.builders.serviceOrder.ServiceOrderScaffoldBuilder;
+import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import it.flube.libbatchdata.entities.DisplayDistanceBuilder;
 import it.flube.libbatchdata.entities.PotentialEarnings;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.batch.BatchHolder;
 import it.flube.libbatchdata.interfaces.DemoBatchInterface;
+
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_TARGET_ENVIRONMENT;
 
 /**
  * Created on 6/25/2018
@@ -30,15 +33,29 @@ public class DemoBatchSingleStepThreePhoto implements DemoBatchInterface {
     private static final String MILESTONE_WHEN_FINISHED = "Photos Taken";
 
 
-    public BatchHolder createDemoBatch(String clientId){
-        return getDemoBatch(clientId, BuilderUtilities.generateGuid());
+    /// DemoBatchInterface methods
+    public BatchHolder createDemoBatch(String clientId) {
+        // if user doesn't supply a batchGUID, we create one
+        return createBatch(clientId, BuilderUtilities.generateGuid(),DEFAULT_TARGET_ENVIRONMENT);
+    }
+
+    public BatchHolder createDemoBatch(String clientId, TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
+        return createBatch(clientId, BuilderUtilities.generateGuid(), targetEnvironment);
     }
 
     public BatchHolder createDemoBatch(String clientId, String batchGuid){
-        return getDemoBatch(clientId, batchGuid);
+        //use the batchGuid the user supplied
+        return createBatch(clientId, batchGuid, DEFAULT_TARGET_ENVIRONMENT);
     }
 
-    public BatchHolder getDemoBatch(String clientId, String batchGuid) {
+    public BatchHolder createDemoBatch(String clientId, String batchGuid, TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
+        return createBatch(clientId, batchGuid, targetEnvironment);
+    }
+
+    //// batch generation
+
+
+    private BatchHolder createBatch(String clientId, String batchGuid, TargetEnvironmentConstants.TargetEnvironment targetEnvironment) {
 
         return new BatchHolderBuilder.Builder()
                 .batchType(BatchDetail.BatchType.MOBILE_DEMO)
@@ -46,10 +63,10 @@ public class DemoBatchSingleStepThreePhoto implements DemoBatchInterface {
                 .guid(batchGuid)
                 .title(BATCH_TITLE)
                 .description(BATCH_DESCRIPTION)
-                .iconUrl(BatchIconGenerator.getRandomIconUrl())
+                .iconUrl(BatchIconGenerator.getRandomIconUrl(targetEnvironment))
                 .displayDistance(new DisplayDistanceBuilder.Builder()
                         .distanceToTravel("18 miles")
-                        .distanceIndicatorUrl(BatchIconGenerator.getRandomDistanceIndicatorUrl())
+                        .distanceIndicatorUrl(BatchIconGenerator.getRandomDistanceIndicatorUrl(targetEnvironment))
                         .build())
                 .potentialEarnings(new PotentialEarningsBuilder.Builder()
                         .payRateInCents(2800)
@@ -71,15 +88,15 @@ public class DemoBatchSingleStepThreePhoto implements DemoBatchInterface {
                                 .startTime(BuilderUtilities.getNowDate(), 10)
                                 .finishTime(BuilderUtilities.getNowDate(), 20)
                                 .milestoneWhenFinished(MILESTONE_WHEN_FINISHED)
-                                .addPhotoRequest(new PhotoRequestBuilder.Builder()
+                                .addPhotoRequest(new PhotoRequestBuilder.Builder(targetEnvironment)
                                         .title("First Photo")
                                         .description("This is the first photo to take")
                                         .build())
-                                .addPhotoRequest(new PhotoRequestBuilder.Builder()
+                                .addPhotoRequest(new PhotoRequestBuilder.Builder(targetEnvironment)
                                         .title("Second Photo")
                                         .description("This is the second photo to take")
                                         .build())
-                                .addPhotoRequest(new PhotoRequestBuilder.Builder()
+                                .addPhotoRequest(new PhotoRequestBuilder.Builder(targetEnvironment)
                                         .title("Third Photo")
                                         .description("This is the third photo to take")
                                         .build())

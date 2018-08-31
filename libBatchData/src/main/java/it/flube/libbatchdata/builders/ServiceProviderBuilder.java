@@ -5,10 +5,17 @@
 package it.flube.libbatchdata.builders;
 
 
+import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import it.flube.libbatchdata.entities.AddressLocation;
 import it.flube.libbatchdata.entities.ContactPerson;
 import it.flube.libbatchdata.entities.LatLonLocation;
 import it.flube.libbatchdata.entities.ServiceProvider;
+
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_ICON_URL_DEMO;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_ICON_URL_DEVELOPMENT;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_ICON_URL_PRODUCTION;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_ICON_URL_STAGING;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_TARGET_ENVIRONMENT;
 
 /**
  * Created on 9/6/2017
@@ -17,8 +24,6 @@ import it.flube.libbatchdata.entities.ServiceProvider;
 
 public class ServiceProviderBuilder {
     private ServiceProvider serviceProvider;
-
-    private static final String DEFAULT_ICON_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/serviceProviderImages%2Foil-change-icon.png?alt=media&token=b1599ce2-67ec-4bda-9a4b-d3a4ae8cdea3";
 
     private ServiceProviderBuilder(Builder builder){
         this.serviceProvider = builder.serviceProvider;
@@ -31,9 +36,31 @@ public class ServiceProviderBuilder {
     public static class Builder {
         private ServiceProvider serviceProvider;
 
-        public Builder(){
+        ///public Builder(){
+        ///    initializeStuff(DEFAULT_TARGET_ENVIRONMENT);
+        ///}
+
+        public Builder(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
+            initializeStuff(targetEnvironment);
+        }
+
+        private void initializeStuff(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
             serviceProvider = new ServiceProvider();
-            serviceProvider.setIconURL(DEFAULT_ICON_URL);
+
+            switch (targetEnvironment){
+                case PRODUCTION:
+                    serviceProvider.setIconURL(DEFAULT_ICON_URL_PRODUCTION);
+                    break;
+                case DEMO:
+                    serviceProvider.setIconURL(DEFAULT_ICON_URL_DEMO);
+                    break;
+                case STAGING:
+                    serviceProvider.setIconURL(DEFAULT_ICON_URL_STAGING);
+                    break;
+                case DEVELOPMENT:
+                    serviceProvider.setIconURL(DEFAULT_ICON_URL_DEVELOPMENT);
+                    break;
+            }
         }
 
         public Builder name(String name){

@@ -44,8 +44,9 @@ public class CalculateStartAndStopTimes {
 
     private static void doCalc(BatchHolder batchHolder, Integer roundingMinutes){
         //1. get the expectedStartTime from the batch
-        Date startTime = batchHolder.getBatch().getExpectedStartTime();
-        batchHolder.getBatchDetail().setExpectedStartTime(startTime);
+        Date startTime = BuilderUtilities.convertMillisToDate(batchHolder.getBatch().getExpectedStartTime());
+
+        batchHolder.getBatchDetail().setExpectedStartTime(BuilderUtilities.convertDateToMillis(startTime));
 
         //2. loop through all service orders by sequence
         ArrayList<ServiceOrder> serviceOrderList = getServiceOrdersSortedBySequence(batchHolder);
@@ -55,11 +56,11 @@ public class CalculateStartAndStopTimes {
             CalcServiceOrderTimes(batchHolder, thisOrder.getGuid(), startTime);
 
             //set the start time for the next order to the finish time of the last one
-            startTime = batchHolder.getBatch().getExpectedFinishTime();
+            startTime = BuilderUtilities.convertMillisToDate(batchHolder.getBatch().getExpectedFinishTime());
         }
 
         //3. round up the expected finish time to the closest rounding minutes
-        batchHolder.getBatch().setExpectedFinishTime(roundBatchFinishTime(batchHolder.getBatch().getExpectedFinishTime(), roundingMinutes));
+        batchHolder.getBatch().setExpectedFinishTime(BuilderUtilities.convertDateToMillis(roundBatchFinishTime(BuilderUtilities.convertMillisToDate(batchHolder.getBatch().getExpectedFinishTime()), roundingMinutes)));
         batchHolder.getBatchDetail().setExpectedFinishTime(batchHolder.getBatch().getExpectedFinishTime());
     }
 
@@ -83,7 +84,7 @@ public class CalculateStartAndStopTimes {
         for (OrderStepInterface thisStep : stepList ){
 
             //step finish time is the stepStartTime + the how long it takes to complete the step
-            stepFinishTime = BuilderUtilities.addMinutesToDate(stepStartTime, thisStep.getDurationMinutes());
+            stepFinishTime = BuilderUtilities.convertMillisToDate(BuilderUtilities.addMinutesToDate(stepStartTime, thisStep.getDurationMinutes()));
 
             //set the start time of the step to the value in stepStartTime
             batchHolder.getSteps().get(thisStep.getGuid()).setStartTime(new TimestampBuilder.Builder().scheduledTime(serviceOrderStartTime).build());
@@ -100,7 +101,7 @@ public class CalculateStartAndStopTimes {
         batchHolder.getServiceOrders().get(serviceOrderGuid).setFinishTime(new TimestampBuilder.Builder().scheduledTime(stepFinishTime).build());
 
         //set the finish time of the batch to the stepFinishTime
-        batchHolder.getBatch().setExpectedFinishTime(stepFinishTime);
+        batchHolder.getBatch().setExpectedFinishTime(BuilderUtilities.convertDateToMillis(stepFinishTime));
     }
 
 

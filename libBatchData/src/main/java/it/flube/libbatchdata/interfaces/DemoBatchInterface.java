@@ -5,6 +5,7 @@
 package it.flube.libbatchdata.interfaces;
 
 
+import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import it.flube.libbatchdata.entities.batch.BatchHolder;
 
 /**
@@ -16,6 +17,10 @@ public interface DemoBatchInterface {
 
     BatchHolder createDemoBatch(String clientId);
 
+    BatchHolder createDemoBatch(String clientId, TargetEnvironmentConstants.TargetEnvironment targetEnvironment);
+
     BatchHolder createDemoBatch(String clientId, String batchGuid);
+
+    BatchHolder createDemoBatch(String clientId, String batchGuid, TargetEnvironmentConstants.TargetEnvironment targetEnvironment);
 
 }

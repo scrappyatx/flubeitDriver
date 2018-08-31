@@ -4,15 +4,22 @@
 
 package it.flube.libbatchdata.builders;
 
+import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import it.flube.libbatchdata.entities.asset.Vehicle;
 import it.flube.libbatchdata.interfaces.AssetInterface;
+
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_DISPLAY_IMAGE_URL_DEMO;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_DISPLAY_IMAGE_URL_DEVELOPMENT;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_DISPLAY_IMAGE_URL_PRODUCTION;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_DISPLAY_IMAGE_URL_STAGING;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_TARGET_ENVIRONMENT;
+
 
 /**
  * Created on 4/23/2018
  * Project : Driver
  */
 public class VehicleBuilder {
-    private static final String DEFAULT_DISPLAY_IMAGE_URL="https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/orderStepImages%2FassetTransferImages%2Fasset_vehicle.jpg?alt=media&token=8c4a88f0-9000-4a3e-a368-fdbcecbb14bf";
 
     private Vehicle vehicle;
 
@@ -27,7 +34,15 @@ public class VehicleBuilder {
     public static class Builder{
         private Vehicle vehicle;
 
-        public Builder(){
+        ///public Builder(){
+        ///    initializeStuff(DEFAULT_TARGET_ENVIRONMENT);
+        ///}
+
+        public Builder(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
+            initializeStuff(targetEnvironment);
+        }
+
+        private void initializeStuff(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
             vehicle = new Vehicle();
             vehicle.setGuid(BuilderUtilities.generateGuid());
 
@@ -35,7 +50,20 @@ public class VehicleBuilder {
             vehicle.setAssetType(AssetInterface.AssetType.VEHICLE);
 
             //set the display image url
-            vehicle.setDisplayImageUrl(DEFAULT_DISPLAY_IMAGE_URL);
+            switch (targetEnvironment){
+                case PRODUCTION:
+                    vehicle.setDisplayImageUrl(DEFAULT_DISPLAY_IMAGE_URL_PRODUCTION);
+                    break;
+                case DEMO:
+                    vehicle.setDisplayImageUrl(DEFAULT_DISPLAY_IMAGE_URL_DEMO);
+                    break;
+                case STAGING:
+                    vehicle.setDisplayImageUrl(DEFAULT_DISPLAY_IMAGE_URL_STAGING);
+                    break;
+                case DEVELOPMENT:
+                    vehicle.setDisplayImageUrl(DEFAULT_DISPLAY_IMAGE_URL_DEVELOPMENT);
+                    break;
+            }
         }
 
         public Builder guid(String guid){

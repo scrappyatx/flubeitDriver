@@ -91,9 +91,12 @@ public class AppInitialization {
     }
 
     void initializeBugReporting(Application application){
-        new Instabug.Builder(application, instabug_auth_token)
-                .setInvocationEvent(InstabugInvocationEvent.SHAKE)
-                .build();
+        if (BuildConfig.DEBUG) {
+            ///only set up instabug for debug builds
+            new Instabug.Builder(application, instabug_auth_token)
+                    .setInvocationEvent(InstabugInvocationEvent.SHAKE)
+                    .build();
+        }
     }
 
 

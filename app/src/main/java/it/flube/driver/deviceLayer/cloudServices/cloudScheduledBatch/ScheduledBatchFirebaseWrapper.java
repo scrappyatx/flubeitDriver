@@ -15,10 +15,12 @@ import it.flube.driver.deviceLayer.cloudServices.cloudScheduledBatch.batchForfei
 import it.flube.driver.deviceLayer.cloudServices.cloudScheduledBatch.batchMonitor.FirebaseScheduledBatchesMonitor;
 import it.flube.driver.deviceLayer.cloudServices.cloudScheduledBatch.batchStart.FirebaseScheduledBatchStart;
 
+import it.flube.driver.deviceLayer.cloudServices.firebaseInitialization.FirebaseDbInitialization;
 import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.interfaces.CloudConfigInterface;
 import it.flube.driver.modelLayer.interfaces.CloudScheduledBatchInterface;
 import it.flube.driver.modelLayer.interfaces.OffersInterface;
+import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import timber.log.Timber;
 
 import static it.flube.driver.deviceLayer.cloudServices.cloudScheduledBatch.ScheduledBatchFirebaseConstants.BATCH_FORFEIT_REQUEST_NODE;
@@ -33,6 +35,7 @@ public class ScheduledBatchFirebaseWrapper implements
 
     private static final String TAG = "ScheduledBatchFirebaseWrapper";
 
+    private final String driverDb;
     private final String baseNodeBatchData;
     private final String baseNodeScheduledBatches;
 
@@ -44,9 +47,10 @@ public class ScheduledBatchFirebaseWrapper implements
 
     private FirebaseScheduledBatchesMonitor firebaseScheduledBatchesMonitor;
 
-    public ScheduledBatchFirebaseWrapper(CloudConfigInterface cloudConfig){
+    public ScheduledBatchFirebaseWrapper(TargetEnvironmentConstants.TargetEnvironment targetEnvironment, CloudConfigInterface cloudConfig){
         Timber.tag(TAG).d("creating START...");
-
+        driverDb = FirebaseDbInitialization.getFirebaseDriverDb(targetEnvironment);
+        
         baseNodeBatchData = cloudConfig.getCloudDatabaseBaseNodeBatchData();
         Timber.tag(TAG).d("   baseNodeBatchData = " + baseNodeBatchData);
 
@@ -83,8 +87,8 @@ public class ScheduledBatchFirebaseWrapper implements
 
         //create new monitor & start monitoring
         Timber.tag(TAG).d("   ....creating new monitor");
-        firebaseScheduledBatchesMonitor = new FirebaseScheduledBatchesMonitor(FirebaseDatabase.getInstance().getReference(scheduledBatchesNode),
-                FirebaseDatabase.getInstance().getReference(batchDataNode), offersLists);
+        firebaseScheduledBatchesMonitor = new FirebaseScheduledBatchesMonitor(FirebaseDatabase.getInstance(driverDb).getReference(scheduledBatchesNode),
+                FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), offersLists);
 
         Timber.tag(TAG).d("   ....startListening");
         firebaseScheduledBatchesMonitor.startListening();
@@ -121,9 +125,9 @@ public class ScheduledBatchFirebaseWrapper implements
         Timber.tag(TAG).d("   ....getNodes");
         getNodes(driver);
 
-        new FirebaseBatchForfeit().forfeitBatchRequest(FirebaseDatabase.getInstance().getReference(scheduledBatchesNode),
-                FirebaseDatabase.getInstance().getReference(batchDataNode), FirebaseDatabase.getInstance().getReference(batchForfeitRequestNode),
-                FirebaseDatabase.getInstance().getReference(batchForfeitResponseNode), driver.getClientId(), batchGuid, response);
+        new FirebaseBatchForfeit().forfeitBatchRequest(FirebaseDatabase.getInstance(driverDb).getReference(scheduledBatchesNode),
+                FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), FirebaseDatabase.getInstance(driverDb).getReference(batchForfeitRequestNode),
+                FirebaseDatabase.getInstance(driverDb).getReference(batchForfeitResponseNode), driver.getClientId(), batchGuid, response);
     }
 
 
@@ -137,7 +141,7 @@ public class ScheduledBatchFirebaseWrapper implements
 
         Timber.tag(TAG).d("   ....getNodes");
         getNodes(driver);
-        new FirebaseScheduledBatchStart().startScheduledBatchRequest(FirebaseDatabase.getInstance().getReference(scheduledBatchesNode), batchGuid, response);
+        new FirebaseScheduledBatchStart().startScheduledBatchRequest(FirebaseDatabase.getInstance(driverDb).getReference(scheduledBatchesNode), batchGuid, response);
     }
 
 
@@ -150,7 +154,7 @@ public class ScheduledBatchFirebaseWrapper implements
 
         Timber.tag(TAG).d("   ....getNodes");
         getNodes(driver);
-        new FirebaseScheduledBatchSummaryGet().getBatchSummary(FirebaseDatabase.getInstance().getReference(batchDataNode), batchGuid, response);
+        new FirebaseScheduledBatchSummaryGet().getBatchSummary(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), batchGuid, response);
     }
 
 
@@ -160,7 +164,7 @@ public class ScheduledBatchFirebaseWrapper implements
         Timber.tag(TAG).d("   ....getNodes");
         getNodes(driver);
 
-        new FirebaseScheduledBatchDetailGet().getBatchDetailRequest(FirebaseDatabase.getInstance().getReference(batchDataNode), batchGuid, response);
+        new FirebaseScheduledBatchDetailGet().getBatchDetailRequest(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), batchGuid, response);
     }
 
 
@@ -171,7 +175,7 @@ public class ScheduledBatchFirebaseWrapper implements
         Timber.tag(TAG).d("   ....getNodes");
         getNodes(driver);
 
-        new FirebaseScheduledBatchServiceOrderListGet().getServiceOrderListRequest(FirebaseDatabase.getInstance().getReference(batchDataNode), batchGuid, response);
+        new FirebaseScheduledBatchServiceOrderListGet().getServiceOrderListRequest(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), batchGuid, response);
     }
 
 
@@ -182,7 +186,7 @@ public class ScheduledBatchFirebaseWrapper implements
         Timber.tag(TAG).d("   ....getNodes");
         getNodes(driver);
 
-        new FirebaseScheduledBatchRouteStopListGet().getRouteStopListRequest(FirebaseDatabase.getInstance().getReference(batchDataNode),batchGuid, response);
+        new FirebaseScheduledBatchRouteStopListGet().getRouteStopListRequest(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode),batchGuid, response);
     }
 
 
@@ -192,7 +196,7 @@ public class ScheduledBatchFirebaseWrapper implements
         Timber.tag(TAG).d("   ....getNodes");
         getNodes(driver);
 
-        new FirebaseScheduledBatchOrderStepListGet().getOrderStepList(FirebaseDatabase.getInstance().getReference(batchDataNode), batchGuid, serviceOrderGuid, response);
+        new FirebaseScheduledBatchOrderStepListGet().getOrderStepList(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), batchGuid, serviceOrderGuid, response);
     }
 
 }

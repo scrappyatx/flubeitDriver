@@ -31,9 +31,11 @@ public class ExtractContactPersonsFromSteps {
 
                     //put into contactPersons hashmap
                     batchHolder.getContactPersons().put(giveStep.getContactPerson().getGuid(), giveStep.getContactPerson());
+                    batchHolder.getBatchDetail().getContactPersons().put(giveStep.getContactPerson().getGuid(), giveStep.getContactPerson());
 
                     //put into contactPersonsByServiceOrder hashmap
                     batchHolder.getContactPersonsByServiceOrder().get(giveStep.getServiceOrderGuid()).put(giveStep.getContactPerson().getGuid(), giveStep.getContactPerson());
+                    batchHolder.getBatchDetail().getContactPersonsByServiceOrder().get(giveStep.getServiceOrderGuid()).put(giveStep.getContactPerson().getGuid(), giveStep.getContactPerson());
 
                     //put into serviceOrder
                     switch(giveStep.getContactPerson().getContactRole()){
@@ -43,7 +45,7 @@ public class ExtractContactPersonsFromSteps {
                             break;
                         case SERVICE_PROVIDER:
                             //add this contact person to service order
-                            batchHolder.getServiceOrders().get(giveStep.getServiceOrderGuid()).setCustomerContactPerson(giveStep.getContactPerson());
+                            batchHolder.getServiceOrders().get(giveStep.getServiceOrderGuid()).setServiceProviderContactPerson(giveStep.getContactPerson());
                             break;
                         case FLUBEIT_SUPPORT:
                             break;
@@ -57,9 +59,11 @@ public class ExtractContactPersonsFromSteps {
 
                     //put into contactPersons hashmap
                     batchHolder.getContactPersons().put(receiveStep.getContactPerson().getGuid(), receiveStep.getContactPerson());
+                    batchHolder.getBatchDetail().getContactPersons().put(receiveStep.getContactPerson().getGuid(), receiveStep.getContactPerson());
 
                     //put into contactPersonsByServiceOrder hashmap
                     batchHolder.getContactPersonsByServiceOrder().get(receiveStep.getServiceOrderGuid()).put(receiveStep.getContactPerson().getGuid(), receiveStep.getContactPerson());
+                    batchHolder.getBatchDetail().getContactPersonsByServiceOrder().get(receiveStep.getServiceOrderGuid()).put(receiveStep.getContactPerson().getGuid(), receiveStep.getContactPerson());
 
                     //put into service order
                     switch(receiveStep.getContactPerson().getContactRole()){
@@ -69,7 +73,7 @@ public class ExtractContactPersonsFromSteps {
                             break;
                         case SERVICE_PROVIDER:
                             //add this contact person to service order
-                            batchHolder.getServiceOrders().get(receiveStep.getServiceOrderGuid()).setCustomerContactPerson(receiveStep.getContactPerson());
+                            batchHolder.getServiceOrders().get(receiveStep.getServiceOrderGuid()).setServiceProviderContactPerson(receiveStep.getContactPerson());
                             break;
                         case FLUBEIT_SUPPORT:
                             break;

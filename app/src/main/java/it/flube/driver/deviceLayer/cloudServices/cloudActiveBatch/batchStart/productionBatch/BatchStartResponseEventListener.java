@@ -4,6 +4,8 @@
 
 package it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchStart.productionBatch;
 
+import android.support.annotation.NonNull;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -28,16 +30,18 @@ public class BatchStartResponseEventListener implements
         this.response = response;
     }
 
-    public void onDataChange(DataSnapshot dataSnapshot){
+    public void onDataChange(@NonNull DataSnapshot dataSnapshot){
         Timber.tag(TAG).d("onChildAdded...");
 
         if (dataSnapshot.exists()){
             Timber.tag(TAG).d("   ...dataSnapshot exists");
             try {
                 StartBatchResponse startBatchResponse = dataSnapshot.getValue(StartBatchResponse.class);
-                Timber.tag(TAG).d("   ...approved  -> " + startBatchResponse.getApproved());
-                Timber.tag(TAG).d("   ...reason    -> " + startBatchResponse.getReason());
-                Timber.tag(TAG).d("   ...timestamp -> " + startBatchResponse.getTimestamp());
+                Timber.tag(TAG).d("   ...approved                 -> " + startBatchResponse.getApproved());
+                Timber.tag(TAG).d("   ...reason                   -> " + startBatchResponse.getReason());
+                Timber.tag(TAG).d("   ...timestamp                -> " + startBatchResponse.getTimestamp());
+                Timber.tag(TAG).d("   ...driverProxyDialNumber    -> " + startBatchResponse.getDriverProxyDialNumber());
+                Timber.tag(TAG).d("   ...driverProxyDisplayNumber -> " + startBatchResponse.getDriverProxyDisplayNumber());
                 response.startBatchResponseReceived(startBatchResponse);
             } catch (Exception e) {
                 Timber.tag(TAG).w("         ...ERROR");
@@ -51,7 +55,7 @@ public class BatchStartResponseEventListener implements
 
 
 
-    public void onCancelled(DatabaseError databaseError) {
+    public void onCancelled(@NonNull DatabaseError databaseError) {
         Timber.tag(TAG).e("onCancelled : error --> " + databaseError.getCode() + " --> " + databaseError.getMessage());
         //do nothing
     }

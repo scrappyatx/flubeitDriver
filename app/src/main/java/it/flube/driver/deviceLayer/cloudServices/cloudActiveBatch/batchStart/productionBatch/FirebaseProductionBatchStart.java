@@ -9,11 +9,13 @@ import com.google.firebase.database.DatabaseReference;
 import java.util.Date;
 import java.util.UUID;
 
+import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebaseDriverProxyInfo;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchStart.FirebaseActiveBatchSetData;
 import it.flube.driver.deviceLayer.cloudServices.cloudScheduledBatch.batchForfeit.productionBatch.BatchForfeitRequestWrite;
 import it.flube.driver.deviceLayer.cloudServices.cloudScheduledBatch.batchForfeit.productionBatch.BatchForfeitResponseMonitor;
 import it.flube.driver.deviceLayer.cloudServices.cloudScheduledBatch.batchForfeit.productionBatch.FirebaseProductionBatchForfeit;
 import it.flube.driver.modelLayer.entities.driver.Driver;
+import it.flube.driver.modelLayer.interfaces.CloudActiveBatchInterface;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.forfeitBatch.ForfeitBatchResponse;
 import it.flube.libbatchdata.entities.startBatch.StartBatchResponse;
@@ -27,24 +29,31 @@ import timber.log.Timber;
 public class FirebaseProductionBatchStart implements
         FirebaseActiveBatchSetData.Response,
         BatchStartRequestWrite.Response,
-        BatchStartResponseMonitor.Response {
+        BatchStartResponseMonitor.Response,
+        CloudActiveBatchInterface.UpdateDriverProxyInfoResponse {
 
     private static final String TAG = "FirebaseProductionBatchStart";
 
     private DatabaseReference activeBatchRef;
+    private DatabaseReference batchDataRef;
+    private Driver driver;
     private BatchStartResponseMonitor startResponseMonitor;
     private String batchGuid;
     private Response response;
+
+    String driverProxyDialNumber;
+    String driverProxyDisplayNumber;
 
     public FirebaseProductionBatchStart(){
 
     }
 
-    public void startBatchRequest(DatabaseReference activeBatchRef, DatabaseReference batchStartRequestRef, DatabaseReference batchStartResponseRef,
+    public void startBatchRequest(DatabaseReference activeBatchRef, DatabaseReference batchDataRef, DatabaseReference batchStartRequestRef, DatabaseReference batchStartResponseRef,
                                   Driver driver, BatchDetail batchDetail, Response response){
 
         Timber.tag(TAG).d("startBatchRequest START...");
         Timber.tag(TAG).d("   ...activeBatchRef          = " + activeBatchRef.toString());
+        Timber.tag(TAG).d("   ...batchDataRef            = " + batchDataRef.toString());
         Timber.tag(TAG).d("   ...batchStartRequestRef    = " + batchStartRequestRef.toString());
         Timber.tag(TAG).d("   ...batchStartResponseRef   = " + batchStartResponseRef.toString());
         Timber.tag(TAG).d("   ...driver clientId         = " + driver.getClientId());
@@ -55,7 +64,9 @@ public class FirebaseProductionBatchStart implements
         Timber.tag(TAG).d("   ...expectedStartTime       = " + batchDetail.getExpectedStartTime().toString());
 
         this.activeBatchRef = activeBatchRef;
+        this.batchDataRef = batchDataRef;
         this.batchGuid = batchDetail.getBatchGuid();
+        this.driver = driver;
         this.response = response;
 
         //get a guid for this request
@@ -85,10 +96,11 @@ public class FirebaseProductionBatchStart implements
             //batch was started
             Timber.tag(TAG).d("      ...batch was started!");
 
-            /// set the data in the active batch node
-            new FirebaseActiveBatchSetData().setDataRequest(activeBatchRef,
-                    batchGuid, 1, 1,
-                    ActiveBatchManageInterface.ActionType.BATCH_STARTED, ActiveBatchManageInterface.ActorType.MOBILE_USER, this);
+            this.driverProxyDialNumber = startBatchResponse.getDriverProxyDialNumber();
+            this.driverProxyDisplayNumber = startBatchResponse.getDriverProxyDisplayNumber();
+
+            // save the proxy info in the batchDetail node in the batch data
+            new FirebaseDriverProxyInfo().updateDriverProxyInfoRequest(batchDataRef, driver, batchGuid, driverProxyDialNumber, driverProxyDisplayNumber, this );
 
         } else {
             //batch was not started
@@ -103,15 +115,24 @@ public class FirebaseProductionBatchStart implements
         Timber.tag(TAG).d("   ...writeStartRequestComplete");
     }
 
+    /// callback from updateDriverProxyInfoRequest
+    public void cloudActiveBatchUpdateDriverProxyInfoComplete(){
+        /// now set the data in the active batch node
+        new FirebaseActiveBatchSetData().setDataRequest(activeBatchRef,
+                batchGuid, 1, 1,
+                ActiveBatchManageInterface.ActionType.BATCH_STARTED, ActiveBatchManageInterface.ActorType.MOBILE_USER, this);
+    }
+
+
     //// callback from ActiveBatchSetData
     public void setDataComplete(){
-        response.batchStartSuccess(batchGuid);
+        response.batchStartSuccess(batchGuid, driverProxyDialNumber, driverProxyDisplayNumber);
         Timber.tag(TAG).d("starting batch : COMPLETE");
     }
 
 
     public interface Response {
-        void batchStartSuccess(String batchGuid);
+        void batchStartSuccess(String batchGuid, String driverProxyDialNumber, String driverProxyDisplayNumber);
 
         void batchStartTimeout(String batchGuid);
 

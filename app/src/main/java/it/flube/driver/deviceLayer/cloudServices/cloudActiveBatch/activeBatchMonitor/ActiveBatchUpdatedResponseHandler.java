@@ -8,9 +8,11 @@ import org.greenrobot.eventbus.EventBus;
 
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.modelLayer.interfaces.CloudActiveBatchInterface;
+import it.flube.driver.useCaseLayer.activeBatch.UseCaseNoBatchRequest;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.activeBatch.ActiveBatchUpdatedBatchFinishedEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.activeBatch.ActiveBatchUpdatedBatchRemovedEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.activeBatch.ActiveBatchUpdatedBatchWaitingToFinishEvent;
+import it.flube.driver.userInterfaceLayer.userInterfaceEvents.activeBatch.ActiveBatchUpdatedNoBatchEvent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.activeBatch.ActiveBatchUpdatedStepStartedEvent;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
@@ -31,7 +33,8 @@ public class ActiveBatchUpdatedResponseHandler implements
         CloudActiveBatchInterface.ActiveBatchUpdated,
         UseCaseStepStartedRequest.Response,
         UseCaseBatchFinishedRequest.Response,
-        UseCaseBatchRemovedRequest.Response {
+        UseCaseBatchRemovedRequest.Response,
+        UseCaseNoBatchRequest.Response {
 
     private static final String TAG = "ActiveBatchUpdatedResponseHandler";
 
@@ -142,6 +145,12 @@ public class ActiveBatchUpdatedResponseHandler implements
     ///
     public void noBatch(){
         Timber.tag(TAG).d("received noBatch");
+        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseNoBatchRequest(AndroidDevice.getInstance(), this));
+    }
+
+    public void noBatchComplete(){
+        Timber.tag(TAG).d("noBatchComplete");
+        EventBus.getDefault().postSticky(new ActiveBatchUpdatedNoBatchEvent());
     }
 
 

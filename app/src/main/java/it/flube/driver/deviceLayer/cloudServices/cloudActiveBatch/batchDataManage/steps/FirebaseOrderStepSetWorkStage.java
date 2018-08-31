@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ServerValue;
 
 import java.util.HashMap;
 
@@ -39,15 +40,14 @@ public class FirebaseOrderStepSetWorkStage implements OnCompleteListener<Void> {
         data.put(WORK_STAGE_PROPERTY, workStage);
         Timber.tag(TAG).d("...added key -> " + WORK_STAGE_PROPERTY + " value -> " + workStage.toString());
 
-        //TODO implement actual timestamps for start & finish time
         switch (workStage){
             case ACTIVE:
                 Timber.tag(TAG).d("...added key -> " + START_TIME_PROPERTY);
-                //data.put(START_TIME_PROPERTY, ServerValue.TIMESTAMP);
+                data.put(START_TIME_PROPERTY, ServerValue.TIMESTAMP);
                 break;
             case COMPLETED:
                 Timber.tag(TAG).d("...added key -> " + FINISH_TIME_PROPERTY);
-                //data.put(FINISH_TIME_PROPERTY, ServerValue.TIMESTAMP);
+                data.put(FINISH_TIME_PROPERTY, ServerValue.TIMESTAMP);
                 break;
             case NOT_STARTED:
                 break;

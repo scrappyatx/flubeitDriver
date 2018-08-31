@@ -38,6 +38,8 @@ public class FirebaseActiveBatchServerNode implements
     private static final String DRIVER_DATA_NODE = "driverData";
     private static final String CLIENT_ID_PROPERTY = "clientId";
     private static final String FIRST_NAME_PROPERTY = "firstName";
+    private static final String PROXY_DIAL_NUMBER = "driverProxyDialNumber";
+    private static final String PROXY_DISPLAY_NUMBER = "driverProxyDisplayNumber";
 
     /// currentBatch node
     private static final String CURRENT_BATCH_NODE = "currentBatch";
@@ -77,7 +79,7 @@ public class FirebaseActiveBatchServerNode implements
         getContactPersonData(batchDataRef, batchDetail);
     }
 
-    public void activeBatchServerNodeUpdateRequest(DatabaseReference activeBatchRef, DatabaseReference batchDataRef, Driver driver,
+    public void activeBatchServerNodeUpdateRequestWithLocation(DatabaseReference activeBatchRef, DatabaseReference batchDataRef, Driver driver,
                                                    BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step, LatLonLocation driverLocation){
 
         Timber.tag(TAG).d("activeBatchRef = " + activeBatchRef.toString());
@@ -90,10 +92,23 @@ public class FirebaseActiveBatchServerNode implements
         getContactPersonData(batchDataRef, batchDetail);
     }
 
-    public void activeBatchServerNodeUpdateRequest(DatabaseReference activeBatchRef, String batchGuid){
+    public void activeBatchServerNodeUpdateRequestRemove(DatabaseReference activeBatchRef, String batchGuid){
 
         Timber.tag(TAG).d("activeBatchRef = " + activeBatchRef.toString());
         activeBatchRef.child(batchGuid).setValue(null).addOnCompleteListener(this);
+    }
+
+
+    public void activeBatchServerNodeUpdateRequestLocationOnly(DatabaseReference activeBatchRef, String batchGuid, LatLonLocation driverLocation){
+        updateData = new HashMap<String, Object>();
+        updateData.put(DRIVER_LOCATION_NODE, getDriverLocationNode(driverLocation));
+        activeBatchRef.child(batchGuid).updateChildren(updateData).addOnCompleteListener(this);
+    }
+
+    public void activeBatchServerNodeUpdateDriverProxyInfo(Driver driver, String batchGuid, String driverProxyDialNumber, String driverProxyDisplayNumber){
+        updateData = new HashMap<String, Object>();
+        updateData.put(DRIVER_DATA_NODE, getDriverProxyInfo(driverProxyDialNumber, driverProxyDisplayNumber));
+        activeBatchRef.child(batchGuid).updateChildren(updateData).addOnCompleteListener(this);
     }
 
 
@@ -154,6 +169,13 @@ public class FirebaseActiveBatchServerNode implements
         return data;
     }
 
+    private HashMap<String, Object> getDriverProxyInfo(String driverProxyDialNumber, String driverProxyDisplayNumber){
+        HashMap<String, Object> data = new HashMap<String, Object>();
+        data.put(PROXY_DIAL_NUMBER, driverProxyDialNumber);
+        data.put(PROXY_DISPLAY_NUMBER, driverProxyDisplayNumber);
+        return data;
+    }
+
     private void getContactPersonData(DatabaseReference batchDataRef, BatchDetail batchDetail){
         /// add in contact person data
         new FirebaseActiveBatchContactPersonsByServiceOrderGet().getContactPersonsByServiceOrder(batchDataRef, batchDetail.getBatchGuid(), this);
@@ -169,13 +191,13 @@ public class FirebaseActiveBatchServerNode implements
         HashMap<String, Object> currentBatch = (HashMap<String, Object>) updateData.get(CURRENT_BATCH_NODE);
         currentBatch.put(CONTACT_PERSONS_BY_SERVICE_ORDER_NODE, contactList.getContactPersonsByServiceOrder());
 
-        activeBatchRef.child(batchGuid).setValue(updateData).addOnCompleteListener(this);
+        activeBatchRef.child(batchGuid).updateChildren(updateData).addOnCompleteListener(this);
     }
 
     public void cloudGetActiveBatchContactPersonsByServiceOrderFailure(){
         ///didn't get any data
         Timber.tag(TAG).d("cloudGetActiveBatchContactPersonsByServiceOrderFailure");
-        activeBatchRef.child(batchGuid).setValue(updateData).addOnCompleteListener(this);
+        activeBatchRef.child(batchGuid).updateChildren(updateData).addOnCompleteListener(this);
     }
 
     ///

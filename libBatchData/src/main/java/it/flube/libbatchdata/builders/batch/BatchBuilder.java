@@ -5,8 +5,11 @@
 package it.flube.libbatchdata.builders.batch;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.entities.ContactPerson;
 import it.flube.libbatchdata.entities.batch.Batch;
 import it.flube.libbatchdata.entities.DisplayDistance;
 import it.flube.libbatchdata.entities.DisplayTiming;
@@ -35,6 +38,7 @@ public class BatchBuilder {
         public Builder(){
             this.batch = new Batch();
             this.batch.setGuid(BuilderUtilities.generateGuid());
+
         }
 
         public Builder guid(String guid) {
@@ -64,8 +68,14 @@ public class BatchBuilder {
             return this;
         }
 
-        public Builder expectedStartTime(Date expectedStartTime){
+        //// expectedStartTime, can be set in either millis or date
+        public Builder expectedStartTime(Long expectedStartTime){
             this.batch.setExpectedStartTime(expectedStartTime);
+            return this;
+        }
+
+        public Builder expectedStartTime(Date expectedStartTime){
+            this.batch.setExpectedStartTime(BuilderUtilities.convertDateToMillis(expectedStartTime));
             return this;
         }
 
@@ -74,8 +84,19 @@ public class BatchBuilder {
             return this;
         }
 
-        public Builder expectedFinishTime(Date expectedFinishTime){
+        public Builder expectedStartTime(Long initialTime, Integer minutesToAdd){
+            this.batch.setExpectedStartTime(BuilderUtilities.addMinutesToDate(initialTime, minutesToAdd));
+            return this;
+        }
+
+        //// expectedFinishTime, can be set in either millis or date
+        public Builder expectedFinishTime(Long expectedFinishTime){
             this.batch.setExpectedFinishTime(expectedFinishTime);
+            return this;
+        }
+
+        public Builder expectedFinishTime(Date expectedFinishTime){
+            this.batch.setExpectedFinishTime(BuilderUtilities.convertDateToMillis(expectedFinishTime));
             return this;
         }
 
@@ -84,8 +105,19 @@ public class BatchBuilder {
             return this;
         }
 
-        public Builder offerExpiryTime(Date offerExpiryTime){
+        public Builder expectedFinishTime(Long initialTime, Integer minutesToAdd) {
+            this.batch.setExpectedFinishTime(BuilderUtilities.addMinutesToDate(initialTime, minutesToAdd));
+            return this;
+        }
+
+        /// offer expiry time, can be set in either millis or date
+        public Builder offerExpiryTime(Long offerExpiryTime){
             this.batch.setOfferExpiryTime(offerExpiryTime);
+            return this;
+        }
+
+        public Builder offerExpiryTime(Date offerExpiryTime){
+            this.batch.setOfferExpiryTime(BuilderUtilities.convertDateToMillis(offerExpiryTime));
             return this;
         }
 

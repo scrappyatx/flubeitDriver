@@ -158,16 +158,10 @@ public class AuthorizePaymentStepBuilder {
             return this;
         }
 
-        private Date addMinutesToDate(Date initialDate, Integer minutesToAdd){
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(initialDate);
-            cal.add(Calendar.MINUTE, minutesToAdd);
-            return cal.getTime();
-        }
 
         public Builder startTime(Date startTime) {
             this.paymentStep.setStartTime(new TimestampBuilder.Builder()
-                    .scheduledTime(startTime)
+                    .scheduledTime(BuilderUtilities.convertDateToMillis(startTime))
                     .build());
             return this;
         }
@@ -181,14 +175,14 @@ public class AuthorizePaymentStepBuilder {
 
         public Builder finishTime(Date finishTime) {
             this.paymentStep.setFinishTime(new TimestampBuilder.Builder()
-                    .scheduledTime(finishTime)
+                    .scheduledTime(BuilderUtilities.convertDateToMillis(finishTime))
                     .build());
             return this;
         }
 
         public Builder finishTime(Date finishTime, Integer minutesToAdd) {
             this.paymentStep.setFinishTime(new TimestampBuilder.Builder()
-                    .scheduledTime(addMinutesToDate(finishTime, minutesToAdd))
+                    .scheduledTime(BuilderUtilities.addMinutesToDate(finishTime, minutesToAdd))
                     .build());
             return this;
         }

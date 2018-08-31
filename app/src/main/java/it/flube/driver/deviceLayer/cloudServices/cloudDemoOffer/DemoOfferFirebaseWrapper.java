@@ -15,10 +15,12 @@ import it.flube.driver.deviceLayer.cloudServices.cloudDemoOffer.batchDataGet.Fir
 import it.flube.driver.deviceLayer.cloudServices.cloudDemoOffer.offerAdd.FirebaseDemoOfferAdd;
 import it.flube.driver.deviceLayer.cloudServices.cloudDemoOffer.offerClaim.FirebaseDemoOfferClaim;
 import it.flube.driver.deviceLayer.cloudServices.cloudDemoOffer.offersMonitor.FirebaseDemoOffersMonitor;
+import it.flube.driver.deviceLayer.cloudServices.firebaseInitialization.FirebaseDbInitialization;
 import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.interfaces.CloudConfigInterface;
 import it.flube.driver.modelLayer.interfaces.CloudDemoOfferInterface;
 import it.flube.driver.modelLayer.interfaces.OffersInterface;
+import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import it.flube.libbatchdata.entities.batch.BatchHolder;
 import timber.log.Timber;
 
@@ -35,6 +37,8 @@ public class DemoOfferFirebaseWrapper implements
     private final String baseNodeDemoOffers;
     private final String baseNodeBatchData;
     private final String baseNodeScheduledBatches;
+    private final String driverDb;
+    
 
     private String demoOffersNode;
     private String batchDataNode;
@@ -42,9 +46,9 @@ public class DemoOfferFirebaseWrapper implements
 
     private FirebaseDemoOffersMonitor firebaseDemoOffersMonitor;
 
-    public DemoOfferFirebaseWrapper(CloudConfigInterface cloudConfig){
+    public DemoOfferFirebaseWrapper(TargetEnvironmentConstants.TargetEnvironment targetEnvironment, CloudConfigInterface cloudConfig){
         Timber.tag(TAG).d("creating START...");
-
+        driverDb = FirebaseDbInitialization.getFirebaseDriverDb(targetEnvironment);
         baseNodeDemoOffers = cloudConfig.getCloudDatabaseBaseNodeDemoOffers();
         Timber.tag(TAG).d("   baseNodeDemoOffers = " + baseNodeDemoOffers);
 
@@ -81,8 +85,8 @@ public class DemoOfferFirebaseWrapper implements
 
         //create new monitor & start monitoring
         Timber.tag(TAG).d("   ....creating new monitor");
-        firebaseDemoOffersMonitor = new FirebaseDemoOffersMonitor(FirebaseDatabase.getInstance().getReference(demoOffersNode),
-                FirebaseDatabase.getInstance().getReference(batchDataNode), offersLists);
+        firebaseDemoOffersMonitor = new FirebaseDemoOffersMonitor(FirebaseDatabase.getInstance(driverDb).getReference(demoOffersNode),
+                FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), offersLists);
 
         Timber.tag(TAG).d("   ....startListening");
         firebaseDemoOffersMonitor.startListening();
@@ -120,8 +124,8 @@ public class DemoOfferFirebaseWrapper implements
         Timber.tag(TAG).d("   ....getNodes");
         getNodes(driver);
 
-        new FirebaseDemoOfferAdd().addOffer(FirebaseDatabase.getInstance().getReference(demoOffersNode),
-                FirebaseDatabase.getInstance().getReference(batchDataNode),
+        new FirebaseDemoOfferAdd().addOffer(FirebaseDatabase.getInstance(driverDb).getReference(demoOffersNode),
+                FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode),
                 batchHolder, response);
     }
 
@@ -134,8 +138,8 @@ public class DemoOfferFirebaseWrapper implements
         Timber.tag(TAG).d("   ....getNodes");
         getNodes(driver);
 
-        new FirebaseDemoOfferClaim().claimOfferRequest(FirebaseDatabase.getInstance().getReference(demoOffersNode),
-                FirebaseDatabase.getInstance().getReference(scheduledBatchesNode), batchGuid, response);
+        new FirebaseDemoOfferClaim().claimOfferRequest(FirebaseDatabase.getInstance(driverDb).getReference(demoOffersNode),
+                FirebaseDatabase.getInstance(driverDb).getReference(scheduledBatchesNode), batchGuid, response);
     }
 
 
@@ -147,7 +151,7 @@ public class DemoOfferFirebaseWrapper implements
 
         Timber.tag(TAG).d("   ....getNodes");
         getNodes(driver);
-        new FirebaseDemoBatchSummaryGet().getBatchSummary(FirebaseDatabase.getInstance().getReference(batchDataNode), batchGuid, response);
+        new FirebaseDemoBatchSummaryGet().getBatchSummary(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), batchGuid, response);
     }
 
     public void getBatchDetailRequest(Driver driver, String batchGuid, CloudDemoOfferInterface.GetBatchDetailResponse response){
@@ -156,7 +160,7 @@ public class DemoOfferFirebaseWrapper implements
         Timber.tag(TAG).d("   ....getNodes");
         getNodes(driver);
 
-        new FirebaseDemoBatchDetailGet().getBatchDetailRequest(FirebaseDatabase.getInstance().getReference(batchDataNode), batchGuid, response);
+        new FirebaseDemoBatchDetailGet().getBatchDetailRequest(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), batchGuid, response);
     }
 
 
@@ -166,7 +170,7 @@ public class DemoOfferFirebaseWrapper implements
         Timber.tag(TAG).d("   ....getNodes");
         getNodes(driver);
 
-        new FirebaseDemoBatchServiceOrderListGet().getServiceOrderListRequest(FirebaseDatabase.getInstance().getReference(batchDataNode), batchGuid, response);
+        new FirebaseDemoBatchServiceOrderListGet().getServiceOrderListRequest(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), batchGuid, response);
     }
 
     public void getRouteStopListRequest(Driver driver, String batchGuid, CloudDemoOfferInterface.GetRouteStopListResponse response){
@@ -175,7 +179,7 @@ public class DemoOfferFirebaseWrapper implements
         Timber.tag(TAG).d("   ....getNodes");
         getNodes(driver);
 
-        new FirebaseDemoRouteStopListGet().getRouteStopListRequest(FirebaseDatabase.getInstance().getReference(batchDataNode),batchGuid, response);
+        new FirebaseDemoRouteStopListGet().getRouteStopListRequest(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode),batchGuid, response);
 
     }
 
@@ -185,7 +189,7 @@ public class DemoOfferFirebaseWrapper implements
         Timber.tag(TAG).d("   ....getNodes");
         getNodes(driver);
 
-        new FirebaseDemoOrderStepListGet().getOrderStepList(FirebaseDatabase.getInstance().getReference(batchDataNode), batchGuid, serviceOrderGuid, response);
+        new FirebaseDemoOrderStepListGet().getOrderStepList(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), batchGuid, serviceOrderGuid, response);
     }
 
 }

@@ -29,9 +29,9 @@ public class Batch {
     private DisplayDistance displayDistance;
     private PotentialEarnings potentialEarnings;
 
-    private Date expectedStartTime;
-    private Date expectedFinishTime;
-    private Date offerExpiryTime;
+    private Long expectedStartTime;
+    private Long expectedFinishTime;
+    private Long offerExpiryTime;
 
     public void setGuid(String guid) {
         this.guid = guid;
@@ -73,27 +73,27 @@ public class Batch {
         this.potentialEarnings = potentialEarnings;
     }
 
-    public Date getExpectedStartTime() {
+    public Long getExpectedStartTime() {
         return expectedStartTime;
     }
 
-    public void setExpectedStartTime(Date expectedStartTime) {
+    public void setExpectedStartTime(Long expectedStartTime) {
         this.expectedStartTime = expectedStartTime;
     }
 
-    public Date getExpectedFinishTime() {
+    public Long getExpectedFinishTime() {
         return expectedFinishTime;
     }
 
-    public void setExpectedFinishTime(Date expectedFinishTime) {
+    public void setExpectedFinishTime(Long expectedFinishTime) {
         this.expectedFinishTime = expectedFinishTime;
     }
 
-    public Date getOfferExpiryTime() {
+    public Long getOfferExpiryTime() {
         return offerExpiryTime;
     }
 
-    public void setOfferExpiryTime(Date offerExpiryTime) {
+    public void setOfferExpiryTime(Long offerExpiryTime) {
         this.offerExpiryTime = offerExpiryTime;
     }
 }

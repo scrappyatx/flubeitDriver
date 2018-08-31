@@ -4,10 +4,44 @@
 
 package it.flube.libbatchdata.builders;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
+import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import it.flube.libbatchdata.entities.PhotoRequest;
+
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_TARGET_ENVIRONMENT;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.FRONT_CORNER_DRIVER_VIEW_HINT_URL_DEMO;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.FRONT_CORNER_DRIVER_VIEW_HINT_URL_DEVELOPMENT;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.FRONT_CORNER_DRIVER_VIEW_HINT_URL_PRODUCTION;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.FRONT_CORNER_DRIVER_VIEW_HINT_URL_STAGING;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.FRONT_CORNER_PASSENGER_VIEW_HINT_URL_DEMO;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.FRONT_CORNER_PASSENGER_VIEW_HINT_URL_DEVELOPMENT;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.FRONT_CORNER_PASSENGER_VIEW_HINT_URL_PRODUCTION;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.FRONT_CORNER_PASSENGER_VIEW_HINT_URL_STAGING;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.FRONT_VIEW_HINT_URL_DEMO;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.FRONT_VIEW_HINT_URL_DEVELOPMENT;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.FRONT_VIEW_HINT_URL_PRODUCTION;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.FRONT_VIEW_HINT_URL_STAGING;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.REAR_CORNER_DRIVER_VIEW_HINT_URL_DEMO;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.REAR_CORNER_DRIVER_VIEW_HINT_URL_DEVELOPMENT;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.REAR_CORNER_DRIVER_VIEW_HINT_URL_PRODUCTION;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.REAR_CORNER_DRIVER_VIEW_HINT_URL_STAGING;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.REAR_CORNER_PASSENGER_VIEW_HINT_URL_DEMO;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.REAR_CORNER_PASSENGER_VIEW_HINT_URL_DEVELOPMENT;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.REAR_CORNER_PASSENGER_VIEW_HINT_URL_PRODUCTION;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.REAR_CORNER_PASSENGER_VIEW_HINT_URL_STAGING;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.REAR_VIEW_HINT_URL_DEMO;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.REAR_VIEW_HINT_URL_DEVELOPMENT;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.REAR_VIEW_HINT_URL_PRODUCTION;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.REAR_VIEW_HINT_URL_STAGING;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.SIDE_DRIVER_VIEW_HINT_URL_DEMO;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.SIDE_DRIVER_VIEW_HINT_URL_DEVELOPMENT;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.SIDE_DRIVER_VIEW_HINT_URL_PRODUCTION;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.SIDE_DRIVER_VIEW_HINT_URL_STAGING;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.SIDE_PASSENGER_VIEW_HINT_URL_DEMO;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.SIDE_PASSENGER_VIEW_HINT_URL_DEVELOPMENT;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.SIDE_PASSENGER_VIEW_HINT_URL_PRODUCTION;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.SIDE_PASSENGER_VIEW_HINT_URL_STAGING;
 
 /**
  * Created on 1/22/2018
@@ -15,15 +49,30 @@ import it.flube.libbatchdata.entities.PhotoRequest;
  */
 
 public class PhotoRequestListForVehicleBuilder {
-    private static final String FRONT_CORNER_DRIVER_VIEW_HINT_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2FgenericAutoSmall%2Ffront_corner_driver_view.jpg?alt=media&token=de13718e-1484-4d51-8ff3-93b50e333d8b";
-    private static final String FRONT_CORNER_PASSENGER_VIEW_HINT_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2FgenericAutoSmall%2Ffront_corner_passenger_view.jpg?alt=media&token=0579fbaa-2177-456c-88cc-7b55b2b4d836";
-    private static final String FRONT_VIEW_HINT_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2FgenericAutoSmall%2Ffront_view.jpg?alt=media&token=d7aa3c0c-4d0f-44df-889b-1b0f28b9441e";
-    private static final String REAR_CORNER_DRIVER_VIEW_HINT_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2FgenericAutoSmall%2Frear_corner_driver_view.jpg?alt=media&token=bdd59a46-c008-453c-94ab-8a3ef0a2339a";
-    private static final String REAR_CORNER_PASSENGER_VIEW_HINT_URL="https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2FgenericAutoSmall%2Frear_corner_passenger_view.jpg?alt=media&token=88322f4d-9d79-49a8-ad14-9a4462269e30";
-    private static final String REAR_VIEW_HINT_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2FgenericAutoSmall%2Frear_view.jpg?alt=media&token=9b1539e5-b458-4f68-a40d-c969fd0d15c8";
-    private static final String SIDE_DRIVER_VIEW_HINT_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2FgenericAutoSmall%2Fside_driver_view.jpg?alt=media&token=255a6147-7a2b-4911-95de-4488e8fe575b";
-    private static final String SIDE_PASSENGER_VIEW_HINT_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/photoHints%2FgenericAutoSmall%2Fside_passenger_view.jpg?alt=media&token=bf0529ef-de2e-4f95-b35f-5c8502f57703";
+    //// Photo titles and descriptions
+    private static final String FRONT_CORNER_DRIVER_TITLE = "Front Corner Driver";
+    private static final String FRONT_CORNER_DRIVER_DESCRIPTION = "Take this photo facing the front corner of the vehicle on the driver side";
 
+    private static final String FRONT_CORNER_PASSENGER_TITLE = "Front Corner Passenger";
+    private static final String FRONT_CORNER_PASSENGER_DESCRIPTION = "Take this photo facing the front corner of the vehicle on the passenger side";
+
+    private static final String FRONT_TITLE = "Front";
+    private static final String FRONT_DESCRIPTION = "Take this photo facing the front of the vehicle";
+
+    private static final String REAR_CORNER_DRIVER_TITLE = "Rear Corner Driver";
+    private static final String REAR_CORNER_DRIVER_DESCRIPTION = "Take this photo facing the rear corner of the vehicle on the driver side";
+
+    private static final String REAR_CORNER_PASSENGER_TITLE = "Rear Corner Passenger";
+    private static final String REAR_CORNER_PASSENGER_DESCRIPTION = "Take this photo facing the rear corner of the vehicle on the passenger side";
+
+    private static final String REAR_TITLE = "Rear";
+    private static final String REAR_DESCRIPTION = "Take this photo facing the rear of the vehicle";
+
+    private static final String SIDE_DRIVER_TITLE = "Side Driver";
+    private static final String SIDE_DRIVER_DESCRIPTION = "Take this photo facing the side of the vehicle on the driver side";
+
+    private static final String SIDE_PASSENGER_TITLE = "Side Passenger";
+    private static final String SIDE_PASSENGER_DESCRIPTION = "Take this photo facing the side of the vehicle on the passenger side";
 
     private HashMap<String, PhotoRequest> photoList;
 
@@ -36,98 +85,159 @@ public class PhotoRequestListForVehicleBuilder {
     }
 
     public static class Builder {
+        private String frontCornerDriverViewHintUrl;
+        private String frontCornerPassengerViewHintUrl;
+        private String frontViewHintUrl;
+        private String rearCornerDriverViewHintUrl;
+        private String rearCornerPassengerViewHintUrl;
+        private String readViewHintUrl;
+        private String sideDriverViewHintUrl;
+        private String sidePassengerViewHintUrl;
+
         private HashMap<String, PhotoRequest> photoList;
 
-        public Builder(){
-            photoList = new HashMap<String, PhotoRequest>();
-            addFrontCornerDriver();
-            addFrontView();
-            addFrontCornerPassenger();
+        ///public Builder(){
+        ///    initializeStuff(DEFAULT_TARGET_ENVIRONMENT);
+        ///}
 
-            addRearCornerDriver();
-            addRearCornerPassenger();
-            addRearView();
-
-            addSideDriver();
-            addSidePassenger();
+        public Builder(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
+            initializeStuff(targetEnvironment);
         }
 
-        private void addFrontCornerDriver(){
-            PhotoRequest photoRequest = new PhotoRequestBuilder.Builder()
-                            .title("Front Corner Driver")
-                            .description("Take this photo facing the front corner of the vehicle on the driver side")
+        private void initializeStuff(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
+            photoList = new HashMap<String, PhotoRequest>();
+
+            switch (targetEnvironment){
+                case PRODUCTION:
+                    frontCornerDriverViewHintUrl = FRONT_CORNER_DRIVER_VIEW_HINT_URL_PRODUCTION;
+                    frontCornerPassengerViewHintUrl = FRONT_CORNER_PASSENGER_VIEW_HINT_URL_PRODUCTION;
+                    frontViewHintUrl = FRONT_VIEW_HINT_URL_PRODUCTION;
+                    rearCornerDriverViewHintUrl = REAR_CORNER_DRIVER_VIEW_HINT_URL_PRODUCTION;
+                    rearCornerPassengerViewHintUrl = REAR_CORNER_PASSENGER_VIEW_HINT_URL_PRODUCTION;
+                    readViewHintUrl = REAR_VIEW_HINT_URL_PRODUCTION;
+                    sideDriverViewHintUrl = SIDE_DRIVER_VIEW_HINT_URL_PRODUCTION;
+                    sidePassengerViewHintUrl = SIDE_PASSENGER_VIEW_HINT_URL_PRODUCTION;
+                    break;
+                case DEMO:
+                    frontCornerDriverViewHintUrl = FRONT_CORNER_DRIVER_VIEW_HINT_URL_DEMO;
+                    frontCornerPassengerViewHintUrl = FRONT_CORNER_PASSENGER_VIEW_HINT_URL_DEMO;
+                    frontViewHintUrl = FRONT_VIEW_HINT_URL_DEMO;
+                    rearCornerDriverViewHintUrl = REAR_CORNER_DRIVER_VIEW_HINT_URL_DEMO;
+                    rearCornerPassengerViewHintUrl = REAR_CORNER_PASSENGER_VIEW_HINT_URL_DEMO;
+                    readViewHintUrl = REAR_VIEW_HINT_URL_DEMO;
+                    sideDriverViewHintUrl = SIDE_DRIVER_VIEW_HINT_URL_DEMO;
+                    sidePassengerViewHintUrl = SIDE_PASSENGER_VIEW_HINT_URL_DEMO;
+                    break;
+                case STAGING:
+                    frontCornerDriverViewHintUrl = FRONT_CORNER_DRIVER_VIEW_HINT_URL_STAGING;
+                    frontCornerPassengerViewHintUrl = FRONT_CORNER_PASSENGER_VIEW_HINT_URL_STAGING;
+                    frontViewHintUrl = FRONT_VIEW_HINT_URL_STAGING;
+                    rearCornerDriverViewHintUrl = REAR_CORNER_DRIVER_VIEW_HINT_URL_STAGING;
+                    rearCornerPassengerViewHintUrl = REAR_CORNER_PASSENGER_VIEW_HINT_URL_STAGING;
+                    readViewHintUrl = REAR_VIEW_HINT_URL_STAGING;
+                    sideDriverViewHintUrl = SIDE_DRIVER_VIEW_HINT_URL_STAGING;
+                    sidePassengerViewHintUrl = SIDE_PASSENGER_VIEW_HINT_URL_STAGING;
+                    break;
+                case DEVELOPMENT:
+                    frontCornerDriverViewHintUrl = FRONT_CORNER_DRIVER_VIEW_HINT_URL_DEVELOPMENT;
+                    frontCornerPassengerViewHintUrl = FRONT_CORNER_PASSENGER_VIEW_HINT_URL_DEVELOPMENT;
+                    frontViewHintUrl = FRONT_VIEW_HINT_URL_DEVELOPMENT;
+                    rearCornerDriverViewHintUrl = REAR_CORNER_DRIVER_VIEW_HINT_URL_DEVELOPMENT;
+                    rearCornerPassengerViewHintUrl = REAR_CORNER_PASSENGER_VIEW_HINT_URL_DEVELOPMENT;
+                    readViewHintUrl = REAR_VIEW_HINT_URL_DEVELOPMENT;
+                    sideDriverViewHintUrl = SIDE_DRIVER_VIEW_HINT_URL_DEVELOPMENT;
+                    sidePassengerViewHintUrl = SIDE_PASSENGER_VIEW_HINT_URL_DEVELOPMENT;
+                    break;
+            }
+
+            addFrontCornerDriver(targetEnvironment);
+            addFrontView(targetEnvironment);
+            addFrontCornerPassenger(targetEnvironment);
+
+            addRearCornerDriver(targetEnvironment);
+            addRearCornerPassenger(targetEnvironment);
+            addRearView(targetEnvironment);
+
+            addSideDriver(targetEnvironment);
+            addSidePassenger(targetEnvironment);
+        }
+
+        private void addFrontCornerDriver(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
+            PhotoRequest photoRequest = new PhotoRequestBuilder.Builder(targetEnvironment)
+                            .title(FRONT_CORNER_DRIVER_TITLE)
+                            .description(FRONT_CORNER_DRIVER_DESCRIPTION)
                             .sequence(this.photoList.size()+1)
-                            .photoHintUrl(FRONT_CORNER_DRIVER_VIEW_HINT_URL)
+                            .photoHintUrl(frontCornerDriverViewHintUrl)
                             .build();
             this.photoList.put(photoRequest.getGuid(), photoRequest);
         }
 
-        private void addFrontCornerPassenger(){
-            PhotoRequest photoRequest = new PhotoRequestBuilder.Builder()
-                    .title("Front Corner Passenger")
-                    .description("Take this photo facing the front corner of the vehicle on the passenger side")
+        private void addFrontCornerPassenger(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
+            PhotoRequest photoRequest = new PhotoRequestBuilder.Builder(targetEnvironment)
+                    .title(FRONT_CORNER_PASSENGER_TITLE)
+                    .description(FRONT_CORNER_PASSENGER_DESCRIPTION)
                     .sequence(this.photoList.size()+1)
-                    .photoHintUrl(FRONT_CORNER_PASSENGER_VIEW_HINT_URL)
+                    .photoHintUrl(frontCornerPassengerViewHintUrl)
                     .build();
             this.photoList.put(photoRequest.getGuid(), photoRequest);
         }
 
-        private void addFrontView(){
-            PhotoRequest photoRequest = new PhotoRequestBuilder.Builder()
-                    .title("Front")
-                    .description("Take this photo facing the front of the vehicle")
+        private void addFrontView(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
+            PhotoRequest photoRequest = new PhotoRequestBuilder.Builder(targetEnvironment)
+                    .title(FRONT_TITLE)
+                    .description(FRONT_DESCRIPTION)
                     .sequence(this.photoList.size()+1)
-                    .photoHintUrl(FRONT_VIEW_HINT_URL)
+                    .photoHintUrl(frontViewHintUrl)
                     .build();
             this.photoList.put(photoRequest.getGuid(), photoRequest);
         }
 
-        private void addRearCornerDriver(){
-            PhotoRequest photoRequest = new PhotoRequestBuilder.Builder()
-                    .title("Rear Corner Driver")
-                    .description("Take this photo facing the rear corner of the vehicle of the vehicle on the driver side")
+        private void addRearCornerDriver(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
+            PhotoRequest photoRequest = new PhotoRequestBuilder.Builder(targetEnvironment)
+                    .title(REAR_CORNER_DRIVER_TITLE)
+                    .description(REAR_CORNER_DRIVER_DESCRIPTION)
                     .sequence(this.photoList.size()+1)
-                    .photoHintUrl(REAR_CORNER_DRIVER_VIEW_HINT_URL)
+                    .photoHintUrl(rearCornerDriverViewHintUrl)
                     .build();
             this.photoList.put(photoRequest.getGuid(), photoRequest);
         }
 
-        private void addRearCornerPassenger(){
-            PhotoRequest photoRequest = new PhotoRequestBuilder.Builder()
-                    .title("Rear Corner Passenger")
-                    .description("Take this photo facing the rear corner of the vehicle on the passenger side")
+        private void addRearCornerPassenger(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
+            PhotoRequest photoRequest = new PhotoRequestBuilder.Builder(targetEnvironment)
+                    .title(REAR_CORNER_PASSENGER_TITLE)
+                    .description(REAR_CORNER_PASSENGER_DESCRIPTION)
                     .sequence(this.photoList.size()+1)
-                    .photoHintUrl(REAR_CORNER_PASSENGER_VIEW_HINT_URL)
+                    .photoHintUrl(rearCornerPassengerViewHintUrl)
                     .build();
             this.photoList.put(photoRequest.getGuid(), photoRequest);
         }
 
-        private void addRearView(){
-            PhotoRequest photoRequest = new PhotoRequestBuilder.Builder()
-                    .title("Rear")
-                    .description("Take this photo facing the rear of the vehicle")
+        private void addRearView(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
+            PhotoRequest photoRequest = new PhotoRequestBuilder.Builder(targetEnvironment)
+                    .title(REAR_TITLE)
+                    .description(REAR_DESCRIPTION)
                     .sequence(this.photoList.size()+1)
-                    .photoHintUrl(REAR_VIEW_HINT_URL)
+                    .photoHintUrl(readViewHintUrl)
                     .build();
             this.photoList.put(photoRequest.getGuid(), photoRequest);
         }
 
-        private void addSideDriver(){
-            PhotoRequest photoRequest = new PhotoRequestBuilder.Builder()
-                    .title("Side Driver")
-                    .description("Take this photo facing the side of the vehicle on the driver side")
+        private void addSideDriver(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
+            PhotoRequest photoRequest = new PhotoRequestBuilder.Builder(targetEnvironment)
+                    .title(SIDE_DRIVER_TITLE)
+                    .description(SIDE_DRIVER_DESCRIPTION)
                     .sequence(this.photoList.size()+1)
-                    .photoHintUrl(SIDE_DRIVER_VIEW_HINT_URL)
+                    .photoHintUrl(sideDriverViewHintUrl)
                     .build();
             this.photoList.put(photoRequest.getGuid(), photoRequest);
         }
 
-        private void addSidePassenger(){
-            PhotoRequest photoRequest = new PhotoRequestBuilder.Builder()
-                    .title("Side Passenger")
-                    .description("Take this photo facing the side of the vehicle on the passenger side")
+        private void addSidePassenger(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
+            PhotoRequest photoRequest = new PhotoRequestBuilder.Builder(targetEnvironment)
+                    .title(SIDE_PASSENGER_TITLE)
+                    .description(SIDE_PASSENGER_DESCRIPTION)
                     .sequence(this.photoList.size()+1)
-                    .photoHintUrl(SIDE_PASSENGER_VIEW_HINT_URL)
+                    .photoHintUrl(sidePassengerViewHintUrl)
                     .build();
             this.photoList.put(photoRequest.getGuid(), photoRequest);
         }

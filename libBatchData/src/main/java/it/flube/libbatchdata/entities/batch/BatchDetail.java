@@ -4,11 +4,11 @@
 
 package it.flube.libbatchdata.entities.batch;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.Map;
 
+import it.flube.libbatchdata.entities.ContactPerson;
+import it.flube.libbatchdata.entities.DriverInfo;
 import it.flube.libbatchdata.entities.DisplayDistance;
-import it.flube.libbatchdata.entities.DisplayTiming;
 import it.flube.libbatchdata.entities.PotentialEarnings;
 
 /**
@@ -46,24 +46,29 @@ public class BatchDetail {
     private BatchType batchType;
     private ClaimStatus claimStatus;
     private String claimedByClientId;
+    private DriverInfo driverInfo;
 
     private WorkStatus workStatus;
 
     private Integer earliestStartMinutesPrior;
     private Integer latestStartMinutesAfter;
 
-    private Date expectedStartTime;
-    private Date expectedFinishTime;
-    private Date offerExpiryTime;
+    private Long expectedStartTime;
+    private Long expectedFinishTime;
+    private Long offerExpiryTime;
 
-    private Object actualFinishTime;
-    private Object actualStartTime;
+    private Long actualFinishTime;
+    private Long actualStartTime;
 
     private DisplayDistance displayDistance;
     private PotentialEarnings potentialEarnings;
 
     private Integer serviceOrderCount;
     private Integer routeStopCount;
+
+    private Map<String, ContactPerson> contactPersons;
+    private Map<String, Map<String, ContactPerson>> contactPersonsByServiceOrder;
+
 
     public BatchType getBatchType() {
         return batchType;
@@ -91,6 +96,14 @@ public class BatchDetail {
 
     public WorkStatus getWorkStatus() {
         return workStatus;
+    }
+
+    public DriverInfo getDriverInfo() {
+        return driverInfo;
+    }
+
+    public void setDriverInfo(DriverInfo driverInfo) {
+        this.driverInfo = driverInfo;
     }
 
     public void setWorkStatus(WorkStatus workStatus) {
@@ -169,44 +182,44 @@ public class BatchDetail {
         this.routeStopCount = routeStopCount;
     }
 
-    public Date getExpectedStartTime() {
+    public Long getExpectedStartTime() {
         return expectedStartTime;
     }
 
-    public void setExpectedStartTime(Date expectedStartTime) {
+    public void setExpectedStartTime(Long expectedStartTime) {
         this.expectedStartTime = expectedStartTime;
     }
 
-    public Date getExpectedFinishTime() {
+    public Long getExpectedFinishTime() {
         return expectedFinishTime;
     }
 
-    public void setExpectedFinishTime(Date expectedFinishTime) {
+    public void setExpectedFinishTime(Long expectedFinishTime) {
         this.expectedFinishTime = expectedFinishTime;
     }
 
-    public Object getActualFinishTime() {
-        return actualFinishTime;
-    }
-
-    public void setActualFinishTime(Object actualFinishTime) {
-        this.actualFinishTime = actualFinishTime;
-    }
-
-    public Object getActualStartTime() {
-        return actualStartTime;
-    }
-
-    public void setActualStartTime(Object actualStartTime) {
-        this.actualStartTime = actualStartTime;
-    }
-
-    public Date getOfferExpiryTime() {
+    public Long getOfferExpiryTime() {
         return offerExpiryTime;
     }
 
-    public void setOfferExpiryTime(Date offerExpiryTime) {
+    public void setOfferExpiryTime(Long offerExpiryTime) {
         this.offerExpiryTime = offerExpiryTime;
+    }
+
+    public Long getActualFinishTime() {
+        return actualFinishTime;
+    }
+
+    public void setActualFinishTime(Long actualFinishTime) {
+        this.actualFinishTime = actualFinishTime;
+    }
+
+    public Long getActualStartTime() {
+        return actualStartTime;
+    }
+
+    public void setActualStartTime(Long actualStartTime) {
+        this.actualStartTime = actualStartTime;
     }
 
     public Integer getEarliestStartMinutesPrior() {
@@ -223,5 +236,21 @@ public class BatchDetail {
 
     public void setLatestStartMinutesAfter(Integer latestStartMinutesAfter) {
         this.latestStartMinutesAfter = latestStartMinutesAfter;
+    }
+
+    public Map<String, ContactPerson> getContactPersons() {
+        return contactPersons;
+    }
+
+    public void setContactPersons(Map<String, ContactPerson> contactPersons) {
+        this.contactPersons = contactPersons;
+    }
+
+    public Map<String, Map<String, ContactPerson>> getContactPersonsByServiceOrder() {
+        return contactPersonsByServiceOrder;
+    }
+
+    public void setContactPersonsByServiceOrder(Map<String, Map<String, ContactPerson>> contactPersonsByServiceOrder) {
+        this.contactPersonsByServiceOrder = contactPersonsByServiceOrder;
     }
 }

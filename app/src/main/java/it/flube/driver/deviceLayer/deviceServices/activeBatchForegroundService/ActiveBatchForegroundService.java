@@ -22,14 +22,22 @@ import org.greenrobot.eventbus.ThreadMode;
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.dataLayer.deviceEvents.LocationTrackingPositionChangedEvent;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.AuthorizePaymentActivity;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.giveAssetStep.GiveAssetActivity;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep.ReceiveAssetActivity;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.userTriggerStep.UserTriggerActivity;
 import it.flube.libbatchdata.entities.LatLonLocation;
-import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
-import it.flube.driver.useCaseLayer.activeBatch.UseCaseSaveMapLocationRequest;
+import it.flube.driver.useCaseLayer.activeBatch.UseCaseLocationUpdateRequest;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.NavigationActivity;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.photoList.PhotoActivity;
 import it.flube.driver.userInterfaceLayer.activities.home.HomeActivity;
 import timber.log.Timber;
+
+import static it.flube.driver.deviceLayer.deviceServices.activeBatchForegroundService.IntentUtilities.ACTION_GOTO_ACTIVE_BATCH;
+import static it.flube.driver.deviceLayer.deviceServices.activeBatchForegroundService.IntentUtilities.ACTION_SHUTDOWN;
+import static it.flube.driver.deviceLayer.deviceServices.activeBatchForegroundService.IntentUtilities.ACTION_START;
+import static it.flube.driver.deviceLayer.deviceServices.activeBatchForegroundService.IntentUtilities.ACTION_UPDATE;
 
 
 /**
@@ -37,20 +45,16 @@ import timber.log.Timber;
  * Project : Driver
  */
 
-public class ActiveBatchForegroundService extends Service {
+public class ActiveBatchForegroundService extends Service
+        implements UseCaseLocationUpdateRequest.Response {
     private static final String TAG = "ActiveBatchForegroundService";
     private static final int SERVICE_ID = 101;
 
-    private static final String EXTRA_ACTION = "action";
-    private static final String EXTRA_NOTIFICATION_TEXT = "notificationText";
-    private static final String EXTRA_NOTIFICATION_SUBTEXT = "notificationSubText";
-    private static final String EXTRA_TASK_TYPE = "taskType";
-
-    private static final String ACTION_START = "start";
-    private static final String ACTION_SHUTDOWN = "shutdown";
-    private static final String ACTION_UPDATE = "update";
-    private static final String ACTION_GOTO_ACTIVE_BATCH = "goto";
-
+    private String clientId;
+    private String batchGuid;
+    private String serviceOrderGuid;
+    private String orderStepGuid;
+    private Boolean haveAllBatchData;
     private Boolean isActive;
 
     @Override
@@ -75,31 +79,6 @@ public class ActiveBatchForegroundService extends Service {
     }
 
 
-    public static Intent startIntent(Context appContext, String notificationText, String notificationSubText, OrderStepInterface.TaskType taskType) {
-        Intent i = new Intent(appContext,ActiveBatchForegroundService.class);
-        i.putExtra(EXTRA_ACTION, ACTION_START);
-        i.putExtra(EXTRA_NOTIFICATION_TEXT, notificationText);
-        i.putExtra(EXTRA_NOTIFICATION_SUBTEXT, notificationSubText);
-        i.putExtra(EXTRA_TASK_TYPE, taskType);
-        return i;
-    }
-
-    public static Intent shutdownIntent(Context appContext) {
-        Intent i = new Intent(appContext,ActiveBatchForegroundService.class);
-        i.putExtra(EXTRA_ACTION, ACTION_SHUTDOWN);
-        return i;
-    }
-
-    public static Intent updateIntent(Context appContext, String notificationText, String notificationSubText, OrderStepInterface.TaskType taskType){
-        //Intent i = new Intent(context, ActiveBatchForegroundService.class);
-        Intent i = new Intent(appContext, ActiveBatchForegroundService.class);
-        i.putExtra(EXTRA_ACTION, ACTION_UPDATE);
-        i.putExtra(EXTRA_NOTIFICATION_TEXT, notificationText);
-        i.putExtra(EXTRA_NOTIFICATION_SUBTEXT, notificationSubText);
-        i.putExtra(EXTRA_TASK_TYPE, taskType);
-        return i;
-    }
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Timber.tag(TAG).d("onStartCommand() --> flags : " + Integer.toString(flags) + " startId : " + Integer.toString(startId));
@@ -117,11 +96,9 @@ public class ActiveBatchForegroundService extends Service {
     ///
     private void handleIntent(Intent i) {
         Timber.tag(TAG).d("handling intent...");
-        if (i.hasExtra(EXTRA_ACTION)) {
-
-            String action = i.getStringExtra(EXTRA_ACTION);
+        String action = IntentUtilities.getIntentAction(i);
+        if (action != null) {
             Timber.tag(TAG).d("   ...action --> " + action);
-
             switch (action) {
                 case ACTION_START:
                     if (isActive){
@@ -167,7 +144,7 @@ public class ActiveBatchForegroundService extends Service {
                 .setContentTitle(getResources().getString(R.string.active_batch_service_notification_title))
                 .setSubText(notificationSubText)
                 .setContentText(notificationText)
-                .setContentIntent(getNotificationClickIntent(taskType))
+                .setContentIntent(IntentUtilities.getNotificationClickIntent(this, taskType))
                 .build();
 
         //make small icon invisible
@@ -179,22 +156,34 @@ public class ActiveBatchForegroundService extends Service {
     }
 
     private void selfStart(Intent i){
-        Notification n = getNotification(getExtraNotificationText(i), getExtraNotificationSubtext(i), getExtraTaskType(i));
+        ///build a notification
+        Notification n = getNotification(IntentUtilities.getExtraNotificationText(this, i), IntentUtilities.getExtraNotificationSubtext(this, i), IntentUtilities.getExtraTaskType(i));
+
+        // start the service with the notification
         startForeground(SERVICE_ID, n);
+
+        // save all the batch, service order & step info
         isActive = true;
+        getClientAndBatchInfo(i);
         Timber.tag(TAG).d("   ...started foreground service");
     }
 
     private void selfStop(Intent i){
+        //clear all batch variables
         isActive = false;
+        clearClientAndBatchInfo();
+        // stop service & remove notification
         stopForeground(true);
         stopSelf(SERVICE_ID);
         Timber.tag(TAG).d("   ...stopped foreground service");
     }
 
     private void selfUpdate(Intent i){
+        //update client and batch info
+        getClientAndBatchInfo(i);
+
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification n = getNotification(getExtraNotificationText(i), getExtraNotificationSubtext(i), getExtraTaskType(i));
+        Notification n = getNotification(IntentUtilities.getExtraNotificationText(this, i), IntentUtilities.getExtraNotificationSubtext(this, i), IntentUtilities.getExtraTaskType(i));
         try {
             notificationManager.notify(SERVICE_ID, n);
         } catch (Exception e){
@@ -204,55 +193,22 @@ public class ActiveBatchForegroundService extends Service {
         Timber.tag(TAG).d("   ...updating notification");
     }
 
-    private String getExtraNotificationText(Intent i){
-        String notificationText;
+    private void getClientAndBatchInfo(Intent i){
+        clientId = IntentUtilities.getExtraClientId(i);
+        batchGuid = IntentUtilities.getExtraBatchGuid(i);
+        serviceOrderGuid = IntentUtilities.getExtraBatchGuid(i);
+        orderStepGuid = IntentUtilities.getExtraOrderStepGuid(i);
 
-        Timber.tag(TAG).d("      getting notification text...");
-
-        if (i.hasExtra(EXTRA_NOTIFICATION_TEXT)){
-            notificationText = i.getStringExtra(EXTRA_NOTIFICATION_TEXT);
-            Timber.tag(TAG).d("         ...got from intent extra");
-        } else {
-            notificationText = getResources().getString(R.string.active_batch_service_notification_text);
-            Timber.tag(TAG).w("         ...no intent extra, got default from resource");
-        }
-
-        Timber.tag(TAG).d("      ...notificationText = " + notificationText);
-        return notificationText;
+        haveAllBatchData = ((batchGuid != null) && (serviceOrderGuid != null) && (orderStepGuid != null) && (clientId != null));
     }
 
-    private String getExtraNotificationSubtext(Intent i){
-        String notificationSubText;
-
-        Timber.tag(TAG).d("      getting notification subText...");
-
-        if (i.hasExtra(EXTRA_NOTIFICATION_SUBTEXT)){
-            notificationSubText = i.getStringExtra(EXTRA_NOTIFICATION_SUBTEXT);
-            Timber.tag(TAG).d("         ...got from intent extra");
-        } else {
-            notificationSubText = getResources().getString(R.string.active_batch_service_notification_subtext);
-            Timber.tag(TAG).w("         ...no intent extra, got default from resource");
-        }
-
-        Timber.tag(TAG).d("      ...notificationSubText = " + notificationSubText);
-        return notificationSubText;
+    private void clearClientAndBatchInfo(){
+        clientId = null;
+        batchGuid = null;
+        serviceOrderGuid = null;
+        orderStepGuid = null;
     }
 
-    private OrderStepInterface.TaskType getExtraTaskType(Intent i){
-        OrderStepInterface.TaskType taskType;
-        Timber.tag(TAG).d("      getting task type...");
-
-        if (i.hasExtra(EXTRA_TASK_TYPE)){
-            taskType = (OrderStepInterface.TaskType) i.getSerializableExtra(EXTRA_TASK_TYPE);
-            Timber.tag(TAG).d("         ...got from intent extra");
-        } else {
-            taskType = OrderStepInterface.TaskType.WAIT_FOR_USER_TRIGGER;
-            Timber.tag(TAG).w("         ...no intent extra, just picked one for default");
-        }
-
-        Timber.tag(TAG).d("      ...taskType = " + taskType.toString());
-        return taskType;
-    }
 
     private Bitmap getLargeIcon(){
         // scale the icon to use as large icon in notification
@@ -261,41 +217,23 @@ public class ActiveBatchForegroundService extends Service {
         return Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.app_logo_round), width, height, false);
     }
 
-    private PendingIntent getNotificationClickIntent(OrderStepInterface.TaskType taskType){
-        //Intent i = new Intent(getApplicationContext(), ActiveBatchForegroundService.class);
-        //i.putExtra(EXTRA_ACTION, ACTION_GOTO_ACTIVE_BATCH);
-        // create pending intent.  Uses system time in milliseconds to have a unique ID for the pending intent
-        //return PendingIntent.getService(getApplicationContext(), (int) System.currentTimeMillis(), i, 0);
 
-        Intent i;
-        switch (taskType){
-            case NAVIGATION:
-                i = new Intent(getApplicationContext(), NavigationActivity.class);
-                break;
-            case TAKE_PHOTOS:
-                i = new Intent(getApplicationContext(), PhotoActivity.class);
-                break;
-            default:
-                i = new Intent(getApplicationContext(), HomeActivity.class);
-                break;
-        }
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        return PendingIntent.getActivity(this, (int) System.currentTimeMillis(), i,PendingIntent.FLAG_UPDATE_CURRENT);
+    public void useCaseLocationUpdateComplete(){
+        Timber.tag(TAG).d("useCaseLocationUpdateComplete");
     }
 
     @org.greenrobot.eventbus.Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEvent(LocationTrackingPositionChangedEvent event) {
         Timber.tag(TAG).d("got a location update");
-
-        MobileDeviceInterface device = AndroidDevice.getInstance();
-        String batchGuid = device.getActiveBatch().getBatchDetail().getBatchGuid();
-        String serviceOrderGuid = device.getActiveBatch().getServiceOrder().getGuid();
-        String orderStepGuid = device.getActiveBatch().getStep().getGuid();
         LatLonLocation location = event.getPosition();
 
+        if (isActive){
+            if (haveAllBatchData){
+                AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseLocationUpdateRequest(AndroidDevice.getInstance(), batchGuid, serviceOrderGuid, orderStepGuid, location, this));
+            }
+        }
 
-        device.getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseSaveMapLocationRequest(device, batchGuid, serviceOrderGuid, orderStepGuid, location));
+        //device.getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseLocationUpdateRequest(device, batchGuid, serviceOrderGuid, orderStepGuid, location));
         //AndroidDevice.getInstance().getRealtimeActiveBatchMessages()
         //        .sendMsgLocationUpdate(event.getPosition().getLatitude(), event.getPosition().getLongitude());
     }

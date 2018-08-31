@@ -143,7 +143,15 @@ public class BatchHolderBuilder {
             return this;
         }
 
+        /// expectedStartTime in millis or Date
+        ///
         public Builder expectedStartTime(Date expectedStartTime){
+            this.batchHolder.getBatch().setExpectedStartTime(BuilderUtilities.convertDateToMillis(expectedStartTime));
+            this.batchHolder.getBatchDetail().setExpectedStartTime(BuilderUtilities.convertDateToMillis(expectedStartTime));
+            return this;
+        }
+
+        public Builder expectedStartTime(Long expectedStartTime){
             this.batchHolder.getBatch().setExpectedStartTime(expectedStartTime);
             this.batchHolder.getBatchDetail().setExpectedStartTime(expectedStartTime);
             return this;
@@ -155,7 +163,21 @@ public class BatchHolderBuilder {
             return this;
         }
 
+        public Builder expectedStartTime(Long expectedStartTime, Integer minutesToAdd){
+            this.batchHolder.getBatch().setExpectedStartTime(BuilderUtilities.addMinutesToDate(expectedStartTime, minutesToAdd));
+            this.batchHolder.getBatchDetail().setExpectedStartTime(BuilderUtilities.addMinutesToDate(expectedStartTime, minutesToAdd));
+            return this;
+        }
+
+        /// expectedFinishTime in millis or Date
+        ///
         public Builder expectedFinishTime(Date expectedFinishTime){
+            this.batchHolder.getBatch().setExpectedFinishTime(BuilderUtilities.convertDateToMillis(expectedFinishTime));
+            this.batchHolder.getBatchDetail().setExpectedFinishTime(BuilderUtilities.convertDateToMillis(expectedFinishTime));
+            return this;
+        }
+
+        public Builder expectedFinishTime(Long expectedFinishTime){
             this.batchHolder.getBatch().setExpectedFinishTime(expectedFinishTime);
             this.batchHolder.getBatchDetail().setExpectedFinishTime(expectedFinishTime);
             return this;
@@ -167,11 +189,26 @@ public class BatchHolderBuilder {
             return this;
         }
 
+        public Builder expectedFinishTime(Long expectedFinishTime, Integer minutesToAdd){
+            this.batchHolder.getBatch().setExpectedFinishTime(BuilderUtilities.addMinutesToDate(expectedFinishTime, minutesToAdd));
+            this.batchHolder.getBatchDetail().setExpectedFinishTime(BuilderUtilities.addMinutesToDate(expectedFinishTime, minutesToAdd));
+            return this;
+        }
+
+        /// offerExpiryTime in millis or Date
         public Builder offerExpiryTime(Date offerExpiryTime){
+            this.batchHolder.getBatch().setOfferExpiryTime(BuilderUtilities.convertDateToMillis(offerExpiryTime));
+            this.batchHolder.getBatchDetail().setOfferExpiryTime(BuilderUtilities.convertDateToMillis(offerExpiryTime));
+            return this;
+        }
+
+        public Builder offerExpiryTime(Long offerExpiryTime){
             this.batchHolder.getBatch().setOfferExpiryTime(offerExpiryTime);
             this.batchHolder.getBatchDetail().setOfferExpiryTime(offerExpiryTime);
             return this;
         }
+
+
 
         public Builder addServiceOrder(ServiceOrderScaffold serviceOrderScaffold) {
 
@@ -210,8 +247,9 @@ public class BatchHolderBuilder {
             this.batchHolder.getStepIds().putAll(serviceOrderScaffold.getStepIds());
             this.batchHolder.getSteps().putAll(serviceOrderScaffold.getSteps());
 
-            // create hash map for ContactPersons in this service order
+            // create hash maps for ContactPersons in this service order
             this.batchHolder.getContactPersonsByServiceOrder().put(serviceOrder.getGuid(), new HashMap<String, ContactPerson>());
+            this.batchHolder.getBatchDetail().getContactPersonsByServiceOrder().put(serviceOrder.getGuid(), new HashMap<String, ContactPerson>());
 
             //add all the navigation steps to route stop list
             addNavigationStepDataToRouteStopList(serviceOrderScaffold.getSteps());

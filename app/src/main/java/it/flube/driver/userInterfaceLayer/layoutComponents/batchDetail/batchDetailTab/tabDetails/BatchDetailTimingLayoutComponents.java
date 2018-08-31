@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import it.flube.driver.R;
 import it.flube.driver.userInterfaceLayer.layoutComponents.LayoutComponentUtilities;
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import timber.log.Timber;
 
@@ -74,10 +75,10 @@ public class BatchDetailTimingLayoutComponents {
 
 
     public void setValues(Context context, BatchDetail batchDetail){
-        timing_display_date.setText(LayoutComponentUtilities.getDisplayDate(context, batchDetail.getExpectedStartTime()));
-        timing_display_duration.setText(LayoutComponentUtilities.getDisplayTiming(batchDetail.getExpectedStartTime(), batchDetail.getExpectedFinishTime()));
-        timing_display_time.setText(LayoutComponentUtilities.getDisplayDuration(batchDetail.getExpectedStartTime(), batchDetail.getExpectedFinishTime()));
-        timing_display_expiry.setText(LayoutComponentUtilities.getDisplayExpiry(context, batchDetail.getOfferExpiryTime()));
+        timing_display_date.setText(LayoutComponentUtilities.getDisplayDate(context, BuilderUtilities.convertMillisToDate(batchDetail.getExpectedStartTime())));
+        timing_display_duration.setText(LayoutComponentUtilities.getDisplayTiming(BuilderUtilities.convertMillisToDate(batchDetail.getExpectedStartTime()), BuilderUtilities.convertMillisToDate(batchDetail.getExpectedFinishTime())));
+        timing_display_time.setText(LayoutComponentUtilities.getDisplayDuration(BuilderUtilities.convertMillisToDate(batchDetail.getExpectedStartTime()), BuilderUtilities.convertMillisToDate(batchDetail.getExpectedFinishTime())));
+        timing_display_expiry.setText(LayoutComponentUtilities.getDisplayExpiry(context, BuilderUtilities.convertMillisToDate(batchDetail.getOfferExpiryTime())));
         Timber.tag(TAG).d("...setValues");
     }
 

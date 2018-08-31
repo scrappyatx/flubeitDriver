@@ -166,16 +166,9 @@ public class GiveAssetStepBuilder {
             return this;
         }
 
-        private Date addMinutesToDate(Date initialDate, Integer minutesToAdd){
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(initialDate);
-            cal.add(Calendar.MINUTE, minutesToAdd);
-            return cal.getTime();
-        }
-
         public Builder startTime(Date startTime) {
             this.giveStep.setStartTime(new TimestampBuilder.Builder()
-                    .scheduledTime(startTime)
+                    .scheduledTime(BuilderUtilities.convertDateToMillis(startTime))
                     .build());
             return this;
         }
@@ -189,14 +182,14 @@ public class GiveAssetStepBuilder {
 
         public Builder finishTime(Date finishTime) {
             this.giveStep.setFinishTime(new TimestampBuilder.Builder()
-                    .scheduledTime(finishTime)
+                    .scheduledTime(BuilderUtilities.convertDateToMillis(finishTime))
                     .build());
             return this;
         }
 
         public Builder finishTime(Date finishTime, Integer minutesToAdd) {
             this.giveStep.setFinishTime(new TimestampBuilder.Builder()
-                    .scheduledTime(addMinutesToDate(finishTime, minutesToAdd))
+                    .scheduledTime(BuilderUtilities.addMinutesToDate(finishTime, minutesToAdd))
                     .build());
             return this;
         }

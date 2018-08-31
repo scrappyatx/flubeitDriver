@@ -14,14 +14,14 @@ import it.flube.libbatchdata.interfaces.OrderStepInterface;
 public interface ActiveBatchForegroundServiceInterface {
 
 
-    void startActiveBatchForegroundServiceRequest(String notificationText, String notificationSubText, OrderStepInterface.TaskType taskType,
+    void startActiveBatchForegroundServiceRequest(String clientId, String batchGuid, String serviceOrderGuid, String orderStepGuid, String notificationText, String notificationSubText, OrderStepInterface.TaskType taskType,
                                            StartActiveBatchForegroundServiceResponse response);
 
     interface StartActiveBatchForegroundServiceResponse {
         void activeBatchForegroundServiceStarted();
     }
 
-    void updateActiveBatchForegroundServiceRequest(String notificationText, String notificationSubText, OrderStepInterface.TaskType taskType,
+    void updateActiveBatchForegroundServiceRequest(String clientId, String batchGuid, String serviceOrderGuid, String orderStepGuid, String notificationText, String notificationSubText, OrderStepInterface.TaskType taskType,
                                             UpdateActiveBatchForegroundServiceResponse response);
 
     interface UpdateActiveBatchForegroundServiceResponse {

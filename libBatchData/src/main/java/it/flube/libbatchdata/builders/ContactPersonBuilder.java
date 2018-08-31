@@ -6,17 +6,28 @@ package it.flube.libbatchdata.builders;
 
 import java.util.HashMap;
 
+import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import it.flube.libbatchdata.entities.ContactPerson;
+
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_CUSTOMER_ICON_URL_DEMO;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_CUSTOMER_ICON_URL_DEVELOPMENT;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_CUSTOMER_ICON_URL_PRODUCTION;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_CUSTOMER_ICON_URL_STAGING;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_FLUBEIT_SUPPORT_ICON_URL_DEMO;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_FLUBEIT_SUPPORT_ICON_URL_DEVELOPMENT;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_FLUBEIT_SUPPORT_ICON_URL_PRODUCTION;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_FLUBEIT_SUPPORT_ICON_URL_STAGING;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_SERVICE_PROVIDER_ICON_URL_DEMO;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_SERVICE_PROVIDER_ICON_URL_DEVELOPMENT;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_SERVICE_PROVIDER_ICON_URL_PRODUCTION;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_SERVICE_PROVIDER_ICON_URL_STAGING;
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_TARGET_ENVIRONMENT;
 
 /**
  * Created on 4/23/2018
  * Project : Driver
  */
 public class ContactPersonBuilder {
-    private static final String DEFAULT_CUSTOMER_ICON_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/contactPersonImages%2Fcustomer.png?alt=media&token=57dc7e80-9091-44ec-aa58-e4acaaa496f7";
-    private static final String DEFAULT_FLUBEIT_SUPPORT_ICON_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/contactPersonImages%2Fflubeit_support.png?alt=media&token=5c4a0bf0-ac4b-486f-9ed5-1ea9f3381623";
-    private static final String DEFAULT_SERVICE_PROVIDER_ICON_URL = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/contactPersonImages%2Fservice_provider.png?alt=media&token=4bd7bb42-0e27-4bb1-8e54-5e03836b4ed0";
-
     private static final Boolean DEFAULT_CAN_VOICE = false;
     private static final Boolean DEFAULT_CAN_SMS = false;
     private static final Boolean DEFAULT_HAS_PROXY_PHONE_NUMBER = false;
@@ -34,13 +45,48 @@ public class ContactPersonBuilder {
     public static class Builder {
         private ContactPerson contactPerson;
 
-        public Builder(){
+        private String defaultCustomerIconUrl;
+        private String defaultFlubeitSupportIconUrl;
+        private String defaultServiceProviderIconUrl;
+
+        ///public Builder(){
+        ///    initializeStuff(DEFAULT_TARGET_ENVIRONMENT);
+        ///}
+
+        public Builder(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
+            initializeStuff(targetEnvironment);
+        }
+
+        private void initializeStuff(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
             this.contactPerson = new ContactPerson();
             this.contactPerson.setGuid(BuilderUtilities.generateGuid());
 
             this.contactPerson.setCanVoice(DEFAULT_CAN_VOICE);
             this.contactPerson.setCanSMS(DEFAULT_CAN_SMS);
             this.contactPerson.setHasProxyPhoneNumber(DEFAULT_HAS_PROXY_PHONE_NUMBER);
+
+            switch (targetEnvironment) {
+                case PRODUCTION:
+                    defaultCustomerIconUrl = DEFAULT_CUSTOMER_ICON_URL_PRODUCTION;
+                    defaultFlubeitSupportIconUrl = DEFAULT_FLUBEIT_SUPPORT_ICON_URL_PRODUCTION;
+                    defaultServiceProviderIconUrl = DEFAULT_SERVICE_PROVIDER_ICON_URL_PRODUCTION;
+                    break;
+                case DEMO:
+                    defaultCustomerIconUrl = DEFAULT_CUSTOMER_ICON_URL_DEMO;
+                    defaultFlubeitSupportIconUrl = DEFAULT_FLUBEIT_SUPPORT_ICON_URL_DEMO;
+                    defaultServiceProviderIconUrl = DEFAULT_SERVICE_PROVIDER_ICON_URL_DEMO;
+                    break;
+                case STAGING:
+                    defaultCustomerIconUrl = DEFAULT_CUSTOMER_ICON_URL_STAGING;
+                    defaultFlubeitSupportIconUrl = DEFAULT_FLUBEIT_SUPPORT_ICON_URL_STAGING;
+                    defaultServiceProviderIconUrl = DEFAULT_SERVICE_PROVIDER_ICON_URL_STAGING;
+                    break;
+                case DEVELOPMENT:
+                    defaultCustomerIconUrl = DEFAULT_CUSTOMER_ICON_URL_DEVELOPMENT;
+                    defaultFlubeitSupportIconUrl = DEFAULT_FLUBEIT_SUPPORT_ICON_URL_DEVELOPMENT;
+                    defaultServiceProviderIconUrl = DEFAULT_SERVICE_PROVIDER_ICON_URL_DEVELOPMENT;
+                    break;
+            }
         }
 
         public Builder guid(String guid){
@@ -90,13 +136,13 @@ public class ContactPersonBuilder {
             if (this.contactPerson.getDisplayIconUrl() == null) {
                 switch (contactRole) {
                     case CUSTOMER:
-                        this.contactPerson.setDisplayIconUrl(DEFAULT_CUSTOMER_ICON_URL);
+                        this.contactPerson.setDisplayIconUrl(defaultCustomerIconUrl);
                         break;
                     case FLUBEIT_SUPPORT:
-                        this.contactPerson.setDisplayIconUrl(DEFAULT_FLUBEIT_SUPPORT_ICON_URL);
+                        this.contactPerson.setDisplayIconUrl(defaultFlubeitSupportIconUrl);
                         break;
                     case SERVICE_PROVIDER:
-                        this.contactPerson.setDisplayIconUrl(DEFAULT_SERVICE_PROVIDER_ICON_URL);
+                        this.contactPerson.setDisplayIconUrl(defaultServiceProviderIconUrl);
                         break;
                 }
             }

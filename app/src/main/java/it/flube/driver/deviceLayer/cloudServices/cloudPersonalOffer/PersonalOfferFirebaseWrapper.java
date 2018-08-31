@@ -23,12 +23,14 @@ import it.flube.driver.deviceLayer.cloudServices.cloudDemoOffer.batchDataGet.Fir
 import it.flube.driver.deviceLayer.cloudServices.cloudDemoOffer.offerAdd.FirebaseDemoOffersAddToOfferList;
 import it.flube.driver.deviceLayer.cloudServices.cloudDemoOffer.offerClaim.FirebaseDemoOffersRemove;
 import it.flube.driver.deviceLayer.cloudServices.cloudPersonalOffer.offersMonitor.FirebasePersonalOffersMonitor;
+import it.flube.driver.deviceLayer.cloudServices.firebaseInitialization.FirebaseDbInitialization;
 import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.interfaces.CloudConfigInterface;
 import it.flube.driver.modelLayer.interfaces.CloudDemoOfferInterface;
 import it.flube.driver.modelLayer.interfaces.CloudOfferClaimInterface;
 import it.flube.driver.modelLayer.interfaces.CloudPersonalOfferInterface;
 import it.flube.driver.modelLayer.interfaces.OffersInterface;
+import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.batch.BatchHolder;
 import timber.log.Timber;
@@ -47,7 +49,8 @@ public class PersonalOfferFirebaseWrapper implements
     private static final String TAG = "PersonalOfferFirebaseWrapper";
 
     private final String baseNodePersonalOffers;
-
+    private final String driverDb;
+    
     private String personalOffersNode;
     private String batchDataNode;
     private String offerClaimRequestNode;
@@ -56,9 +59,9 @@ public class PersonalOfferFirebaseWrapper implements
 
     private FirebasePersonalOffersMonitor firebasePersonalOffersMonitor;
 
-    public PersonalOfferFirebaseWrapper(CloudConfigInterface cloudConfig){
+    public PersonalOfferFirebaseWrapper(TargetEnvironmentConstants.TargetEnvironment targetEnvironment, CloudConfigInterface cloudConfig){
         Timber.tag(TAG).d("creating START...");
-
+        driverDb = FirebaseDbInitialization.getFirebaseDriverDb(targetEnvironment);
         baseNodePersonalOffers = cloudConfig.getCloudDatabaseBaseNodePersonalOffers();
         Timber.tag(TAG).d("   baseNodePersonalOffers = " + baseNodePersonalOffers);
 
@@ -93,8 +96,8 @@ public class PersonalOfferFirebaseWrapper implements
 
         //create new monitor & start monitoring
         Timber.tag(TAG).d("   ....creating new monitor");
-        firebasePersonalOffersMonitor = new FirebasePersonalOffersMonitor(FirebaseDatabase.getInstance().getReference(personalOffersNode),
-                FirebaseDatabase.getInstance().getReference(batchDataNode), offersLists);
+        firebasePersonalOffersMonitor = new FirebasePersonalOffersMonitor(FirebaseDatabase.getInstance(driverDb).getReference(personalOffersNode),
+                FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), offersLists);
 
         Timber.tag(TAG).d("   ....startListening");
         firebasePersonalOffersMonitor.startListening();
@@ -128,8 +131,8 @@ public class PersonalOfferFirebaseWrapper implements
     public void claimOfferRequest(Driver driver, String batchGuid, BatchDetail.BatchType batchType, CloudOfferClaimInterface.ClaimOfferResponse response){
         Timber.tag(TAG).d("claimOfferRequest START...");
 
-        new FirebaseOfferClaimRequest().claimOfferRequest(FirebaseDatabase.getInstance().getReference(offerClaimRequestNode),
-                FirebaseDatabase.getInstance().getReference(offerClaimResponseNode),
+        new FirebaseOfferClaimRequest().claimOfferRequest(FirebaseDatabase.getInstance(driverDb).getReference(offerClaimRequestNode),
+                FirebaseDatabase.getInstance(driverDb).getReference(offerClaimResponseNode),
                 driver.getClientId(), batchGuid, batchType,
                 response);
 
@@ -155,7 +158,7 @@ public class PersonalOfferFirebaseWrapper implements
         Timber.tag(TAG).d("   ....getNodes");
         getNodes(driver);
 
-        new FirebasePersonalOfferDetailGet().getBatchDetailRequest(FirebaseDatabase.getInstance().getReference(batchDataNode), batchGuid, response);
+        new FirebasePersonalOfferDetailGet().getBatchDetailRequest(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), batchGuid, response);
     }
 
 
@@ -165,7 +168,7 @@ public class PersonalOfferFirebaseWrapper implements
         Timber.tag(TAG).d("   ....getNodes");
         getNodes(driver);
 
-        new FirebasePersonalOfferServiceOrderListGet().getServiceOrderListRequest(FirebaseDatabase.getInstance().getReference(batchDataNode), batchGuid, response);
+        new FirebasePersonalOfferServiceOrderListGet().getServiceOrderListRequest(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), batchGuid, response);
     }
 
     public void getRouteStopListRequest(Driver driver, String batchGuid, GetRouteStopListResponse response){
@@ -174,7 +177,7 @@ public class PersonalOfferFirebaseWrapper implements
         Timber.tag(TAG).d("   ....getNodes");
         getNodes(driver);
 
-        new FirebasePersonalOfferRouteStopListGet().getRouteStopListRequest(FirebaseDatabase.getInstance().getReference(batchDataNode),batchGuid, response);
+        new FirebasePersonalOfferRouteStopListGet().getRouteStopListRequest(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode),batchGuid, response);
 
     }
 
@@ -184,7 +187,7 @@ public class PersonalOfferFirebaseWrapper implements
         Timber.tag(TAG).d("   ....getNodes");
         getNodes(driver);
 
-        new FirebasePersonalOfferOrderStepListGet().getOrderStepList(FirebaseDatabase.getInstance().getReference(batchDataNode), batchGuid, serviceOrderGuid, response);
+        new FirebasePersonalOfferOrderStepListGet().getOrderStepList(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), batchGuid, serviceOrderGuid, response);
     }
 
 }

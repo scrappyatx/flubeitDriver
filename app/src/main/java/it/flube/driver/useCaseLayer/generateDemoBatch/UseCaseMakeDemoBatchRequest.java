@@ -6,6 +6,7 @@ package it.flube.driver.useCaseLayer.generateDemoBatch;
 
 import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.interfaces.CloudDemoOfferInterface;
+import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import it.flube.libbatchdata.entities.batch.BatchHolder;
 import it.flube.libbatchdata.interfaces.DemoBatchInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
@@ -27,6 +28,7 @@ public class UseCaseMakeDemoBatchRequest implements
 
     private final Driver driver;
     private final CloudDemoOfferInterface cloudDb;
+    private final TargetEnvironmentConstants.TargetEnvironment targetEnvironment;
 
     private BatchHolder demoBatchHolder;
 
@@ -37,12 +39,13 @@ public class UseCaseMakeDemoBatchRequest implements
 
         driver = device.getUser().getDriver();
         cloudDb = device.getCloudDemoOffer();
+        targetEnvironment = device.getTargetEnvironment();
     }
 
     public void run(){
         Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
         //Step 1 - create a demo batch
-        BatchHolder demoBatchHolder = demoMaker.createDemoBatch(driver.getClientId());
+        BatchHolder demoBatchHolder = demoMaker.createDemoBatch(driver.getClientId(), targetEnvironment);
 
         Timber.tag(TAG).d("   batchGuid -> " + demoBatchHolder.getBatch().getGuid());
         //Step 2 - save the demo batch

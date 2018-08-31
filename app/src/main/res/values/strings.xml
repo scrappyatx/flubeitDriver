@@ -285,6 +285,18 @@
     <string name="batch_manage_start_alert_dialog_title">BATCH STARTED</string>
     <string name="batch_manage_start_alert_dialog_text">Drive safely and have fun!</string>
 
+    <string name="batch_manage_start_failure_alert_dialog_title">BATCH NOT STARTED</string>
+    <string name="batch_manage_start_failure_alert_dialog_text">Something went wrong.  Please try to start your batch again</string>
+    <string name="batch_manage_start_failure_alert_button_text">OK</string>
+
+    <string name="batch_manage_start_timeout_alert_dialog_title">BATCH NOT STARTED</string>
+    <string name="batch_manage_start_timeout_alert_dialog_text">No response from the server.  Please try to start your batch again</string>
+    <string name="batch_manage_start_timeout_alert_button_text">OK</string>
+
+    <string name="batch_manage_start_denied_alert_dialog_title">BATCH NOT STARTED</string>
+    <string name="batch_manage_start_denied_alert_dialog_text">Placeholder reason</string>
+    <string name="batch_manage_start_denied_alert_button_text">OK</string>
+
     <!-- Strings related to scheduled batches map activity layout -->
     <string name="batch_map_activity_title">Batch Location</string>
 

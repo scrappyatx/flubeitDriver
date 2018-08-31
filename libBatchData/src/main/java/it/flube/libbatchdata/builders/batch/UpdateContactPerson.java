@@ -42,11 +42,13 @@ public class UpdateContactPerson {
                         //update step
                         giveStep.setContactPerson(updatedContactPerson);
 
-                        //update batchHolder contactPersons hashmap
+                        //update batchHolder & batchDetail contactPersons hashmap
                         batchHolder.getContactPersons().put(updatedContactPerson.getGuid(), updatedContactPerson);
+                        batchHolder.getBatchDetail().getContactPersons().put(updatedContactPerson.getGuid(), updatedContactPerson);
 
-                        //update batchHolder contactPersonsByServiceOrder hashMap
+                        //update batchHolder & batchDetail contactPersonsByServiceOrder hashMap
                         batchHolder.getContactPersonsByServiceOrder().get(giveStep.getServiceOrderGuid()).put(updatedContactPerson.getGuid(), updatedContactPerson);
+                        batchHolder.getBatchDetail().getContactPersonsByServiceOrder().get(giveStep.getServiceOrderGuid()).put(updatedContactPerson.getGuid(), updatedContactPerson);
 
                         //update serviceOrder
                         switch (updatedContactPerson.getContactRole()){
@@ -75,10 +77,12 @@ public class UpdateContactPerson {
                         //update step
                         receiveStep.setContactPerson(updatedContactPerson);
 
-                        //update batchHolder contactPerson hashmap
-                        batchHolder.getContactPersons().put(updatedContactPerson.getGuid(), updatedContactPerson);
+                        //update batchHolder & batchDetail contactPerson hashmap
+                        batchHolder.getBatchDetail().getContactPersons().put(updatedContactPerson.getGuid(), updatedContactPerson);
+                        batchHolder.getBatchDetail().getContactPersons().put(updatedContactPerson.getGuid(), updatedContactPerson);
 
-                        //update batchHolder contactPersonsByServiceOrder hashmap
+                        //update batchHolder & batchDetail contactPersonsByServiceOrder hashmap
+                        batchHolder.getContactPersonsByServiceOrder().get(receiveStep.getServiceOrderGuid()).put(updatedContactPerson.getGuid(), updatedContactPerson);
                         batchHolder.getContactPersonsByServiceOrder().get(receiveStep.getServiceOrderGuid()).put(updatedContactPerson.getGuid(), updatedContactPerson);
 
                         //update serviceOrder

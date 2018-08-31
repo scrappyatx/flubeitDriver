@@ -111,20 +111,6 @@ public class BatchManageAlerts {
     }
 
 
-
-    public void showStartedBatchAlert(AppCompatActivity activity, StartedBatchAlertHidden response) {
-        Alerter.create(activity)
-                .setTitle(activity.getString(R.string.batch_manage_start_alert_dialog_title))
-                .setText(activity.getString(R.string.batch_manage_start_alert_dialog_text))
-                .setBackgroundColorRes(R.color.alerter_default_success_background)
-                .setIcon(R.drawable.ic_mood_black_24dp)
-                .setDuration(displayDuration)
-                .setOnHideListener(new StartedBatchAlertHiddenListener(response))
-                .show();
-    }
-
-
-
     public class ForfeitBatchHideAlertListener implements OnHideAlertListener {
         private ForfeitBatchAlertHidden response;
         public ForfeitBatchHideAlertListener(ForfeitBatchAlertHidden response){
@@ -135,22 +121,9 @@ public class BatchManageAlerts {
         }
     }
 
-    public class StartedBatchAlertHiddenListener implements OnHideAlertListener {
-        private StartedBatchAlertHidden response;
-        public StartedBatchAlertHiddenListener(StartedBatchAlertHidden response){
-            this.response = response;
-        }
-
-        public void onHide(){
-            response.startedBatchAlertHidden();
-        }
-    }
 
     public interface ForfeitBatchAlertHidden {
         void forfeitBatchAlertHidden();
     }
 
-    public interface StartedBatchAlertHidden {
-        void startedBatchAlertHidden();
-    }
 }

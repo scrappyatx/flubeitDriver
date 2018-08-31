@@ -154,7 +154,7 @@ public class NavigationStepBuilder {
 
         public Builder startTime(Date startTime) {
             this.navStep.setStartTime(new TimestampBuilder.Builder()
-                    .scheduledTime(startTime)
+                    .scheduledTime(BuilderUtilities.convertDateToMillis(startTime))
                     .build());
             return this;
         }
@@ -168,7 +168,7 @@ public class NavigationStepBuilder {
 
         public Builder finishTime(Date finishTime) {
             this.navStep.setFinishTime(new TimestampBuilder.Builder()
-                    .scheduledTime(finishTime)
+                    .scheduledTime(BuilderUtilities.convertDateToMillis(finishTime))
                     .build());
             return this;
         }

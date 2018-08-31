@@ -20,6 +20,7 @@ import com.squareup.picasso.Picasso;
 
 import it.flube.driver.R;
 import it.flube.driver.userInterfaceLayer.layoutComponents.LayoutComponentUtilities;
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.entities.batch.Batch;
 import timber.log.Timber;
 
@@ -123,8 +124,8 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Of
             Timber.tag(TAG).d("offer guid -> " + offer.getGuid());
 
             String displayDescription = offer.getTitle();
-            String displayTime = LayoutComponentUtilities.getDisplayTiming(offer.getExpectedStartTime(), offer.getExpectedFinishTime());
-            String displayDuration = LayoutComponentUtilities.getDisplayDuration(offer.getExpectedStartTime(), offer.getExpectedFinishTime());
+            String displayTime = LayoutComponentUtilities.getDisplayTiming(BuilderUtilities.convertMillisToDate(offer.getExpectedStartTime()), BuilderUtilities.convertMillisToDate(offer.getExpectedFinishTime()));
+            String displayDuration = LayoutComponentUtilities.getDisplayDuration(BuilderUtilities.convertMillisToDate(offer.getExpectedStartTime()), BuilderUtilities.convertMillisToDate(offer.getExpectedFinishTime()));
             //TODO do the number formatting into currency in the batch builder, then just get property here
             String displayBaseEarnings = NumberFormat.getCurrencyInstance(new Locale("en", "US"))
                     .format(offer.getPotentialEarnings().getPayRateInCents()/100);

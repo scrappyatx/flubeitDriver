@@ -6,6 +6,7 @@ package it.flube.driver.useCaseLayer.activeBatch;
 
 import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.interfaces.CloudActiveBatchInterface;
+import it.flube.driver.modelLayer.interfaces.CloudServerMonitoringInterface;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.driver.modelLayer.interfaces.ActiveBatchForegroundServiceInterface;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
@@ -21,8 +22,10 @@ import timber.log.Timber;
 
 public class UseCaseBatchFinishedRequest implements
     Runnable,
+    CloudActiveBatchInterface.GetBatchDetailResponse,
     LocationTelemetryInterface.LocationTrackingStopResponse,
     ActiveBatchForegroundServiceInterface.StopActiveBatchForegroundServiceResponse,
+    CloudServerMonitoringInterface.BatchFinishedResponse,
     CloudActiveBatchInterface.AcknowledgeFinishedBatchResponse {
 
     private final static String TAG = "UseCaseBatchFinishedRequest";
@@ -30,7 +33,10 @@ public class UseCaseBatchFinishedRequest implements
     private final MobileDeviceInterface device;
     private final Driver driver;
     private final String batchGuid;
+
     private final Response response;
+
+    private BatchDetail batchDetail;
 
     public UseCaseBatchFinishedRequest(MobileDeviceInterface device, String batchGuid, Response response){
         this.device = device;
@@ -46,34 +52,42 @@ public class UseCaseBatchFinishedRequest implements
         Timber.tag(TAG).d("   ...clearing active batch");
         device.getActiveBatch().clear();
 
+        // get the batchDetail
+        device.getCloudActiveBatch().getActiveBatchDetailRequest(driver, batchGuid, this);
+
+    }
+
+    public void cloudGetActiveBatchDetailFailure(){
+        Timber.tag(TAG).w("cloudGetActiveBatchDetailFailure -> should never get here");
+        response.batchFinishedComplete();
+    }
+
+    public void cloudGetActiveBatchDetailSuccess(BatchDetail batchDetail){
+        Timber.tag(TAG).d("cloudGetActiveBatchDetailSuccess");
+        this.batchDetail = batchDetail;
+
         //stop location tracking
         Timber.tag(TAG).d("   ...stop location tracking");
         device.getLocationTelemetry().locationTrackingStopRequest(this);
 
-        //  stop the foreground service
-        Timber.tag(TAG).d("   ...stop the active batch foreground service");
-        device.getActiveBatchForegroundServiceController().stopActiveBatchForegroundServiceRequest(this);
-
-        //set the active batch server node to complete (null)
-        Timber.tag(TAG).d("   ...set the active batch cloud database server node to complete");
-        device.getCloudActiveBatch().updateActiveBatchServerNodeStatus(driver, batchGuid);
-
-        //set a node on the completed server node
-        device.getCloudActiveBatch().updateBatchCompletedServerNode(driver, batchGuid);
-
-        //acknowledge that batch is finished
-        device.getCloudActiveBatch().acknowledgeFinishedBatchRequest(driver, batchGuid,this);
-
     }
-
 
     public void locationTrackingStopComplete(){
-        //do nothing
         Timber.tag(TAG).d("   ...location tracking stopped");
+        //  stop the foreground service
+        device.getActiveBatchForegroundServiceController().stopActiveBatchForegroundServiceRequest(this);
     }
     public void activeBatchForegroundServiceStopped(){
-        //do nothing
         Timber.tag(TAG).d("   ...active batch foreground service stopped");
+        //remove batch from server monitoring
+        Timber.tag(TAG).d("   ...set the active batch cloud database server node to complete");
+        device.getCloudServerMonitoring().batchFinishedRequest(driver, batchDetail, this);
+    }
+
+    public void cloudServerMonitoringBatchFinishedComplete(String batchGuid){
+        Timber.tag(TAG).d("cloudServerMonitoringBatchFinishedComplete");
+        //acknowledge that batch is finished
+        device.getCloudActiveBatch().acknowledgeFinishedBatchRequest(driver, batchGuid,this);
     }
 
     public void cloudActiveBatchFinishedBatchAckComplete(){

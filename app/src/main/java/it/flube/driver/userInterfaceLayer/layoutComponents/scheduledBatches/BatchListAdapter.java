@@ -20,6 +20,7 @@ import java.util.Locale;
 
 import it.flube.driver.R;
 import it.flube.driver.userInterfaceLayer.layoutComponents.LayoutComponentUtilities;
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.entities.batch.Batch;
 import timber.log.Timber;
 
@@ -117,8 +118,8 @@ public class BatchListAdapter extends RecyclerView.Adapter<BatchListAdapter.Batc
             this.batch = batch;
 
             String displayDescription = batch.getTitle();
-            String displayTime = LayoutComponentUtilities.getDisplayTiming(batch.getExpectedStartTime(), batch.getExpectedFinishTime());
-            String displayDuration = LayoutComponentUtilities.getDisplayDuration(batch.getExpectedStartTime(), batch.getExpectedFinishTime());
+            String displayTime = LayoutComponentUtilities.getDisplayTiming(BuilderUtilities.convertMillisToDate(batch.getExpectedStartTime()), BuilderUtilities.convertMillisToDate(batch.getExpectedFinishTime()));
+            String displayDuration = LayoutComponentUtilities.getDisplayDuration(BuilderUtilities.convertMillisToDate(batch.getExpectedStartTime()), BuilderUtilities.convertMillisToDate(batch.getExpectedFinishTime()));
 
             //TODO do the number formatting into currency in the batch builder, then just get property here
             String displayBaseEarnings = NumberFormat.getCurrencyInstance(new Locale("en", "US"))

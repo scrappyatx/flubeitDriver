@@ -23,6 +23,7 @@ import it.flube.libbatchdata.builders.orderSteps.PhotoStepBuilder;
 import it.flube.libbatchdata.builders.orderSteps.ReceiveAssetStepBuilder;
 import it.flube.libbatchdata.builders.orderSteps.UserTriggerStepBuilder;
 import it.flube.libbatchdata.builders.serviceOrder.ServiceOrderScaffoldBuilder;
+import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import it.flube.libbatchdata.entities.AddressLocation;
 import it.flube.libbatchdata.entities.ContactPerson;
 import it.flube.libbatchdata.entities.Destination;
@@ -36,6 +37,7 @@ import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.batch.BatchHolder;
 import it.flube.libbatchdata.interfaces.DemoBatchInterface;
 
+import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_TARGET_ENVIRONMENT;
 import static it.flube.libbatchdata.interfaces.AssetTransferInterface.TransferType.TRANSFER_FROM_CUSTOMER;
 import static it.flube.libbatchdata.interfaces.AssetTransferInterface.TransferType.TRANSFER_FROM_SERVICE_PROVIDER;
 
@@ -45,15 +47,27 @@ import static it.flube.libbatchdata.interfaces.AssetTransferInterface.TransferTy
  */
 public class DemoBatchOilChange implements DemoBatchInterface {
 
-    public BatchHolder createDemoBatch(String clientId){
-        return getDemoBatch(clientId, BuilderUtilities.generateGuid());
+    /// DemoBatchInterface methods
+    public BatchHolder createDemoBatch(String clientId) {
+        // if user doesn't supply a batchGUID, we create one
+        return createBatch(clientId, BuilderUtilities.generateGuid(),DEFAULT_TARGET_ENVIRONMENT);
+    }
+
+    public BatchHolder createDemoBatch(String clientId, TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
+        return createBatch(clientId, BuilderUtilities.generateGuid(), targetEnvironment);
     }
 
     public BatchHolder createDemoBatch(String clientId, String batchGuid){
-        return getDemoBatch(clientId, batchGuid);
+        //use the batchGuid the user supplied
+        return createBatch(clientId, batchGuid, DEFAULT_TARGET_ENVIRONMENT);
     }
 
-    public BatchHolder getDemoBatch(String clientId, String batchGuid){
+    public BatchHolder createDemoBatch(String clientId, String batchGuid, TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
+        return createBatch(clientId, batchGuid, targetEnvironment);
+    }
+
+    //// batch generation method
+    private BatchHolder createBatch(String clientId, String batchGuid, TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
 
         ///     Oil Change batch has 11 steps
         ///
@@ -69,12 +83,12 @@ public class DemoBatchOilChange implements DemoBatchInterface {
         ///     10. TAKE_PHOTOS                  (take photos of vehicle)
         ///     11. GIVE_ASSET                   (give vehicle to customer)
 
-        ContactPerson customerPerson = DemoBatchUtilities.getCustomerContactPerson();
+        ContactPerson customerPerson = DemoBatchUtilities.getCustomerContactPerson(targetEnvironment);
         AddressLocation customerAddress = DemoBatchUtilities.getCustomerAddress();
         LatLonLocation customerLatLon = DemoBatchUtilities.getCustomerLatLon();
-        Vehicle customerVehicle = DemoBatchUtilities.getCustomerVehicle();
+        Vehicle customerVehicle = DemoBatchUtilities.getCustomerVehicle(targetEnvironment);
 
-        ServiceProvider oilChangeProvider = DemoBatchUtilities.getServiceProvider();
+        ServiceProvider oilChangeProvider = DemoBatchUtilities.getServiceProvider(targetEnvironment);
 
         return new BatchHolderBuilder.Builder()
                 .batchType(BatchDetail.BatchType.MOBILE_DEMO)
@@ -85,7 +99,7 @@ public class DemoBatchOilChange implements DemoBatchInterface {
                 .iconUrl(oilChangeProvider.getIconURL())
                 .displayDistance(new DisplayDistanceBuilder.Builder()
                         .distanceToTravel("18 miles")
-                        .distanceIndicatorUrl(BatchIconGenerator.getRandomDistanceIndicatorUrl())
+                        .distanceIndicatorUrl(BatchIconGenerator.getRandomDistanceIndicatorUrl(targetEnvironment))
                         .build())
                 .potentialEarnings(new PotentialEarningsBuilder.Builder()
                         .payRateInCents(2800)
@@ -135,7 +149,7 @@ public class DemoBatchOilChange implements DemoBatchInterface {
                                 //.startTime(BuilderUtilities.getNowDate(), 10)
                                 //.finishTime(BuilderUtilities.getNowDate(), 20)
                                 .milestoneWhenFinished("Photos Taken")
-                                .addVehiclePhotoRequests(new PhotoRequestListForVehicleBuilder.Builder()
+                                .addVehiclePhotoRequests(new PhotoRequestListForVehicleBuilder.Builder(targetEnvironment)
                                         .build())
                                 .build())
 
@@ -221,7 +235,7 @@ public class DemoBatchOilChange implements DemoBatchInterface {
                                 //.startTime(BuilderUtilities.getNowDate(), 10)
                                 //.finishTime(BuilderUtilities.getNowDate(), 20)
                                 .milestoneWhenFinished("Photos Taken")
-                                .addVehiclePhotoRequests(new PhotoRequestListForVehicleBuilder.Builder()
+                                .addVehiclePhotoRequests(new PhotoRequestListForVehicleBuilder.Builder(targetEnvironment)
                                         .build())
                                 .build())
 

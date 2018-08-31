@@ -34,10 +34,17 @@ public class TimestampBuilder {
             timestamp = new Timestamp();
         }
 
-        public Builder scheduledTime(Date scheduledTime){
+        /// can set scheduledTime in either millis or Date
+        public Builder scheduledTime(Long scheduledTime){
             this.timestamp.setScheduledTime(scheduledTime);
             return this;
         }
+
+        public Builder scheduledTime(Date scheduledTime){
+            this.timestamp.setScheduledTime(BuilderUtilities.convertDateToMillis(scheduledTime));
+            return this;
+        }
+
 
         private void validate(Timestamp timestamp){
             // required PRESENT (must not be null)
