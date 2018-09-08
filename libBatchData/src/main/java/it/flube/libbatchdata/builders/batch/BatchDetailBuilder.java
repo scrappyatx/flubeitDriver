@@ -10,7 +10,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.builders.DriverInfoBuilder;
 import it.flube.libbatchdata.entities.ContactPerson;
+import it.flube.libbatchdata.entities.Customer;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.DisplayDistance;
 import it.flube.libbatchdata.entities.DisplayTiming;
@@ -46,6 +48,9 @@ public class BatchDetailBuilder {
             this.batchDetail.setClaimStatus(BatchDetail.ClaimStatus.NOT_CLAIMED);
             this.batchDetail.setEarliestStartMinutesPrior(DEFAULT_EARLIEST_START_MINUTES_PRIOR);
             this.batchDetail.setLatestStartMinutesAfter(DEFAULT_LATEST_START_MINUTES_AFTER);
+
+            //setup driver info
+            this.batchDetail.setDriverInfo(new DriverInfoBuilder.Builder().build());
 
             // a batch can have multiple contact persons
             this.batchDetail.setContactPersons(new HashMap<String, ContactPerson>());
@@ -182,6 +187,11 @@ public class BatchDetailBuilder {
             return this;
         }
 
+        public Builder customer(Customer customer){
+            this.batchDetail.setCustomer(customer);
+            return this;
+        }
+
         private void validate(BatchDetail batchDetail){
             if (batchDetail.getGuid() == null) {
                 throw new IllegalStateException("batch GUID is null");
@@ -201,6 +211,10 @@ public class BatchDetailBuilder {
 
             if (batchDetail.getLatestStartMinutesAfter() == null){
                 throw new IllegalStateException("latestStartMinutesAfter is null");
+            }
+
+            if (batchDetail.getCustomer() == null){
+                //throw new IllegalStateException("customer is null");
             }
         }
 

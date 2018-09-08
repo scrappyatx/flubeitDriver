@@ -413,6 +413,25 @@
     <string name="communication_activity_no_permission_text">flube.it app doesn\'t have permission to make phone calls\n\nGo to App Info and enable the PHONE permission</string>
     <string name="communication_activity_settings_caption">APP INFO</string>
 
+    <!-- Strings related to offers view item row -->
+    <string name="offers_view_start_time_label">Start Time:</string>
+    <string name="offers_view_duration_label">Duration:</string>
+    <string name="offers_view_distance_label">{fa-road}</string>
+
+    <!-- Strings related to BATCH DETAIL DISPLAY -->
+    <string name="batch_detail_display_timing_time_label">Start Time:</string>
+    <string name="batch_detail_display_timing_duration_label">Duration:</string>
+    <string name="batch_detail_display_timing_date_label">Date:</string>
+    <string name="batch_detail_display_timing_expiry_label">Expires:</string>
+
+    <string name="batch_detail_display_earnings_payment_label">Driver Payment:</string>
+
+    <string name="batch_detail_display_distance_label">Driving Distance:</string>
+    <string name="batch_detail_display_distance_icon">{fa-road}</string>
+
+    <string name="batch_detail_display_order_start_time_label">Start by:</string>
+    <string name="batch_detail_display_order_complete_time_label">Finish by:</string>
+
 
 
 </resources>

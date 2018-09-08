@@ -13,83 +13,159 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
 
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    android:layout_marginTop="16dp"
-    android:layout_marginBottom="16dp"
+    android:layout_marginLeft="2dp"
+    android:layout_marginRight="2dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="0dp"
+
+    android:background="@drawable/batch_detail_display_timing_background"
 
     android:elevation="8dp"
     tools:targetApi="lollipop">
 
+    <!-- OFFER EXPIRY TIME -->
     <TextView
-        android:id="@+id/batch_detail_display_date"
+        android:id="@+id/batch_detail_display_expiry_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:textStyle="bold"
-        tools:text="Today, October 5"
+        android:textAppearance="@style/BatchDetailDisplayTimingExpiry"
+        android:text="@string/batch_detail_display_timing_expiry_label"
 
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/batch_detail_display_expiry"
+        app:layout_constraintBottom_toBottomOf="@+id/batch_detail_display_expiry"
         app:layout_constraintLeft_toLeftOf="parent"
 
-        android:layout_marginTop="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp" />
-
-    <TextView
-        android:id="@+id/batch_detail_display_duration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:textStyle="bold"
-        tools:text="2 hours"
-
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-
-        android:layout_marginTop="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp" />
-
-
-    <TextView
-        android:id="@+id/batch_detail_display_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textStyle = "normal"
-        tools:text="1:30 pm - 3:30 pm"
-
-        app:layout_constraintTop_toBottomOf="@+id/batch_detail_display_duration"
-        app:layout_constraintRight_toRightOf="parent"
-
-        android:layout_marginTop = "4dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp" />
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp" />
 
     <TextView
         android:id="@+id/batch_detail_display_expiry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textStyle = "bold"
-        android:textColor = "@color/colorPrimaryDark"
-        tools:text="claim by Today, 4:30 pm"
+        android:textAppearance="@style/BatchDetailDisplayTimingExpiry"
+        tools:text="Today, 4:30 pm"
 
-        app:layout_constraintTop_toBottomOf="@+id/batch_detail_display_date"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/batch_detail_display_expiry_label"
+
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="8dp" />
+
+    <!-- OFFER START DATE -->
+
+    <TextView
+        android:id="@+id/batch_detail_display_date_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:textAppearance="@style/BatchDetailDisplayTimingDate"
+        android:text="@string/batch_detail_display_timing_date_label"
+
+        app:layout_constraintTop_toTopOf="@+id/batch_detail_display_date"
+        app:layout_constraintBottom_toBottomOf="@+id/batch_detail_display_date"
         app:layout_constraintLeft_toLeftOf="parent"
 
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="0dp" />
+
+    <TextView
+        android:id="@+id/batch_detail_display_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:textAppearance="@style/BatchDetailDisplayTimingDate"
+        tools:text="Wed, October 5"
+
+        app:layout_constraintTop_toBottomOf="@+id/batch_detail_display_expiry"
+        app:layout_constraintLeft_toLeftOf="@+id/batch_detail_display_expiry"
+
         android:layout_marginTop="4dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="4dp" />
+
+
+
+    <!-- OFFER START TIME -->
+
+    <TextView
+        android:id="@+id/batch_detail_display_time_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:textAppearance="@style/BatchDetailDisplayTimingTime"
+        android:text="@string/batch_detail_display_timing_time_label"
+
+        app:layout_constraintTop_toTopOf="@+id/batch_detail_display_time"
+        app:layout_constraintBottom_toBottomOf="@+id/batch_detail_display_time"
+        app:layout_constraintLeft_toLeftOf="parent"
+
+        android:layout_marginTop = "0dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp" />
+
+    <TextView
+        android:id="@+id/batch_detail_display_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:textAppearance="@style/BatchDetailDisplayTimingTime"
+        tools:text="1:30 pm - 3:30 pm"
+
+        app:layout_constraintTop_toBottomOf="@+id/batch_detail_display_date"
+        app:layout_constraintLeft_toLeftOf="@+id/batch_detail_display_expiry"
+
+        android:layout_marginTop = "4dp"
         android:layout_marginBottom="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp" />
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="8dp" />
+
+    <!-- OFFER DURATION -->
+
+    <TextView
+        android:id="@+id/batch_detail_display_duration_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:textAppearance="@style/BatchDetailDisplayTimingDuration"
+        android:text="@string/batch_detail_display_timing_duration_label"
+
+        app:layout_constraintTop_toTopOf="@+id/batch_detail_display_duration"
+        app:layout_constraintBottom_toBottomOf="@+id/batch_detail_display_duration"
+        app:layout_constraintLeft_toLeftOf="parent"
+
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="0dp" />
+
+    <TextView
+        android:id="@+id/batch_detail_display_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:textAppearance="@style/BatchDetailDisplayTimingDuration"
+        tools:text="2 hours"
+
+        app:layout_constraintTop_toBottomOf="@+id/batch_detail_display_time"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/batch_detail_display_expiry"
+
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp" />
+
+
 
 
 

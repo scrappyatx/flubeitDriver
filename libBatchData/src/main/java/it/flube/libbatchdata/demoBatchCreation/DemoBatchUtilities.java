@@ -6,12 +6,14 @@ package it.flube.libbatchdata.demoBatchCreation;
 
 import it.flube.libbatchdata.builders.AddressLocationBuilder;
 import it.flube.libbatchdata.builders.ContactPersonBuilder;
+import it.flube.libbatchdata.builders.CustomerBuilder;
 import it.flube.libbatchdata.builders.LatLonLocationBuilder;
 import it.flube.libbatchdata.builders.ServiceProviderBuilder;
 import it.flube.libbatchdata.builders.VehicleBuilder;
 import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import it.flube.libbatchdata.entities.AddressLocation;
 import it.flube.libbatchdata.entities.ContactPerson;
+import it.flube.libbatchdata.entities.Customer;
 import it.flube.libbatchdata.entities.LatLonLocation;
 import it.flube.libbatchdata.entities.ServiceProvider;
 import it.flube.libbatchdata.entities.asset.Vehicle;
@@ -22,7 +24,9 @@ import it.flube.libbatchdata.entities.asset.Vehicle;
  */
 public class DemoBatchUtilities {
 
-
+    private static final String CUSTOMER_USERNAME = "jqcustomer";
+    private static final String CUSTOMER_EMAIL = "jqcustomer@mailinator.com";
+    private static final String CUSTOMER_ID = "f0f176f8-3be7-4e56-97dd-9f8fc8bcd0dd";
 
     private static final String CUSTOMER_CONTACT_PERSON_GUID = "8793eff8-b7f5-4360-98ea-5187fb2f0bef";
     private static final String CUSTOMER_CONTACT_PERSON_NAME = "John Q. Customer";
@@ -71,6 +75,14 @@ public class DemoBatchUtilities {
     private static final Double SERVICE_PROVIDER_LATITUDE = 30.3046318;
     private static final Double SERVICE_PROVIDER_LONGITUDE = -97.7438983;
 
+
+    public static Customer getCustomer(){
+        return new CustomerBuilder.Builder()
+            .email(CUSTOMER_EMAIL)
+            .username(CUSTOMER_USERNAME)
+            .id(CUSTOMER_ID)
+            .build();
+    }
 
     public static ContactPerson getCustomerContactPerson(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
         return new ContactPersonBuilder.Builder(targetEnvironment)

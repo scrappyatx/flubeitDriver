@@ -11,9 +11,9 @@
 
     <color name="colorPrimary">@color/mediumblue</color>
     <color name="colorPrimaryDark">@color/darkblue</color>
-    <color name="colorAccent">@color/yellow</color>
-    <color name="colorButton">@color/yellow</color>
-    <color name="colorButtonText">@color/darkblue</color>
+    <color name="colorAccent">@color/mediumblue</color>
+    <color name="colorButton">@color/darkblue</color>
+    <color name="colorButtonText">@color/white</color>
     <color name="colorErrorText">@color/lightred</color>
     <color name="colorBackground">@color/translucentLightBlue</color>
     <color name="colorControlActivated">@color/yellow</color>
@@ -32,6 +32,17 @@
     <color name="colorNavMenuPersonalOfferHighlight">@color/colorPrimary</color>
     <color name="colorNavMenuDemoOfferHighlight">@color/colorPrimary</color>
     <color name="colorNavMenuScheduledBatchHighlight">@color/colorPrimary</color>
+
+    <color name="colorOfferRowExpenses">@color/colorTextPrimaryLight</color>
+    <color name="colorOfferRowTitle">@color/colorTextPrimaryDark</color>
+    <color name="colorOfferRowDate">@color/colorTextPrimary</color>
+    <color name="colorOfferRowTime">@color/colorTextPrimary</color>
+    <color name="colorOfferRowDuration">@color/colorTextPrimary</color>
+    <color name="colorOfferRowDistanceLabel">@color/colorTextPrimary</color>
+    <color name="colorOfferRowDistance">@color/colorTextPrimary</color>
+    <color name="colorOfferRowHeader">@color/colorTextPrimaryDark</color>
+
+
 
     <color name="colorStepTitle">@color/colorPrimaryDark</color>
     <color name="colorStepDescription">@color/colorPrimary</color>
@@ -53,12 +64,29 @@
 
     <color name="colorOfferClaimRequestBanner">@color/translucentGreenCC</color>
 
-    <color name="colorBatchDetailTitle">@color/translucentBlackCC</color>
+    <color name="colorBatchDetailTitle">@color/colorPrimaryDark</color>
     <color name="colorBatchDetailBatchType">@color/translucentOrangeFF</color>
     <color name="colorBatchDetailDescription">@color/translucentBlackAA</color>
     <color name="colorBatchDetailForfeitBanner">@color/translucentOrangeCC</color>
     <color name="colorBatchDetailStartBanner">@color/translucentGreenCC</color>
     <color name="colorBatchWaitingToFinishBanner">@color/translucentGreenCC</color>
+    <color name="colorBatchDetailTabText">@color/colorTextPrimaryLight</color>
+    <color name="colorBatchDetailTabSelected">@color/colorPrimaryDark</color>
+    <color name="colorBatchDetailTabNotSelected">@color/colorPrimaryLight</color>
+
+    <color name="colorBatchDetailDisplayTimingExpiry">@color/translucentOrangeFF</color>
+    <color name="colorBatchDetailDisplayTimingDate">@color/colorPrimaryDark</color>
+    <color name="colorBatchDetailDisplayTimingTime">@color/colorPrimary</color>
+    <color name="colorBatchDetailDisplayTimingDuration">@color/colorPrimary</color>
+
+    <color name="colorBatchDetailDisplayEarningsPayment">@color/colorTextPrimaryLight</color>
+
+    <color name="colorBatchDetailDisplayDistance">@color/colorPrimary</color>
+
+    <color name="colorBatchDetailOrdersSequence">@color/colorTextPrimaryLight</color>
+    <color name="colorBatchDetailOrdersTitle">@color/colorPrimaryDark</color>
+    <color name="colorBatchDetailOrdersTiming">@color/colorPrimary</color>
+
 
     <color name="colorNavStepDestinationCaption">@color/colorTextPrimaryDark</color>
     <color name="colorNavStepDestinationAddress">@color/translucentBlackCC</color>

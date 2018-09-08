@@ -31,6 +31,7 @@ public class BatchStartRequestWrite implements
     private static final String BATCH_NODE = "batchGuid";
     private static final String BATCH_TYPE_NODE = "batchType";
     private static final String CLIENT_NODE = "clientId";
+    private static final String PHOTO_URL_NODE = "photoUrl";
     private static final String DRIVER_DISPLAY_NAME_NODE = "driverDisplayName";
     private static final String DRIVER_DIAL_NUMBER_NODE = "driverDialNumber";
     private static final String DRIVER_CAN_VOICE_NODE = "driverCanVoice";
@@ -52,6 +53,7 @@ public class BatchStartRequestWrite implements
         Timber.tag(TAG).d("   batchStartRequestRef      = " + batchStartRequestRef.toString());
         Timber.tag(TAG).d("   driver clientId           = " + driver.getClientId());
         Timber.tag(TAG).d("   driver display name       = " + driver.getNameSettings().getFirstName());
+        Timber.tag(TAG).d("   driver photo url          - " + driver.getPhotoUrl());
         Timber.tag(TAG).d("   driver dial number        = " + driver.getPhoneSettings().getDialNumber());
         Timber.tag(TAG).d("   driver can SMS            = " + driver.getPhoneSettings().getCanSMS().toString());
         Timber.tag(TAG).d("   driver can Voice          = " + driver.getPhoneSettings().getCanVoice().toString());
@@ -66,6 +68,7 @@ public class BatchStartRequestWrite implements
         data.put(BATCH_NODE, batchDetail.getBatchGuid());
         data.put(BATCH_TYPE_NODE, batchDetail.getBatchType().toString());
         data.put(CLIENT_NODE, driver.getClientId());
+        data.put(PHOTO_URL_NODE, driver.getPhotoUrl());
 
         data.put(DRIVER_DISPLAY_NAME_NODE, driver.getNameSettings().getFirstName());
         data.put(DRIVER_DIAL_NUMBER_NODE, driver.getPhoneSettings().getDialNumber());

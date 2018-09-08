@@ -53,7 +53,7 @@ public class BatchListAdapter extends RecyclerView.Adapter<BatchListAdapter.Batc
     @Override
     public BatchViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View inflatedView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.batchesview_item_row, parent, false);
+                .inflate(R.layout.batches_view_item_row_new, parent, false);
         Timber.tag(TAG).d("created new BatchViewHolder");
         return new BatchViewHolder(inflatedView, response);
     }
@@ -78,12 +78,13 @@ public class BatchListAdapter extends RecyclerView.Adapter<BatchListAdapter.Batc
     public class BatchViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageView serviceProviderImage;
+        private TextView batchDate;
         private TextView batchTime;
         private TextView batchDuration;
         private TextView batchDescription;
         private TextView baseEarnings;
         private TextView extraEarnings;
-        private ImageView distanceImage;
+        //private ImageView distanceImage;
         private TextView distance;
 
         private Batch batch;
@@ -96,13 +97,14 @@ public class BatchListAdapter extends RecyclerView.Adapter<BatchListAdapter.Batc
             this.response = response;
 
             serviceProviderImage = (ImageView) v.findViewById(R.id.serviceProvider_image);
+            batchDate = (TextView) v.findViewById(R.id.item_date);
             batchTime = (TextView) v.findViewById(R.id.item_time);
             batchDuration = (TextView) v.findViewById(R.id.item_duration);
             batchDescription = (TextView) v.findViewById(R.id.item_description);
             baseEarnings = (TextView) v.findViewById(R.id.item_earnings);
             extraEarnings = (TextView) v.findViewById(R.id.item_earnings_extra);
             distance = (TextView) v.findViewById(R.id.item_distance);
-            distanceImage = (ImageView) v.findViewById(R.id.distance_image);
+            //distanceImage = (ImageView) v.findViewById(R.id.distance_image);
 
             v.setOnClickListener(this);
         }
@@ -118,7 +120,11 @@ public class BatchListAdapter extends RecyclerView.Adapter<BatchListAdapter.Batc
             this.batch = batch;
 
             String displayDescription = batch.getTitle();
-            String displayTime = LayoutComponentUtilities.getDisplayTiming(BuilderUtilities.convertMillisToDate(batch.getExpectedStartTime()), BuilderUtilities.convertMillisToDate(batch.getExpectedFinishTime()));
+
+            String displayDate = LayoutComponentUtilities.getDisplayDate(activityContext, BuilderUtilities.convertMillisToDate(batch.getExpectedStartTime()));
+
+            String displayTime = LayoutComponentUtilities.getStartTime(BuilderUtilities.convertMillisToDate(batch.getExpectedStartTime()));
+
             String displayDuration = LayoutComponentUtilities.getDisplayDuration(BuilderUtilities.convertMillisToDate(batch.getExpectedStartTime()), BuilderUtilities.convertMillisToDate(batch.getExpectedFinishTime()));
 
             //TODO do the number formatting into currency in the batch builder, then just get property here
@@ -129,11 +135,12 @@ public class BatchListAdapter extends RecyclerView.Adapter<BatchListAdapter.Batc
                 displayExtraEarnings = "+ Tips";
             }
             String serviceProviderUrl = batch.getIconUrl();
-            String distanceUrl = batch.getDisplayDistance().getDistanceIndicatorUrl();
+            //String distanceUrl = batch.getDisplayDistance().getDistanceIndicatorUrl();
             String displayDistance = batch.getDisplayDistance().getDistanceToTravel();
 
 
             batchDescription.setText(displayDescription);
+            batchDate.setText(displayDate);
             batchTime.setText(displayTime);
             batchDuration.setText(displayDuration);
             baseEarnings.setText(displayBaseEarnings);
@@ -146,9 +153,9 @@ public class BatchListAdapter extends RecyclerView.Adapter<BatchListAdapter.Batc
                     .into(serviceProviderImage);
 
             //Picasso.with(activityContext)
-            Picasso.get()
-                    .load(distanceUrl)
-                    .into(distanceImage);
+            //Picasso.get()
+             //       .load(distanceUrl)
+             //       .into(distanceImage);
 
 
             Timber.tag(TAG).d("bindBatch --->");
@@ -159,7 +166,7 @@ public class BatchListAdapter extends RecyclerView.Adapter<BatchListAdapter.Batc
             Timber.tag(TAG).d("---> Base Earnings      : " + displayBaseEarnings);
             Timber.tag(TAG).d("---> Extra Earnings     : " + displayExtraEarnings);
             Timber.tag(TAG).d("---> serviceProviderUrl : " + serviceProviderUrl);
-            Timber.tag(TAG).d("---> distanceUrl        : " + distanceUrl);
+            //Timber.tag(TAG).d("---> distanceUrl        : " + distanceUrl);
             Timber.tag(TAG).d("---> distance           : " + displayDistance);
 
         }

@@ -58,6 +58,7 @@ public class DemoBatchTwoStepWithVehiclePhotos implements DemoBatchInterface {
                 .guid(batchGuid)
                 .title(BatchRandomTitleGenerator.getRandomTitle())
                 .description("pick up a vehicle")
+                .customer(DemoBatchUtilities.getCustomer())
                 .iconUrl(BatchIconGenerator.getRandomIconUrl(targetEnvironment))
                 .displayDistance(new DisplayDistanceBuilder.Builder()
                         .distanceToTravel("18 miles")

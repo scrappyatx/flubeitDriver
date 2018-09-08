@@ -69,6 +69,66 @@
         <item name="android:textColor">@color/offwhite</item>
     </style>
 
+    <!-- OFFER ROW ITEM styles -->
+    <style name="OfferRowHeader" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorOfferRowHeader</item>
+    </style>
+
+    <style name="OfferRowExpenses" parent="TextAppearance.AppCompat.Display1">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorOfferRowExpenses</item>
+    </style>
+
+    <style name="OfferRowTips" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorOfferRowExpenses</item>
+    </style>
+
+    <style name="OfferRowTitle" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorOfferRowTitle</item>
+    </style>
+
+    <style name="OfferRowDate" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorOfferRowDate</item>
+    </style>
+
+    <style name="OfferRowTime" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorOfferRowTime</item>
+    </style>
+
+    <style name="OfferRowDuration" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorOfferRowDuration</item>
+    </style>
+
+    <style name="OfferRowDistanceLabel" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/colorOfferRowDistanceLabel</item>
+    </style>
+
+    <style name="OfferRowDistance" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/colorOfferRowDistance</item>
+    </style>
+
+
+
+
     <!-- HOME SUMMARY styles -->
     <style name="HomeSummaryStyleTitle" parent="TextAppearance.AppCompat.Headline">
         <item name="android:fontFamily">sans-serif</item>
@@ -99,13 +159,13 @@
 
 
     <!-- BATCH DETAIL styles -->
-    <style name="BatchDetailStyleTitle" parent="TextAppearance.AppCompat.Title">
+    <style name="BatchDetailStyleTitle" parent="TextAppearance.AppCompat.Display1">
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/colorBatchDetailTitle</item>
     </style>
 
-    <style name="BatchDetailStyleBatchType" parent="TextAppearance.AppCompat.Body1">
+    <style name="BatchDetailStyleBatchType" parent="TextAppearance.AppCompat.Title">
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/colorBatchDetailBatchType</item>
@@ -121,6 +181,7 @@
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">bold</item>
         <item name="textAllCaps">true</item>
+        <item name="android:textColor">@color/colorBatchDetailTabText</item>
     </style>
 
     <style name="BatchDetailForfeitStyleDescription" parent="TextAppearance.AppCompat.Body1">
@@ -149,6 +210,76 @@
         <item name="android:textAlignment">center</item>
         <item name="android:textColor">@color/colorBatchWaitingToFinishBanner</item>
     </style>
+
+    <!-- BATCH DETAIL DISPLAY TIMING GROUP -->
+    <style name="BatchDetailDisplayTimingExpiry" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorBatchDetailDisplayTimingExpiry</item>
+    </style>
+
+    <style name="BatchDetailDisplayTimingDate" parent="TextAppearance.AppCompat.Title">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorBatchDetailDisplayTimingDate</item>
+    </style>
+
+    <style name="BatchDetailDisplayTimingTime" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorBatchDetailDisplayTimingTime</item>
+    </style>
+
+    <style name="BatchDetailDisplayTimingDuration" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorBatchDetailDisplayTimingDuration</item>
+    </style>
+
+    <!-- BATCH DETAIL DISPLAY EARNINGS GROUP -->
+    <style name="BatchDetailDisplayEarningsPayment" parent="TextAppearance.AppCompat.Title">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorBatchDetailDisplayEarningsPayment</item>
+    </style>
+
+    <!-- BATCH DETAIL DISPLAY DISTANCE GROUP -->
+    <style name="BatchDetailDisplayDistance" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorBatchDetailDisplayDistance</item>
+    </style>
+
+    <!-- BATCH DETAIL ORDERS TAB -->
+    <style name="BatchDetailOrdersSequence" parent="@style/TextAppearance.AppCompat.Title">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorBatchDetailOrdersSequence</item>
+    </style>
+
+    <style name="BatchDetailOrdersTitle" parent="@style/TextAppearance.AppCompat.Title">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorBatchDetailOrdersTitle</item>
+    </style>
+
+    <style name="BatchDetailOrdersTiming" parent="@style/TextAppearance.AppCompat.Caption">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorBatchDetailOrdersTiming</item>
+    </style>
+
+
 
     <!-- STEP sequence styles   -->
     <style name="StepSequenceStyle" parent="TextAppearance.AppCompat.Subhead">

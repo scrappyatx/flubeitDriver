@@ -14,6 +14,7 @@ import it.flube.libbatchdata.builders.serviceOrder.ServiceOrderBuilder;
 import it.flube.libbatchdata.entities.ChatHistory;
 import it.flube.libbatchdata.entities.ChatMessage;
 import it.flube.libbatchdata.entities.ContactPerson;
+import it.flube.libbatchdata.entities.Customer;
 import it.flube.libbatchdata.entities.FileAttachment;
 import it.flube.libbatchdata.entities.MapPing;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
@@ -140,6 +141,11 @@ public class BatchHolderBuilder {
         public Builder potentialEarnings(PotentialEarnings potentialEarnings){
             this.batchHolder.getBatch().setPotentialEarnings(potentialEarnings);
             this.batchHolder.getBatchDetail().setPotentialEarnings(potentialEarnings);
+            return this;
+        }
+
+        public Builder customer(Customer customer){
+            this.batchHolder.getBatchDetail().setCustomer(customer);
             return this;
         }
 
@@ -293,6 +299,10 @@ public class BatchHolderBuilder {
 
             if (batchHolder.getBatch().getOfferExpiryTime() == null) {
                 throw new IllegalStateException("offerExpiryTime is null");
+            }
+
+            if (batchHolder.getBatchDetail().getCustomer() == null){
+                throw new IllegalStateException("customer is null");
             }
 
         }

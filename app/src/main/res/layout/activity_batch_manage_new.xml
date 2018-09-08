@@ -46,9 +46,13 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
 
+        app:tabBackground="@drawable/detail_tab_background"
+
         app:tabMode="fixed"
         app:tabGravity="fill"
-        app:tabTextAppearance = "@style/BatchDetailTabTextAppearance">
+        app:tabTextAppearance = "@style/BatchDetailTabTextAppearance"
+        app:tabTextColor="@color/colorBatchDetailTabText"
+        app:tabSelectedTextColor="@color/colorBatchDetailTabText" >
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
@@ -140,9 +144,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
-        app:buttonBackgroundColor="@color/colorButton"
-        app:slideBackgroundColor="@color/colorAccent"
-        app:slideTextColor="@color/black"
+        app:buttonBackgroundColor="@color/colorButtonText"
+        app:slideBackgroundColor="@color/colorPrimaryDark"
+        app:slideTextColor="@color/colorButtonText"
+
         app:slideText="SWIPE TO START"
         app:slideTextSize="16sp"
         app:animateSlideText="true"

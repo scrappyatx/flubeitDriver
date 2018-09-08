@@ -9,6 +9,7 @@ package it.flube.driver.userInterfaceLayer.layoutComponents.offers;
  */
 
 import android.content.Context;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,18 +34,18 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Of
     private static final String TAG = "OffersListAdapter";
 
     private Context activityContext;
-    private ArrayList<Batch> offersList;
+    private ArrayList<OfferRowHolder> offersList;
     private OffersListAdapter.Response response;
 
 
     public OffersListAdapter(Context activityContext, OffersListAdapter.Response response ) {
         this.response = response;
         this.activityContext = activityContext;
-        offersList = new ArrayList<Batch>();
+        offersList = new ArrayList<OfferRowHolder>();
 
     }
 
-    public void updateList(ArrayList<Batch> offersList) {
+    public void updateList(ArrayList<OfferRowHolder> offersList) {
         Timber.tag(TAG).d("starting update list...");
         Timber.tag(TAG).d("    parameter offersList --> " + offersList.size() + " items");
         this.offersList.clear();
@@ -57,16 +58,16 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Of
     @Override
     public OfferViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View inflatedView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.offersview_item_row, parent, false);
+                .inflate(R.layout.offers_item_row_with_header, parent, false);
         Timber.tag(TAG).d("created new OfferViewHolder");
         return new OfferViewHolder(inflatedView, response);
     }
 
     @Override
     public void onBindViewHolder(OfferViewHolder holder, int position) {
-        Batch itemOffer = offersList.get(position);
+        OfferRowHolder itemOffer = offersList.get(position);
         holder.bindOffer(itemOffer);
-        Timber.tag(TAG).d("Binding offer " + itemOffer.getGuid() + " to position " + Integer.toString(position));
+        Timber.tag(TAG).d("Binding offer " + itemOffer.getBatch().getGuid() + " to position " + Integer.toString(position));
     }
 
     @Override
@@ -83,6 +84,7 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Of
     public class OfferViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageView serviceProviderImage;
+        private TextView offerDate;
         private TextView offerTime;
         private TextView offerDuration;
         private TextView offerDescription;
@@ -91,7 +93,11 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Of
         private ImageView distanceImage;
         private TextView distance;
 
+        private ConstraintLayout offerHeader;
+        private TextView displayHeader;
+
         private Batch offer;
+        private OfferRowHolder offerRow;
 
         private OffersListAdapter.Response response;
 
@@ -101,13 +107,17 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Of
             this.response = response;
 
             serviceProviderImage = (ImageView) v.findViewById(R.id.serviceProvider_image);
+            offerDate = (TextView) v.findViewById(R.id.item_date);
             offerTime = (TextView) v.findViewById(R.id.item_time);
             offerDuration = (TextView) v.findViewById(R.id.item_duration);
             offerDescription = (TextView) v.findViewById(R.id.item_description);
             baseEarnings = (TextView) v.findViewById(R.id.item_earnings);
             extraEarnings = (TextView) v.findViewById(R.id.item_earnings_extra);
             distance = (TextView) v.findViewById(R.id.item_distance);
-            distanceImage = (ImageView) v.findViewById(R.id.distance_image);
+            //distanceImage = (ImageView) v.findViewById(R.id.distance_image);
+
+            offerHeader = (ConstraintLayout) v.findViewById(R.id.offers_item_row_header);
+            displayHeader = (TextView) v.findViewById(R.id.date_header);
 
             v.setOnClickListener(this);
         }
@@ -119,13 +129,31 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Of
             Timber.tag(TAG).d("offer selected --> " + offer.getGuid());
         }
 
-        public void bindOffer(Batch offer) {
-            this.offer = offer;
+        public void bindOffer(OfferRowHolder offerRow) {
+            this.offer = offerRow.getBatch();
+            this.offerRow = offerRow;
+
+            //set display header
+            displayHeader.setText(offerRow.getDisplayHeader());
+
+            if (offerRow.getShowHeader()){
+                offerHeader.setVisibility(View.VISIBLE);
+                displayHeader.setVisibility(View.VISIBLE);
+            } else {
+                offerHeader.setVisibility(View.GONE);
+                displayHeader.setVisibility(View.GONE);
+            }
+
             Timber.tag(TAG).d("offer guid -> " + offer.getGuid());
 
             String displayDescription = offer.getTitle();
-            String displayTime = LayoutComponentUtilities.getDisplayTiming(BuilderUtilities.convertMillisToDate(offer.getExpectedStartTime()), BuilderUtilities.convertMillisToDate(offer.getExpectedFinishTime()));
+
+            String displayDate = LayoutComponentUtilities.getDisplayDate(activityContext, BuilderUtilities.convertMillisToDate(offer.getExpectedStartTime()));
+
+            String displayTime = LayoutComponentUtilities.getStartTime(BuilderUtilities.convertMillisToDate(offer.getExpectedStartTime()));
+
             String displayDuration = LayoutComponentUtilities.getDisplayDuration(BuilderUtilities.convertMillisToDate(offer.getExpectedStartTime()), BuilderUtilities.convertMillisToDate(offer.getExpectedFinishTime()));
+
             //TODO do the number formatting into currency in the batch builder, then just get property here
             String displayBaseEarnings = NumberFormat.getCurrencyInstance(new Locale("en", "US"))
                     .format(offer.getPotentialEarnings().getPayRateInCents()/100);
@@ -134,11 +162,12 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Of
                 displayExtraEarnings = "+ Tips";
             }
             String serviceProviderUrl = offer.getIconUrl();
-            String distanceUrl = offer.getDisplayDistance().getDistanceIndicatorUrl();
+            //String distanceUrl = offer.getDisplayDistance().getDistanceIndicatorUrl();
             String displayDistance = offer.getDisplayDistance().getDistanceToTravel();
 
 
             offerDescription.setText(displayDescription);
+            offerDate.setText(displayDate);
             offerTime.setText(displayTime);
             offerDuration.setText(displayDuration);
             baseEarnings.setText(displayBaseEarnings);
@@ -151,9 +180,9 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Of
                     .into(serviceProviderImage);
 
             //Picasso.with(activityContext)
-            Picasso.get()
-                    .load(distanceUrl)
-                    .into(distanceImage);
+            //Picasso.get()
+            //        .load(distanceUrl)
+            //        .into(distanceImage);
 
 
             Timber.tag(TAG).d("bindOffer --->");
@@ -164,7 +193,7 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Of
             Timber.tag(TAG).d("---> Base Earnings      : " + displayBaseEarnings);
             Timber.tag(TAG).d("---> Extra Earnings     : " + displayExtraEarnings);
             Timber.tag(TAG).d("---> serviceProviderUrl : " + serviceProviderUrl);
-            Timber.tag(TAG).d("---> distanceUrl        : " + distanceUrl);
+            //Timber.tag(TAG).d("---> distanceUrl        : " + distanceUrl);
             Timber.tag(TAG).d("---> distance           : " + displayDistance);
 
         }

@@ -37,6 +37,7 @@ public class DeviceImageStorageSave {
             Timber.tag(TAG).d("          height        -> " + bitmap.getHeight());
             Timber.tag(TAG).d("          width         -> " + bitmap.getWidth());
             Timber.tag(TAG).d("          size (bytes) - > " + bitmap.getByteCount());
+            Timber.tag(TAG).d("          size (MB)    - > " + (bitmap.getByteCount()/1024)/1024);
 
             //file name is the imageGuid
             File myFile = new File(cw.getDir(IMAGE_DIR, Context.MODE_PRIVATE), imageGuid);
@@ -57,6 +58,7 @@ public class DeviceImageStorageSave {
             Long fileSize = myFile.length();
 
             Timber.tag(TAG).d("   ...file size bytes : " + fileSize.toString());
+            Timber.tag(TAG).d("   ...fire size MB    : " + (fileSize/1024)/1024);
 
             response.deviceImageStorageSaveSuccess(myFile.getAbsoluteFile().toString());
 

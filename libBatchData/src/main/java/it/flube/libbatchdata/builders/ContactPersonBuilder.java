@@ -114,6 +114,21 @@ public class ContactPersonBuilder {
             return this;
         }
 
+        public Builder proxySessionId(String proxySessionId){
+            this.contactPerson.setProxySessionId(proxySessionId);
+            return this;
+        }
+
+        public Builder proxyParticipantSid(String proxyParticipantSid){
+            this.contactPerson.setProxyParticipantSid(proxyParticipantSid);
+            return this;
+        }
+
+        public Builder proxyExpirationTime(Long proxyExpirationTime){
+            this.contactPerson.setProxyExpirationTime(proxyExpirationTime);
+            return this;
+        }
+
         public Builder hasProxyPhoneNumber(Boolean hasProxyPhoneNumber){
             this.contactPerson.setHasProxyPhoneNumber(hasProxyPhoneNumber);
             return this;

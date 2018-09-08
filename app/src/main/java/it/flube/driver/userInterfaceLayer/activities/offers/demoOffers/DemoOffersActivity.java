@@ -72,7 +72,7 @@ public class DemoOffersActivity extends AppCompatActivity implements
         offersLayout.setVisible();
 
         offersList.onResume(this, this);
-        offersList.setValues(AndroidDevice.getInstance().getOfferLists().getDemoOffers());
+        offersList.setValues(this, AndroidDevice.getInstance().getOfferLists().getDemoOffers());
         offersList.setVisible();
 
         checkIfTooManyOffers();
@@ -132,14 +132,14 @@ public class DemoOffersActivity extends AppCompatActivity implements
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(DemoOfferOfferListUpdatedEvent event) {
         Timber.tag(TAG).d("received DemoOfferListUpdatedEvent");
-        offersList.setValues(AndroidDevice.getInstance().getOfferLists().getDemoOffers());
+        offersList.setValues(this, AndroidDevice.getInstance().getOfferLists().getDemoOffers());
         offersList.setVisible();
         checkIfTooManyOffers();
     }
 
     /// make offer alert interfaces
     public void demoOfferCreatedAlertHidden(){
-        offersList.setValues(AndroidDevice.getInstance().getOfferLists().getDemoOffers());
+        offersList.setValues(this, AndroidDevice.getInstance().getOfferLists().getDemoOffers());
         checkIfTooManyOffers();
     }
 

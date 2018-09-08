@@ -69,6 +69,7 @@ public class DemoBatchSingleStepOnePhoto implements DemoBatchInterface {
                 .guid(batchGuid)
                 .title(BATCH_TITLE)
                 .description(BATCH_DESCRIPTION)
+                .customer(DemoBatchUtilities.getCustomer())
                 .iconUrl(BatchIconGenerator.getRandomIconUrl(targetEnvironment))
                 .displayDistance(new DisplayDistanceBuilder.Builder()
                         .distanceToTravel("18 miles")

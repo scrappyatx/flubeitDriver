@@ -7,6 +7,7 @@ package it.flube.libbatchdata.entities.batch;
 import java.util.Map;
 
 import it.flube.libbatchdata.entities.ContactPerson;
+import it.flube.libbatchdata.entities.Customer;
 import it.flube.libbatchdata.entities.DriverInfo;
 import it.flube.libbatchdata.entities.DisplayDistance;
 import it.flube.libbatchdata.entities.PotentialEarnings;
@@ -68,6 +69,8 @@ public class BatchDetail {
 
     private Map<String, ContactPerson> contactPersons;
     private Map<String, Map<String, ContactPerson>> contactPersonsByServiceOrder;
+
+    private Customer customer;
 
 
     public BatchType getBatchType() {
@@ -252,5 +255,13 @@ public class BatchDetail {
 
     public void setContactPersonsByServiceOrder(Map<String, Map<String, ContactPerson>> contactPersonsByServiceOrder) {
         this.contactPersonsByServiceOrder = contactPersonsByServiceOrder;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 }

@@ -27,6 +27,9 @@ public class ContactPerson {
     private String dialPhoneNumber;
 
     private Boolean hasProxyPhoneNumber;
+    private String proxySessionId;
+    private Long proxyExpirationTime;
+    private String proxyParticipantSid;
     private String proxyDisplayPhoneNumber;
     private String proxyDialPhoneNumber;
 
@@ -82,6 +85,31 @@ public class ContactPerson {
 
     public void setHasProxyPhoneNumber(Boolean hasProxyPhoneNumber) {
         this.hasProxyPhoneNumber = hasProxyPhoneNumber;
+    }
+
+    public String getProxySessionId() {
+        return proxySessionId;
+    }
+
+    public String getProxyParticipantSid() {
+        return proxyParticipantSid;
+    }
+
+    public void setProxyParticipantSid(String proxyParticipantSid) {
+        this.proxyParticipantSid = proxyParticipantSid;
+    }
+
+    public void setProxySessionId(String proxySessionId) {
+        this.proxySessionId = proxySessionId;
+    }
+
+
+    public Long getProxyExpirationTime() {
+        return proxyExpirationTime;
+    }
+
+    public void setProxyExpirationTime(Long proxyExpirationTime) {
+        this.proxyExpirationTime = proxyExpirationTime;
     }
 
     public String getProxyDisplayPhoneNumber() {

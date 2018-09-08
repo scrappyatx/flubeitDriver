@@ -105,6 +105,12 @@
         <!-- AUTHORIZE PAYMENT ACTIVITIES -->
         <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.AuthorizePaymentActivity"
             android:noHistory="true" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.receiptDetail.ReceiptDetailActivity"
+            android:noHistory="true" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.receiptPhotoTake.ReceiptPhotoTake"
+            android:noHistory="true" />
+
+
 
         <!-- WAITING TO FINISH BATCH ACTIVITIES -->
         <activity android:name=".userInterfaceLayer.activities.activeBatch.waitingToFinishBatch.WaitingToFinishBatchActivity"

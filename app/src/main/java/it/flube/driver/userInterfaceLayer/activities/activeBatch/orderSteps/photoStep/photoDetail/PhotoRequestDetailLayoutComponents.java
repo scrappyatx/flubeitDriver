@@ -67,36 +67,76 @@ public class PhotoRequestDetailLayoutComponents {
         if (photoRequest.getHasPhotoHint()){
             hasPhotoHint = true;
             //Picasso.with(activity)
+
+            //// GLIDE TEST
             Picasso.get()
                     .load(photoRequest.getPhotoHintUrl())
-                    .resize(THUMBNAIL_WIDTH, THUMBNAIL_WIDTH)
+                    //.resize(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT)
+                    .fit()
+                    .centerInside()
                     .into(hint);
+
+            //Glide.with(activity)
+            //        .load(photoRequest.getPhotoHintUrl())
+            //        .into(hint);
+
         }
 
         if (photoRequest.getHasDeviceFile()) {
             //actual.setImageBitmap(BitmapFactory.decodeFile(photoRequest.getDeviceAbsoluteFileName()));
             //Picasso.with(activity)
+
+            String fileName = "file://" + photoRequest.getDeviceAbsoluteFileName();
+            Timber.tag(TAG).d("filename -> " + fileName);
+
+            //// GLIDE TEST
             Picasso.get()
-                    .load(new File(photoRequest.getDeviceAbsoluteFileName()))
+                    //.load(new File(photoRequest.getDeviceAbsoluteFileName()))
+                    .load(fileName)
                     //.placeholder(R.drawable.placeholder_image)
-                    .resize(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT)
+                    //.resize(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT)
+                    .fit()
+                    .centerInside()
                     .into(actual);
+
+            //Glide.with(activity)
+            //        .load(new File(photoRequest.getDeviceAbsoluteFileName()))
+            //        .into(actual);
+
 
         } else if (photoRequest.getHasNoAttemptImage()) {
 
             //Picasso.with(activity)
+
+            //// GLIDE TEST
             Picasso.get()
                     .load(photoRequest.getNoAttemptImageUrl())
                     //.placeholder(R.drawable.no_attempts_placeholder)
-                    .resize(THUMBNAIL_WIDTH, THUMBNAIL_WIDTH)
+                    //.resize(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT)
+                    .fit()
+                    .centerInside()
                     .into(actual);
+
+            //Glide.with(activity)
+            //        .load(photoRequest.getNoAttemptImageUrl())
+            //        .into(actual);
+
+
         } else {
 
             //Picasso.with(activity)
+
+            //// GLIDE TEST
             Picasso.get()
                     .load(R.drawable.no_attempts_placeholder)
-                    .resize(THUMBNAIL_WIDTH, THUMBNAIL_WIDTH)
-                    .into(actual);
+                   //.resize(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT)
+                    .fit()
+                    .centerInside()
+                   .into(actual);
+
+            //Glide.with(activity)
+            //        .load(R.drawable.no_attempts_placeholder)
+            //        .into(actual);
         }
 
         Timber.tag(TAG).d("setValues");

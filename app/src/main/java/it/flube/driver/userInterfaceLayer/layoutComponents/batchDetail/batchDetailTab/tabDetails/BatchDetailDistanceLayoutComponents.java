@@ -29,13 +29,13 @@ public class BatchDetailDistanceLayoutComponents {
     ///
 
     private ConstraintLayout layout;
-    private ImageView distance_icon;
+    //private ImageView distance_icon;
     private TextView distance_to_travel;
 
     public BatchDetailDistanceLayoutComponents(AppCompatActivity activity){
         layout = (ConstraintLayout) activity.findViewById(R.id.batch_detail_display_distance_group);
 
-        distance_icon = (ImageView) activity.findViewById(R.id.batch_detail_distance_icon);
+        //distance_icon = (ImageView) activity.findViewById(R.id.batch_detail_distance_icon);
         distance_to_travel = (TextView) activity.findViewById(R.id.batch_detail_distance_to_travel);
         setInvisible();
     }
@@ -44,9 +44,9 @@ public class BatchDetailDistanceLayoutComponents {
         return layout;
     }
 
-    public ImageView getDistanceIcon(){
-        return distance_icon;
-    }
+   //public ImageView getDistanceIcon(){
+     //   return distance_icon;
+    //}
 
     public TextView getDistanceToTravel(){
         return distance_to_travel;
@@ -54,36 +54,36 @@ public class BatchDetailDistanceLayoutComponents {
 
     public void setValues(AppCompatActivity activity, BatchDetail batchDetail){
         //Picasso.with(activity)
-        Picasso.get()
-                .load(batchDetail.getDisplayDistance().getDistanceIndicatorUrl())
-                .into(distance_icon);
+        //Picasso.get()
+        //        .load(batchDetail.getDisplayDistance().getDistanceIndicatorUrl())
+        //        .into(distance_icon);
 
         distance_to_travel.setText(batchDetail.getDisplayDistance().getDistanceToTravel());
         Timber.tag(TAG).d("...setValues");
     }
 
     public void setVisible(){
-        distance_icon.setVisibility(View.VISIBLE);
+        //distance_icon.setVisibility(View.VISIBLE);
         distance_to_travel.setVisibility(View.VISIBLE);
         layout.setVisibility(View.VISIBLE);
         Timber.tag(TAG).d("...set VISIBLE");
     }
     public void setInvisible(){
-        distance_icon.setVisibility(View.INVISIBLE);
+        //distance_icon.setVisibility(View.INVISIBLE);
         distance_to_travel.setVisibility(View.INVISIBLE);
         layout.setVisibility(View.INVISIBLE);
         Timber.tag(TAG).d("...set INVISIBLE");
     }
 
     public void setGone(){
-        distance_icon.setVisibility(View.GONE);
+        //distance_icon.setVisibility(View.GONE);
         distance_to_travel.setVisibility(View.GONE);
         layout.setVisibility(View.GONE);
         Timber.tag(TAG).d("...set GONE");
     }
 
     public void close(){
-        distance_icon = null;
+        //distance_icon = null;
         distance_to_travel = null;
         layout = null;
         Timber.tag(TAG).d("components closed");

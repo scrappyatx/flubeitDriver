@@ -25,6 +25,7 @@ import io.fotoapparat.parameter.ScaleType;
 import io.fotoapparat.result.BitmapPhoto;
 import io.fotoapparat.result.PhotoResult;
 import io.fotoapparat.result.WhenDoneListener;
+import io.fotoapparat.selector.ResolutionSelectorsKt;
 import io.fotoapparat.view.CameraRenderer;
 import it.flube.driver.R;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
@@ -70,6 +71,7 @@ public class PhotoTakeLayoutComponents implements
                         .with(activity)
                         .into(cameraView)
                         .previewScaleType(ScaleType.CenterCrop)
+                        .photoResolution(ResolutionSelectorsKt.lowestResolution())
                         .lensPosition(back())       // we want back camera
                         .build();
 

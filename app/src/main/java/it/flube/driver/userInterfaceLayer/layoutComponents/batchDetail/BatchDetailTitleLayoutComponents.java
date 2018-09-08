@@ -35,7 +35,7 @@ public class BatchDetailTitleLayoutComponents {
     private ImageView batch_icon;
     private TextView batch_title;
     private TextView batch_type;
-    private TextView batch_description;
+    //private TextView batch_description;
 
     private Boolean showBatchType;
 
@@ -45,7 +45,7 @@ public class BatchDetailTitleLayoutComponents {
         batch_icon = (ImageView) activity.findViewById(R.id.batch_detail_title_icon);
         batch_title = (TextView) activity.findViewById(R.id.batch_detail_title);
         batch_type = (TextView) activity.findViewById(R.id.batch_detail_batch_type);
-        batch_description = (TextView) activity.findViewById(R.id.batch_detail_description);
+        //batch_description = (TextView) activity.findViewById(R.id.batch_detail_description);
 
         showBatchType = false;
 
@@ -65,9 +65,9 @@ public class BatchDetailTitleLayoutComponents {
         return batch_title;
     }
 
-    public TextView getDescription(){
-        return batch_description;
-    }
+    //public TextView getDescription(){
+    ///    return batch_description;
+    //}
 
     public void setValues(AppCompatActivity activity, BatchDetail batchDetail){
         // title viewgroup elements
@@ -77,7 +77,7 @@ public class BatchDetailTitleLayoutComponents {
                 .into(batch_icon);
 
         batch_title.setText(batchDetail.getTitle());
-        batch_description.setText(batchDetail.getDescription());
+        //batch_description.setText(batchDetail.getDescription());
 
         Timber.tag(TAG).d("   batchType -> " + batchDetail.getBatchType().toString());
         switch (batchDetail.getBatchType()){
@@ -101,7 +101,7 @@ public class BatchDetailTitleLayoutComponents {
         layout.setVisibility(View.VISIBLE);
         batch_icon.setVisibility(View.VISIBLE);
         batch_title.setVisibility(View.VISIBLE);
-        batch_description.setVisibility(View.VISIBLE);
+        //batch_description.setVisibility(View.VISIBLE);
 
         if (showBatchType) {
             batch_type.setVisibility(View.VISIBLE);
@@ -132,7 +132,7 @@ public class BatchDetailTitleLayoutComponents {
     public void close(){
         batch_icon = null;
         batch_title = null;
-        batch_description = null;
+        //batch_description = null;
         batch_type = null;
         layout = null;
         Timber.tag(TAG).d("components closed");

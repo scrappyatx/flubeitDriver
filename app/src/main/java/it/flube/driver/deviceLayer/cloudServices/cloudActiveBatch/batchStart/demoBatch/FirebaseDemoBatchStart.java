@@ -38,12 +38,17 @@ public class FirebaseDemoBatchStart implements
 
         /// set the data in the driver proxy node in batch data
         // save the proxy info in the batchDetail node in the batch data
-        new FirebaseDriverProxyInfo().updateDriverProxyInfoRequest(batchDataRef, driver, batchGuid, DRIVER_PROXY_DIAL_NUMBER, DRIVER_PROXY_DISPLAY_NUMBER, this );
+        //TODO clean this up after we finalize batchStartResponse node
+        //new FirebaseDriverProxyInfo().updateDriverProxyInfoRequest(batchDataRef, driver, batchGuid, DRIVER_PROXY_DIAL_NUMBER, DRIVER_PROXY_DISPLAY_NUMBER, this );
+        new FirebaseActiveBatchSetData().setDataRequest(activeBatchRef,
+                batchGuid, 1, 1,
+                ActiveBatchManageInterface.ActionType.BATCH_STARTED, actorType, this);
 
         Timber.tag(TAG).d("starting batch : batchGuid " + batchGuid);
     }
 
     /// callback from updateDriverProxyInfoRequest
+    //TODO clean this up after we finalize batchStartResponse node
     public void cloudActiveBatchUpdateDriverProxyInfoComplete(){
         /// set the data in the active batch node
         new FirebaseActiveBatchSetData().setDataRequest(activeBatchRef,

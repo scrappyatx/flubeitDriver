@@ -13,50 +13,74 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
 
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="2dp"
+    android:layout_marginRight="2dp"
+    android:layout_marginTop="0dp"
+    android:layout_marginBottom="0dp"
+
+    android:background="@drawable/batch_detail_display_earnings_background"
 
     android:elevation="8dp"
     tools:targetApi="lollipop">
+
+    <TextView
+        android:id="@+id/batch_detail_potential_earnings_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:textAppearance="@style/BatchDetailDisplayEarningsPayment"
+        android:text="@string/batch_detail_display_earnings_payment_label"
+        android:autoSizeTextType="uniform"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/batch_detail_potential_earnings"
+        app:layout_constraintHorizontal_chainStyle="packed"
+
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="20dp" />
 
     <TextView
         android:id="@+id/batch_detail_potential_earnings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        android:textStyle="bold"
+        android:textAppearance="@style/BatchDetailDisplayEarningsPayment"
+        android:autoSizeTextType="uniform"
         tools:text="$25"
 
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+
+        app:layout_constraintLeft_toRightOf="@+id/batch_detail_potential_earnings_label"
         app:layout_constraintRight_toLeftOf="@+id/batch_detail_plus_tips"
         app:layout_constraintHorizontal_chainStyle="packed"
 
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp" />
+        android:layout_marginBottom="20dp" />
 
     <TextView
         android:id="@+id/batch_detail_plus_tips"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        android:textStyle="bold"
+        android:textAppearance="@style/BatchDetailDisplayEarningsPayment"
+        android:autoSizeTextType="uniform"
         tools:text="+ Tips"
+
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/batch_detail_potential_earnings"
         app:layout_constraintRight_toRightOf="parent"
 
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp" />
+        android:layout_marginBottom="20dp" />
 
 </android.support.constraint.ConstraintLayout>

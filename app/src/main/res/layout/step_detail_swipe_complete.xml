@@ -21,9 +21,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
-        app:buttonBackgroundColor="@color/colorButton"
-        app:slideBackgroundColor="@color/colorAccent"
+        app:buttonBackgroundColor="@color/colorButtonText"
+        app:slideBackgroundColor="@color/colorPrimaryDark"
         app:slideTextColor="@color/colorButtonText"
+
         app:slideText="SWIPE TO START"
         app:slideTextSize="16sp"
         app:animateSlideText="true"

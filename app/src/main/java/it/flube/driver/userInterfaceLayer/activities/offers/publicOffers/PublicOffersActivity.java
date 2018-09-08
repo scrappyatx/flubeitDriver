@@ -67,7 +67,7 @@ public class PublicOffersActivity extends AppCompatActivity implements
         EventBus.getDefault().register(this);
 
         offersList.onResume(this, this);
-        offersList.setValues(AndroidDevice.getInstance().getOfferLists().getPublicOffers());
+        offersList.setValues(this, AndroidDevice.getInstance().getOfferLists().getPublicOffers());
         offersList.setVisible();
 
         controller.checkIfClaimAlertNeedsToBeShown(this);
@@ -102,7 +102,7 @@ public class PublicOffersActivity extends AppCompatActivity implements
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PublicOfferListUpdatedEvent event) {
         Timber.tag(TAG).d("received PublicOfferListUpdatedEvent");
-        offersList.setValues(AndroidDevice.getInstance().getOfferLists().getPublicOffers());
+        offersList.setValues(this, AndroidDevice.getInstance().getOfferLists().getPublicOffers());
         offersList.setVisible();
     }
 

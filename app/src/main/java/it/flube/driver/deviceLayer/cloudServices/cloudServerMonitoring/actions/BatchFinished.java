@@ -29,6 +29,7 @@ public class BatchFinished implements
 
     private String batchGuid;
     private String clientId;
+    private String customerId;
     private BatchDetail.BatchType batchType;
     private DatabaseReference addRef;
     private CloudServerMonitoringInterface.BatchFinishedResponse response;
@@ -39,6 +40,7 @@ public class BatchFinished implements
         this.batchGuid = batchDetail.getBatchGuid();
         this.clientId = clientId;
         this.batchType = batchDetail.getBatchType();
+        this.customerId = batchDetail.getCustomer().getId();
         this.addRef = addRef;
         this.response = response;
 
@@ -56,7 +58,7 @@ public class BatchFinished implements
     public void cloudServerMonitoringBatchRemovedComplete(String batchGuid){
         Timber.tag(TAG).d("cloudServerMonitoringBatchRemovedComplete");
         /// now write the data to the addRef
-        addRef.child(batchGuid).updateChildren(NodeBuilder.getCompletedBatchNode(clientId, batchType)).addOnCompleteListener(this);
+        addRef.child(batchGuid).updateChildren(NodeBuilder.getCompletedBatchNode(clientId, customerId, batchType)).addOnCompleteListener(this);
     }
 
     ///

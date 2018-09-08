@@ -100,7 +100,11 @@ public class FirebaseProductionBatchStart implements
             this.driverProxyDisplayNumber = startBatchResponse.getDriverProxyDisplayNumber();
 
             // save the proxy info in the batchDetail node in the batch data
-            new FirebaseDriverProxyInfo().updateDriverProxyInfoRequest(batchDataRef, driver, batchGuid, driverProxyDialNumber, driverProxyDisplayNumber, this );
+            //new FirebaseDriverProxyInfo().updateDriverProxyInfoRequest(batchDataRef, driver, batchGuid, driverProxyDialNumber, driverProxyDisplayNumber, this );
+            //TODO clean this up after we finalize batchStartResponse node
+            new FirebaseActiveBatchSetData().setDataRequest(activeBatchRef,
+                    batchGuid, 1, 1,
+                    ActiveBatchManageInterface.ActionType.BATCH_STARTED, ActiveBatchManageInterface.ActorType.MOBILE_USER, this);
 
         } else {
             //batch was not started
@@ -116,6 +120,7 @@ public class FirebaseProductionBatchStart implements
     }
 
     /// callback from updateDriverProxyInfoRequest
+    //TODO clean this up after we finalize batchStartResponse node
     public void cloudActiveBatchUpdateDriverProxyInfoComplete(){
         /// now set the data in the active batch node
         new FirebaseActiveBatchSetData().setDataRequest(activeBatchRef,

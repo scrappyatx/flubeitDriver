@@ -41,5 +41,6 @@ public class ServerMonitoringFirebaseConstants {
     public static final String CLIENT_ID_PROPERTY = "clientId";
     public static final String BATCH_TYPE_PROPERTY = "batchType";
     public static final String BATCH_COMPLETED_TIME_PROPERTY = "batchCompletedTimestamp";
+    public static final String CUSTOMER_ID_PROPERTY = "customerId";
 
 }

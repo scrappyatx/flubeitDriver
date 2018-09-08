@@ -65,13 +65,14 @@ public class OffersListLayoutComponent  {
         offersListAdapter.close();
     }
 
-    public void setValues(ArrayList<Batch> offersList){
+    public void setValues(AppCompatActivity activity, ArrayList<Batch> offersList){
         Timber.tag(TAG).d("   setValues --> offers list has " + offersList.size() + " items");
         if (offersList.size() > 0) {
             //we have offers
             hasOffers = true;
             Timber.tag(TAG).d("   ...updating list!");
-            offersListAdapter.updateList(offersList);
+
+            offersListAdapter.updateList(OfferRowListBuilder.getOfferRowList(activity, offersList));
         } else {
             //we have no offers
             Timber.tag(TAG).d("   ...no offers");

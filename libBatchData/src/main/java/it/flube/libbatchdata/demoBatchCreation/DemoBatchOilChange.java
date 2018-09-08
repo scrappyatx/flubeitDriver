@@ -96,6 +96,7 @@ public class DemoBatchOilChange implements DemoBatchInterface {
                 .guid(batchGuid)
                 .title(BatchRandomTitleGenerator.getRandomTitle())
                 .description("oil change")
+                .customer(DemoBatchUtilities.getCustomer())
                 .iconUrl(oilChangeProvider.getIconURL())
                 .displayDistance(new DisplayDistanceBuilder.Builder()
                         .distanceToTravel("18 miles")

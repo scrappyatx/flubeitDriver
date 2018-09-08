@@ -20,6 +20,7 @@ import static it.flube.driver.deviceLayer.cloudServices.cloudServerMonitoring.Se
 import static it.flube.driver.deviceLayer.cloudServices.cloudServerMonitoring.ServerMonitoringFirebaseConstants.BATCH_TYPE_PROPERTY;
 import static it.flube.driver.deviceLayer.cloudServices.cloudServerMonitoring.ServerMonitoringFirebaseConstants.CLIENT_ID_PROPERTY;
 import static it.flube.driver.deviceLayer.cloudServices.cloudServerMonitoring.ServerMonitoringFirebaseConstants.CONTACT_PERSONS_BY_SERVICE_ORDER_NODE;
+import static it.flube.driver.deviceLayer.cloudServices.cloudServerMonitoring.ServerMonitoringFirebaseConstants.CUSTOMER_ID_PROPERTY;
 import static it.flube.driver.deviceLayer.cloudServices.cloudServerMonitoring.ServerMonitoringFirebaseConstants.DRIVER_INFO_NODE;
 import static it.flube.driver.deviceLayer.cloudServices.cloudServerMonitoring.ServerMonitoringFirebaseConstants.LAST_UPDATE_LOCATION;
 import static it.flube.driver.deviceLayer.cloudServices.cloudServerMonitoring.ServerMonitoringFirebaseConstants.LAST_UPDATE_TIMESTAMP;
@@ -65,9 +66,10 @@ public class NodeBuilder {
         return data;
     }
 
-    public static HashMap<String, Object> getCompletedBatchNode(String clientId, BatchDetail.BatchType batchType){
+    public static HashMap<String, Object> getCompletedBatchNode(String clientId, String customerId, BatchDetail.BatchType batchType){
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put(CLIENT_ID_PROPERTY, clientId);
+        data.put(CUSTOMER_ID_PROPERTY,customerId);
         data.put(BATCH_TYPE_PROPERTY, batchType.toString());
         data.put(BATCH_COMPLETED_TIME_PROPERTY, ServerValue.TIMESTAMP);
         return data;

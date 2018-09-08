@@ -57,6 +57,7 @@ public class DemoBatchSimpleTwoStep implements DemoBatchInterface {
                 .guid(batchGuid)
                 .title(BatchRandomTitleGenerator.getRandomTitle())
                 .description("some description text")
+                .customer(DemoBatchUtilities.getCustomer())
                 .iconUrl(BatchIconGenerator.getRandomIconUrl(targetEnvironment))
                 .displayDistance(new DisplayDistanceBuilder.Builder()
                         .distanceToTravel("18 miles")

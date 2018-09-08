@@ -13,6 +13,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import it.flube.driver.R;
+import it.flube.driver.userInterfaceLayer.layoutComponents.LayoutComponentUtilities;
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import timber.log.Timber;
 
@@ -75,7 +77,7 @@ public class ServiceOrderListAdapter extends RecyclerView.Adapter<ServiceOrderLi
 
         private TextView sequence;
         private TextView title;
-        private TextView description;
+        //private TextView description;
         private TextView startBy;
         private TextView completeBy;
 
@@ -89,7 +91,7 @@ public class ServiceOrderListAdapter extends RecyclerView.Adapter<ServiceOrderLi
 
             sequence = (TextView) v.findViewById(R.id.service_order_list_sequence);
             title = (TextView) v.findViewById(R.id.service_order_list_title);
-            description = (TextView) v.findViewById(R.id.service_order_list_description);
+            //description = (TextView) v.findViewById(R.id.service_order_list_description);
             startBy = (TextView) v.findViewById(R.id.service_order_list_start_by_value);
             completeBy = (TextView) v.findViewById(R.id.service_order_list_complete_by_value);
 
@@ -108,14 +110,14 @@ public class ServiceOrderListAdapter extends RecyclerView.Adapter<ServiceOrderLi
 
             sequence.setText(order.getSequence().toString());
             title.setText(order.getTitle());
-            description.setText(order.getDescription());
-            startBy.setText(order.getStartTime().getScheduledTime().toString());
-            completeBy.setText(order.getFinishTime().getScheduledTime().toString());
+            //description.setText(order.getDescription());
+            startBy.setText(LayoutComponentUtilities.getStartTime(BuilderUtilities.convertMillisToDate(order.getStartTime().getScheduledTime())));
+            completeBy.setText(LayoutComponentUtilities.getStartTime(BuilderUtilities.convertMillisToDate(order.getFinishTime().getScheduledTime())));
 
             Timber.tag(TAG).d("bindOrder --->");
             Timber.tag(TAG).d("---> guid               : " + order.getGuid());
             Timber.tag(TAG).d("---> title              : " + order.getTitle());
-            Timber.tag(TAG).d("---> Description        : " + order.getDescription());
+            //Timber.tag(TAG).d("---> Description        : " + order.getDescription());
             Timber.tag(TAG).d("---> StartBy            : " + order.getStartTime().getScheduledTime().toString());
             Timber.tag(TAG).d("---> CompleteBy         : " + order.getFinishTime().getScheduledTime().toString());
 

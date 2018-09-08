@@ -34,6 +34,7 @@ public class BatchDetailTimingLayoutComponents {
     private TextView timing_display_date;
     private TextView timing_display_duration;
     private TextView timing_display_time;
+    private TextView timing_display_expiry_label;
     private TextView timing_display_expiry;
 
     private Boolean showExpiry;
@@ -47,6 +48,7 @@ public class BatchDetailTimingLayoutComponents {
         timing_display_date = (TextView) activity.findViewById(R.id.batch_detail_display_date);
         timing_display_duration = (TextView) activity.findViewById(R.id.batch_detail_display_duration);
         timing_display_time = (TextView) activity.findViewById(R.id.batch_detail_display_time);
+        timing_display_expiry_label = (TextView) activity.findViewById(R.id.batch_detail_display_expiry_label);
         timing_display_expiry = (TextView) activity.findViewById(R.id.batch_detail_display_expiry);
 
         setInvisible();
@@ -76,8 +78,11 @@ public class BatchDetailTimingLayoutComponents {
 
     public void setValues(Context context, BatchDetail batchDetail){
         timing_display_date.setText(LayoutComponentUtilities.getDisplayDate(context, BuilderUtilities.convertMillisToDate(batchDetail.getExpectedStartTime())));
-        timing_display_duration.setText(LayoutComponentUtilities.getDisplayTiming(BuilderUtilities.convertMillisToDate(batchDetail.getExpectedStartTime()), BuilderUtilities.convertMillisToDate(batchDetail.getExpectedFinishTime())));
-        timing_display_time.setText(LayoutComponentUtilities.getDisplayDuration(BuilderUtilities.convertMillisToDate(batchDetail.getExpectedStartTime()), BuilderUtilities.convertMillisToDate(batchDetail.getExpectedFinishTime())));
+
+        timing_display_duration.setText(LayoutComponentUtilities.getDisplayDuration(BuilderUtilities.convertMillisToDate(batchDetail.getExpectedStartTime()), BuilderUtilities.convertMillisToDate(batchDetail.getExpectedFinishTime())));
+
+        timing_display_time.setText(LayoutComponentUtilities.getStartTime(BuilderUtilities.convertMillisToDate(batchDetail.getExpectedStartTime())));
+
         timing_display_expiry.setText(LayoutComponentUtilities.getDisplayExpiry(context, BuilderUtilities.convertMillisToDate(batchDetail.getOfferExpiryTime())));
         Timber.tag(TAG).d("...setValues");
     }
@@ -85,8 +90,10 @@ public class BatchDetailTimingLayoutComponents {
     public void setVisible(){
         if (showExpiry) {
             timing_display_expiry.setVisibility(View.VISIBLE);
+            timing_display_expiry_label.setVisibility(View.VISIBLE);
         } else {
             timing_display_expiry.setVisibility(View.INVISIBLE);
+            timing_display_expiry_label.setVisibility(View.INVISIBLE);
         }
         timing_display_date.setVisibility(View.VISIBLE);
         timing_display_duration.setVisibility(View.VISIBLE);
@@ -101,6 +108,7 @@ public class BatchDetailTimingLayoutComponents {
         timing_display_duration.setVisibility(View.INVISIBLE);
         timing_display_time.setVisibility(View.INVISIBLE);
         timing_display_expiry.setVisibility(View.INVISIBLE);
+        timing_display_expiry_label.setVisibility(View.INVISIBLE);
         layout.setVisibility(View.INVISIBLE);
 
         Timber.tag(TAG).d("...set INVISIBLE");
@@ -111,6 +119,7 @@ public class BatchDetailTimingLayoutComponents {
         timing_display_duration.setVisibility(View.GONE);
         timing_display_time.setVisibility(View.GONE);
         timing_display_expiry.setVisibility(View.GONE);
+        timing_display_expiry_label.setVisibility(View.GONE);
         layout.setVisibility(View.GONE);
         Timber.tag(TAG).d("...set GONE");
     }
@@ -120,6 +129,7 @@ public class BatchDetailTimingLayoutComponents {
         timing_display_duration = null;
         timing_display_time = null;
         timing_display_expiry = null;
+        timing_display_expiry_label = null;
         layout = null;
         Timber.tag(TAG).d("components closed");
     }

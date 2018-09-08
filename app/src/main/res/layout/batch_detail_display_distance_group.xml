@@ -13,42 +13,57 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
 
+    android:background="@drawable/batch_detail_display_timing_background"
+
     android:layout_marginLeft="4dp"
     android:layout_marginRight="4dp"
-    android:layout_marginTop="4dp"
+    android:layout_marginTop="0dp"
     android:layout_marginBottom="4dp"
 
     android:elevation="8dp"
     tools:targetApi="lollipop">
 
-    <android.support.constraint.Guideline
+
+    <TextView
+        android:id="@+id/batch_detail_distance_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/vGuideline20"
-        app:layout_constraintGuide_percent="0.20"
-        android:orientation="vertical" />
 
-    <ImageView
-        android:id="@+id/batch_detail_distance_icon"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:text="@string/batch_detail_display_distance_label"
+        android:textAppearance="@style/BatchDetailDisplayDistance"
 
-        android:adjustViewBounds="true"
-        android:cropToPadding="true"
-        android:scaleType="fitCenter"
-        tools:src="@mipmap/distance_far"
-        tools:ignore="ContentDescription"
+        app:layout_constraintHorizontal_chainStyle="packed"
 
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/vGuideline20"
+        app:layout_constraintRight_toLeftOf="@+id/batch_detail_distance_icon"
 
-        android:layout_marginBottom="4dp"
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:layout_marginTop="4dp"
-        />
+        android:layout_marginBottom="20dp" />
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/batch_detail_distance_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:textAppearance="@style/BatchDetailDisplayDistance"
+        android:text="@string/batch_detail_display_distance_icon"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:layout_constraintLeft_toRightOf="@+id/batch_detail_distance_label"
+        app:layout_constraintRight_toLeftOf="@+id/batch_detail_distance_to_travel"
+
+        app:layout_constraintHorizontal_chainStyle="packed"
+
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="1dp"
+        android:layout_marginBottom="20dp" />
 
     <TextView
         android:id="@+id/batch_detail_distance_to_travel"
@@ -56,16 +71,18 @@
         android:layout_height="wrap_content"
 
         tools:text="18.3 miles"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:textStyle="bold"
+        android:textAppearance="@style/BatchDetailDisplayDistance"
 
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/vGuideline20"
+        app:layout_constraintLeft_toRightOf="@+id/batch_detail_distance_icon"
+        app:layout_constraintRight_toRightOf="parent"
 
-        android:layout_marginTop="4dp"
-        android:layout_marginLeft="4dp"
+        app:layout_constraintHorizontal_chainStyle="packed"
+
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="1dp"
         android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp" />
+        android:layout_marginBottom="20dp" />
 
 </android.support.constraint.ConstraintLayout>
