@@ -40,7 +40,7 @@ public class UseCaseLocationUpdateRequest implements
 
 
         this.device = device;
-        this.driver = device.getUser().getDriver();
+        this.driver = device.getCloudAuth().getDriver();
         this.batchGuid = batchGuid;
         this.serviceOrderGuid = serviceOrderGuid;
         this.orderStepGuid = orderStepGuid;
@@ -53,7 +53,10 @@ public class UseCaseLocationUpdateRequest implements
 
         ///save location update to batch data node
         Timber.tag(TAG).d("   ...sending location to cloud database");
-        device.getCloudActiveBatch().saveMapLocationRequest(driver, batchGuid, serviceOrderGuid, orderStepGuid, location, this);
+        //device.getCloudActiveBatch().saveMapLocationRequest(driver, batchGuid, serviceOrderGuid, orderStepGuid, location, this);
+
+        //TODO remember to take this one out you dumbass
+        device.getCloudServerMonitoring().locationUpdateRequest(batchGuid, location, this);
     }
 
     public void cloudActiveBatchSaveMapLocationComplete(){

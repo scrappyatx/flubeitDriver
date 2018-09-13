@@ -19,7 +19,6 @@ public interface MobileDeviceInterface {
     ///
 
     DeviceInfo getDeviceInfo();
-    AppUserInterface getUser();
     ActiveBatchInterface getActiveBatch();
     OffersInterface getOfferLists();
 

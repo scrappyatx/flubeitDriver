@@ -34,7 +34,7 @@ public class UseCaseGetOrderStep implements
     public void run(){
         Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
 
-        device.getCloudActiveBatch().getActiveBatchStepRequest(device.getUser().getDriver(), batchGuid, stepGuid, this);
+        device.getCloudActiveBatch().getActiveBatchStepRequest(device.getCloudAuth().getDriver(), batchGuid, stepGuid, this);
     }
 
     /// response interface for GetActiveBatchStepRequest

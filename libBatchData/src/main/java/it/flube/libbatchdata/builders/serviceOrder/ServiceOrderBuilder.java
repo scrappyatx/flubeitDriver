@@ -6,6 +6,8 @@ package it.flube.libbatchdata.builders.serviceOrder;
 
 
 import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.builders.ProductListBuilder;
+import it.flube.libbatchdata.entities.ProductList;
 import it.flube.libbatchdata.entities.Timestamp;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 
@@ -32,6 +34,7 @@ public class ServiceOrderBuilder {
             this.serviceOrder = new ServiceOrder();
             this.serviceOrder.setGuid(BuilderUtilities.generateGuid());
             this.serviceOrder.setStatus(ServiceOrder.ServiceOrderStatus.NOT_STARTED);
+            this.serviceOrder.setProductList(new ProductListBuilder.Builder().build());
         }
 
         public Builder guid(String guid){
@@ -81,6 +84,11 @@ public class ServiceOrderBuilder {
 
         public Builder finishTime(Timestamp finishTime) {
             this.serviceOrder.setFinishTime(finishTime);
+            return this;
+        }
+
+        public Builder productList(ProductList productList){
+            this.serviceOrder.setProductList(productList);
             return this;
         }
 

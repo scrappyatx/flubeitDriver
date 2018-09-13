@@ -38,7 +38,7 @@ public class UseCaseGetPublicOfferData implements
 
     public UseCaseGetPublicOfferData(MobileDeviceInterface device, String batchGuid, Response response){
         this.publicOffer = device.getCloudPublicOffer();
-        this.driver = device.getUser().getDriver();
+        this.driver = device.getCloudAuth().getDriver();
         this.batchGuid = batchGuid;
         this.response = response;
     }

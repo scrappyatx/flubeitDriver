@@ -41,7 +41,6 @@ public class WaitingToFinishBatchLayoutComponents implements
 
         banner = (TextView) activity.findViewById(R.id.batch_waiting_to_finish_banner);
 
-
         setGone();
         Timber.tag(TAG).d("...components created");
     }

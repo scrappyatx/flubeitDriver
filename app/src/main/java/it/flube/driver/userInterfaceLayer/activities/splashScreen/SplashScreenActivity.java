@@ -11,6 +11,7 @@ import it.flube.driver.R;
 import it.flube.driver.dataLayer.DeviceCheckForGooglePlayServices;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.userInterfaceEventHandlers.UserInterfaceEventHandler;
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import timber.log.Timber;
 
 public class SplashScreenActivity extends AppCompatActivity implements
@@ -18,8 +19,9 @@ public class SplashScreenActivity extends AppCompatActivity implements
 
     private static final String TAG = "SplashScreenActivity";
     private SplashScreenController controller;
-    private ActivityNavigator navigator;
     private UserInterfaceEventHandler eventHandler;
+
+    private String activityGuid;
 
     ///
     ///   This activity should only be run ONCE when app launches
@@ -33,31 +35,46 @@ public class SplashScreenActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-        Timber.tag(TAG).d("onCreate");
+
+        controller = new SplashScreenController(getApplicationContext(), this);
+
+        activityGuid = BuilderUtilities.generateGuid();
+        Timber.tag(TAG).d("onCreate (%s)", activityGuid);
     }
 
 
     @Override
     public void onResume(){
         super.onResume();
-        Timber.tag(TAG).d("onResume");
+        Timber.tag(TAG).d("onResume (%s)", activityGuid);
 
-        navigator = new ActivityNavigator();
-        eventHandler = new UserInterfaceEventHandler(this, navigator);
-        controller = new SplashScreenController(getApplicationContext(), this);
+        eventHandler = new UserInterfaceEventHandler(this);
 
         Timber.tag(TAG).d("about to check for google play services");
         controller.doDeviceCheck(this);
-
     }
 
 
     @Override
     public void onPause(){
         super.onPause();
-        Timber.tag(TAG).d("onPause");
+        Timber.tag(TAG).d("onPause (%s)", activityGuid);
         eventHandler.close();
+    }
+
+    @Override
+    public void onStop(){
+        Timber.tag(TAG).d("onStop (%s)", activityGuid);
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy(){
+        Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
+
         controller.close();
+        super.onDestroy();
+
     }
 
 

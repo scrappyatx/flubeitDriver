@@ -16,6 +16,7 @@ import it.flube.driver.useCaseLayer.messages.UseCaseGetContactPersons;
 import it.flube.driver.userInterfaceLayer.activities.messages.layoutComponents.CommunicationActivityLayoutComponent;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.entities.ContactPerson;
 import it.flube.libbatchdata.entities.ContactPersonsByServiceOrder;
 import timber.log.Timber;
@@ -32,33 +33,32 @@ public class MessagesActivity extends AppCompatActivity implements
     private static final String TAG = "MessagesActivity";
 
     private MessagesController controller;
-    private ActivityNavigator navigator;
-    private DrawerMenu drawer;
 
     private CommunicationActivityLayoutComponent layoutComponent;
     private CheckCallPermission checkCallPermission;
 
+    private String activityGuid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_communication);
 
-        navigator = new ActivityNavigator();
-        drawer = new DrawerMenu(this, navigator, R.string.communication_activity_title);
+
         controller = new MessagesController();
 
         layoutComponent = new CommunicationActivityLayoutComponent(this, this);
         checkCallPermission = new CheckCallPermission();
 
-        Timber.tag(TAG).d("onCreate");
+        activityGuid = BuilderUtilities.generateGuid();
+        Timber.tag(TAG).d("onCreate (%s)", activityGuid);
     }
 
     @Override
     public void onResume() {
-        Timber.tag(TAG).d("onResume");
+        Timber.tag(TAG).d("onResume (%s)", activityGuid);
         super.onResume();
-
+        DrawerMenu.getInstance().setActivity(this, R.string.communication_activity_title);
         //see if we have permission to make a call
         checkCallPermission.checkCallPermissionRequest(this, this);
 
@@ -66,20 +66,30 @@ public class MessagesActivity extends AppCompatActivity implements
 
     @Override
     public void onPause() {
-        Timber.tag(TAG).d( "onPause");
+        Timber.tag(TAG).d("onPause (%s)", activityGuid);
+        DrawerMenu.getInstance().clearActivity();
         super.onPause();
     }
 
     @Override
-    public void onStop(){
-        Timber.tag(TAG).d("onStop");
+    public void onBackPressed(){
+        Timber.tag(TAG).d("onBackPressed (%s)", activityGuid);
+        ActivityNavigator.getInstance().gotoActivityHome(this);
+    }
 
-        drawer.close();
+    @Override
+    public void onStop(){
+        Timber.tag(TAG).d("onStop (%s)", activityGuid);
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy(){
+        Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
         controller.close();
         layoutComponent.close();
         checkCallPermission.close();
-
-        super.onStop();
+        super.onDestroy();
 
     }
 

@@ -11,6 +11,7 @@ import android.view.View;
 import it.flube.driver.R;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.PhotoRequestUtilities;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.entities.PhotoRequest;
 import timber.log.Timber;
 
@@ -21,12 +22,12 @@ import timber.log.Timber;
 
 public class PhotoTakeActivity extends AppCompatActivity implements
         PhotoRequestUtilities.GetPhotoDetailResponse,
-        PhotoTakeLayoutComponents.CaptureResponse
-{
+        PhotoTakeLayoutComponents.CaptureResponse {
 
     private static final String TAG = "PhotoTakeActivity";
 
-    private ActivityNavigator navigator;
+    private String activityGuid;
+
     private PhotoTakeController controller;
     private PhotoTakeLayoutComponents camera;
 
@@ -41,54 +42,67 @@ public class PhotoTakeActivity extends AppCompatActivity implements
 
         setContentView(R.layout.activity_photo_take);
 
+        controller = new PhotoTakeController();
+        camera = new PhotoTakeLayoutComponents(this);
+
+
+        activityGuid = BuilderUtilities.generateGuid();
+        Timber.tag(TAG).d("onCreate (%s)", activityGuid);
     }
 
     @Override
     public void onResume() {
-        super.onResume();
-
-        camera = new PhotoTakeLayoutComponents(this);
-        camera.onResume();
-        camera.setInvisible();
-
-        navigator = new ActivityNavigator();
-        controller = new PhotoTakeController();
         controller.getPhotoDetailRequest(this, this);
-        Timber.tag(TAG).d("onResume");
+        camera.onResume();
+        super.onResume();
+        Timber.tag(TAG).d("onResume (%s)", activityGuid);
     }
 
 
     @Override
     public void onPause() {
-        Timber.tag(TAG).d("onPause");
-
+        Timber.tag(TAG).d("onPause (%s)", activityGuid);
         camera.onPause();
-        controller.close();
         super.onPause();
     }
 
     @Override
     public void onBackPressed(){
-        Timber.tag(TAG).d("back button pressed");
+        Timber.tag(TAG).d("onBackPressed (%s)", activityGuid);
 
         if (launchActivityDataFound) {
             Timber.tag(TAG).d("...going to photoList Activity");
-            navigator.gotoActivityPhotoDetail(this, batchGuid, stepGuid, photoRequestGuid);
+            ActivityNavigator.getInstance().gotoActivityPhotoDetail(this, batchGuid, stepGuid, photoRequestGuid);
         } else {
             Timber.tag(TAG).d("...going home");
-            navigator.gotoActivityHome(this);
+            ActivityNavigator.getInstance().gotoActivityHome(this);
         }
 
     }
 
+    @Override
+    public void onStop(){
+        Timber.tag(TAG).d("onStop (%s)", activityGuid);
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy(){
+        Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
+        controller.close();
+        camera.close();
+        super.onDestroy();
+
+    }
+
     public void clickPhotoButton(View view){
-        Timber.tag(TAG).d("clickPhotoButton START...");
+        Timber.tag(TAG).d("clickPhotoButton (%s) START...", activityGuid);
         camera.captureRequest(controller.getDevice(), this);
     }
 
     /// response interface for getPhotoDetailRequest
     public void photoDetailSuccess(PhotoRequest photoRequest){
-        Timber.tag(TAG).d("photoDetailSuccess : photoRequestGuid -> " + photoRequest.getGuid());
+        Timber.tag(TAG).d("photoDetailSuccess (%s) : photoRequestGuid -> " + photoRequest.getGuid(), activityGuid);
 
         launchActivityDataFound = true;
         batchGuid = photoRequest.getBatchGuid();
@@ -97,29 +111,26 @@ public class PhotoTakeActivity extends AppCompatActivity implements
 
         camera.setValues(photoRequest);
         camera.setVisible();
-
     }
 
     public void photoDetailFailure(){
-        Timber.tag(TAG).d("photoDetailFailure");
+        Timber.tag(TAG).d("photoDetailFailure (%s)", activityGuid);
         launchActivityDataFound = false;
     }
 
 
-
-
     public void captureSuccess(PhotoRequest photoRequest){
-        Timber.tag(TAG).d("captureSuccess");
-        navigator.gotoActivityPhotoDetail(this, photoRequest.getBatchGuid(), photoRequest.getStepGuid(), photoRequest.getGuid());
+        Timber.tag(TAG).d("captureSuccess (%s)", activityGuid);
+        ActivityNavigator.getInstance().gotoActivityPhotoDetail(this, photoRequest.getBatchGuid(), photoRequest.getStepGuid(), photoRequest.getGuid());
     }
 
     public void captureFailure(PhotoRequest photoRequest){
-        Timber.tag(TAG).d("captureFailure");
+        Timber.tag(TAG).d("captureFailure (%s)", activityGuid);
         Timber.tag(TAG).d("batchGuid -> " + photoRequest.getBatchGuid());
         Timber.tag(TAG).d("stepGuid  -> " + photoRequest.getStepGuid());
         Timber.tag(TAG).d("Guid      -> " + photoRequest.getGuid());
 
-        navigator.gotoActivityPhotoDetail(this, photoRequest.getBatchGuid(), photoRequest.getStepGuid(), photoRequest.getGuid());
+        ActivityNavigator.getInstance().gotoActivityPhotoDetail(this, photoRequest.getBatchGuid(), photoRequest.getStepGuid(), photoRequest.getGuid());
     }
 
 

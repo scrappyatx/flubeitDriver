@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.wonderkiln.camerakit.CameraKitEventCallback;
 import com.wonderkiln.camerakit.CameraKitImage;
 import com.wonderkiln.camerakit.CameraView;
@@ -29,9 +30,11 @@ import io.fotoapparat.selector.ResolutionSelectorsKt;
 import io.fotoapparat.view.CameraRenderer;
 import it.flube.driver.R;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
+import it.flube.driver.useCaseLayer.photoStep.UseCasePhotoDetectImageLabel;
 import it.flube.driver.useCaseLayer.photoStep.UseCaseSavePhotoToDeviceImageStorage;
 import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.entities.PhotoRequest;
+import kotlin.Unit;
 import timber.log.Timber;
 
 import static io.fotoapparat.selector.LensPositionSelectorsKt.back;
@@ -43,9 +46,11 @@ import static io.fotoapparat.selector.SelectorsKt.firstAvailable;
  * Project : Driver
  */
 public class PhotoTakeLayoutComponents implements
-        WhenDoneListener<BitmapPhoto>,
+        //WhenDoneListener<BitmapPhoto>,
+        WhenDoneListener<Unit>,
         CameraKitEventCallback<CameraKitImage>,
-        UseCaseSavePhotoToDeviceImageStorage.Response {
+        UseCaseSavePhotoToDeviceImageStorage.Response,
+        UseCasePhotoDetectImageLabel.Response {
 
     public final static String TAG = "PhotoTakeLayoutComponents";
     ///
@@ -57,14 +62,19 @@ public class PhotoTakeLayoutComponents implements
     private Fotoapparat fotoapparat;
 
     private io.fotoapparat.view.CameraView cameraView;
+    private LottieAnimationView animation;
     private Button button;
     private MobileDeviceInterface device;
     private PhotoRequest photoRequest;
     private CaptureResponse response;
 
+    private String imageDeviceAbsoluteFileName;
+
     public PhotoTakeLayoutComponents(AppCompatActivity activity){
         //cameraView = (CameraView) activity.findViewById(R.id.camera);
         button = (Button) activity.findViewById(R.id.photo_button);
+        animation = (LottieAnimationView) activity.findViewById(R.id.photo_processing_animation);
+
         cameraView = (io.fotoapparat.view.CameraView) activity.findViewById(R.id.camera);
 
         fotoapparat = Fotoapparat
@@ -75,6 +85,7 @@ public class PhotoTakeLayoutComponents implements
                         .lensPosition(back())       // we want back camera
                         .build();
 
+        setInvisible();
     }
 
     public void setValues(PhotoRequest photoRequest){
@@ -86,15 +97,36 @@ public class PhotoTakeLayoutComponents implements
         Timber.tag(TAG).d("...onResume");
         this.device = device;
         this.response = response;
+
+        //hide the image preview & show the animation
+        cameraView.setVisibility(View.INVISIBLE);
         button.setVisibility(View.INVISIBLE);
+
+        animation.setVisibility(View.VISIBLE);
+        animation.setProgress(0);
+        animation.playAnimation();
+
         //cameraView.captureImage(this);
         PhotoResult photoResult = fotoapparat.autoFocus().takePicture();
-        photoResult.toBitmap().whenDone(this);
+        //photoResult.toBitmap().whenDone(this);
+        File saveFile = device.getDeviceImageStorage().createUniqueDeviceImageFile();
+        imageDeviceAbsoluteFileName = saveFile.getAbsoluteFile().toString();
+
+        photoResult.saveToFile(saveFile).whenDone(this);
+    }
+
+    /// fotoapparat call back
+    public void whenDone(Unit unit){
+        Timber.tag(TAG).d("whenDone -> saved to file");
+
+
+
+        device.getUseCaseEngine().getUseCaseExecutor().execute(new UseCasePhotoDetectImageLabel(device, imageDeviceAbsoluteFileName, photoRequest, this));
     }
 
     /// fotoapparat call back
     public void whenDone(BitmapPhoto bitmapPhoto){
-        Timber.tag(TAG).d("whenDone");
+        Timber.tag(TAG).d("whenDone -> got a bitmap");
 
 
         Timber.tag(TAG).d("...got image ");
@@ -107,7 +139,6 @@ public class PhotoTakeLayoutComponents implements
 
         //save this image in local device storage
         device.getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseSavePhotoToDeviceImageStorage(device, photoRequest, imageGuid, bitmapPhoto.bitmap, this));
-
     }
 
     /// cameraKitEventCallback interface
@@ -142,6 +173,17 @@ public class PhotoTakeLayoutComponents implements
         response.captureFailure(photoRequest);
     }
 
+    ///use case response interface
+    public void photoDetectImageLabelComplete(){
+        Timber.tag(TAG).d("photoDetectImageLabelComplete");
+        //stop the animation
+        cameraView.setVisibility(View.INVISIBLE);
+        button.setVisibility(View.INVISIBLE);
+        animation.setVisibility(View.INVISIBLE);
+
+        response.captureSuccess(photoRequest);
+    }
+
 
     public void onResume(){
         //cameraView.start();
@@ -158,24 +200,29 @@ public class PhotoTakeLayoutComponents implements
     public void setVisible(){
         cameraView.setVisibility(View.VISIBLE);
         button.setVisibility(View.VISIBLE);
+        animation.setVisibility(View.INVISIBLE);
+
         Timber.tag(TAG).d("...set VISIBLE");
     }
 
     public void setInvisible(){
         cameraView.setVisibility(View.INVISIBLE);
         button.setVisibility(View.INVISIBLE);
+        animation.setVisibility(View.INVISIBLE);
         Timber.tag(TAG).d("...set INVISIBLE");
     }
 
     public void setGone(){
         cameraView.setVisibility(View.GONE);
         button.setVisibility(View.GONE);
+        animation.setVisibility(View.GONE);
         Timber.tag(TAG).d("...set GONE");
     }
 
     public void close(){
         cameraView = null;
         button = null;
+        animation=null;
         Timber.tag(TAG).d("components closed");
     }
 

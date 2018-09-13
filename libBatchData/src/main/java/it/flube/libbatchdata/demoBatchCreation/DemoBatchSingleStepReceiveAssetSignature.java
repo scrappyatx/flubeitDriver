@@ -10,6 +10,7 @@ import it.flube.libbatchdata.builders.ContactPersonBuilder;
 import it.flube.libbatchdata.builders.DestinationBuilder;
 import it.flube.libbatchdata.builders.PhotoRequestBuilder;
 import it.flube.libbatchdata.builders.PotentialEarningsBuilder;
+import it.flube.libbatchdata.builders.ProductListBuilder;
 import it.flube.libbatchdata.builders.SignatureRequestBuilder;
 import it.flube.libbatchdata.builders.VehicleBuilder;
 import it.flube.libbatchdata.builders.batch.BatchHolderBuilder;
@@ -91,6 +92,9 @@ public class DemoBatchSingleStepReceiveAssetSignature implements DemoBatchInterf
                         .description(SERVICE_ORDER_DESCRIPTION)
                         .startTime(BuilderUtilities.getNowDate())
                         .finishTime(BuilderUtilities.getFutureDate(30))
+                        .productList(new ProductListBuilder.Builder()
+                                .addCartItem(DemoBatchUtilities.getCustomerCartItem())
+                                .build())
                         .addStep(new ReceiveAssetStepBuilder.Builder()
                                 .title(STEP_TITLE)
                                 .description(STEP_DESCRIPTION)

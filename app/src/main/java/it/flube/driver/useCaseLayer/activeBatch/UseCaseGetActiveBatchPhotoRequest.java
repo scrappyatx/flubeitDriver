@@ -4,6 +4,7 @@
 
 package it.flube.driver.useCaseLayer.activeBatch;
 
+import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.interfaces.CloudActiveBatchInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import it.flube.libbatchdata.entities.PhotoRequest;
@@ -36,9 +37,9 @@ public class UseCaseGetActiveBatchPhotoRequest implements
     public void run() {
         Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
 
-        if (device.getUser().isSignedIn()) {
+        if (device.getCloudAuth().hasDriver()) {
             Timber.tag(TAG).d("...getting photo request");
-            device.getCloudActiveBatch().getActiveBatchPhotoRequestRequest(device.getUser().getDriver(),batchGuid, orderStepGuid, photoRequestGuid, this);
+            device.getCloudActiveBatch().getActiveBatchPhotoRequestRequest(device.getCloudAuth().getDriver(),batchGuid, orderStepGuid, photoRequestGuid, this);
         } else {
             // do nothing
             Timber.tag(TAG).d("...there is no signed in user, do nothing");

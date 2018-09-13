@@ -37,7 +37,7 @@ public class UseCaseThingsToDoWhenApplicationPauses implements
     public void run(){
         Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
 
-        if (device.getUser().isSignedIn()) {
+        if (device.getCloudAuth().hasDriver()) {
             //// stop monitoring demo offers, personal offers, public offers, and scheduled batches
             Timber.tag(TAG).d("...device has signed in user, stop monitoring demo offers, public offers, personal offers and scheduled batches");
             device.getCloudDemoOffer().stopMonitoringRequest(this);

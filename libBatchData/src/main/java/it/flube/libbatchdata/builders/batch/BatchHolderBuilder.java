@@ -231,6 +231,7 @@ public class BatchHolderBuilder {
                     .finishTime(serviceOrderScaffold.getFinishTime())
                     .sequence(this.batchHolder.getServiceOrders().size()+1)
                     .totalSteps(serviceOrderScaffold.getStepIds().size())
+                    .productList(serviceOrderScaffold.getProductList())
                     .build();
 
             //put this service order in the service order list & the service order hash map

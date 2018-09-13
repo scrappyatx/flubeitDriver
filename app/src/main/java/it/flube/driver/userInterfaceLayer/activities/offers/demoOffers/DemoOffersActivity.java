@@ -19,6 +19,7 @@ import it.flube.driver.userInterfaceLayer.activityNavigator.OfferClaimNavigator;
 import it.flube.driver.userInterfaceLayer.layoutComponents.demoOffers.DemoOffersLayoutComponents;
 import it.flube.driver.userInterfaceLayer.layoutComponents.offers.OffersListLayoutComponent;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.offerListUpdates.DemoOfferOfferListUpdatedEvent;
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.entities.batch.Batch;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
@@ -45,6 +46,8 @@ public class DemoOffersActivity extends AppCompatActivity implements
     private DemoOffersLayoutComponents offersLayout;
     private OffersListLayoutComponent offersList;
 
+    private String activityGuid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -54,8 +57,10 @@ public class DemoOffersActivity extends AppCompatActivity implements
 
         offersLayout = new DemoOffersLayoutComponents(this);
         offersList = new OffersListLayoutComponent(this, getString(R.string.demo_offers_no_offers_available));
+        controller = new DemoOffersController();
 
-        Timber.tag(TAG).d("onCreate");
+        activityGuid = BuilderUtilities.generateGuid();
+        Timber.tag(TAG).d("onCreate (%s)", activityGuid);
     }
 
 
@@ -63,9 +68,8 @@ public class DemoOffersActivity extends AppCompatActivity implements
     public void onResume() {
         super.onResume();
 
-        navigator = new ActivityNavigator();
-        drawer = new DrawerMenu(this, navigator, R.string.demo_offers_title);
-        controller = new DemoOffersController();
+        DrawerMenu.getInstance().setActivity(this, R.string.demo_offers_title);
+
 
         EventBus.getDefault().register(this);
 
@@ -79,7 +83,7 @@ public class DemoOffersActivity extends AppCompatActivity implements
         controller.checkIfClaimAlertNeedsToBeShown(this);
         controller.checkIfMakeAlertNeedsToBeShown(this, this);
 
-        Timber.tag(TAG).d("onResume");
+        Timber.tag(TAG).d("onResume (%s)", activityGuid);
     }
 
     @Override
@@ -87,7 +91,7 @@ public class DemoOffersActivity extends AppCompatActivity implements
 
         EventBus.getDefault().unregister(this);
 
-        drawer.close();
+        DrawerMenu.getInstance().close();
         controller.close();
         offersList.onPause();
 
@@ -96,10 +100,32 @@ public class DemoOffersActivity extends AppCompatActivity implements
 
     }
 
+    @Override
+    public void onBackPressed(){
+        Timber.tag(TAG).d("onBackPressed (%s)", activityGuid);
+        ActivityNavigator.getInstance().gotoActivityHome(this);
+    }
+
+    @Override
+    public void onStop(){
+        Timber.tag(TAG).d("onStop (%s)", activityGuid);
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy(){
+        Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
+
+        controller.close();
+        //offersList.close();
+        super.onDestroy();
+
+    }
+
     public void clickMakeDemoOfferButton(View v) {
         //make demo offer button clicked
         Timber.tag(TAG).d("clicked MAKE DEMO OFFER");
-        navigator.gotoActivityDemoOffersMake(this);
+        ActivityNavigator.getInstance().gotoActivityDemoOffersMake(this);
         //offersLayout.offerMakeStarted();
 
     }
@@ -123,7 +149,7 @@ public class DemoOffersActivity extends AppCompatActivity implements
     ///
     public void offerSelected(Batch batch){
         Timber.tag(TAG).d("...batchSelected -> " + batch.getGuid());
-        navigator.gotoActivityOfferClaim(this, OfferConstants.OfferType.DEMO, batch.getGuid());
+        ActivityNavigator.getInstance().gotoActivityOfferClaim(this, OfferConstants.OfferType.DEMO, batch.getGuid());
     }
 
     // Events for updating offers list.  Events not removed because we always want most recent

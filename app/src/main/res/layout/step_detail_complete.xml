@@ -29,7 +29,6 @@
 
         android:layout_marginBottom="4dp"
 
-        android:onClick="clickStepCompleteButton"
         tools:text="Step Complete"
 
         android:background="@drawable/step_detail_swipe_complete_button_state"

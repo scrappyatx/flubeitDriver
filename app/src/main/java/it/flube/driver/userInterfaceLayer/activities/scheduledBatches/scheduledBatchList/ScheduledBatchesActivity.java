@@ -16,6 +16,7 @@ import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.userInterfaceLayer.layoutComponents.scheduledBatches.BatchListAdapter;
 import it.flube.driver.userInterfaceLayer.layoutComponents.scheduledBatches.BatchListLayoutComponents;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.scheduledBatchListUpdates.ScheduledBatchListUpdateEvent;
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.entities.batch.Batch;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
@@ -32,10 +33,9 @@ public class ScheduledBatchesActivity extends AppCompatActivity implements
     private static final String TAG = "ScheduledBatchesActivity";
 
     private ScheduledBatchesController controller;
-    private ActivityNavigator navigator;
-    private DrawerMenu drawer;
-
     private BatchListLayoutComponents batchList;
+
+    private String activityGuid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,18 +43,17 @@ public class ScheduledBatchesActivity extends AppCompatActivity implements
 
         setContentView(R.layout.activity_scheduled_batches);
         batchList = new BatchListLayoutComponents(this, getString(R.string.scheduled_batches_no_batches));
+        controller = new ScheduledBatchesController();
 
-        Timber.tag(TAG).d("onCreate");
+        activityGuid = BuilderUtilities.generateGuid();
+        Timber.tag(TAG).d("onCreate (%s)", activityGuid);
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        navigator = new ActivityNavigator();
-        drawer = new DrawerMenu(this, navigator, R.string.scheduled_batches_activity_title);
-        controller = new ScheduledBatchesController();
-
+        DrawerMenu.getInstance().setActivity(this, R.string.scheduled_batches_activity_title);
         EventBus.getDefault().register(this);
 
         batchList.onResume(this, this);
@@ -63,7 +62,7 @@ public class ScheduledBatchesActivity extends AppCompatActivity implements
 
         controller.checkIfForfeitAlertNeedsToBeShown(this);
 
-        Timber.tag(TAG).d("onResume");
+        Timber.tag(TAG).d("onResume (%s)", activityGuid);
     }
 
     @Override
@@ -71,18 +70,39 @@ public class ScheduledBatchesActivity extends AppCompatActivity implements
 
         EventBus.getDefault().unregister(this);
 
-        drawer.close();
-        controller.close();
+        DrawerMenu.getInstance().close();
         batchList.onPause();
 
 
-        Timber.tag(TAG).d( "onPause");
+        Timber.tag(TAG).d("onPause (%s)", activityGuid);
         super.onPause();
+    }
+
+    @Override
+    public void onBackPressed(){
+        Timber.tag(TAG).d("onBackPressed (%s)", activityGuid);
+        ActivityNavigator.getInstance().gotoActivityHome(this);
+    }
+
+    @Override
+    public void onStop(){
+        Timber.tag(TAG).d("onStop (%s)", activityGuid);
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy(){
+        Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
+
+        controller.close();
+        //batchList.close();
+        super.onDestroy();
+
     }
 
     public void batchSelected(Batch batch){
         Timber.tag(TAG).d("...batchSelected -> " + batch.getGuid());
-        navigator.gotoActivityBatchManage(this, batch.getGuid());
+        ActivityNavigator.getInstance().gotoActivityBatchManage(this, batch.getGuid());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

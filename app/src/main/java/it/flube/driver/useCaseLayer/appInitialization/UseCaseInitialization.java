@@ -32,7 +32,7 @@ public class UseCaseInitialization implements
 
         // Step 1 --> clear the user
         Timber.tag(TAG).d("   ... 1 -> clear user");
-        device.getUser().clear();
+        //device.getUser().clear();
 
         // Step 2 --> start monitoring for user authentication state changes
         Timber.tag(TAG).d("   ... 2 -> start monitoring for user auth state changes");

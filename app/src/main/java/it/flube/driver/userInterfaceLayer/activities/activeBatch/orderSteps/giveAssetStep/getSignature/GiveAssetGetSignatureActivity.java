@@ -12,6 +12,7 @@ import it.flube.driver.R;
 import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.entities.SignatureRequest;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderGiveAssetStep;
@@ -30,54 +31,59 @@ public class GiveAssetGetSignatureActivity extends AppCompatActivity implements
 
     private static final String TAG="ReceiveAssetGetSignatureActivity";
 
-    private ActivityNavigator navigator;
-    private GiveAssetGetSignatureController controller;
-    private DrawerMenu drawer;
+    private String activityGuid;
 
+    private GiveAssetGetSignatureController controller;
     private GiveAssetGetSignatureLayoutComponents layoutComponents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Timber.tag(TAG).d("...down the rabbit hole");
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_get_signature);
 
-        navigator = new ActivityNavigator();
-        drawer = new DrawerMenu(this, navigator, R.string.get_signature_activity_title);
-        controller = new GiveAssetGetSignatureController();
 
+        controller = new GiveAssetGetSignatureController();
         layoutComponents = new GiveAssetGetSignatureLayoutComponents(this, this);
-        Timber.tag(TAG).d("onCreate");
+
+        activityGuid = BuilderUtilities.generateGuid();
+        Timber.tag(TAG).d("onCreate (%s)", activityGuid);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
+        DrawerMenu.getInstance().setActivity(this, R.string.get_signature_activity_title);
         controller.getDriverAndActiveBatchStep(this);
-        Timber.tag(TAG).d("onResume");
+        Timber.tag(TAG).d("onResume (%s)", activityGuid);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Timber.tag(TAG).d("onPause");
+        DrawerMenu.getInstance().close();
+        Timber.tag(TAG).d("onPause (%s)", activityGuid);
     }
 
     @Override
     public void onStop() {
-        drawer.close();
-        controller.close();
-
         super.onStop();
-        Timber.tag(TAG).d("onStop");
+        Timber.tag(TAG).d("onStop (%s)", activityGuid);
+    }
+
+    @Override
+    public void onDestroy(){
+        Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
+        controller.close();
+        layoutComponents.close();
+        super.onDestroy();
+
     }
 
     @Override
     public void onBackPressed(){
-        Timber.tag(TAG).d("onBackPressed");
-        navigator.gotoActiveBatchStep(this);
+        Timber.tag(TAG).d("onBackPressed (%s)", activityGuid);
+        ActivityNavigator.getInstance().gotoActiveBatchStep(this);
     }
 
     ///
@@ -85,7 +91,7 @@ public class GiveAssetGetSignatureActivity extends AppCompatActivity implements
     ///
 
     public void gotSignature(SignatureRequest signatureRequest, Bitmap signatureBitmap){
-        Timber.tag(TAG).d("gotSignature");
+        Timber.tag(TAG).d("gotSignature (%s)", activityGuid);
         layoutComponents.showSavingAnimation();
         controller.updateSignatureRequestWithImage(signatureRequest, signatureBitmap, this);
     }
@@ -94,32 +100,32 @@ public class GiveAssetGetSignatureActivity extends AppCompatActivity implements
     ///  GiveAssetGetSignatureController.GetDriverAndActiveBatchStepResponse interface
     ///
     public void gotDriverAndStep(Driver driver, BatchDetail batchDetail, ServiceOrder serviceOrder, ServiceOrderGiveAssetStep orderStep){
-        Timber.tag(TAG).d("gotDriverAndStep");
+        Timber.tag(TAG).d("gotDriverAndStep (%s)", activityGuid);
         layoutComponents.setValues(orderStep);
         layoutComponents.setVisible();
     }
 
     public void gotNoDriver(){
-        Timber.tag(TAG).d("gotNoDriver");
-        navigator.gotoActivityLogin(this);
+        Timber.tag(TAG).d("gotNoDriver (%s)", activityGuid);
+        ActivityNavigator.getInstance().gotoActivityLogin(this);
     }
 
     public void gotDriverButNoStep(Driver driver){
-        Timber.tag(TAG).d("gotDriverButNoStep");
-        navigator.gotoActivityHome(this);
+        Timber.tag(TAG).d("gotDriverButNoStep (%s)", activityGuid);
+        ActivityNavigator.getInstance().gotoActivityHome(this);
     }
 
     public void gotStepMismatch(Driver driver, OrderStepInterface.TaskType taskType){
-        Timber.tag(TAG).d("gotStepMismatch, taskType -> " + taskType.toString());
-        navigator.gotoActiveBatchStep(this);
+        Timber.tag(TAG).d("gotStepMismatch (%s), taskType -> " + taskType.toString(), activityGuid);
+        ActivityNavigator.getInstance().gotoActiveBatchStep(this);
     }
 
     ////
     ////
     ////
     public void signatureRequestWithImageUpdateComplete(){
-        Timber.tag(TAG).d("signatureRequestWithImageUpdateComplete");
-        navigator.gotoActiveBatchStep(this);
+        Timber.tag(TAG).d("signatureRequestWithImageUpdateComplete (%s)", activityGuid);
+        ActivityNavigator.getInstance().gotoActiveBatchStep(this);
     }
 }
 

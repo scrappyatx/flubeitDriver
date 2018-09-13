@@ -27,6 +27,7 @@ import it.flube.driver.userInterfaceLayer.activities.activeBatch.ActiveBatchAler
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import it.flube.driver.userInterfaceLayer.activities.PermissionsCheckActivity;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.scheduledBatchListUpdates.ScheduledBatchCountUpdateEvent;
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import timber.log.Timber;
 
 /**
@@ -41,8 +42,6 @@ public class HomeActivity extends PermissionsCheckActivity implements
     private static final String TAG = "HomeActivity";
 
     private HomeController controller;
-    private ActivityNavigator navigator;
-    private DrawerMenu drawer;
 
     private ActiveBatchSummaryLayoutComponents activeBatch;
     private ScheduledBatchesSummaryLayoutComponents scheduledBatches;
@@ -51,11 +50,15 @@ public class HomeActivity extends PermissionsCheckActivity implements
     private PersonalOffersSummaryLayoutComponents personalOffers;
     private DemoOffersSummaryLayoutComponents demoOffers;
 
+    private String activityGuid;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        controller = new HomeController();
 
         activeBatch = new ActiveBatchSummaryLayoutComponents(this);
         scheduledBatches = new ScheduledBatchesSummaryLayoutComponents(this);
@@ -69,7 +72,8 @@ public class HomeActivity extends PermissionsCheckActivity implements
         personalOffers.setGone();
         demoOffers.setGone();
 
-        Timber.tag(TAG).d("onCreate");
+        activityGuid = BuilderUtilities.generateGuid();
+        Timber.tag(TAG).d("onCreate (%s)", activityGuid);
     }
 
     @Override
@@ -77,10 +81,8 @@ public class HomeActivity extends PermissionsCheckActivity implements
         super.onPermissionResume();
         Timber.tag(TAG).d("onPermissionResume");
         EventBus.getDefault().register(this);
+        DrawerMenu.getInstance().setActivity(this, R.string.home_no_active_batch_activity_title);
 
-        navigator = new ActivityNavigator();
-        drawer = new DrawerMenu(this, navigator, R.string.home_no_active_batch_activity_title);
-        controller = new HomeController();
 
         /// update active batch
         if (AndroidDevice.getInstance().getActiveBatch().hasActiveBatch()) {
@@ -109,11 +111,11 @@ public class HomeActivity extends PermissionsCheckActivity implements
 
     @Override
     public void onPermissionPause(){
-        super.onPermissionPause();
+
         Timber.tag(TAG).d("onPermissionPause");
         EventBus.getDefault().unregister(this);
-
-        drawer.close();
+        DrawerMenu.getInstance().close();
+        super.onPermissionPause();
     }
 
     @Override
@@ -121,29 +123,43 @@ public class HomeActivity extends PermissionsCheckActivity implements
         Timber.tag(TAG).d("back button pressed");
     }
 
+    @Override
+    public void onStop(){
+        Timber.tag(TAG).d("onStop (%s)", activityGuid);
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy(){
+        Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
+        controller.close();
+        super.onDestroy();
+    }
+
+
     /// button click handlers
     public void onClickActiveBatch(View view){
-        navigator.gotoActiveBatchStep(this);
+        ActivityNavigator.getInstance().gotoActiveBatchStep(this);
         Timber.tag(TAG).d("clicked Active Batch button");
     }
 
     public void onClickScheduledBatches(View view){
-        navigator.gotoActivityScheduledBatches(this);
+        ActivityNavigator.getInstance().gotoActivityScheduledBatches(this);
         Timber.tag(TAG).d("clicked Scheduled Batches button");
     }
 
     public void onClickPublicOffers(View view){
-        navigator.gotoActivityPublicOffers(this);
+        ActivityNavigator.getInstance().gotoActivityPublicOffers(this);
         Timber.tag(TAG).d("clicked publicOffers button");
     }
 
     public void onClickPersonalOffers(View view){
-        navigator.gotoActivityPersonalOffers(this);
+        ActivityNavigator.getInstance().gotoActivityPersonalOffers(this);
         Timber.tag(TAG).d("clicked Personal Offers button");
     }
 
     public void onClickDemoOffers(View view){
-        navigator.gotoActivityDemoOffers(this);
+        ActivityNavigator.getInstance().gotoActivityDemoOffers(this);
         Timber.tag(TAG).d("clicked Demo Offers button");
     }
 

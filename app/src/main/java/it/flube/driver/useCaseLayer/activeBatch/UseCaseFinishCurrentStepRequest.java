@@ -26,7 +26,7 @@ public class UseCaseFinishCurrentStepRequest implements
 
     public UseCaseFinishCurrentStepRequest(MobileDeviceInterface device, String milestoneEvent, Response response){
         this.device = device;
-        this.driver = device.getUser().getDriver();
+        this.driver = device.getCloudAuth().getDriver();
         this.response = response;
     }
 

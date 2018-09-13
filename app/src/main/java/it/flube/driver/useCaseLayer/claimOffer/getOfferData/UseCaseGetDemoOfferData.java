@@ -37,7 +37,7 @@ public class UseCaseGetDemoOfferData implements
 
     public UseCaseGetDemoOfferData(MobileDeviceInterface device, String batchGuid, Response response){
         this.demoOffer = device.getCloudDemoOffer();
-        this.driver = device.getUser().getDriver();
+        this.driver = device.getCloudAuth().getDriver();
         this.batchGuid = batchGuid;
         this.response = response;
 

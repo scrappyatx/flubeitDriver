@@ -19,7 +19,8 @@ import timber.log.Timber;
  * Project : Driver
  */
 
-public class StepDetailCompleteButtonComponents {
+public class StepDetailCompleteButtonComponents implements
+        Button.OnClickListener {
     public final static String TAG = "StepDetailCompleteButtonComponents";
     ///
     ///     wrapper class for the layout file:
@@ -29,14 +30,19 @@ public class StepDetailCompleteButtonComponents {
     private TextView banner;
     private LottieAnimationView animation;
 
-    public StepDetailCompleteButtonComponents(AppCompatActivity activity, String buttonCaption){
+    private Response response;
+
+    public StepDetailCompleteButtonComponents(AppCompatActivity activity, String buttonCaption, Response response){
         Timber.tag(TAG).d("creating component, buttonCaption -> " + buttonCaption);
         animation = (LottieAnimationView) activity.findViewById(R.id.step_complete_animation);
         banner = (TextView) activity.findViewById(R.id.step_complete_banner);
+
         button = (Button) activity.findViewById(R.id.step_complete_button);
+        button.setOnClickListener(this);
 
         button.setText(buttonCaption);
 
+        this.response = response;
         setGone();
         Timber.tag(TAG).d("...components created");
     }
@@ -53,7 +59,7 @@ public class StepDetailCompleteButtonComponents {
         Timber.tag(TAG).d("...showWaitingAnimationAndBanner");
     }
 
-    public void showWaitingAnimatingWithNoBanner(){
+    public void showWaitingAnimationWithNoBanner(){
         button.setVisibility(View.GONE);
         banner.setVisibility(View.GONE);
 
@@ -103,6 +109,13 @@ public class StepDetailCompleteButtonComponents {
         Timber.tag(TAG).d("components closed");
     }
 
+    public void onClick(View v){
+        Timber.tag(TAG).d("onClick");
+        response.stepDetailCompleteButtonClicked();
+    }
 
+    public interface Response {
+        void stepDetailCompleteButtonClicked();
+    }
 
 }

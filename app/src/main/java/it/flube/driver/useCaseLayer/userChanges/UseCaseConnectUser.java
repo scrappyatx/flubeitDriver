@@ -68,8 +68,8 @@ public class UseCaseConnectUser implements
     public void cloudGetUserProfileSuccess(Driver driver){
         /// 1A. connect the new user
         this.driver = driver;
-        device.getUser().setDriver(driver);
-        device.getUser().setIdToken(idToken);
+        //device.getUser().setDriver(driver);
+        //device.getUser().setIdToken(idToken);
 
         //2. connect to the cloud database
         Timber.tag(TAG).d("   ...got user profile, now save user and device info...");

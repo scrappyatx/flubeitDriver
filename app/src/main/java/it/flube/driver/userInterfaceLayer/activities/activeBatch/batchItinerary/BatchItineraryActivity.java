@@ -13,6 +13,7 @@ import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import it.flube.driver.userInterfaceLayer.layoutComponents.batchDetail.BatchDetailTitleLayoutComponents;
 import it.flube.driver.userInterfaceLayer.layoutComponents.batchDetail.batchDetailTab.BatchDetailTabLayoutComponents;
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import timber.log.Timber;
 
 /**
@@ -31,6 +32,7 @@ public class BatchItineraryActivity extends AppCompatActivity {
     private BatchDetailTitleLayoutComponents batchTitle;
     private BatchDetailTabLayoutComponents batchTab;
 
+    private String activityGuid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +41,18 @@ public class BatchItineraryActivity extends AppCompatActivity {
 
         batchTitle = new BatchDetailTitleLayoutComponents(this);
         batchTab = new BatchDetailTabLayoutComponents(this, savedInstanceState, false);
+
+        controller = new BatchItineraryController();
+
+        activityGuid = BuilderUtilities.generateGuid();
+        Timber.tag(TAG).d("onCreate (%s)", activityGuid);
     }
 
     @Override
     public void onStart(){
         super.onStart();
         batchTab.onStart();
+        Timber.tag(TAG).d("onStart (%s)", activityGuid);
     }
 
     @Override
@@ -52,9 +60,8 @@ public class BatchItineraryActivity extends AppCompatActivity {
         super.onResume();
         batchTab.onResume();
 
-        navigator = new ActivityNavigator();
-        drawer = new DrawerMenu(this, navigator, R.string.batch_itinerary_activity_title);
-        controller = new BatchItineraryController();
+        DrawerMenu.getInstance().setActivity(this, R.string.batch_itinerary_activity_title);
+
 
         if (AndroidDevice.getInstance().getActiveBatch().hasActiveBatch()){
             Timber.tag(TAG).d("   ...we have a active batch");
@@ -75,48 +82,53 @@ public class BatchItineraryActivity extends AppCompatActivity {
             batchTitle.setInvisible();
             batchTab.setInvisible();
         }
-        Timber.tag(TAG).d("onResume");
+        Timber.tag(TAG).d("onResume (%s)", activityGuid);
     }
+
+    @Override
+    public void onBackPressed(){
+        Timber.tag(TAG).d("onBackPressed (%s)", activityGuid);
+        ActivityNavigator.getInstance().gotoActivityHome(this);
+    }
+
 
     @Override
     public void onPause(){
 
-        drawer.close();
-        controller.close();
+        DrawerMenu.getInstance().clearActivity();
 
-
-        Timber.tag(TAG).d("onPause");
-
-        super.onPause();
         batchTab.onPause();
+        super.onPause();
+        Timber.tag(TAG).d("onPause (%s)", activityGuid);
     }
 
     @Override
     public void onStop(){
         super.onStop();
         batchTab.onStop();
-        Timber.tag(TAG).d("onSaveInstanceState");
+        Timber.tag(TAG).d("onStop (%s)", activityGuid);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         batchTab.onSaveInstanceState(outState);
-        Timber.tag(TAG).d("onSaveInstanceState");
+        Timber.tag(TAG).d("onSaveInstanceState (%s)", activityGuid);
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
         batchTab.onLowMemory();
-        Timber.tag(TAG).d("onLowMemory");
+        Timber.tag(TAG).d("onLowMemory (%s)", activityGuid);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        controller.close();
         batchTab.onDestroy();
-        Timber.tag(TAG).d("onDestroy");
+        Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
     }
 
 }

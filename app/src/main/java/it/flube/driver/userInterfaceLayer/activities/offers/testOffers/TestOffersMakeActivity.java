@@ -12,6 +12,7 @@ import it.flube.driver.userInterfaceLayer.activities.earnings.productionEarnings
 import it.flube.driver.userInterfaceLayer.activities.offers.demoOffers.DemoOfferAlerts;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import timber.log.Timber;
 
 /**
@@ -31,43 +32,62 @@ public class TestOffersMakeActivity extends AppCompatActivity implements
 
     private TestOfferMakeLayoutComponents components;
 
+    private String activityGuid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_offers_make);
         components = new TestOfferMakeLayoutComponents(this);
+        controller = new TestOffersMakeController();
 
-        Timber.tag(TAG).d("onCreate");
+        activityGuid = BuilderUtilities.generateGuid();
+        Timber.tag(TAG).d("onCreate (%s)", activityGuid);
     }
 
 
     public void onResume() {
         super.onResume();
 
-        //EventBus.getDefault().register(this);
+        DrawerMenu.getInstance().setActivity(this,  R.string.test_offers_activity_title);
 
-        navigator = new ActivityNavigator();
-        drawer = new DrawerMenu(this, navigator,  R.string.test_offers_activity_title);
-        controller = new TestOffersMakeController();
 
         components.onResume(this, this);
         components.setValues(TestOfferUtilities.getOptionsList());
         components.setVisible();
 
-        Timber.tag(TAG).d("onResume");
+        Timber.tag(TAG).d("onResume (%s)", activityGuid);
     }
 
     @Override
     public void onPause() {
-
-        //EventBus.getDefault().unregister(this);
-
-        drawer.close();
+        DrawerMenu.getInstance().clearActivity();
         components.onPause();
 
-        Timber.tag(TAG).d( "onPause");
+        Timber.tag(TAG).d("onPause (%s)", activityGuid);
         super.onPause();
+    }
+
+    @Override
+    public void onBackPressed(){
+        Timber.tag(TAG).d("onBackPressed (%s)", activityGuid);
+        ActivityNavigator.getInstance().gotoActivityHome(this);
+    }
+
+    @Override
+    public void onStop(){
+        Timber.tag(TAG).d("onStop (%s)", activityGuid);
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy(){
+        Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
+
+        controller.close();
+        //components.close();
+        super.onDestroy();
+
     }
 
     ////

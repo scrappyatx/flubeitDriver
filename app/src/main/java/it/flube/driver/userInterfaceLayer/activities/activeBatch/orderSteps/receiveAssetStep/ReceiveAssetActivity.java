@@ -28,6 +28,7 @@ import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailDueByLayoutComponents;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailTitleLayoutComponents;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.batchAlerts.ShowCompletedServiceOrderAlertEvent;
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.entities.ContactPerson;
 import it.flube.libbatchdata.entities.SignatureRequest;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
@@ -48,14 +49,13 @@ public class ReceiveAssetActivity extends AppCompatActivity implements
 
     private static final String TAG = "ReceiveAssetActivity";
 
-    private ActivityNavigator navigator;
     private ReceiveAssetController controller;
-    private DrawerMenu drawer;
-
     private ReceiveAssetLayoutComponents layoutComponents;
     private CheckCallPermission checkCallPermission;
 
     private Boolean havePermissionToCall;
+
+    private String activityGuid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,18 +65,20 @@ public class ReceiveAssetActivity extends AppCompatActivity implements
 
         layoutComponents = new ReceiveAssetLayoutComponents(this,getResources().getString(R.string.receive_asset_step_completed_step_button_caption), this);
 
-        navigator = new ActivityNavigator();
-        drawer = new DrawerMenu(this, navigator, R.string.receive_asset_step_activity_title);
+
         controller = new ReceiveAssetController();
 
         checkCallPermission = new CheckCallPermission();
         havePermissionToCall = false;
-        Timber.tag(TAG).d("onCreate");
+
+
+        activityGuid = BuilderUtilities.generateGuid();
+        Timber.tag(TAG).d("onCreate (%s)", activityGuid);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults){
-        Timber.tag(TAG).d("onRequestPermissionsResult, requestCode -> " + requestCode);
+        Timber.tag(TAG).d("onRequestPermissionsResult (%s), requestCode -> " + requestCode, activityGuid);
         checkCallPermission.onRequestPermissionResult(requestCode, permissions, grantResults);
     }
 
@@ -84,38 +86,44 @@ public class ReceiveAssetActivity extends AppCompatActivity implements
     public void onResume() {
         super.onResume();
         //see if we have permission to make a call
+        DrawerMenu.getInstance().setActivity(this, R.string.receive_asset_step_activity_title);
         checkCallPermission.checkCallPermissionRequest(this, this);
 
-        Timber.tag(TAG).d("onResume");
+        Timber.tag(TAG).d("onResume (%s)", activityGuid);
     }
 
     @Override
     public void onPause() {
-        Timber.tag(TAG).d("onPause");
+        Timber.tag(TAG).d("onPause (%s)", activityGuid);
         super.onPause();
 
-        drawer.close();
-        controller.close();
+        DrawerMenu.getInstance().clearActivity();
 
     }
 
     @Override
     public void onStop(){
-        Timber.tag(TAG).d("onStop");
-        drawer.close();
-        controller.close();
+        Timber.tag(TAG).d("onStop (%s)", activityGuid);
         super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        controller.close();
+        layoutComponents.close();
+        Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
     }
 
     //// CheckCallPermission.Response interface
     public void callPermissionYes(){
-        Timber.tag(TAG).d("callPermissionYes");
+        Timber.tag(TAG).d("callPermissionYes (%s)", activityGuid);
         havePermissionToCall=true;
         controller.getDriverAndActiveBatchStep(this);
     }
 
     public void callPermissionNo(){
-        Timber.tag(TAG).d("callPermissionNo");
+        Timber.tag(TAG).d("callPermissionNo (%s)", activityGuid);
         havePermissionToCall=false;
         controller.getDriverAndActiveBatchStep(this);
     }
@@ -125,17 +133,17 @@ public class ReceiveAssetActivity extends AppCompatActivity implements
     ////
     public void signatureRowClicked(SignatureRequest signatureRequest){
         Timber.tag(TAG).d("signatureRowClicked");
-        navigator.gotoActivityReceiveAssetGetSignature(this);
+        ActivityNavigator.getInstance().gotoActivityReceiveAssetGetSignature(this);
     }
 
     public void itemsRowClickedWithMultipleItems(){
         Timber.tag(TAG).d("itemsRowClickedWithMultipleItems");
-        navigator.gotoActivityReceiveAssetItemList(this);
+        ActivityNavigator.getInstance().gotoActivityReceiveAssetItemList(this);
     }
 
     public void itemsRowClickedWithOneItem(String assetGuid){
         Timber.tag(TAG).d("itemsRowClickedWithOneItem");
-        navigator.gotoActivityReceiveAssetItem(this, assetGuid);
+        ActivityNavigator.getInstance().gotoActivityReceiveAssetItem(this, assetGuid);
     }
 
     public void contactPersonCallClicked(String displayPhoneNumber){
@@ -171,17 +179,17 @@ public class ReceiveAssetActivity extends AppCompatActivity implements
 
     public void gotNoDriver(){
         Timber.tag(TAG).d("gotNoDriver");
-        navigator.gotoActivityLogin(this);
+        ActivityNavigator.getInstance().gotoActivityLogin(this);
     }
 
     public void gotDriverButNoStep(Driver driver){
         Timber.tag(TAG).d("gotDriverButNoStep");
-        navigator.gotoActivityHome(this);
+        ActivityNavigator.getInstance().gotoActivityHome(this);
     }
 
     public void gotStepMismatch(Driver driver, OrderStepInterface.TaskType taskType){
         Timber.tag(TAG).d("gotStepMismatch, taskType -> " + taskType.toString());
-        navigator.gotoActiveBatchStep(this);
+        ActivityNavigator.getInstance().gotoActiveBatchStep(this);
     }
 
 

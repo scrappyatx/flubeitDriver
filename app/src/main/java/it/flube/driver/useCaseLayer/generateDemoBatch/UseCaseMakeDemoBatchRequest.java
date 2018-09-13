@@ -37,7 +37,7 @@ public class UseCaseMakeDemoBatchRequest implements
         this.demoMaker = demoMaker;
         this.response = response;
 
-        driver = device.getUser().getDriver();
+        driver = device.getCloudAuth().getDriver();
         cloudDb = device.getCloudDemoOffer();
         targetEnvironment = device.getTargetEnvironment();
     }

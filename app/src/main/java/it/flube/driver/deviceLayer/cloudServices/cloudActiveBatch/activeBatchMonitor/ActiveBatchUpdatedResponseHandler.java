@@ -90,6 +90,7 @@ public class ActiveBatchUpdatedResponseHandler implements
     }
 
     public void startCurrentStepComplete(){
+        Timber.tag(TAG).d("startCurrentStepComplete");
         EventBus.getDefault().postSticky(new ActiveBatchUpdatedStepStartedEvent(actorType, actionType, batchStarted, orderStarted, batchGuid, serviceOrderGuid, stepGuid, taskType));
     }
 
@@ -117,6 +118,7 @@ public class ActiveBatchUpdatedResponseHandler implements
     }
 
     public void batchFinishedComplete(){
+        Timber.tag(TAG).d("batchFinishedComplete");
         EventBus.getDefault().postSticky(new ActiveBatchUpdatedBatchFinishedEvent(actorType, batchGuid));
     }
 
@@ -125,7 +127,7 @@ public class ActiveBatchUpdatedResponseHandler implements
     ///
 
     public void batchRemoved(ActiveBatchManageInterface.ActorType actorType, String batchGuid){
-        Timber.tag(TAG).d("received batchRemoved");
+        Timber.tag(TAG).d("batchRemoved");
         Timber.tag(TAG).d("    actorType        --> " + actorType.toString());
 
         this.actorType = actorType;
@@ -136,6 +138,7 @@ public class ActiveBatchUpdatedResponseHandler implements
     }
 
     public void batchRemovedComplete(){
+        Timber.tag(TAG).d("batchRemovedComplete");
         EventBus.getDefault().postSticky(new ActiveBatchUpdatedBatchRemovedEvent(actorType, batchGuid));
     }
 
@@ -143,19 +146,35 @@ public class ActiveBatchUpdatedResponseHandler implements
     ///
     /// NO BATCH
     ///
-    public void noBatch(){
-        Timber.tag(TAG).d("received noBatch");
+
+
+    ////
+
+    public void noBatchByMobileUser(){
+        Timber.tag(TAG).d("noBatchByMobileUser");
         AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseNoBatchRequest(AndroidDevice.getInstance(), this));
     }
 
-    public void noBatchComplete(){
-        Timber.tag(TAG).d("noBatchComplete");
-        EventBus.getDefault().postSticky(new ActiveBatchUpdatedNoBatchEvent());
+    public void noBatchByServerAdmin(){
+        Timber.tag(TAG).d("noBatchByServerAdmin");
+        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseNoBatchRequest(AndroidDevice.getInstance(), this));
     }
 
+    public void noDataOnNode(){
+        Timber.tag(TAG).d("noDataOnNode");
+        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseNoBatchRequest(AndroidDevice.getInstance(), this));
+    }
 
+    public void dataMismatchOnNode(){
+        Timber.tag(TAG).d("dataMismatchOnNode");
+        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseNoBatchRequest(AndroidDevice.getInstance(), this));
+    }
 
-
+    //// useCase response interface
+    public void noBatchComplete(){
+        Timber.tag(TAG).d("noBatchComplete");
+        //EventBus.getDefault().postSticky(new ActiveBatchUpdatedNoBatchEvent());
+    }
 
 
 }

@@ -17,9 +17,10 @@ import org.greenrobot.eventbus.ThreadMode;
 import it.flube.driver.BuildConfig;
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.GetAccountDetailsResponseHandler;
+import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import timber.log.Timber;
 
 import static junit.framework.Assert.assertNotNull;
@@ -30,114 +31,90 @@ import static junit.framework.Assert.assertNotNull;
  * Project : Driver
  */
 
-public class AccountActivity extends AppCompatActivity {
+public class AccountActivity extends AppCompatActivity
+    implements
+    AccountController.Response,
+    AccountActivityLayoutComponents.Response {
+
     private static final String TAG = "AccountActivity";
 
+    private String activityGuid;
+
     private AccountController controller;
-    private ActivityNavigator navigator;
-    private DrawerMenu drawer;
-
-    private TextView profileDetail;
-
-    private Button logoutButton;
+    private AccountActivityLayoutComponents layoutComponents;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        TextView softwareVersion;
-        TextView buildFlavor;
-
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_account);
-        profileDetail = (TextView) findViewById(R.id.account_profile_details);
-        profileDetail.setVisibility(View.INVISIBLE);
+        controller = new AccountController();
+        layoutComponents = new AccountActivityLayoutComponents(this, this);
 
-        softwareVersion = (TextView) findViewById(R.id.account_software_version);
-        softwareVersion.setText("version : " + BuildConfig.VERSION_NAME);
-        softwareVersion.setVisibility(View.VISIBLE);
-        Timber.tag(TAG).d("version" + BuildConfig.VERSION_NAME);
-
-        buildFlavor = (TextView) findViewById(R.id.account_build_flavor);
-        buildFlavor.setText(BuildConfig.FLAVOR + " " + BuildConfig.BUILD_TYPE);
-        buildFlavor.setVisibility(View.VISIBLE);
-
-        logoutButton = (Button) findViewById(R.id.account_logout_button);
-
-        Timber.tag(TAG).d("onCreate");
+        activityGuid = BuilderUtilities.generateGuid();
+        Timber.tag(TAG).d("onCreate (%s)", activityGuid);
     }
 
     @Override
     public void onResume(){
         super.onResume();
+        DrawerMenu.getInstance().setActivity(this, R.string.account_activity_title);
+        controller.getAccountDetailRequest(this);
 
-        EventBus.getDefault().register(this);
-
-        navigator = new ActivityNavigator();
-        drawer = new DrawerMenu(this, navigator, R.string.account_activity_title);
-        controller = new AccountController();
-        controller.getAccountDetailRequest();
-
-        if (AndroidDevice.getInstance().getActiveBatch().hasActiveBatch()){
-            logoutButton.setVisibility(View.INVISIBLE);
-        } else {
-            logoutButton.setVisibility(View.VISIBLE);
-        }
-
-        Timber.tag(TAG).d("onResume");
+        Timber.tag(TAG).d("onResume (%s)", activityGuid);
     }
 
     @Override
     public void onPause(){
-
-        drawer.close();
-        controller.close();
-
-        EventBus.getDefault().unregister(this);
-        Timber.tag(TAG).d("onPause");
-
+        DrawerMenu.getInstance().close();
         super.onPause();
+        Timber.tag(TAG).d("onPause (%s)", activityGuid);
+
+    }
+
+    @Override
+    public void onBackPressed(){
+        Timber.tag(TAG).d("onBackPressed (%s)", activityGuid);
+        ActivityNavigator.getInstance().gotoActivityHome(this);
     }
 
 
-    public void clickLogoutButton(View v) {
-        //user wants to logout
-        Timber.tag(TAG).d("*** user clicked Logout button");
+    @Override
+    public void onStop(){
+        Timber.tag(TAG).d("onStop (%s)", activityGuid);
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy(){
+        Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
+        controller.close();
+        layoutComponents.close();
+        super.onDestroy();
+    }
+
+
+
+    ////layout component resposne
+    public void logoutButtonClicked() {
+        Timber.tag(TAG).d("logoutButtonClicked");
         controller.signOutRequest(this);
     }
 
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEvent(GetAccountDetailsResponseHandler.UseCaseGetAccountDetailsSuccessEvent event) {
-        EventBus.getDefault().removeStickyEvent(GetAccountDetailsResponseHandler.UseCaseGetAccountDetailsSuccessEvent.class);
 
-        Timber.tag(TAG).d("*** Profille Detail was updated event");
-
-        String details = "Name --> " + event.getDriver().getNameSettings().getDisplayName() + System.getProperty("line.separator")
-                + "Email --> " + event.getDriver().getEmail() + System.getProperty("line.separator")+ System.getProperty("line.separator")
-                + "Client ID --> "  + event.getDriver().getClientId() + System.getProperty("line.separator")+ System.getProperty("line.separator")
-                + "Photo Url --> "  + event.getDriver().getPhotoUrl() + System.getProperty("line.separator")+ System.getProperty("line.separator")
-                + "DisplayNumber --> " + event.getDriver().getPhoneSettings().getDisplayNumber() + System.getProperty("line.separator") + System.getProperty("line.separator")
-                + "isDev --> " + event.getDriver().getUserRoles().getDev() + System.getProperty("line.separator")
-                + "isQA --> " + event.getDriver().getUserRoles().getQa() + System.getProperty("line.separator")+ System.getProperty("line.separator")
-                + "publicOffersNode --> " + event.getDriver().getCloudDatabaseSettings().getPublicOffersNode() + System.getProperty("line.separator")
-                + "personalOffersNode --> " + event.getDriver().getCloudDatabaseSettings().getPersonalOffersNode() + System.getProperty("line.separator")
-                + "demoOffersNode --> " + event.getDriver().getCloudDatabaseSettings().getDemoOffersNode() + System.getProperty("line.separator")
-                + "scheduledBatchesNode --> " + event.getDriver().getCloudDatabaseSettings().getScheduledBatchesNode() + System.getProperty("line.separator")
-                + "activeBatchesNode --> " + event.getDriver().getCloudDatabaseSettings().getActiveBatchNode() + System.getProperty("line.separator");
-
-        Timber.tag(TAG).d("details -->" + details);
-
-        profileDetail.setText(details);
-        profileDetail.setVisibility(View.VISIBLE);
+    /// getAccountDetailRequest Response
+    public void getAccountDetailSuccess(Driver driver) {
+        Timber.tag(TAG).d("getAccountDetailSuccess");
+        layoutComponents.setValuesDriver(driver);
+        layoutComponents.setVisible();
     }
 
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEvent(GetAccountDetailsResponseHandler.UseCaseGetAccountDetailsFailureEvent event) {
-        EventBus.getDefault().removeStickyEvent(GetAccountDetailsResponseHandler.UseCaseGetAccountDetailsFailureEvent.class);
 
-        Timber.tag(TAG).w("profille detail is not available -> should never get here");
-        profileDetail.setText(getResources().getString(R.string.account_profile_details_default));
-        profileDetail.setVisibility(View.VISIBLE);
+    public void getAccountDetailFailure() {
+        Timber.tag(TAG).d("getAccountDetailFailure");
+        layoutComponents.setValuesNoDriver(this);
+        layoutComponents.setVisible();
     }
 
 

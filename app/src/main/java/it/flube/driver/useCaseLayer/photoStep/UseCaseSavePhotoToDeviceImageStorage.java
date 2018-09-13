@@ -113,7 +113,7 @@ public class UseCaseSavePhotoToDeviceImageStorage implements
 
         ///update our photoRequest object in the cloud to reflect we have saved an image on the device for this photo request
         ///also update imageLabelDetection results (they are in photoRequest object)
-        device.getCloudActiveBatch().updatePhotoRequestDeviceAbsoluteFileNameRequest(device.getUser().getDriver(), photoRequest, absoluteFileName, true, this);
+        device.getCloudActiveBatch().updatePhotoRequestDeviceAbsoluteFileNameRequest(device.getCloudAuth().getDriver(), photoRequest, absoluteFileName, true, this);
     }
 
     public void deviceImageStorageSaveFailure() {
@@ -122,7 +122,7 @@ public class UseCaseSavePhotoToDeviceImageStorage implements
 
         ///update our photoRequest object in the cloud to reflect we DON'T have an image save on this device for this photo request
         ///also update imageLabelDetection results (they are in photoRequest object)
-        device.getCloudActiveBatch().updatePhotoRequestDeviceAbsoluteFileNameRequest(device.getUser().getDriver(), photoRequest, null, false, this);
+        device.getCloudActiveBatch().updatePhotoRequestDeviceAbsoluteFileNameRequest(device.getCloudAuth().getDriver(), photoRequest, null, false, this);
 
     }
 

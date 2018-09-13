@@ -11,6 +11,7 @@ import android.view.View;
 import it.flube.driver.R;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.layoutComponents.demoOffers.DemoOffersMakeLayoutComponents;
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import timber.log.Timber;
 
 /**
@@ -24,9 +25,10 @@ public class DemoOffersMakeActivity extends AppCompatActivity
 
     private static final String TAG = "DemoOffersMakeActivity";
 
-    private ActivityNavigator navigator;
     private DemoOffersMakeController controller;
     private DemoOffersMakeLayoutComponents demoOffersMakeLayoutComponents;
+
+    private String activityGuid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,23 +37,46 @@ public class DemoOffersMakeActivity extends AppCompatActivity
         Timber.tag(TAG).d("onCreate");
 
         demoOffersMakeLayoutComponents = new DemoOffersMakeLayoutComponents(this);
+        controller = new DemoOffersMakeController(this, this);
+
+        activityGuid = BuilderUtilities.generateGuid();
+        Timber.tag(TAG).d("onCreate (%s)", activityGuid);
     }
 
 
     @Override
     public void onResume() {
         super.onResume();
-        navigator = new ActivityNavigator();
-        controller = new DemoOffersMakeController(this, this);
         demoOffersMakeLayoutComponents.setReadyToMake();
-        Timber.tag(TAG).d("onResume");
+        Timber.tag(TAG).d("onResume (%s)", activityGuid);
     }
 
     @Override
     public void onPause() {
-        Timber.tag(TAG).d( "onPause");
+        Timber.tag(TAG).d("onPause (%s)", activityGuid);
         controller.close();
         super.onPause();
+
+    }
+
+    @Override
+    public void onBackPressed(){
+        Timber.tag(TAG).d("onBackPressed (%s)", activityGuid);
+        ActivityNavigator.getInstance().gotoActivityHome(this);
+    }
+
+    @Override
+    public void onStop(){
+        Timber.tag(TAG).d("onStop (%s)", activityGuid);
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy(){
+        Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
+        controller.close();
+        demoOffersMakeLayoutComponents.close();
+        super.onDestroy();
 
     }
 
@@ -76,7 +101,7 @@ public class DemoOffersMakeActivity extends AppCompatActivity
     public void allDone(){
         //we are done, go to demo offers activity
         Timber.tag(TAG).d("...we are done, go to activity demo offers");
-        navigator.gotoActivityDemoOffers(this);
+        ActivityNavigator.getInstance().gotoActivityDemoOffers(this);
     }
 
 }

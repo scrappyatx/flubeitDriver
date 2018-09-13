@@ -30,9 +30,9 @@ public class ReceiveAssetGetSignatureActivity extends AppCompatActivity implemen
 
     private static final String TAG="ReceiveAssetGetSignatureActivity";
 
-    private ActivityNavigator navigator;
+
     private ReceiveAssetGetSignatureController controller;
-    private DrawerMenu drawer;
+
 
     private ReceiveAssetGetSignatureLayoutComponents layoutComponents;
 
@@ -43,8 +43,7 @@ public class ReceiveAssetGetSignatureActivity extends AppCompatActivity implemen
 
         setContentView(R.layout.activity_get_signature);
 
-        navigator = new ActivityNavigator();
-        drawer = new DrawerMenu(this, navigator, R.string.get_signature_activity_title);
+
         controller = new ReceiveAssetGetSignatureController();
 
         layoutComponents = new ReceiveAssetGetSignatureLayoutComponents(this, this);
@@ -54,7 +53,7 @@ public class ReceiveAssetGetSignatureActivity extends AppCompatActivity implemen
     @Override
     public void onResume() {
         super.onResume();
-
+        DrawerMenu.getInstance().setActivity(this, R.string.get_signature_activity_title);
         controller.getDriverAndActiveBatchStep(this);
         Timber.tag(TAG).d("onResume");
     }
@@ -62,12 +61,13 @@ public class ReceiveAssetGetSignatureActivity extends AppCompatActivity implemen
     @Override
     public void onPause() {
         super.onPause();
+        DrawerMenu.getInstance().close();
         Timber.tag(TAG).d("onPause");
     }
 
     @Override
     public void onStop() {
-        drawer.close();
+
         controller.close();
 
         super.onStop();
@@ -77,7 +77,7 @@ public class ReceiveAssetGetSignatureActivity extends AppCompatActivity implemen
     @Override
     public void onBackPressed(){
         Timber.tag(TAG).d("onBackPressed");
-        navigator.gotoActiveBatchStep(this);
+        ActivityNavigator.getInstance().gotoActiveBatchStep(this);
     }
 
     ///
@@ -101,17 +101,17 @@ public class ReceiveAssetGetSignatureActivity extends AppCompatActivity implemen
 
     public void gotNoDriver(){
         Timber.tag(TAG).d("gotNoDriver");
-        navigator.gotoActivityLogin(this);
+        ActivityNavigator.getInstance().gotoActivityLogin(this);
     }
 
     public void gotDriverButNoStep(Driver driver){
         Timber.tag(TAG).d("gotDriverButNoStep");
-        navigator.gotoActivityHome(this);
+        ActivityNavigator.getInstance().gotoActivityHome(this);
     }
 
     public void gotStepMismatch(Driver driver, OrderStepInterface.TaskType taskType){
         Timber.tag(TAG).d("gotStepMismatch, taskType -> " + taskType.toString());
-        navigator.gotoActiveBatchStep(this);
+        ActivityNavigator.getInstance().gotoActiveBatchStep(this);
     }
 
     ////
@@ -119,6 +119,6 @@ public class ReceiveAssetGetSignatureActivity extends AppCompatActivity implemen
     ////
     public void signatureRequestWithImageUpdateComplete(){
         Timber.tag(TAG).d("signatureRequestWithImageUpdateComplete");
-        navigator.gotoActiveBatchStep(this);
+        ActivityNavigator.getInstance().gotoActiveBatchStep(this);
     }
 }

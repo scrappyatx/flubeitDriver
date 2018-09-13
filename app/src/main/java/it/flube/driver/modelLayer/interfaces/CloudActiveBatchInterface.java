@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.libbatchdata.entities.ContactPersonsByServiceOrder;
 import it.flube.libbatchdata.entities.LatLonLocation;
+import it.flube.libbatchdata.entities.PaymentAuthorization;
 import it.flube.libbatchdata.entities.PhotoRequest;
+import it.flube.libbatchdata.entities.ReceiptRequest;
 import it.flube.libbatchdata.entities.RouteStop;
 import it.flube.libbatchdata.entities.SignatureRequest;
 import it.flube.libbatchdata.entities.assetTransfer.AssetTransfer;
@@ -50,7 +52,13 @@ public interface CloudActiveBatchInterface {
 
         void batchRemoved(ActiveBatchManageInterface.ActorType actorType, String batchGuid);
 
-        void noBatch();
+        void noBatchByMobileUser();
+
+        void noBatchByServerAdmin();
+
+        void noDataOnNode();
+
+        void dataMismatchOnNode();
     }
 
     ////
@@ -89,6 +97,7 @@ public interface CloudActiveBatchInterface {
         void cloudActiveBatchFinishedBatchAckComplete();
     }
 
+
     void acknowledgeRemovedBatchRequest(Driver driver, String batchGuid, AcknowledgeRemovedBatchResponse response);
 
     interface AcknowledgeRemovedBatchResponse {
@@ -114,6 +123,18 @@ public interface CloudActiveBatchInterface {
 
     interface PhotoRequestDeviceAbsoluteFileNameResponse {
         void cloudActiveBatchUpdatePhotoRequestDeviceAbsoluteFilenameComplete();
+    }
+
+    void updatePaymentAuthorizationRequest(Driver driver, PaymentAuthorization paymentAuthorization, PaymentAuthorizationUpdateResponse response);
+
+    interface PaymentAuthorizationUpdateResponse {
+        void cloudActiveBatchUpdatePaymentAuthorizationComplete();
+    }
+
+    void updateReceiptRequestDeviceAbsoluteFileNameRequest(Driver driver, ReceiptRequest receiptRequest, ReceiptRequestDeviceAbsoluteFileNameReponse response);
+
+    interface ReceiptRequestDeviceAbsoluteFileNameReponse {
+        void cloudActiveBatchUpdateReceiptRequestDeviceAbsoluteFilenameComplete();
     }
 
     void updateSignatureRequestDeviceAbsoluteFileNameRequest(Driver driver, SignatureRequest signatureRequest, String absoluteFileName, Boolean hasFile, SignatureRequestDeviceAbsoluteFileNameResponse response);

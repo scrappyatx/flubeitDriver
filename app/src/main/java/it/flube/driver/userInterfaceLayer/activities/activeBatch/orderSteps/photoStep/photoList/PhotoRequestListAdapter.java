@@ -147,23 +147,26 @@ public class PhotoRequestListAdapter extends RecyclerView.Adapter<PhotoRequestLi
                 //Picasso.with(activityContext)
 
                 //// GLIDE TEST - comment this out
-                String fileName = "file://" + photoRequest.getDeviceAbsoluteFileName();
-                Timber.tag(TAG).d("filename -> " + fileName);
-                Picasso.get()
+                //String fileName = "file://" + photoRequest.getDeviceAbsoluteFileName();
+                //Timber.tag(TAG).d("filename -> " + fileName);
+                //Picasso.get()
                         //.load(new File(photoRequest.getDeviceAbsoluteFileName()))
-                        .load(fileName)
+                        //.load(fileName)
                        //.load(R.drawable.placeholder_image)
                         //.placeholder(R.drawable.placeholder_image)
                        //.resize(THUMBNAIL_WIDTH,THUMBNAIL_HEIGHT)
-                        .fit()
-                        .centerInside()
-                        .into(thumbnailImage);
+                       // .fit()
+                       // .centerInside()
+                       // .into(thumbnailImage);
                 ////
+
                 ///Glide.with(activityContext)
                 ///        .load(new File(photoRequest.getDeviceAbsoluteFileName()))
                 ///        .into(thumbnailImage);
 
-                thumbnailImage.setVisibility(View.VISIBLE);
+                //thumbnailImage.setVisibility(View.VISIBLE);
+
+                thumbnailImage.setVisibility(View.INVISIBLE);
                 Timber.tag(TAG).d("---> Thumbnail Image (deviceFile)    : " + photoRequest.getDeviceAbsoluteFileName());
 
             } else if (photoRequest.getHasNoAttemptImage()) {

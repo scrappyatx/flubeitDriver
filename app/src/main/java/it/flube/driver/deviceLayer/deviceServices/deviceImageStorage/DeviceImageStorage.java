@@ -5,9 +5,13 @@
 package it.flube.driver.deviceLayer.deviceServices.deviceImageStorage;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 
+import java.io.File;
+
 import it.flube.driver.modelLayer.interfaces.DeviceImageStorageInterface;
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import timber.log.Timber;
 
 /**
@@ -28,6 +32,13 @@ public class DeviceImageStorage implements
     public DeviceImageStorage(Context appContext){
         this.appContext = appContext;
         Timber.tag(TAG).d("...created");
+    }
+
+    public File createUniqueDeviceImageFile(){
+        Timber.tag(TAG).d("getImageFilename...");
+        File myFile = new File(new ContextWrapper(appContext).getDir(IMAGE_DIR, Context.MODE_PRIVATE), BuilderUtilities.generateGuid());
+        Timber.tag(TAG).d("   ...got file name --> " + myFile.getAbsoluteFile().toString());
+        return myFile;
     }
 
     public void saveImageRequest(String imageGuid, Bitmap bitmap, DeviceImageStorageInterface.SaveResponse response) {

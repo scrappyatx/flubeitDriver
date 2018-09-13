@@ -121,7 +121,7 @@ public class UseCaseDisconnectUser implements
         if (responseCounter.isFinished()){
             /// 5. clear out user & active batch
             Timber.tag(TAG).d("         ...all responses finished, clearing user");
-            device.getUser().clear();
+            //device.getUser().clear();
             Timber.tag(TAG).d("         ...clearing active batch");
             device.getActiveBatch().clear();
             Timber.tag(TAG).d("         ...UseCase COMPLETE");

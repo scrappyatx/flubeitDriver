@@ -32,7 +32,7 @@ public class UseCaseStartBatchRequest implements
     public UseCaseStartBatchRequest(MobileDeviceInterface device, String batchGuid, Response response){
         this.cloudActiveBatch = device.getCloudActiveBatch();
         this.cloudScheduledBatch = device.getCloudScheduledBatch();
-        this.driver = device.getUser().getDriver();
+        this.driver = device.getCloudAuth().getDriver();
         this.batchGuid = batchGuid;
         this.response = response;
 

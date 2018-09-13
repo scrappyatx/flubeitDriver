@@ -44,7 +44,7 @@ public class UseCaseGetContactPersons implements
 
     public UseCaseGetContactPersons(MobileDeviceInterface device, UseCaseGetContactPersons.Response response){
         this.device = device;
-        this.driver = device.getUser().getDriver();
+        this.driver = device.getCloudAuth().getDriver();
         this.response = response;
     }
 

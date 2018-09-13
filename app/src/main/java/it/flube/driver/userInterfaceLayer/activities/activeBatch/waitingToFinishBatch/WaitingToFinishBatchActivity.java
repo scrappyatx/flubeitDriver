@@ -12,6 +12,7 @@ import it.flube.driver.useCaseLayer.activeBatch.UseCaseDoAllTheThingsBeforeBatch
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseFinishBatchRequest;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import timber.log.Timber;
 
 /**
@@ -27,51 +28,71 @@ public class WaitingToFinishBatchActivity extends AppCompatActivity implements
 
     private static final String TAG = "WaitingToFinishBatchActivity";
 
-    private ActivityNavigator navigator;
+    private String activityGuid;
+
     private WaitingToFinishBatchController controller;
-    private DrawerMenu drawer;
 
     private WaitingToFinishBatchLayoutComponents components;
     private String batchGuid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Timber.tag(TAG).d( "onCreate");
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_batch_waiting_to_finish);
 
+
+        controller = new WaitingToFinishBatchController();
         components = new WaitingToFinishBatchLayoutComponents(this);
-        components.setGone();
+
+        activityGuid = BuilderUtilities.generateGuid();
+        Timber.tag(TAG).d("onCreate (%s)", activityGuid);
     }
 
     @Override
     public void onResume() {
-        Timber.tag(TAG).d( "onResume");
-        super.onResume();
-        navigator = new ActivityNavigator();
-        drawer = new DrawerMenu(this, navigator, R.string.batch_waiting_to_finish_activity_title);
-        controller = new WaitingToFinishBatchController();
-
+        Timber.tag(TAG).d("onResume (%s)", activityGuid);
+        DrawerMenu.getInstance().setActivity(this, R.string.batch_waiting_to_finish_activity_title);
         controller.getActivityLaunchData(this, this);
+        super.onResume();
 
     }
 
     @Override
     public void onPause() {
-        Timber.tag(TAG).d( "onPause");
+        Timber.tag(TAG).d("onPause (%s)", activityGuid);
+        super.onPause();
+        DrawerMenu.getInstance().close();
+    }
 
-        drawer.close();
+    @Override
+    public void onBackPressed(){
+        Timber.tag(TAG).d("onBackPressed (%s)", activityGuid);
+        ActivityNavigator.getInstance().gotoActivityHome(this);
+    }
+
+    @Override
+    public void onStop(){
+        Timber.tag(TAG).d("onStop (%s)", activityGuid);
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy(){
+        Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
+
         controller.close();
         components.close();
+        super.onDestroy();
 
-        super.onPause();
     }
 
     ////
     //// interface for WaitingToFinishUtilities.Response
     ////
     public void getActivityLaunchDataSuccess(String batchGuid){
-        Timber.tag(TAG).d("getActivityLaunchDataSuccess, batchGuid -> " + batchGuid);
+        Timber.tag(TAG).d("getActivityLaunchDataSuccess (%s), batchGuid -> " + batchGuid, activityGuid);
         this.batchGuid = batchGuid;
         //// start waiting animation
         components.showWaitingAnimation(this);
@@ -79,8 +100,8 @@ public class WaitingToFinishBatchActivity extends AppCompatActivity implements
     }
 
     public void getActivityLaunchDataFailure(){
-        Timber.tag(TAG).d("getActivityLaunchDataFailure -> this should never happen");
-        navigator.gotoActivityHome(this);
+        Timber.tag(TAG).w("getActivityLaunchDataFailure (%s) -> this should never happen", activityGuid);
+        ActivityNavigator.getInstance().gotoActivityHome(this);
     }
 
 
@@ -89,7 +110,7 @@ public class WaitingToFinishBatchActivity extends AppCompatActivity implements
     ////    UseCaseDoAllTheThingsBeforeBatchCanBeFinished.Response
     ////
     public void batchIsReadyToFinish(String batchGuid){
-        Timber.tag(TAG).d("batchFinished");
+        Timber.tag(TAG).d("batchFinished (%s)", activityGuid);
         //show complete animation
         components.showFinishedAnimation(this, this);
 
@@ -99,7 +120,7 @@ public class WaitingToFinishBatchActivity extends AppCompatActivity implements
     //// interface for WaitingToFinishBatchLayoutComponents
     ////
     public void finishedAnimationComplete(){
-        Timber.tag(TAG).d("finishedAnimationComplete");
+        Timber.tag(TAG).d("finishedAnimationComplete (%s)", activityGuid);
         //complete animation is finished
         components.stopFinishedAnimation();
         controller.finishBatchRequest(batchGuid, this);
@@ -109,7 +130,8 @@ public class WaitingToFinishBatchActivity extends AppCompatActivity implements
     ///  UseCaseFinishBatchRequest.Response
     ///
     public void finishBatchComplete(){
-        Timber.tag(TAG).d("finishBatchComplete");
+        Timber.tag(TAG).d("finishBatchComplete (%s)", activityGuid);
+        ActivityNavigator.getInstance().gotoActivityHome(this);
     }
 
 }

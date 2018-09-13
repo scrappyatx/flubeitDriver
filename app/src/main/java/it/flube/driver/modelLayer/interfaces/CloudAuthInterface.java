@@ -13,6 +13,12 @@ import it.flube.driver.modelLayer.entities.driver.Driver;
 
 public interface CloudAuthInterface {
 
+    /// can be called on main thread
+    Boolean hasDriver();
+
+    Driver getDriver();
+
+    /// must be called on background thread
     void startMonitoringAuthStateChanges(StartMonitoringResponse response);
 
     interface StartMonitoringResponse {
@@ -31,12 +37,4 @@ public interface CloudAuthInterface {
         void cloudAuthSignOutCurrentUserComplete();
     }
 
-
-    interface AuthStateChangedEvent {
-        void cloudAuthStateChangedUserChanged(String clientId, String email, String idToken);
-
-        void cloudAuthStateChangedNoUser();
-
-        void cloudAuthStateChangedNoIdToken();
-    }
 }

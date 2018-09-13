@@ -27,11 +27,9 @@ public class UserInterfaceClaimDemoOfferEventHandler {
     public final static String TAG = "UserInterfaceClaimDemoOfferEventHandler";
 
     private AppCompatActivity activity;
-    private ActivityNavigator navigator;
 
-    public UserInterfaceClaimDemoOfferEventHandler(@NonNull AppCompatActivity activity, @NonNull ActivityNavigator navigator){
+    public UserInterfaceClaimDemoOfferEventHandler(@NonNull AppCompatActivity activity){
         this.activity = activity;
-        this.navigator = navigator;
         EventBus.getDefault().register(this);
 
         Timber.tag(TAG).d("created");
@@ -40,7 +38,6 @@ public class UserInterfaceClaimDemoOfferEventHandler {
     public void close(){
         EventBus.getDefault().unregister(this);
         activity = null;
-        navigator = null;
         Timber.tag(TAG).d("closed");
     }
 
@@ -51,7 +48,7 @@ public class UserInterfaceClaimDemoOfferEventHandler {
         Timber.tag(TAG).d("claim demo offer SUCCESS!");
 
         EventBus.getDefault().postSticky(new ShowClaimOfferSuccessAlertEvent());
-        navigator.gotoActivityDemoOffers(activity);
+        ActivityNavigator.getInstance().gotoActivityDemoOffers(activity);
     }
 
     @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
@@ -62,7 +59,7 @@ public class UserInterfaceClaimDemoOfferEventHandler {
 
 
         EventBus.getDefault().postSticky(new ShowClaimOfferFailureAlertEvent());
-        navigator.gotoActivityDemoOffers(activity);
+        ActivityNavigator.getInstance().gotoActivityDemoOffers(activity);
     }
 
 

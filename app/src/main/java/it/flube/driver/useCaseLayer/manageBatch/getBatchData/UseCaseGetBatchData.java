@@ -40,7 +40,7 @@ public class UseCaseGetBatchData implements
 
     public UseCaseGetBatchData(MobileDeviceInterface device, String batchGuid, UseCaseGetBatchData.Response response){
         this.cloudBatch = device.getCloudScheduledBatch();
-        this.driver = device.getUser().getDriver();
+        this.driver = device.getCloudAuth().getDriver();
         this.batchGuid = batchGuid;
         this.response = response;
     }

@@ -13,6 +13,7 @@ import it.flube.libbatchdata.builders.LatLonLocationBuilder;
 import it.flube.libbatchdata.builders.PaymentAuthorizationBuilder;
 import it.flube.libbatchdata.builders.PhotoRequestListForVehicleBuilder;
 import it.flube.libbatchdata.builders.PotentialEarningsBuilder;
+import it.flube.libbatchdata.builders.ProductListBuilder;
 import it.flube.libbatchdata.builders.ServiceProviderBuilder;
 import it.flube.libbatchdata.builders.VehicleBuilder;
 import it.flube.libbatchdata.builders.batch.BatchHolderBuilder;
@@ -113,6 +114,9 @@ public class DemoBatchOilChange implements DemoBatchInterface {
                 .addServiceOrder(new ServiceOrderScaffoldBuilder.Builder()
                         .title("DEMO OIL CHANGE")
                         .description("Get an oil change")
+                        .productList(new ProductListBuilder.Builder()
+                                .addCartItem(DemoBatchUtilities.getCustomerCartItem())
+                                .build())
                         //.startTime(BuilderUtilities.getNowDate())
                         //.finishTime(BuilderUtilities.getFutureDate(30))
 

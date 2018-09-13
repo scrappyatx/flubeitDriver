@@ -64,7 +64,7 @@ public class UseCaseStepStartedRequest implements
                                      BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface step,
                                      Response response){
         this.device = device;
-        this.driver = device.getUser().getDriver();
+        this.driver = device.getCloudAuth().getDriver();
         this.deviceInfo = device.getDeviceInfo();
         this.cloudActiveBatch = device.getCloudActiveBatch();
         this.actorType = actorType;

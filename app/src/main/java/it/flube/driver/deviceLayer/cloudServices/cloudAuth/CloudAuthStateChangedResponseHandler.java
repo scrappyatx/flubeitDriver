@@ -24,68 +24,89 @@ import timber.log.Timber;
  */
 
 public class CloudAuthStateChangedResponseHandler implements
-        CloudAuthInterface.AuthStateChangedEvent,
         UseCaseThingsToDoWhenUserChangesToAnotherUser.Response,
         UseCaseThingsToDoWhenUserChangesToNoUser.Response {
 
     private static final String TAG = "CloudAuthStateChangedResponseHandler";
 
-    ///
+    String idToken;
+
+    private Response response;
+
+    public CloudAuthStateChangedResponseHandler(Response response){
+        this.response = response;
+        Timber.tag(TAG).d("created");
+    }
+
+    //////////////
     ///     CASE 1 --> If user changes to a new user
     ///
-    public void cloudAuthStateChangedUserChanged(String clientId, String email, String idToken){
+    ///     Do useCase for changing to another user, 3 possible results
+    public void doUserChanged(String clientId, String email, String idToken){
+        Timber.tag(TAG).d("doUserChanged");
+
+        this.idToken = idToken;
         MobileDeviceInterface device = AndroidDevice.getInstance();
         device.getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseThingsToDoWhenUserChangesToAnotherUser(device, clientId, email, idToken, this));
         Timber.tag(TAG).d("case 1 -> user changed to another user : clientId -> " + clientId + " email -> " + email);
     }
 
-    ///
     ///     RESULT 1A ---> found user profile
-    ///
-    public void userChangedToNewUserSuccess(Driver driver){
-        EventBus.getDefault().postSticky(new CloudAuthUserChangedEvent(driver));
-        Timber.tag(TAG).d("    ... result 1A -> found user profile, posting CloudAuthUserChangedEvent on eventbus");
+    public void useCaseUserChangedToNewUserSuccess(Driver driver){
+        Timber.tag(TAG).d("userChangedToNewUserSuccess");
+        response.userChangeGotDriver(driver, idToken);
     }
 
-    ///
     ///    RESULT 1B ---> no user profile
-    ///
-    public void userChangedToNewUserNoProfile(){
-        EventBus.getDefault().postSticky(new CloudAuthNoProfileEvent());
+    public void useCaseUserChangedToNewUserNoProfile(){
+        Timber.tag(TAG).d("userChangedToNewUserNoProfile");
+        response.userChangeNoProfile();
         Timber.tag(TAG).d("   ... result 1B -> did not find user profile, posting CloudAuthNoProfileEvent on eventbus");
     }
 
-
-
-    ///
     ///    RESULT 1C ---> access denied
-    ///
-    public void userChangedToNewUserAccessDenied(){
-        EventBus.getDefault().postSticky(new CloudAuthAccessDeniedEvent());
-        Timber.tag(TAG).d("   ...result 1C -> access denied, posting CloudAuthAccessDeniedEvent on eventbus");
+    public void useCaseUserChangedToNewUserAccessDenied(){
+        Timber.tag(TAG).d("userChangedToNewUserAccessDenied");
+        response.userChangeAccessDenied();
     }
 
-    ///
+    /////////////////
     ///     CASE 2 --> If user changes to no user
     ///
-    public void cloudAuthStateChangedNoUser(){
+    ///     Do uses case for changing to no user, 1 possible result
+    public void doNoUser(){
+        Timber.tag(TAG).d("doNoUser");
         MobileDeviceInterface device = AndroidDevice.getInstance();
         device.getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseThingsToDoWhenUserChangesToNoUser(device, this));
-        Timber.tag(TAG).d("case 2 -> user changed to no user");
-    }
-
-    public void userChangedToNoUserComplete(){
-        EventBus.getDefault().postSticky(new CloudAuthNoUserEvent());
-        Timber.tag(TAG).d("   ...result 2 -> posting CloudAuthNoUserEvent on eventbus");
     }
 
     ///
     ///   CASE 3 --> Could not get idToken from cloudAuth
     ///
-    public void cloudAuthStateChangedNoIdToken(){
+    ///     Do uses case for changing to no user, 1 possible result
+    public void doNoToken(){
+        Timber.tag(TAG).d("doNoToken");
         MobileDeviceInterface device = AndroidDevice.getInstance();
         device.getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseThingsToDoWhenUserChangesToNoUser(device, this));
         Timber.tag(TAG).d("case 3 -> could not get idToken for authorized user, treat same as NO USER");
+    }
+
+
+    public void useCaseUserChangedToNoUserComplete(){
+        Timber.tag(TAG).d("useCaseUserChangedToNoUserComplete");
+        response.userChangeNoUser();
+    }
+
+    //// response interface
+
+    interface Response {
+        void userChangeGotDriver(Driver driver, String idToken);
+
+        void userChangeNoProfile();
+
+        void userChangeAccessDenied();
+
+        void userChangeNoUser();
     }
 
 }

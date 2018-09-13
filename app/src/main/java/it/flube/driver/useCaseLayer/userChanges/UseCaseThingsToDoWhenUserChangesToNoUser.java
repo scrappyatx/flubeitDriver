@@ -39,11 +39,11 @@ public class UseCaseThingsToDoWhenUserChangesToNoUser implements
 
     public void userDisconnectedComplete(){
         Timber.tag(TAG).d("   ...disconnecting current user complete, UseCase COMPLETE");
-        response.userChangedToNoUserComplete();
+        response.useCaseUserChangedToNoUserComplete();
     }
 
     public interface Response {
-        void userChangedToNoUserComplete();
+        void useCaseUserChangedToNoUserComplete();
     }
 
 }

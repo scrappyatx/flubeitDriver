@@ -148,8 +148,7 @@ public class NavigationActivity extends AppCompatActivity implements
         super.onResume();
         mapView.onResume();
 
-        navigator = new ActivityNavigator();
-        drawer = new DrawerMenu(this, navigator, R.string.navigation_step_activity_title);
+        DrawerMenu.getInstance().setActivity(this, R.string.navigation_step_activity_title);
         controller = new NavigationController(this, Mapbox.getAccessToken());
         step = getStep();
         currentUserLocation = getCurrentUserLocation();
@@ -172,7 +171,7 @@ public class NavigationActivity extends AppCompatActivity implements
 
         EventBus.getDefault().unregister(this);
 
-        drawer.close();
+        DrawerMenu.getInstance().close();
         controller.close();
         step = null;
     }
@@ -609,7 +608,7 @@ public class NavigationActivity extends AppCompatActivity implements
                 .icon(IconFactory.getInstance(this).defaultMarker());
 
         try {
-            Drawable d = ContextCompat.getDrawable(this, R.drawable.exclamation_circle_red_1);
+            Drawable d = ContextCompat.getDrawable(this, R.drawable.mapbox_marker);
             Bitmap b = Bitmap.createBitmap(d.getIntrinsicWidth(), d.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
 
             Canvas canvas = new Canvas(b);

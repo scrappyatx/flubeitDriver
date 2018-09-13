@@ -17,6 +17,9 @@ import it.flube.driver.userInterfaceLayer.activities.signIn.SignInActivity;
 import it.flube.driver.userInterfaceLayer.activities.messages.MessagesActivity;
 import it.flube.driver.userInterfaceLayer.activities.signIn.SignInAuthUiLaunchActivity;
 import it.flube.driver.userInterfaceLayer.activities.splashScreen.SplashScreenActivity;
+import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
+import it.flube.driver.userInterfaceLayer.drawerMenu.DriverManager;
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.interfaces.ActiveBatchManageInterface;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import timber.log.Timber;
@@ -29,7 +32,29 @@ import timber.log.Timber;
 public class ActivityNavigator {
     private static final String TAG = "ActivityNavigator";
 
-    public ActivityNavigator(){}
+    ///  Singleton class using Initialization-on-demand holder idiom
+    ///  ref: https://en.wikipedia.org/wiki/Initialization-on-demand_holder_idiom
+
+    private static class Loader {
+        static volatile ActivityNavigator instance = new ActivityNavigator();
+    }
+
+    ///
+    ///  constructor is private, instances can only be created internally by the class
+    ///
+    private ActivityNavigator() {
+        objectGuid = BuilderUtilities.generateGuid();
+        Timber.tag(TAG).d("created (%s)", objectGuid);
+    }
+
+    ///
+    ///  getInstance() provides access to the singleton instance outside the class
+    ///
+    public static ActivityNavigator getInstance() {
+        return ActivityNavigator.Loader.instance;
+    }
+
+    private String objectGuid;
 
     ////
     //// HOME
@@ -300,6 +325,17 @@ public class ActivityNavigator {
     public void gotoActivityGiveAssetItemList(Context context){
         GiveAssetStepNavigator.gotoActivityGiveAssetItemList(context);
         Timber.tag(TAG).d("starting activity GiveAssetItemList");
+    }
+
+    /// AUTHORIZE PAYMENT NAVIGATION
+    public void gotoActivityReceiptDetail(Context context){
+        AuthorizePaymentStepNavigator.gotoActivityReceiptDetail(context);
+        Timber.tag(TAG).d("starting activity ReceiptDetailActivity");
+    }
+
+    public void gotoActivityReceiptTakePhoto(Context context){
+        AuthorizePaymentStepNavigator.gotoActivityReceiptPhotoTakeActivity(context);
+        Timber.tag(TAG).d("starting activity ReceiptTakeActivity");
     }
 
 }

@@ -30,7 +30,6 @@ public class SignInActivity extends AppCompatActivity {
     private EditText mPassword;
     private LottieAnimationView mLoadingAnimation;
     private SignInController mController;
-    private ActivityNavigator navigator;
 
 
     @Override
@@ -81,7 +80,6 @@ public class SignInActivity extends AppCompatActivity {
 
         EventBus.getDefault().register(this);
 
-        navigator = new ActivityNavigator();
         mController = new SignInController();
 
         updateUiElementVisibility();

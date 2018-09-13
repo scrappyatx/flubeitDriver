@@ -9,6 +9,7 @@ import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.builders.ContactPersonBuilder;
 import it.flube.libbatchdata.builders.PhotoRequestBuilder;
 import it.flube.libbatchdata.builders.PotentialEarningsBuilder;
+import it.flube.libbatchdata.builders.ProductListBuilder;
 import it.flube.libbatchdata.builders.VehicleBuilder;
 import it.flube.libbatchdata.builders.batch.BatchHolderBuilder;
 import it.flube.libbatchdata.builders.orderSteps.PhotoStepBuilder;
@@ -88,6 +89,9 @@ public class DemoBatchSingleStepOnePhoto implements DemoBatchInterface {
                         .description(SERVICE_ORDER_DESCRIPTION)
                         .startTime(BuilderUtilities.getNowDate())
                         .finishTime(BuilderUtilities.getFutureDate(30))
+                        .productList(new ProductListBuilder.Builder()
+                                .addCartItem(DemoBatchUtilities.getCustomerCartItem())
+                                .build())
 
                         .addStep(new PhotoStepBuilder.Builder()
                                 .title(STEP_TITLE)

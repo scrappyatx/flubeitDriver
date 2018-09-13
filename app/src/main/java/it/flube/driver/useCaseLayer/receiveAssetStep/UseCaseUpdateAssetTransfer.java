@@ -16,11 +16,11 @@ import timber.log.Timber;
  */
 public class UseCaseUpdateAssetTransfer implements
         Runnable,
-        CloudActiveBatchInterface.UpdateAssetTransferResponse {
-
-    private static final String TAG="UseCaseUpdateAssetTransfer";
+        CloudActiveBatchInterface.UpdateAssetTransferResponse { private static final String TAG="UseCaseUpdateAssetTransfer";
 
     private final MobileDeviceInterface device;
+
+
     private final String batchGuid;
     private final String serviceOrderGuid;
     private final String stepGuid;
@@ -38,9 +38,9 @@ public class UseCaseUpdateAssetTransfer implements
 
     }
     public void run(){
-        if (device.getUser().isSignedIn()) {
+        if (device.getCloudAuth().hasDriver()) {
             //// get active batch step
-            this.driver = device.getUser().getDriver();
+            this.driver = device.getCloudAuth().getDriver();
             Timber.tag(TAG).d("...device has signed in user, continue");
             device.getCloudActiveBatch().updateAssetTransferRequest(driver, batchGuid, serviceOrderGuid, stepGuid, assetTransfer, this);
 

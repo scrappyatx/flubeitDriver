@@ -24,10 +24,10 @@ public class FirebaseAuthGetUserToken implements
 
     private static final String TAG = "FirebaseAuthGetUserToken";
 
-    private CloudAuthInterface.AuthStateChangedEvent response;
+    private Response response;
     private FirebaseUser currentUser;
 
-    public void getUserTokenRequest(FirebaseUser currentUser, CloudAuthInterface.AuthStateChangedEvent response){
+    public void getUserTokenRequest(FirebaseUser currentUser, Response response){
         this.response = response;
         this.currentUser = currentUser;
 
@@ -45,11 +45,11 @@ public class FirebaseAuthGetUserToken implements
             try {
                 String idToken = task.getResult().getToken();
                 Timber.tag(TAG).d("      ...idToken = " + idToken);
-                response.cloudAuthStateChangedUserChanged(currentUser.getUid(), currentUser.getEmail(), idToken);
+                response.idTokenSuccess(currentUser.getUid(), currentUser.getEmail(), idToken);
             } catch (Exception e) {
                 Timber.tag(TAG).d("      ...ERROR retrieving token string");
                 Timber.tag(TAG).e(e);
-                response.cloudAuthStateChangedNoIdToken();
+                response.idTokenFailure();
             }
 
         } else {
@@ -61,7 +61,13 @@ public class FirebaseAuthGetUserToken implements
                 Timber.tag(TAG).d("      ...ERROR");
                 Timber.tag(TAG).e(e);
             }
-            response.cloudAuthStateChangedNoIdToken();
+            response.idTokenFailure();
         }
+    }
+
+    interface Response {
+        void idTokenSuccess(String clientId, String email, String idToken);
+
+        void idTokenFailure();
     }
 }

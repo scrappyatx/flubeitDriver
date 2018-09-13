@@ -33,7 +33,7 @@ public class UseCaseClaimPublicOfferRequest implements
         this.batchType = batchType;
         this.response = response;
         publicOffer = device.getCloudPublicOffer();
-        driver = device.getUser().getDriver();
+        driver = device.getCloudAuth().getDriver();
     }
 
     public void run(){

@@ -23,7 +23,8 @@ import timber.log.Timber;
  * Project : Driver
  */
 
-public class PhotoRequestListLayoutComponents {
+public class PhotoRequestListLayoutComponents implements
+    PhotoRequestListAdapter.Response {
 
         public final static String TAG = "PhotoRequestListLayoutComponents";
         ///
@@ -34,12 +35,16 @@ public class PhotoRequestListLayoutComponents {
         private PhotoRequestListAdapter adapter;
         private Boolean okToFinish;
 
+        private Response response;
 
-    public PhotoRequestListLayoutComponents(AppCompatActivity activity, PhotoRequestListAdapter.Response response){
+
+    public PhotoRequestListLayoutComponents(AppCompatActivity activity, Response response){
+        this.response = response;
+
         listView = (RecyclerView) activity.findViewById(R.id.photo_request_list_view);
         listView.setVisibility(View.INVISIBLE);
 
-        adapter = new PhotoRequestListAdapter(activity, response);
+        adapter = new PhotoRequestListAdapter(activity, this);
         listView.setLayoutManager(new LinearLayoutManager(activity));
         listView.setAdapter(adapter);
 
@@ -105,6 +110,18 @@ public class PhotoRequestListLayoutComponents {
     public void close(){
         listView = null;
         adapter = null;
+        response = null;
+        Timber.tag(TAG).d("close");
+    }
+
+    ///photo request list adapter interface
+    public void photoRequestSelected(PhotoRequest photoRequest){
+        Timber.tag(TAG).d("photoRequestSelected");
+        response.photoRequestSelected(photoRequest);
+    }
+
+    public interface Response {
+        void photoRequestSelected(PhotoRequest photoReqest);
     }
 
 }

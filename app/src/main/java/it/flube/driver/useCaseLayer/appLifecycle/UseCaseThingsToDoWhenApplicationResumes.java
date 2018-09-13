@@ -35,10 +35,10 @@ public class UseCaseThingsToDoWhenApplicationResumes implements
         this.device = device;
     }
     public void run(){
-        if (device.getUser().isSignedIn()){
+        if (device.getCloudAuth().hasDriver()){
             //device has signed in user, start monitoring demo offers, public offers, personal offers, scheduled batches & active batch
             Timber.tag(TAG).d("...device has signed in user, stop monitoring demo offers, public offers, personal offers, scheduled batches and active batch");
-            Driver driver = device.getUser().getDriver();
+            Driver driver = device.getCloudAuth().getDriver();
             device.getCloudDemoOffer().startMonitoringRequest(driver, device.getOfferLists(),this);
             device.getCloudPersonalOffer().startMonitoringRequest(driver, device.getOfferLists(),this);
             device.getCloudPublicOffer().startMonitoringRequest(driver, device.getOfferLists(),this);

@@ -68,8 +68,8 @@ public class ActiveBatchNodeWithBatchData implements
     }
 
     public void cloudGetActiveBatchDetailFailure() {
-        Timber.tag(TAG).w("   ...could not get batchDetail : response -> noBatch");
-        response.noBatch();
+        Timber.tag(TAG).w("   ...could not get batchDetail : response -> dataMismatchOnNode");
+        response.dataMismatchOnNode();
     }
 
     /// response to request for service order
@@ -83,8 +83,8 @@ public class ActiveBatchNodeWithBatchData implements
     }
 
     public void getServiceOrderFailure(){
-        Timber.tag(TAG).w("      ...could not get service order : response -> noBatch");
-        response.noBatch();
+        Timber.tag(TAG).w("      ...could not get service order : response -> dataMismatchOnNode");
+        response.dataMismatchOnNode();
     }
 
     /// response to request for step
@@ -97,7 +97,7 @@ public class ActiveBatchNodeWithBatchData implements
 
     public void getOrderStepFailure(){
         Timber.tag(TAG).w("      ...could not get orderStep : response -> noBatch");
-        response.noBatch();
+        response.dataMismatchOnNode();
     }
 
     private void determineResponse(){
@@ -133,7 +133,7 @@ public class ActiveBatchNodeWithBatchData implements
                 // should never see these action types WITH batch data.
                 Timber.tag(TAG).w("         ...this action type should NEVER have batch data --> " + nodeData.getActionType().toString());
                 Timber.tag(TAG).d("         ...response -> noBatch");
-                response.noBatch();
+                response.dataMismatchOnNode();
                 break;
         }
     }

@@ -24,7 +24,7 @@ public class UseCaseFinishBatchRequest implements
 
     public UseCaseFinishBatchRequest(MobileDeviceInterface device, String batchGuid, UseCaseFinishBatchRequest.Response response){
         this.device = device;
-        this.driver = device.getUser().getDriver();
+        this.driver = device.getCloudAuth().getDriver();
         this.batchGuid = batchGuid;
         this.response = response;
     }

@@ -41,7 +41,7 @@ public class UseCaseAddAllPhotosToUploadList implements
     public void run(){
         Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
 
-        Driver driver = device.getUser().getDriver();
+        Driver driver = device.getCloudAuth().getDriver();
         DeviceInfo deviceInfo = device.getDeviceInfo();
 
         responseCounter = new ResponseCounter(photoList.size());

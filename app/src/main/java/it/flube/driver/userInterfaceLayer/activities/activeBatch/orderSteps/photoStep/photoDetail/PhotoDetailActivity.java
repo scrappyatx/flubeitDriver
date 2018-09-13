@@ -10,10 +10,12 @@ import android.view.View;
 
 
 import it.flube.driver.R;
+import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.PhotoRequestUtilities;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailCompleteButtonComponents;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.entities.PhotoRequest;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import timber.log.Timber;
@@ -24,97 +26,101 @@ import timber.log.Timber;
  */
 
 public class PhotoDetailActivity extends AppCompatActivity implements
-    PhotoRequestUtilities.GetPhotoDetailResponse {
+        PhotoDetailLayoutComponents.Response,
+        PhotoDetailController.GetDriverAndPhotoDetailResponse {
 
     private static final String TAG = "PhotoDetailActivity";
 
-    private ActivityNavigator navigator;
+    private String activityGuid;
+
     private PhotoDetailController controller;
-    private DrawerMenu drawer;
+    private PhotoDetailLayoutComponents layoutComponents;
 
-    private PhotoRequestDetailLayoutComponents requestDetail;
-    private StepDetailCompleteButtonComponents stepComplete;
-
-    private String batchGuid;
-    private String serviceOrderGuid;
-    private String stepGuid;
-    private Boolean launchActivityDataFound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_photo_detail);
-        requestDetail = new PhotoRequestDetailLayoutComponents(this);
-        stepComplete = new StepDetailCompleteButtonComponents(this, "Take a Photo");
 
-        requestDetail.setInvisible();
-        stepComplete.setInvisible();
+        DrawerMenu.getInstance().setActivity(this, R.string.photo_detail_activity_title);
+        controller = new PhotoDetailController();
+        layoutComponents = new PhotoDetailLayoutComponents(this, this);
+
+        activityGuid = BuilderUtilities.generateGuid();
+        Timber.tag(TAG).d("onCreate (%s)", activityGuid);
+        Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        navigator = new ActivityNavigator();
-        drawer = new DrawerMenu(this, navigator, R.string.photo_detail_activity_title);
-        controller = new PhotoDetailController();
-
+        DrawerMenu.getInstance().setActivity(this, R.string.photo_detail_activity_title);
         ///get the photoDetail that was used to launch this activity
-        controller.getPhotoDetailRequest(this, this);
-
-
-
-        Timber.tag(TAG).d("onResume");
+        controller.getDriverAndPhotoDetailRequest(this, this);
+        Timber.tag(TAG).d("onResume (%s)", activityGuid);
+        Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
     }
 
     @Override
     public void onPause() {
-        Timber.tag(TAG).d("onPause");
+        Timber.tag(TAG).d("onPause (%s)", activityGuid);
+        DrawerMenu.getInstance().clearActivity();
         super.onPause();
-        controller.close();
-
     }
 
     @Override
     public void onBackPressed(){
-        Timber.tag(TAG).d("back button pressed");
-        navigator.gotoActiveBatchStep(this);
-
-        if (launchActivityDataFound) {
-            Timber.tag(TAG).d("...going to photoList Activity");
-            navigator.gotoActivityPhotoList(this, batchGuid, serviceOrderGuid, stepGuid, OrderStepInterface.TaskType.TAKE_PHOTOS);
-        } else {
-            Timber.tag(TAG).d("...going home");
-            navigator.gotoActivityHome(this);
-        }
+        Timber.tag(TAG).d("onBackPressed (%s)", activityGuid);
+        ActivityNavigator.getInstance().gotoActiveBatchStep(this);
     }
 
-    public void clickStepCompleteButton(View v){
-        Timber.tag(TAG).d("take a photo button clicked");
-        requestDetail.setGone();
-        stepComplete.showWaitingAnimatingWithNoBanner();
-        navigator.gotoActivityPhotoTake(this,  requestDetail.getPhotoRequest().getBatchGuid(), requestDetail.getPhotoRequest().getStepGuid(), requestDetail.getPhotoRequest().getGuid());
+    @Override
+    public void onStop(){
+        Timber.tag(TAG).d("onStop (%s)", activityGuid);
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy(){
+        Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
+        DrawerMenu.getInstance().close();
+        controller.close();
+        layoutComponents.close();
+        super.onDestroy();
+
+    }
+
+    /// photo
+    public void takePhotoButtonClicked(String batchGuid, String stepGuid, String photoRequestGuid){
+        Timber.tag(TAG).d("take a photo button clicked (%s)", activityGuid);
+        Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
+
+        layoutComponents.showWaitingAnimation();
+        ActivityNavigator.getInstance().gotoActivityPhotoTake(this,  batchGuid, stepGuid, photoRequestGuid);
     }
 
 
-    /// response interface for getPhotoDetailRequest
-    public void photoDetailSuccess(PhotoRequest photoRequest){
-        Timber.tag(TAG).d("photoDetailSuccess : photoRequestGuid -> " + photoRequest.getGuid());
+    ///response interface for PhotoDetailController.GetDriverAndPhotoRequest
+    public void gotDriverAndPhotoRequest(Driver driver, PhotoRequest photoRequest){
+        Timber.tag(TAG).d("gotDriverAndPhotoRequest (%s)", activityGuid);
+        Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
 
-        launchActivityDataFound = true;
-        batchGuid = photoRequest.getBatchGuid();
-        serviceOrderGuid = photoRequest.getServiceOrderGuid();
-        stepGuid = photoRequest.getStepGuid();
-
-        requestDetail.setValues(this, photoRequest);
-        requestDetail.setVisible();
-        stepComplete.setVisible();
+        layoutComponents.setValues(this, photoRequest);
+        layoutComponents.setVisible();
     }
 
-    public void photoDetailFailure(){
-        Timber.tag(TAG).d("photoDetailFailure");
-        launchActivityDataFound = false;
+    public void gotDriverButNoPhotoRequest(Driver driver){
+        Timber.tag(TAG).d("gotDriverButNoPhotoRequest (%s)", activityGuid);
+        Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
+        ActivityNavigator.getInstance().gotoActivityHome(this);
+    }
+
+    public void gotNoDriver(){
+        Timber.tag(TAG).d("gotNoDriver (%s)", activityGuid);
+        Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
+        ActivityNavigator.getInstance().gotoActivityLogin(this);
     }
 
 }

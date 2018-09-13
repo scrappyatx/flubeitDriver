@@ -5,6 +5,7 @@
 package it.flube.libbatchdata.entities.serviceOrder;
 
 import it.flube.libbatchdata.entities.ContactPerson;
+import it.flube.libbatchdata.entities.ProductList;
 import it.flube.libbatchdata.entities.Timestamp;
 
 /**
@@ -36,6 +37,8 @@ public class ServiceOrder {
 
     private ContactPerson customerContactPerson;
     private ContactPerson serviceProviderContactPerson;
+
+    private ProductList productList;
 
     public String getBatchGuid() {
         return batchGuid;
@@ -131,5 +134,13 @@ public class ServiceOrder {
 
     public void setServiceProviderContactPerson(ContactPerson serviceProviderContactPerson) {
         this.serviceProviderContactPerson = serviceProviderContactPerson;
+    }
+
+    public ProductList getProductList() {
+        return productList;
+    }
+
+    public void setProductList(ProductList productList) {
+        this.productList = productList;
     }
 }

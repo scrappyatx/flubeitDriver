@@ -33,7 +33,7 @@ public class UseCaseClaimPersonalOfferRequest implements
         this.batchType = batchType;
         this.response = response;
         personalOffer = device.getCloudPersonalOffer();
-        driver = device.getUser().getDriver();
+        driver = device.getCloudAuth().getDriver();
     }
 
     public void run(){

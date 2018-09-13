@@ -25,7 +25,6 @@ import it.flube.driver.deviceLayer.deviceServices.googlePlayLocation.GooglePlayL
 import it.flube.driver.deviceLayer.deviceServices.activeBatchForegroundService.ActiveBatchForegroundServiceController;
 import it.flube.driver.deviceLayer.appDataStructures.ActiveBatch;
 import it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigWrapper;
-import it.flube.driver.deviceLayer.appDataStructures.AppUser;
 import it.flube.driver.deviceLayer.appDataStructures.OfferLists;
 import it.flube.driver.deviceLayer.deviceServices.targetEnvironment.BuildVariantTargetEnvironment;
 import it.flube.driver.deviceLayer.deviceServices.useCaseEngine.UseCaseEngine;
@@ -38,7 +37,6 @@ import it.flube.driver.modelLayer.interfaces.ActiveBatchForegroundServiceInterfa
 import it.flube.driver.modelLayer.interfaces.ActiveBatchInterface;
 import it.flube.driver.modelLayer.interfaces.CloudActiveBatchInterface;
 import it.flube.driver.modelLayer.interfaces.CloudConfigInterface;
-import it.flube.driver.modelLayer.interfaces.AppUserInterface;
 import it.flube.driver.modelLayer.interfaces.CloudAuthInterface;
 import it.flube.driver.modelLayer.interfaces.CloudDemoOfferInterface;
 import it.flube.driver.modelLayer.interfaces.CloudImageDetectionInterface;
@@ -116,11 +114,9 @@ public class AndroidDevice implements
     private UseCaseEngine useCaseEngine;
 
     //// application data
-    private AppUser appUser;
     private DeviceDetails deviceDetails;
     private ActiveBatch activeBatch;
     private OfferLists offerLists;
-
 
     public void initialize(Context applicationContext) {
 
@@ -137,7 +133,7 @@ public class AndroidDevice implements
 
         //setup cloud services
         cloudConfig = new FirebaseRemoteConfigWrapper(getTargetEnvironment());
-        cloudAuth = new CloudAuthFirebaseWrapper();
+        cloudAuth = new CloudAuthFirebaseWrapper(applicationContext);
 
         //initialize firebase realtime database before using any classes that reference it
         FirebaseDbInitialization.initializeDriverDb(getTargetEnvironment());
@@ -161,7 +157,6 @@ public class AndroidDevice implements
 
 
         //initialize our user and device details
-        appUser = new AppUser(applicationContext);
         deviceDetails = new DeviceDetails(applicationContext, this);
 
         // initialize app data structures
@@ -250,18 +245,6 @@ public class AndroidDevice implements
     ///
     /// application data
     ///
-
-    public AppUserInterface getUser() {
-        Timber.tag(TAG).d("getUser");
-
-        if (appUser == null) {
-            Timber.tag(TAG).w("   ...appUser is null, this should never happen");
-            return null;
-        } else {
-            Timber.tag(TAG).d("   ...returning appUser");
-            return appUser;
-        }
-    }
 
     public DeviceInfo getDeviceInfo(){
         return deviceDetails.getDeviceInfo();

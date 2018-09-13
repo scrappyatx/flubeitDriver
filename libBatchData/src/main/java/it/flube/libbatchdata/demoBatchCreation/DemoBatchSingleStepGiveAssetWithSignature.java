@@ -8,6 +8,7 @@ import it.flube.libbatchdata.builders.AssetTransferBuilder;
 import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.builders.ContactPersonBuilder;
 import it.flube.libbatchdata.builders.PotentialEarningsBuilder;
+import it.flube.libbatchdata.builders.ProductListBuilder;
 import it.flube.libbatchdata.builders.VehicleBuilder;
 import it.flube.libbatchdata.builders.batch.BatchHolderBuilder;
 import it.flube.libbatchdata.builders.orderSteps.GiveAssetStepBuilder;
@@ -34,8 +35,8 @@ public class DemoBatchSingleStepGiveAssetWithSignature implements DemoBatchInter
     private static final String BATCH_TITLE = "Single Step -> Give Asset + Signature";
     private static final String BATCH_DESCRIPTION = "Single Step Give Asset";
     private static final String SERVICE_ORDER_TITLE = "Demo Service Order";
-    private static final String SERVICE_ORDER_DESCRIPTION = "Return Asset";
-    private static final String STEP_TITLE = "Return Asset";
+    private static final String SERVICE_ORDER_DESCRIPTION = "Give Asset";
+    private static final String STEP_TITLE = "Give Asset";
     private static final String STEP_DESCRIPTION = "Deliver customer's vehicle";
     private static final String MILESTONE_WHEN_FINISHED = "Delivered customer's vehicle";
 
@@ -86,6 +87,9 @@ public class DemoBatchSingleStepGiveAssetWithSignature implements DemoBatchInter
                         .description(SERVICE_ORDER_DESCRIPTION)
                         .startTime(BuilderUtilities.getNowDate())
                         .finishTime(BuilderUtilities.getFutureDate(30))
+                        .productList(new ProductListBuilder.Builder()
+                                .addCartItem(DemoBatchUtilities.getCustomerCartItem())
+                                .build())
 
                         .addStep(new GiveAssetStepBuilder.Builder()
                                 .title(STEP_TITLE)

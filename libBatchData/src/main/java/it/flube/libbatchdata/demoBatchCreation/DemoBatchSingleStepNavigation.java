@@ -8,6 +8,7 @@ import it.flube.libbatchdata.builders.AssetTransferBuilder;
 import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.builders.DestinationBuilder;
 import it.flube.libbatchdata.builders.PotentialEarningsBuilder;
+import it.flube.libbatchdata.builders.ProductListBuilder;
 import it.flube.libbatchdata.builders.batch.BatchHolderBuilder;
 import it.flube.libbatchdata.builders.orderSteps.GiveAssetStepBuilder;
 import it.flube.libbatchdata.builders.orderSteps.NavigationStepBuilder;
@@ -84,6 +85,9 @@ public class DemoBatchSingleStepNavigation implements DemoBatchInterface {
                         .description(SERVICE_ORDER_DESCRIPTION)
                         .startTime(BuilderUtilities.getNowDate())
                         .finishTime(BuilderUtilities.getFutureDate(30))
+                        .productList(new ProductListBuilder.Builder()
+                                .addCartItem(DemoBatchUtilities.getCustomerCartItem())
+                                .build())
 
                         .addStep(new NavigationStepBuilder.Builder()
                                 .title(STEP_TITLE)

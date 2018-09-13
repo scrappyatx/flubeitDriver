@@ -38,9 +38,9 @@ public class UseCaseGetDriverAndMatchingAssetTransferAssetGuid implements
 
 
     public void run(){
-        if (device.getUser().isSignedIn()) {
+        if (device.getCloudAuth().hasDriver()) {
             //// get active batch step
-            this.driver = device.getUser().getDriver();
+            this.driver = device.getCloudAuth().getDriver();
             Timber.tag(TAG).d("...device has signed in user, get current active batch step");
             device.getCloudActiveBatch().getActiveBatchCurrentStepRequest(driver, this);
 

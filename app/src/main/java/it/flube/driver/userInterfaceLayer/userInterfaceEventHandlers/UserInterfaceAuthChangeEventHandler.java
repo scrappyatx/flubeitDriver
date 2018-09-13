@@ -29,17 +29,15 @@ public class UserInterfaceAuthChangeEventHandler {
     public final static String TAG = "UserInterfaceAuthChangeEventHandler";
 
     private AppCompatActivity activity;
-    private ActivityNavigator navigator;
 
-    public UserInterfaceAuthChangeEventHandler(@NonNull AppCompatActivity activity, @NonNull ActivityNavigator navigator ){
+
+    public UserInterfaceAuthChangeEventHandler(@NonNull AppCompatActivity activity){
         this.activity = activity;
-        this.navigator = navigator;
         EventBus.getDefault().register(this);
     }
 
     public void close(){
         EventBus.getDefault().unregister(this);
-        navigator = null;
         activity = null;
     }
 
@@ -57,7 +55,7 @@ public class UserInterfaceAuthChangeEventHandler {
         Timber.tag(TAG).d("cloud auth user changed event received!");
         Timber.tag(TAG).d("    clientId    -> " + event.getDriver().getClientId());
         Timber.tag(TAG).d("    displayName -> " + event.getDriver().getNameSettings().getDisplayName());
-        navigator.gotoActivityHome(activity);
+        ActivityNavigator.getInstance().gotoActivityHome(activity);
     }
 
     ///
@@ -69,7 +67,7 @@ public class UserInterfaceAuthChangeEventHandler {
         EventBus.getDefault().removeStickyEvent(CloudAuthNoUserEvent.class);
 
         Timber.tag(TAG).d("cloud auth NO USER event received!");
-        navigator.gotoActivityAuthUiSignIn(activity);
+        ActivityNavigator.getInstance().gotoActivityAuthUiSignIn(activity);
     }
 
     ///
@@ -80,7 +78,7 @@ public class UserInterfaceAuthChangeEventHandler {
         EventBus.getDefault().removeStickyEvent(CloudAuthNoProfileEvent.class);
 
         Timber.tag(TAG).d("cloud auth NO PROFILE event received!");
-        navigator.gotoActivityAuthUiSignIn(activity);
+        ActivityNavigator.getInstance().gotoActivityAuthUiSignIn(activity);
 
         EventBus.getDefault().postSticky(new ShowAuthNoProfileAlertEvent());
         Timber.tag(TAG).d("posting ShowAuthNoProfileAlertEvent");
@@ -94,7 +92,7 @@ public class UserInterfaceAuthChangeEventHandler {
         EventBus.getDefault().removeStickyEvent(CloudAuthAccessDeniedEvent.class);
 
         Timber.tag(TAG).d("cloud auth ACCESS DENIED event received!");
-        navigator.gotoActivityAuthUiSignIn(activity);
+        ActivityNavigator.getInstance().gotoActivityAuthUiSignIn(activity);
 
         EventBus.getDefault().postSticky(new ShowAuthAccessDeniedAlertEvent());
         Timber.tag(TAG).d("posting ShowAuthAccessDeniedAlertEvent");

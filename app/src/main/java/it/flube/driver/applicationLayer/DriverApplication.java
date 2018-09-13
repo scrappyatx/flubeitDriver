@@ -16,7 +16,6 @@ import org.greenrobot.eventbus.EventBus;
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.modelLayer.interfaces.ActiveBatchInterface;
 import it.flube.driver.modelLayer.interfaces.CloudConfigInterface;
-import it.flube.driver.modelLayer.interfaces.AppUserInterface;
 import it.flube.driver.modelLayer.interfaces.CloudAuthInterface;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
 import it.flube.driver.modelLayer.interfaces.LocationTelemetryInterface;
@@ -40,15 +39,7 @@ public class DriverApplication extends MultiDexApplication implements
     //references to device layer objects
     //to keep them from being garbage collected
     private MobileDeviceInterface device;
-    private CloudAuthInterface cloudAuth;
-    private CloudDatabaseInterface cloudDb;
-    private LocationTelemetryInterface locationTelemetry;
-    private CloudConfigInterface remoteConfig;
-    private UseCaseInterface useCaseEngine;
 
-    private AppUserInterface appUser;
-    private ActiveBatchInterface activeBatch;
-    private OffersInterface offerLists;
 
     @Override
     public void onCreate() {

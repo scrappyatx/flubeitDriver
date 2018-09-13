@@ -25,11 +25,10 @@ public class UserInterfaceForfeitBatchEventHandler {
     public final static String TAG = "UserInterfaceForfeitBatchEventHandler";
 
     private AppCompatActivity activity;
-    private ActivityNavigator navigator;
 
-    public UserInterfaceForfeitBatchEventHandler(@NonNull AppCompatActivity activity, @NonNull ActivityNavigator navigator){
+
+    public UserInterfaceForfeitBatchEventHandler(@NonNull AppCompatActivity activity){
         this.activity = activity;
-        this.navigator = navigator;
         EventBus.getDefault().register(this);
 
         Timber.tag(TAG).d("created");
@@ -38,7 +37,6 @@ public class UserInterfaceForfeitBatchEventHandler {
     public void close(){
         EventBus.getDefault().unregister(this);
         activity = null;
-        navigator = null;
         Timber.tag(TAG).d("closed");
     }
 
@@ -49,7 +47,7 @@ public class UserInterfaceForfeitBatchEventHandler {
         Timber.tag(TAG).d("batch forfeited!");
 
         EventBus.getDefault().postSticky(new ShowForfeitBatchAlertEvent());
-        navigator.gotoActivityScheduledBatches(activity);
+        ActivityNavigator.getInstance().gotoActivityScheduledBatches(activity);
 
     }
 

@@ -8,13 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.firebase.ui.auth.AuthUI;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.GetAccountDetailsResponseHandler;
+import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.useCaseLayer.account.UseCaseGetAccountDetails;
-import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import timber.log.Timber;
 
 /**
@@ -22,31 +18,49 @@ import timber.log.Timber;
  * Project : Driver
  */
 
-public class AccountController  {
+public class AccountController implements
+    UseCaseGetAccountDetails.Response {
     private final String TAG = "AccountController";
-    private ExecutorService useCaseExecutor;
-    private MobileDeviceInterface device;
+
+    private Response response;
 
     public AccountController() {
-        useCaseExecutor = Executors.newSingleThreadExecutor();
-        device = AndroidDevice.getInstance();
+
     }
 
-    public void getAccountDetailRequest() {
-        Timber.tag(TAG).d("get account detail request STARTED");
-        useCaseExecutor.execute(new UseCaseGetAccountDetails(device, new GetAccountDetailsResponseHandler()));
+    public void getAccountDetailRequest(Response response) {
+        Timber.tag(TAG).d("getAccountDetailRequest");
+        this.response = response;
+        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseGetAccountDetails(AndroidDevice.getInstance(), this));
     }
 
     public void signOutRequest(AppCompatActivity activity) {
         Timber.tag(TAG).d("signOut STARTED");
-
         AuthUI.getInstance().signOut(activity);
 
     }
 
     public void close(){
-        useCaseExecutor.shutdown();
-        device = null;
+
+    }
+
+    /// UseCaseGetAccountDetails interface
+    public void useCaseGetAccountDetailSuccess(Driver driver) {
+        Timber.tag(TAG).d("accountDetailSuccess");
+        response.getAccountDetailSuccess(driver);
+
+    }
+
+    public void useCaseGetAccountDetailFailure(){
+        Timber.tag(TAG).d("accountDetailFailure");
+        response.getAccountDetailFailure();
+    }
+
+    /// response interface
+    public interface Response {
+        void getAccountDetailSuccess(Driver driver);
+
+        void getAccountDetailFailure();
     }
 
 }

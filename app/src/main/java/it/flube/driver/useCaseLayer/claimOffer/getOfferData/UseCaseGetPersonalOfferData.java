@@ -38,7 +38,7 @@ public class UseCaseGetPersonalOfferData implements
 
     public UseCaseGetPersonalOfferData(MobileDeviceInterface device, String batchGuid, Response response){
         this.personalOffer = device.getCloudPersonalOffer();
-        this.driver = device.getUser().getDriver();
+        this.driver = device.getCloudAuth().getDriver();
         this.batchGuid = batchGuid;
         this.response = response;
     }

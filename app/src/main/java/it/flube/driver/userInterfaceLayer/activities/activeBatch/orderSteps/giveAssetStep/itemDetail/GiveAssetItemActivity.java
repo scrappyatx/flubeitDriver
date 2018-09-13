@@ -11,6 +11,7 @@ import it.flube.driver.R;
 import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.entities.assetTransfer.AssetTransfer;
 import timber.log.Timber;
 
@@ -25,8 +26,8 @@ public class GiveAssetItemActivity extends AppCompatActivity implements
 
     private static final String TAG="GiveAssetItemActivity";
 
-    private ActivityNavigator navigator;
-    private DrawerMenu drawer;
+    private String activityGuid;
+
     private GiveAssetItemController controller;
     private GiveAssetItemLayoutComponents layoutComponents;
 
@@ -37,69 +38,75 @@ public class GiveAssetItemActivity extends AppCompatActivity implements
 
         setContentView(R.layout.activity_asset_item);
 
-        navigator = new ActivityNavigator();
-        drawer = new DrawerMenu(this, navigator, R.string.asset_item_activity_title);
+
         controller = new GiveAssetItemController();
         layoutComponents = new GiveAssetItemLayoutComponents(this, this);
 
-        Timber.tag(TAG).d("onCreate");
+        activityGuid = BuilderUtilities.generateGuid();
+        Timber.tag(TAG).d("onCreate (%s)", activityGuid);
     }
 
     @Override
     protected void onResume(){
-        Timber.tag(TAG).d("onResume");
+        Timber.tag(TAG).d("onResume (%s)", activityGuid);
         super.onResume();
-
+        DrawerMenu.getInstance().setActivity(this, R.string.asset_item_activity_title);
         controller.getDriverAndAssetTransfer(this, this);
     }
 
     @Override
     public void onBackPressed(){
-        Timber.tag(TAG).d("onBackPressed");
-        navigator.gotoActiveBatchStep(this);
+        Timber.tag(TAG).d("onBackPressed (%s)", activityGuid);
+        ActivityNavigator.getInstance().gotoActiveBatchStep(this);
     }
 
     @Override
     protected void onPause(){
-        Timber.tag(TAG).d("onPause");
+        Timber.tag(TAG).d("onPause (%s)", activityGuid);
+        DrawerMenu.getInstance().close();
         super.onPause();
     }
 
     @Override
     protected void onStop(){
-        Timber.tag(TAG).d("onStop");
-
-        drawer.close();
-        layoutComponents.close();
-        controller.close();
-
+        Timber.tag(TAG).d("onStop (%s)", activityGuid);
         super.onStop();
+    }
+
+
+    @Override
+    public void onDestroy(){
+        Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
+        controller.close();
+        layoutComponents.close();
+        super.onDestroy();
+
     }
 
     ///
     /// ReceiveAssetItemController.GetDriverAndAssetTransferResponse
     ///
     public void gotDriverAndAssetTransfer(Driver driver, String batchGuid, String serviceOrderGuid, String stepGuid, AssetTransfer assetTransfer){
-        Timber.tag(TAG).d("gotDriverAndAssetTransfer");
+        Timber.tag(TAG).d("gotDriverAndAssetTransfer (%s)", activityGuid);
         layoutComponents.setValues(batchGuid, serviceOrderGuid, stepGuid, assetTransfer);
         layoutComponents.setVisible();
     }
 
     public void gotDriverButNoAssetTransfer(Driver driver){
-        Timber.tag(TAG).d("gotDriverButNoAssetTransfer");
-        navigator.gotoActivityHome(this);
+        Timber.tag(TAG).d("gotDriverButNoAssetTransfer (%s)", activityGuid);
+        ActivityNavigator.getInstance().gotoActivityHome(this);
     }
 
     public void gotNoDriver(){
-        Timber.tag(TAG).d("gotNoDriver");
-        navigator.gotoActivityLogin(this);
+        Timber.tag(TAG).d("gotNoDriver (%s)", activityGuid);
+        ActivityNavigator.getInstance().gotoActivityLogin(this);
     }
 
     ///
     /// ReceiveAssetItemLayoutComponents interface
     ///
     public void finishedButtonClicked(String batchGuid, String serviceOrderGuid, String stepGuid, AssetTransfer assetTransfer){
-        Timber.tag(TAG).d("finishedButtonClicked");
+        Timber.tag(TAG).d("finishedButtonClicked (%s)", activityGuid);
         layoutComponents.showWaitingAnimation();
         controller.updateAssetTransfer(batchGuid, serviceOrderGuid, stepGuid, assetTransfer, this);
     }
@@ -108,8 +115,8 @@ public class GiveAssetItemActivity extends AppCompatActivity implements
     /// ReceiveAssetItemController.UpdateAssetTransferResponse
     ///
     public void updateAssetTransferComplete(){
-        Timber.tag(TAG).d("updateAssetTransferComplete");
-        navigator.gotoActiveBatchStep(this);
+        Timber.tag(TAG).d("updateAssetTransferComplete (%s)", activityGuid);
+        ActivityNavigator.getInstance().gotoActiveBatchStep(this);
     }
 
 }

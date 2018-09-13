@@ -10,13 +10,6 @@ package it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch;
  */
 public class ActiveBatchFirebaseConstants {
 
-    //public static final String ACTIVE_BATCH_SERVER_NOTIFICATION_NODE = "mobileData/userWriteable/activeBatches";
-    //public static final String COMPLETED_BATCH_SERVER_NOTIFICATION_NODE = "mobileData/userWriteable/completedBatches";
-
-    //public static final String DRIVER_PROXY_INFO_NODE = "driverProxyInfo";
-    //public static final String DRIVER_PROXY_DIAL_NUMBER_NODE = "driverProxyDialNumber";
-    //public static final String DRIVER_PROXY_DISPLAY_NUMBER_NODE = "driverProxyDisplayNumber";
-
     public static final String BATCH_DATA_STEPS_NODE = "steps";
 
     public static final String PHOTO_REQUEST_LIST_NODE = "photoRequestList";
@@ -30,6 +23,15 @@ public class ActiveBatchFirebaseConstants {
     public static final String SIGNATURE_REQUEST_HAS_DEVICE_FILE_NODE = "hasDeviceFile";
     public static final String SIGNATURE_REQUEST_DEVICE_ABSOLUTE_FILENAME_NODE = "deviceAbsoluteFileName";
     public static final String SIGNATURE_REQUEST_ATTEMPT_COUNT_NODE = "attemptCount";
+
+    public static final String RECEIPT_REQUEST_NODE = "receiptRequest";
+    public static final String RECEIPT_REQUEST_STATUS_NODE = "receiptStatus";
+    public static final String RECEIPT_REQUEST_ATTEMPT_COUNT_NODE = "attemptCount";
+    public static final String RECEIPT_REQUEST_HAS_DEVICE_FILE_NODE = "hasDeviceFile";
+    public static final String RECEIPT_REQUEST_DEVICE_ABSOLUTE_FILENAME_NODE = "deviceAbsoluteFileName";
+    public static final String RECEIPT_REQUEST_HAS_CLOUD_FILE_NODE = "hasCloudFile";
+    public static final String RECEIPT_REQUEST_HAS_TEXT_MAP_NODE = "hasTextMap";
+    public static final String RECEIPT_REQUEST_TEXT_MAP_NODE = "textMap";
 
     public static final String SERVICE_ORDER_GUID = "serviceOrderGuid";
 
@@ -46,5 +48,8 @@ public class ActiveBatchFirebaseConstants {
 
     public static final String BATCH_DETAIL_NODE = "batchDetail";
     public static final String DRIVER_INFO_NODE = "driverInfo";
+
+    public static final String PAYMENT_AUTHORIZATION_NODE = "paymentAuthorization";
+    public static final String PAYMENT_VERIFICATION_STATUS_NODE = "paymentVerificationStatus";
 
 }

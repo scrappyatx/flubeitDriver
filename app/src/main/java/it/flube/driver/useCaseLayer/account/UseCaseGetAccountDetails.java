@@ -26,16 +26,16 @@ public class UseCaseGetAccountDetails implements Runnable {
 
     public void run(){
         Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
-        if (device.getUser().isSignedIn()) {
-            response.accountDetailSuccess(device.getUser().getDriver());
+        if (device.getCloudAuth().hasDriver()) {
+            response.useCaseGetAccountDetailSuccess(device.getCloudAuth().getDriver());
         } else {
-            response.accountDetailFailure();
+            response.useCaseGetAccountDetailFailure();
         }
     }
 
     public interface Response {
-        void accountDetailSuccess(Driver driver);
+        void useCaseGetAccountDetailSuccess(Driver driver);
 
-        void accountDetailFailure();
+        void useCaseGetAccountDetailFailure();
     }
 }

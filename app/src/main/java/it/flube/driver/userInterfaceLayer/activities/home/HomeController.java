@@ -18,9 +18,11 @@ public class HomeController {
     private final String TAG = "HomeController";
 
     public HomeController() {
-        Timber.tag(TAG).d( "HomeController CREATED");
-
+        Timber.tag(TAG).d( "created");
     }
 
+    public void close(){
+        Timber.tag(TAG).d("close");
+    }
 
 }

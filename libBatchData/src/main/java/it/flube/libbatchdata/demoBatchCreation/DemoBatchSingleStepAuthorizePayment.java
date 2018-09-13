@@ -8,6 +8,7 @@ import it.flube.libbatchdata.builders.AssetTransferBuilder;
 import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.builders.PaymentAuthorizationBuilder;
 import it.flube.libbatchdata.builders.PotentialEarningsBuilder;
+import it.flube.libbatchdata.builders.ProductListBuilder;
 import it.flube.libbatchdata.builders.batch.BatchHolderBuilder;
 import it.flube.libbatchdata.builders.orderSteps.AuthorizePaymentStepBuilder;
 import it.flube.libbatchdata.builders.orderSteps.GiveAssetStepBuilder;
@@ -85,7 +86,9 @@ public class DemoBatchSingleStepAuthorizePayment implements DemoBatchInterface {
                         .description(SERVICE_ORDER_DESCRIPTION)
                         .startTime(BuilderUtilities.getNowDate())
                         .finishTime(BuilderUtilities.getFutureDate(30))
-
+                        .productList(new ProductListBuilder.Builder()
+                                .addCartItem(DemoBatchUtilities.getCustomerCartItem())
+                                .build())
                         .addStep(new AuthorizePaymentStepBuilder.Builder()
                             .title(STEP_TITLE)
                             .description(STEP_DESCRIPTION)

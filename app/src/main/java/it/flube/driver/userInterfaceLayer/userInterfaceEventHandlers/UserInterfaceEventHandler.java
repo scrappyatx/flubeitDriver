@@ -17,9 +17,6 @@ import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 public class UserInterfaceEventHandler {
     public final static String TAG = "UserInterfaceEventHandler";
 
-    private AppCompatActivity activity;
-    private ActivityNavigator navigator;
-
     private UserInterfaceAuthChangeEventHandler userInterfaceAuthChangeEventHandler;
     private UserInterfaceClaimPublicOfferEventHandler userInterfaceClaimPublicOfferEventHandler;
     private UserInterfaceClaimPersonalOfferEventHandler userInterfaceClaimPersonalOfferEventHandler;
@@ -28,16 +25,14 @@ public class UserInterfaceEventHandler {
     private UserInterfaceForfeitBatchEventHandler userInterfaceForfeitBatchEventHandler;
 
 
-    public UserInterfaceEventHandler(@NonNull AppCompatActivity activity, @NonNull ActivityNavigator navigator ){
-        this.activity = activity;
-        this.navigator = navigator;
+    public UserInterfaceEventHandler(@NonNull AppCompatActivity activity){
 
-        userInterfaceAuthChangeEventHandler = new UserInterfaceAuthChangeEventHandler(activity, navigator);
-        userInterfaceClaimPublicOfferEventHandler = new UserInterfaceClaimPublicOfferEventHandler(activity,navigator);
-        userInterfaceClaimPersonalOfferEventHandler = new UserInterfaceClaimPersonalOfferEventHandler(activity,navigator);
-        userInterfaceClaimDemoOfferEventHandler = new UserInterfaceClaimDemoOfferEventHandler(activity, navigator);
-        userInterfaceActiveBatchEventHandler = new UserInterfaceActiveBatchEventHandler(activity, navigator);
-        userInterfaceForfeitBatchEventHandler = new UserInterfaceForfeitBatchEventHandler(activity, navigator);
+        userInterfaceAuthChangeEventHandler = new UserInterfaceAuthChangeEventHandler(activity);
+        userInterfaceClaimPublicOfferEventHandler = new UserInterfaceClaimPublicOfferEventHandler(activity);
+        userInterfaceClaimPersonalOfferEventHandler = new UserInterfaceClaimPersonalOfferEventHandler(activity);
+        userInterfaceClaimDemoOfferEventHandler = new UserInterfaceClaimDemoOfferEventHandler(activity);
+        userInterfaceActiveBatchEventHandler = new UserInterfaceActiveBatchEventHandler(activity);
+        userInterfaceForfeitBatchEventHandler = new UserInterfaceForfeitBatchEventHandler(activity);
 
 
     }
@@ -50,8 +45,6 @@ public class UserInterfaceEventHandler {
         userInterfaceActiveBatchEventHandler.close();
         userInterfaceForfeitBatchEventHandler.close();
 
-        navigator = null;
-        activity = null;
     }
 
 }

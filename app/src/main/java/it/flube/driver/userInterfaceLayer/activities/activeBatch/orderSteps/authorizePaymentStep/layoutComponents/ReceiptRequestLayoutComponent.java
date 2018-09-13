@@ -38,10 +38,12 @@ public class ReceiptRequestLayoutComponent implements
     public ReceiptRequestLayoutComponent(AppCompatActivity activity, Response response){
         this.response = response;
         border = (ConstraintLayout) activity.findViewById(R.id.receipt_request_row_item);
-        border.setClickable(true);
-        border.setFocusable(true);
-        border.setFocusableInTouchMode(true);
+        border.setEnabled(true);
+
+        //border.setFocusable(true);
+        //border.setFocusableInTouchMode(true);
         border.setOnClickListener(this);
+        border.setClickable(true);
 
         title = (TextView) activity.findViewById(R.id.receipt_request_title);
         title.setText(activity.getResources().getString(R.string.authorize_payment_receipt_request_row_text));
@@ -49,6 +51,7 @@ public class ReceiptRequestLayoutComponent implements
         status = (IconTextView) activity.findViewById(R.id.receipt_request_status);
         photo = (ImageView) activity.findViewById(R.id.receipt_image_thumbnail);
 
+        setInvisible();
         Timber.tag(TAG).d("created");
     }
 
@@ -58,10 +61,11 @@ public class ReceiptRequestLayoutComponent implements
         status.setText(receiptRequest.getStatusIconText().get(receiptRequest.getReceiptStatus().toString()));
 
         if (receiptRequest.getHasDeviceFile()){
-            Picasso.get()
-                .load(new File(receiptRequest.getDeviceAbsoluteFileName()))
-                .into(photo);
+            //Picasso.get()
+            //    .load(new File(receiptRequest.getDeviceAbsoluteFileName()))
+            //    .into(photo);
         }
+
         Timber.tag(TAG).d("setValues");
     }
 
@@ -75,7 +79,8 @@ public class ReceiptRequestLayoutComponent implements
 
             if (receiptRequest.getHasDeviceFile()){
                 Timber.tag(TAG).d("      ...there is a deviceFile");
-                photo.setVisibility(View.VISIBLE);
+                //not showing bitmap on this row
+                photo.setVisibility(View.INVISIBLE);
             } else {
                 Timber.tag(TAG).d("      ...there is NOT a deviceFile");
                 photo.setVisibility(View.INVISIBLE);

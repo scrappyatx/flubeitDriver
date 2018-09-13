@@ -27,7 +27,7 @@ import timber.log.Timber;
  * Project : Driver
  */
 public class GiveAssetLayoutComponents implements
-        SlideView.OnSlideCompleteListener,
+        StepDetailSwipeCompleteButtonComponent.Response,
         SignatureRequestRowLayoutComponents.Response,
         AssetTransferItemsRowLayoutComponents.Response,
         ContactPersonLayoutComponent.Response {
@@ -64,8 +64,7 @@ public class GiveAssetLayoutComponents implements
         stepComplete = new StepDetailSwipeCompleteButtonComponent(activity, stepCompleteButtonCaption, this);
         contact = new ContactPersonLayoutComponent(activity, this);
 
-        contact.setInvisible();
-
+        setInvisible();
         Timber.tag(TAG).d("created");
     }
 
@@ -86,7 +85,7 @@ public class GiveAssetLayoutComponents implements
     }
 
     private String getTransferTypeDisplayText(AppCompatActivity activity, AssetTransferInterface.TransferType transferType){
-        Timber.tag(TAG).w("getTransferTypeDisplayText, transferType -> " + transferType.toString());
+        Timber.tag(TAG).d("getTransferTypeDisplayText, transferType -> " + transferType.toString());
         String displayText = DEFAULT_TRANSFER_TYPE_DISPLAY_TEXT;
 
         switch (transferType){
@@ -236,8 +235,8 @@ public class GiveAssetLayoutComponents implements
         response.appInfoClicked();
     }
 
-    /// OnSlideCompleteListener interface
-    public void onSlideComplete(SlideView v){
+    /// StepDetailSwipeCompleteButtonComponent.Response interface
+    public void stepDetailSwipeCompleteButtonClicked(){
         Timber.tag(TAG).d("onSlideComplete");
         response.stepCompleteClicked(orderStep.getMilestoneWhenFinished());
     }

@@ -29,11 +29,10 @@ public class UserInterfaceClaimPersonalOfferEventHandler {
     public final static String TAG = "UserInterfaceClaimPersonalOfferEventHandler";
 
     private AppCompatActivity activity;
-    private ActivityNavigator navigator;
 
-    public UserInterfaceClaimPersonalOfferEventHandler(@NonNull AppCompatActivity activity, @NonNull ActivityNavigator navigator){
+
+    public UserInterfaceClaimPersonalOfferEventHandler(@NonNull AppCompatActivity activity){
         this.activity = activity;
-        this.navigator = navigator;
         EventBus.getDefault().register(this);
 
         Timber.tag(TAG).d("created");
@@ -42,7 +41,6 @@ public class UserInterfaceClaimPersonalOfferEventHandler {
     public void close(){
         EventBus.getDefault().unregister(this);
         activity = null;
-        navigator = null;
         Timber.tag(TAG).d("closed");
     }
 
@@ -54,7 +52,7 @@ public class UserInterfaceClaimPersonalOfferEventHandler {
         Timber.tag(TAG).d("claim personal offer SUCCESS!");
 
         EventBus.getDefault().postSticky(new ShowClaimOfferSuccessAlertEvent());
-        navigator.gotoActivityPersonalOffers(activity);
+        ActivityNavigator.getInstance().gotoActivityPersonalOffers(activity);
     }
 
     @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
@@ -64,7 +62,7 @@ public class UserInterfaceClaimPersonalOfferEventHandler {
         Timber.tag(TAG).d("claim personal offer FAILURE!");
 
         EventBus.getDefault().postSticky(new ShowClaimOfferFailureAlertEvent());
-        navigator.gotoActivityPersonalOffers(activity);
+        ActivityNavigator.getInstance().gotoActivityPersonalOffers(activity);
     }
 
     @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
@@ -74,6 +72,6 @@ public class UserInterfaceClaimPersonalOfferEventHandler {
         Timber.tag(TAG).d("claim personal offer TIMEOUT!");
 
         EventBus.getDefault().postSticky(new ShowClaimOfferTimeoutAlertEvent());
-        navigator.gotoActivityPersonalOffers(activity);
+        ActivityNavigator.getInstance().gotoActivityPersonalOffers(activity);
     }
 }

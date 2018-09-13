@@ -108,4 +108,24 @@ public class FirebaseActiveBatchFinishPrep implements
         Timber.tag(TAG).w("   ...got noBatch -> this should never happen");
         response.cloudActiveBatchFinished();
     }
+
+    public void noBatchByMobileUser(){
+        Timber.tag(TAG).w("   ...noBatchByMobileUser -> this should never happen");
+        response.cloudActiveBatchFinished();
+    }
+
+    public void noBatchByServerAdmin(){
+        Timber.tag(TAG).w("   ...noBatchByServerAdmin -> this should never happen");
+        response.cloudActiveBatchFinished();
+    }
+
+    public void noDataOnNode(){
+        Timber.tag(TAG).w("   ...noDataOnNode -> this should never happen");
+        response.cloudActiveBatchFinished();
+    }
+
+    public void dataMismatchOnNode(){
+        Timber.tag(TAG).w("   ...dataMismatchOnNode -> this should never happen");
+        response.cloudActiveBatchFinished();
+    }
 }

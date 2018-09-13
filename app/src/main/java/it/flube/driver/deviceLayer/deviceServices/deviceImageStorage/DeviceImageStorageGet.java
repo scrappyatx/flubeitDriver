@@ -34,7 +34,11 @@ public class DeviceImageStorageGet {
             File myFile = new File(absoluteFileName);
             Timber.tag(TAG).d("   ...got file name --> " + myFile.getAbsoluteFile());
 
-            Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(myFile));
+            FileInputStream fileInputStream = new FileInputStream(myFile);
+
+            Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
+            fileInputStream.close();
+
             Timber.tag(TAG).d("   ...got bitmap SUCCESS!");
             Timber.tag(TAG).d("          height        -> " + bitmap.getHeight());
             Timber.tag(TAG).d("          width         -> " + bitmap.getWidth());

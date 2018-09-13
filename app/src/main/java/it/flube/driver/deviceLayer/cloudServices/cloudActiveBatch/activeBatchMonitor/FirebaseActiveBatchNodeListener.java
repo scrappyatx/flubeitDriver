@@ -53,12 +53,12 @@ public class FirebaseActiveBatchNodeListener implements
             } catch (Exception e) {
                 Timber.tag(TAG).e(e);
                 Timber.tag(TAG).w("   ...ERROR : response -> noBatch");
-                response.noBatch();
+                response.dataMismatchOnNode();
             }
         } else {
             // dataSnapshot DOES NOT EXIST
             Timber.tag(TAG).d("   ...dataSnapshot does not exist : response -> noBatch");
-            response.noBatch();
+            response.dataMismatchOnNode();
         }
     }
 
@@ -78,7 +78,7 @@ public class FirebaseActiveBatchNodeListener implements
 
     public void onCancelled(DatabaseError databaseError){
         Timber.tag(TAG).e("onCancelled - > firebase database read error : " + databaseError.getCode() + " --> " + databaseError.getMessage());
-        response.noBatch();
+        response.dataMismatchOnNode();
     }
 
 

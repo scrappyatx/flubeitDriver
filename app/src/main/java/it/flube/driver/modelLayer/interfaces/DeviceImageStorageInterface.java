@@ -6,12 +6,17 @@ package it.flube.driver.modelLayer.interfaces;
 
 import android.graphics.Bitmap;
 
+import java.io.File;
+
 /**
  * Created on 2/16/2018
  * Project : Driver
  */
 
 public interface DeviceImageStorageInterface {
+
+    File createUniqueDeviceImageFile();
+
     void saveImageRequest(String imageGuid, Bitmap bitmap, SaveResponse response);
 
     interface SaveResponse {

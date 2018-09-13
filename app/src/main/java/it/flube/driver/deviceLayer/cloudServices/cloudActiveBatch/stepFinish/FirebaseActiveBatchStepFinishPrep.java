@@ -6,7 +6,9 @@ package it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.stepFinish;
 
 import com.google.firebase.database.DatabaseReference;
 
+import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.modelLayer.interfaces.CloudActiveBatchInterface;
+import it.flube.driver.useCaseLayer.activeBatch.UseCaseNoBatchRequest;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import it.flube.driver.modelLayer.interfaces.CloudDatabaseInterface;
@@ -70,8 +72,23 @@ public class FirebaseActiveBatchStepFinishPrep implements
         response.cloudActiveBatchFinishStepComplete();
     }
 
-    public void noBatch(){
-        Timber.tag(TAG).w("   ...got noBatch -> this should never happen");
+    public void noBatchByMobileUser(){
+        Timber.tag(TAG).w("   ...noBatchByMobileUser -> this should never happen");
+        response.cloudActiveBatchFinishStepComplete();
+    }
+
+    public void noBatchByServerAdmin(){
+        Timber.tag(TAG).w("   ...noBatchByServerAdmin -> this should never happen");
+        response.cloudActiveBatchFinishStepComplete();
+    }
+
+    public void noDataOnNode(){
+        Timber.tag(TAG).w("   ...noDataOnNode -> this should never happen");
+        response.cloudActiveBatchFinishStepComplete();
+    }
+
+    public void dataMismatchOnNode(){
+        Timber.tag(TAG).w("   ...dataMismatchOnNode -> this should never happen");
         response.cloudActiveBatchFinishStepComplete();
     }
 

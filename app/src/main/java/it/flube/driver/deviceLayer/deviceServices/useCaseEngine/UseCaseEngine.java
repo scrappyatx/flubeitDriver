@@ -19,9 +19,12 @@ public class UseCaseEngine implements UseCaseInterface {
     private static final String TAG = "UseCaseEngine";
     private final ExecutorService useCaseExecutor;
 
+    private static int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
+
     public UseCaseEngine() {
         //useCaseExecutor = Executors.newSingleThreadExecutor();
-        useCaseExecutor = Executors.newFixedThreadPool(4);
+        //useCaseExecutor = Executors.newFixedThreadPool(4);
+        useCaseExecutor = Executors.newCachedThreadPool();
     }
 
     public ExecutorService getUseCaseExecutor(){

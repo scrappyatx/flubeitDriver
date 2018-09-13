@@ -27,7 +27,7 @@ public class UseCaseForfeitBatchRequest implements
 
     public UseCaseForfeitBatchRequest(MobileDeviceInterface device, String batchGuid, UseCaseForfeitBatchRequest.Response response){
         this.cloudBatch = device.getCloudScheduledBatch();
-        this.driver = device.getUser().getDriver();
+        this.driver = device.getCloudAuth().getDriver();
         this.batchGuid = batchGuid;
         this.response = response;
 

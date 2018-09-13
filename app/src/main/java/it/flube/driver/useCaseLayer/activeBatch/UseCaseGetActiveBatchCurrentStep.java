@@ -32,10 +32,10 @@ public class UseCaseGetActiveBatchCurrentStep implements
     public void run(){
         Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
 
-        if (device.getUser().isSignedIn()) {
+        if (device.getCloudAuth().hasDriver()) {
             //// stop monitoring demo offers, personal offers, public offers, and scheduled batches
             Timber.tag(TAG).d("...device has signed in user, get current active batch step");
-            device.getCloudActiveBatch().getActiveBatchCurrentStepRequest(device.getUser().getDriver(), this);
+            device.getCloudActiveBatch().getActiveBatchCurrentStepRequest(device.getCloudAuth().getDriver(), this);
 
         } else {
             // do nothing

@@ -19,7 +19,9 @@ import timber.log.Timber;
  * Created on 4/30/2018
  * Project : Driver
  */
-public class StepDetailSwipeCompleteButtonComponent {
+public class StepDetailSwipeCompleteButtonComponent
+        implements
+        SlideView.OnSlideCompleteListener {
 
     public final static String TAG = "StepDetailSwipeCompleteButtonComponent";
     ///
@@ -29,16 +31,18 @@ public class StepDetailSwipeCompleteButtonComponent {
     private SlideView slideButton;
     private TextView banner;
     private LottieAnimationView animation;
+    private Response response;
 
-    public StepDetailSwipeCompleteButtonComponent(AppCompatActivity activity, String buttonCaption, SlideView.OnSlideCompleteListener listener){
+    public StepDetailSwipeCompleteButtonComponent(AppCompatActivity activity, String buttonCaption, Response response){
         Timber.tag(TAG).d("creating component, buttonCaption -> " + buttonCaption);
+        this.response = response;
 
         animation = (LottieAnimationView) activity.findViewById(R.id.step_complete_animation);
         banner = (TextView) activity.findViewById(R.id.step_complete_banner);
         slideButton = (SlideView) activity.findViewById(R.id.step_complete_swipe_button);
 
         slideButton.setText(buttonCaption);
-        slideButton.setOnSlideCompleteListener(listener);
+        slideButton.setOnSlideCompleteListener(this);
 
         setGone();
         Timber.tag(TAG).d("...components created");
@@ -63,7 +67,7 @@ public class StepDetailSwipeCompleteButtonComponent {
         animation.setVisibility(View.VISIBLE);
         animation.setProgress(0);
         animation.playAnimation();
-        Timber.tag(TAG).d("...showWaitingAnimationAndBanner");
+        Timber.tag(TAG).d("...showWaitingAnimationWithNoBanner");
     }
 
     public void showButton(){
@@ -106,6 +110,15 @@ public class StepDetailSwipeCompleteButtonComponent {
         Timber.tag(TAG).d("components closed");
     }
 
+    //// slide button listener interface
+    public void onSlideComplete(SlideView v){
+        Timber.tag(TAG).d("onSlideComplete");
+        response.stepDetailSwipeCompleteButtonClicked();
+    }
+
+    public interface Response {
+        void stepDetailSwipeCompleteButtonClicked();
+    }
 
 
 }

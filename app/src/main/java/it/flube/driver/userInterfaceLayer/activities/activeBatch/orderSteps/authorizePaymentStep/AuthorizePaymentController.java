@@ -13,6 +13,8 @@ import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseCompareActivtyLaunchDataToCurrentStep;
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseFinishCurrentStepRequest;
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseGetDriverAndActiveBatchCurrentStep;
+import it.flube.driver.useCaseLayer.authorizePaymentStep.UseCaseUpdatePaymentAuthorization;
+import it.flube.libbatchdata.entities.PaymentAuthorization;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderAuthorizePaymentStep;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderReceiveAssetStep;
@@ -25,7 +27,8 @@ import timber.log.Timber;
  * Project : Driver
  */
 public class AuthorizePaymentController implements
-        UseCaseGetDriverAndActiveBatchCurrentStep.Response {
+        UseCaseGetDriverAndActiveBatchCurrentStep.Response,
+        UseCaseUpdatePaymentAuthorization.Response {
 
     private final String TAG = "AuthorizePaymentController";
 
@@ -40,6 +43,11 @@ public class AuthorizePaymentController implements
         Timber.tag(TAG).d("getDriverAndActiveBatchStep...");
         this.response = response;
         AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseGetDriverAndActiveBatchCurrentStep(AndroidDevice.getInstance(), OrderStepInterface.TaskType.AUTHORIZE_PAYMENT, this));
+    }
+
+    public void updatePaymentVerification(PaymentAuthorization paymentAuthorization){
+        Timber.tag(TAG).d("updatePaymentVerification")  ;
+        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseUpdatePaymentAuthorization(AndroidDevice.getInstance(), paymentAuthorization, this));
     }
 
     public void stepFinished(String milestoneEvent){
@@ -72,6 +80,11 @@ public class AuthorizePaymentController implements
     public void useCaseGetDriverAndActiveBatchCurrentStepFailureStepMismatch(Driver driver, OrderStepInterface.TaskType foundTaskType){
         Timber.tag(TAG).d("useCaseGetDriverAndActiveBatchCurrentStepFailureStepMismatch");
         response.gotStepMismatch(driver, foundTaskType);
+    }
+
+    /// UseCaseUpdatePaymentAuthorizationResponse
+    public void useCaseUpdatePaymentAuthorizationComplete(){
+        Timber.tag(TAG).d("useCaseUpdatePaymentAuthorizationComplete");
     }
 
     public interface GetDriverAndActiveBatchStepResponse {

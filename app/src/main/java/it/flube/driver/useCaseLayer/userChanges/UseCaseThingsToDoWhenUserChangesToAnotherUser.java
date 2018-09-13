@@ -56,24 +56,24 @@ public class UseCaseThingsToDoWhenUserChangesToAnotherUser implements
 
     public void userConnectSuccess(Driver driver){
         Timber.tag(TAG).d("   ...new user connect success! UseCase COMPLETE");
-        response.userChangedToNewUserSuccess(driver);
+        response.useCaseUserChangedToNewUserSuccess(driver);
     }
 
     public void userConnectFailureNoProfile(){
         Timber.tag(TAG).d("   ...new user connect failure, no profile! UseCase COMPLETE");
-        response.userChangedToNewUserNoProfile();
+        response.useCaseUserChangedToNewUserNoProfile();
     }
 
     public void userConnectFailureAccessDenied(){
         Timber.tag(TAG).d("   ...new user connect failure, access denied! UseCase COMPLETE");
-        response.userChangedToNewUserAccessDenied();
+        response.useCaseUserChangedToNewUserAccessDenied();
     }
 
     public interface Response {
-        void userChangedToNewUserSuccess(Driver driver);
+        void useCaseUserChangedToNewUserSuccess(Driver driver);
 
-        void userChangedToNewUserNoProfile();
+        void useCaseUserChangedToNewUserNoProfile();
 
-        void userChangedToNewUserAccessDenied();
+        void useCaseUserChangedToNewUserAccessDenied();
     }
 }

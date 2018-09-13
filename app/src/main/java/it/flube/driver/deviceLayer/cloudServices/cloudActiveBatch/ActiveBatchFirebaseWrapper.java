@@ -19,7 +19,9 @@ import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataGet.F
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataGet.FirebaseActiveBatchSummaryGet;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebaseAssetTransfer;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebaseDriverProxyInfo;
+import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebasePaymentAuthorizationUpdate;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebasePhotoRequestDeviceAbsoluteFilename;
+import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebaseReceiptRequestDeviceAbsoluteFilenameRequest;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebaseSignatureRequestDeviceAbsoluteFilename;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchFinish.FirebaseActiveBatchFinishPrep;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchStart.FirebaseActiveBatchStart;
@@ -35,7 +37,9 @@ import it.flube.driver.modelLayer.interfaces.CloudConfigInterface;
 import it.flube.driver.modelLayer.interfaces.OffersInterface;
 import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import it.flube.libbatchdata.entities.LatLonLocation;
+import it.flube.libbatchdata.entities.PaymentAuthorization;
 import it.flube.libbatchdata.entities.PhotoRequest;
+import it.flube.libbatchdata.entities.ReceiptRequest;
 import it.flube.libbatchdata.entities.SignatureRequest;
 import it.flube.libbatchdata.entities.assetTransfer.AssetTransfer;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
@@ -271,6 +275,19 @@ public class ActiveBatchFirebaseWrapper implements
         getNodes(driver);
         new FirebaseAssetTransfer().updateAssetTransferRequest(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), batchGuid, serviceOrderGuid, stepGuid, assetTransfer, response);
     }
+
+    public void updatePaymentAuthorizationRequest(Driver driver, PaymentAuthorization paymentAuthorization, PaymentAuthorizationUpdateResponse response){
+        Timber.tag(TAG).d("updatePaymentAuthorizationRequest START...");
+        getNodes(driver);
+        new FirebasePaymentAuthorizationUpdate().updatePaymentAuthorizationRequest(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), paymentAuthorization, response);
+    }
+
+    public void updateReceiptRequestDeviceAbsoluteFileNameRequest(Driver driver, ReceiptRequest receiptRequest, ReceiptRequestDeviceAbsoluteFileNameReponse response){
+        Timber.tag(TAG).d("updateReceiptRequestDeviceAbsoluteFileNameRequest START...");
+        getNodes(driver);
+        new FirebaseReceiptRequestDeviceAbsoluteFilenameRequest().updateReceiptRequestDeviceFilenameRequest(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), receiptRequest, response);
+    }
+
 
 
     ////

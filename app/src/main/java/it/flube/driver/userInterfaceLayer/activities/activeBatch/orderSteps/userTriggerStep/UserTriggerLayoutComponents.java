@@ -25,7 +25,7 @@ import timber.log.Timber;
  * Project : Driver
  */
 public class UserTriggerLayoutComponents implements
-    SlideView.OnSlideCompleteListener {
+        StepDetailSwipeCompleteButtonComponent.Response {
     private static final String TAG="UserTriggerLayoutComponents";
 
     private StepDetailTitleLayoutComponents stepTitle;
@@ -106,8 +106,8 @@ public class UserTriggerLayoutComponents implements
     ///
     /// STEP COMPLETE interface
     ///
-    public void onSlideComplete(SlideView v){
-        Timber.tag(TAG).d("onSlideComplete");
+    public void stepDetailSwipeCompleteButtonClicked(){
+        Timber.tag(TAG).d("stepDetailSwipeCompleteButtonClicked");
         response.stepCompleteButtonSwiped(orderStep.getMilestoneWhenFinished());
     }
 

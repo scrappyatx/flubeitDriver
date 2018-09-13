@@ -4,6 +4,7 @@
 
 package it.flube.driver.userInterfaceLayer.drawerMenu;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
@@ -45,6 +46,7 @@ import it.flube.driver.userInterfaceLayer.userInterfaceEvents.scheduledBatchList
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.userInterfaceEventHandlers.UserInterfaceEventHandler;
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import timber.log.Timber;
 
 /**
@@ -52,9 +54,42 @@ import timber.log.Timber;
  * Project : Driver
  */
 
-public class DrawerMenu {
+public class DrawerMenu implements
+        DriverManager.Response {
+    ///  Singleton class using Initialization-on-demand holder idiom
+    ///  ref: https://en.wikipedia.org/wiki/Initialization-on-demand_holder_idiom
+
+    private static class Loader {
+        static volatile DrawerMenu instance = new DrawerMenu();
+    }
+
+    ///
+    ///  constructor is private, instances can only be created internally by the class
+    ///
+    private DrawerMenu() {
+        objectGuid = BuilderUtilities.generateGuid();
+
+        driverManager = new DriverManager(this);
+
+
+
+        activity = null;
+        gotActivity = false;
+
+
+
+        Timber.tag(TAG).d("created (%s)", objectGuid);
+    }
+
+    ///
+    ///  getInstance() provides access to the singleton instance outside the class
+    ///
+    public static DrawerMenu getInstance() {
+        return DrawerMenu.Loader.instance;
+    }
+
+
     private static final String TAG = "DrawerMenu";
-    private static boolean mSearchingForOffers;
 
     private static final Integer ID_HOME = 1;
 
@@ -80,58 +115,64 @@ public class DrawerMenu {
 
 
     private Drawer drawer;
-    private AppCompatActivity activity;
-    private Toolbar toolbar;
 
+    private AppCompatActivity activity;
+    private Boolean gotActivity;
+
+    private DriverManager driverManager;
+
+    private Toolbar toolbar;
     private SwitchCompat toolbarSwitch;
-    private ActivityNavigator navigator;
+
     private UserInterfaceEventHandler alertEventHandler;
 
-    private MobileDeviceInterface device;
+    private String objectGuid;
 
 
-    public DrawerMenu(@NonNull AppCompatActivity activity, @NonNull ActivityNavigator navigator, @NonNull int titleId) {
+
+    /////
+    //// Activity functions
+    ////
+    public void setActivity(@NonNull AppCompatActivity activity, int titleId){
         this.activity = activity;
-        this.navigator = navigator;
-        device = AndroidDevice.getInstance();
-        createToolbar(activity, titleId);
-        createDrawer();
-        EventBus.getDefault().register(this);
 
-        alertEventHandler = new UserInterfaceEventHandler(activity, navigator);
+        toolbar = new DrawerManager().createToolbar(activity, titleId);
+        createDrawer(toolbar);
+
+        if (!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+
+        } else {
+            Timber.tag(TAG).w("...eventBus already registered, this shouldn't happen");
+        }
+
+
+        alertEventHandler = new UserInterfaceEventHandler(activity);
+        Timber.tag(TAG).d("setActivity (%s)", objectGuid);
     }
 
+    public void clearActivity(){
+        close();
+        Timber.tag(TAG).d("clearActivity (%s)", objectGuid);
+    }
+
+
     public void close() {
+        //process no more events for this activity
+        EventBus.getDefault().unregister(this);
+
         drawer = null;
         activity = null;
         toolbar = null;
         toolbarSwitch = null;
-        navigator = null;
-        device = null;
         alertEventHandler.close();
-        EventBus.getDefault().unregister(this);
+
+        Timber.tag(TAG).d("close (%s)", objectGuid);
     }
 
-    private void createToolbar(AppCompatActivity activity, int titleId) {
-        toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
 
 
-        String toolbarTitle = activity.getResources().getString(titleId);
-        Timber.tag(TAG).d("....creating toolbar, title = " + toolbarTitle);
-        toolbar.setTitle(toolbarTitle);
-
-
-        activity.setSupportActionBar(toolbar);
-
-        toolbarSwitch = (SwitchCompat) activity.findViewById(R.id.switch_looking_for_work);
-        //order is important with next 2 statements.  Want to set the switch to the static variable first, THEN set the listener
-        // this prevents calling the "onCheckedChanged" listener everytime user switches activities
-        toolbarSwitch.setChecked(mSearchingForOffers);
-        toolbarSwitch.setOnCheckedChangeListener(new toolbarSwitchListener());
-        toolbarSwitch.setVisibility(View.GONE);
-    }
-
-    private void createDrawer() {
+    private void createDrawer(Toolbar toolbar) {
         //setup navigation drawer
         drawer = new DrawerBuilder()
                 .withActivity(activity)
@@ -141,7 +182,7 @@ public class DrawerMenu {
                 .withActionBarDrawerToggle(true)
                 .withTranslucentStatusBar(false)
                 .withFullscreen(false)
-                .withAccountHeader(buildAccountHeader())
+                .withAccountHeader(driverManager.getAccountHeader(activity))
                 .withSelectedItem(-1)
                 .build();
 
@@ -149,7 +190,7 @@ public class DrawerMenu {
 
         addMessageMenuItems();
 
-        if (device.getActiveBatch().hasActiveBatch()){
+        if (AndroidDevice.getInstance().getActiveBatch().hasActiveBatch()){
             addActiveBatchMenuItems();
         }
 
@@ -158,11 +199,13 @@ public class DrawerMenu {
         addEarningsAndAccountMenuItems();
         addHelpMenuItems();
 
-        if (device.getUser().getDriver().getUserRoles().getDev()) {
-            addDeveloperToolsMenuItems();
-        } else {
-            if (device.getUser().getDriver().getUserRoles().getQa()){
-                addQaToolsMenuItems();
+        if (driverManager.hasDriver()){
+            if (driverManager.getDriver().getUserRoles().getDev()) {
+                addDeveloperToolsMenuItems();
+            } else {
+                if (driverManager.getDriver().getUserRoles().getQa()){
+                    addQaToolsMenuItems();
+                }
             }
         }
 
@@ -171,6 +214,11 @@ public class DrawerMenu {
         updateDemoOffersCount();
         updateScheduledBatchesCount();
 
+    }
+
+    public void driverManangerRedoAccountHeader(Driver driver){
+        Timber.tag(TAG).d("driverManangerRedoAccountHeader (%s)", objectGuid);
+        createDrawer(toolbar);
     }
 
     private void addHomeMenuItems(){
@@ -274,30 +322,14 @@ public class DrawerMenu {
     }
 
 
-
-    public Drawer getDrawer(){ return drawer; }
-
-    private AccountHeader buildAccountHeader() {
-        //String photoUrl = "http://lorempixel.com/60/60/people/";
-        Driver driver = device.getUser().getDriver();
-        Timber.tag(TAG).d("driver display name -> " + driver.getNameSettings().getDisplayName());
-        Timber.tag(TAG).d("driver email        -> " + driver.getEmail());
-
-        IProfile profile = new ProfileDrawerItem().withName(driver.getNameSettings().getDisplayName())
-                .withEmail(driver.getEmail()).withIcon(device.getUser().getDriver().getPhotoUrl());
-
-                //.withIcon(R.drawable.demo_profile_pic)
-        return new AccountHeaderBuilder()
-                .withActivity(activity)
-                .withCompactStyle(true)
-                .withHeaderBackground(R.drawable.account_header_background)
-                .addProfiles(profile)
-                .withSelectionListEnabledForSingleProfile(false)
-                .build();
+    public Drawer getDrawer(){
+        return drawer;
     }
 
+
+
     private void updatePersonalOffersCount(){
-        Integer offerCount = device.getOfferLists().getPersonalOffers().size();
+        Integer offerCount = AndroidDevice.getInstance().getOfferLists().getPersonalOffers().size();
         Timber.tag(TAG).d("personal offers count = " + offerCount);
         if (offerCount > 0) {
             drawer.updateBadge(ID_PERSONAL_OFFERS, new StringHolder(Integer.toString(offerCount) + ""));
@@ -307,7 +339,7 @@ public class DrawerMenu {
     }
 
     private void updatePublicOffersCount(){
-        Integer offerCount = device.getOfferLists().getPublicOffers().size();
+        Integer offerCount = AndroidDevice.getInstance().getOfferLists().getPublicOffers().size();
         Timber.tag(TAG).d("public offers count = " + offerCount);
         if (offerCount > 0) {
             drawer.updateBadge(ID_PUBLIC_OFFERS, new StringHolder(Integer.toString(offerCount) + ""));
@@ -317,7 +349,7 @@ public class DrawerMenu {
     }
 
     private void updateDemoOffersCount(){
-        Integer offerCount = device.getOfferLists().getDemoOffers().size();
+        Integer offerCount = AndroidDevice.getInstance().getOfferLists().getDemoOffers().size();
         Timber.tag(TAG).d("demo offers count = " + offerCount);
         if (offerCount > 0) {
             drawer.updateBadge(ID_DEMO_OFFERS, new StringHolder(Integer.toString(offerCount) + ""));
@@ -327,7 +359,7 @@ public class DrawerMenu {
     }
 
     private void updateScheduledBatchesCount(){
-        Integer offerCount = device.getOfferLists().getScheduledBatches().size();
+        Integer offerCount = AndroidDevice.getInstance().getOfferLists().getScheduledBatches().size();
         Timber.tag(TAG).d("scheduled batches count = " + offerCount);
         if (offerCount > 0) {
             drawer.updateBadge(ID_SCHEDULED_WORK, new StringHolder(Integer.toString(offerCount) + ""));
@@ -337,20 +369,6 @@ public class DrawerMenu {
     }
 
 
-
-
-    private class toolbarSwitchListener implements CompoundButton.OnCheckedChangeListener {
-
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if (isChecked) {
-                mSearchingForOffers = true;
-            } else {
-                mSearchingForOffers = false;
-            }
-        }
-
-    }
-
     ///
     ///  private classes for item click listeners
     ///
@@ -358,7 +376,7 @@ public class DrawerMenu {
     private class BatchItineraryItemClickListener implements Drawer.OnDrawerItemClickListener {
         public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
             // do something with the clicked item :D
-            navigator.gotoBatchItinerary(activity);
+            ActivityNavigator.getInstance().gotoBatchItinerary(activity);
             Timber.tag(TAG).d("clicked on BATCH ITINERARY menu item");
             return false;
         }
@@ -367,7 +385,7 @@ public class DrawerMenu {
     private class OrderItineraryItemClickListener implements Drawer.OnDrawerItemClickListener {
         public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
             // do something with the clicked item :D
-            navigator.gotoOrderItinerary(activity);
+            ActivityNavigator.getInstance().gotoOrderItinerary(activity);
             Timber.tag(TAG).d("clicked on ORDER ITINERARY menu item");
             return false;
         }
@@ -378,7 +396,7 @@ public class DrawerMenu {
 
             Timber.tag(TAG).d("clicked on CURRENT STEP menu item");
             // do something with the clicked item :D
-            navigator.gotoActiveBatchStep(activity);
+            ActivityNavigator.getInstance().gotoActiveBatchStep(activity);
             return false;
         }
     }
@@ -387,7 +405,7 @@ public class DrawerMenu {
 
         public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
             // do something with the clicked item :D
-            navigator.gotoActivityAccount(activity);
+            ActivityNavigator.getInstance().gotoActivityAccount(activity);
             Timber.tag(TAG).d("clicked on ACCOUNT menu item");
             return false;
         }
@@ -397,7 +415,7 @@ public class DrawerMenu {
 
         public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
             // do something with the clicked item :D
-            navigator.gotoActivityEarnings(activity);
+            ActivityNavigator.getInstance().gotoActivityEarnings(activity);
             Timber.tag(TAG).d("clicked on EARNINGS menu");
             return false;
         }
@@ -407,7 +425,7 @@ public class DrawerMenu {
 
         public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
             // do something with the clicked item :D
-            navigator.gotoActivityHelp(activity);
+            ActivityNavigator.getInstance().gotoActivityHelp(activity);
             Timber.tag(TAG).d("clicked on HELP");
             return false;
         }
@@ -417,7 +435,7 @@ public class DrawerMenu {
 
         public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
             // do something with the clicked item :D
-            navigator.gotoActivityHome(activity);
+            ActivityNavigator.getInstance().gotoActivityHome(activity);
             Timber.tag(TAG).d("clicked on HOME");
             return false;
         }
@@ -427,7 +445,7 @@ public class DrawerMenu {
 
         public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
             // do something with the clicked item :D
-            navigator.gotoActivityMessages(activity);
+            ActivityNavigator.getInstance().gotoActivityMessages(activity);
             Timber.tag(TAG).d("clicked on MESSAGES");
             return false;
         }
@@ -437,7 +455,7 @@ public class DrawerMenu {
 
         public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
             // do something with the clicked item :D
-            navigator.gotoActivityPublicOffers(activity);
+            ActivityNavigator.getInstance().gotoActivityPublicOffers(activity);
             Timber.tag(TAG).d("clicked on PUBLIC OFFERS");
             return false;
         }
@@ -448,7 +466,7 @@ public class DrawerMenu {
 
         public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
             // do something with the clicked item :D
-            navigator.gotoActivityPersonalOffers(activity);
+            ActivityNavigator.getInstance().gotoActivityPersonalOffers(activity);
             Timber.tag(TAG).d("clicked on PERSONAL OFFERS");
             return false;
         }
@@ -458,7 +476,7 @@ public class DrawerMenu {
 
         public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
             // do something with the clicked item :D
-            navigator.gotoActivityDemoOffers(activity);
+            ActivityNavigator.getInstance().gotoActivityDemoOffers(activity);
             Timber.tag(TAG).d("clicked on DEMO OFFERS");
             return false;
         }
@@ -469,7 +487,7 @@ public class DrawerMenu {
 
         public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
             // do something with the clicked item :D
-            navigator.gotoActivityScheduledBatches(activity);
+            ActivityNavigator.getInstance().gotoActivityScheduledBatches(activity);
             Timber.tag(TAG).d("clicked on SCHEDULED BATCHES");
             return false;
         }
@@ -479,7 +497,7 @@ public class DrawerMenu {
 
         public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
             //do something with the clicked item
-            navigator.gotoActivityTestOffersMake(activity);
+            ActivityNavigator.getInstance().gotoActivityTestOffersMake(activity);
             Timber.tag(TAG).d("clicked on dev test offers");
             return false;
         }
@@ -489,72 +507,10 @@ public class DrawerMenu {
 
         public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
             //do something with the clicked item
-            navigator.gotoActivityTestEarnings(activity);
+            ActivityNavigator.getInstance().gotoActivityTestEarnings(activity);
             Timber.tag(TAG).d("clicked on dev test earnings");
             return false;
         }
-    }
-
-    /////
-    //// ACTIVE BATCH UPDATED events
-    ////
-
-    /// step started
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(ActiveBatchUpdatedStepStartedEvent event){
-        Timber.tag(TAG).d("received ActiveBatchUpdatedStepStartedEvent");
-        Timber.tag(TAG).d("   actorType        -> " + event.getActorType().toString());
-        Timber.tag(TAG).d("   actionType       -> " + event.getActionType().toString());
-        Timber.tag(TAG).d("   batchStarted     -> " + event.isBatchStarted());
-        Timber.tag(TAG).d("   orderStarted     -> " + event.isOrderStarted());
-        Timber.tag(TAG).d("   batchGuid        -> " + event.getBatchGuid());
-        Timber.tag(TAG).d("   serviceOrderGuid -> " + event.getServiceOrderGuid());
-        Timber.tag(TAG).d("   stepGuid         -> " + event.getStepGuid());
-        Timber.tag(TAG).d("   taskType         -> " + event.getTaskType().toString());
-
-        navigator.gotoActiveBatchStep(activity, event.getActorType(), event.getActionType(), event.isBatchStarted(), event.isOrderStarted(), event.getBatchGuid(), event.getServiceOrderGuid(), event.getStepGuid(), event.getTaskType());
-        EventBus.getDefault().removeStickyEvent(event);
-    }
-
-    /// batch finished
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(ActiveBatchUpdatedBatchFinishedEvent event){
-        Timber.tag(TAG).d("received ActiveBatchUpdatedBatchFinishedEvent");
-        Timber.tag(TAG).d("   actorType        -> " + event.getActorType().toString());
-        Timber.tag(TAG).d("   batchGuid        -> " + event.getBatchGuid());
-
-        navigator.gotoActivityHomeAndShowBatchFinishedMessage(activity, event.getActorType(), event.getBatchGuid());
-        EventBus.getDefault().removeStickyEvent(event);
-    }
-
-    /// batch waiting to finish
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(ActiveBatchUpdatedBatchWaitingToFinishEvent event){
-        Timber.tag(TAG).d("received ActiveBatchUpdatedBatchWaitingToFinishEvent");
-        Timber.tag(TAG).d("   actorType        -> " + event.getActorType().toString());
-        Timber.tag(TAG).d("   batchGuid        -> " + event.getBatchGuid());
-
-        navigator.gotoWaitingToFinishBatch(activity, event.getActorType(), event.getBatchGuid());
-        EventBus.getDefault().removeStickyEvent(event);
-    }
-
-    /// batch removed
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(ActiveBatchUpdatedBatchRemovedEvent event){
-        Timber.tag(TAG).d("received ActiveBatchUpdatedBatchWaitingToFinishEvent");
-        Timber.tag(TAG).d("   actorType        -> " + event.getActorType().toString());
-        Timber.tag(TAG).d("   batchGuid        -> " + event.getBatchGuid());
-
-        navigator.gotoActivityHomeAndShowBatchRemovedMessage(activity, event.getActorType(), event.getBatchGuid());
-        EventBus.getDefault().removeStickyEvent(event);
-    }
-
-    /// no batch
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(ActiveBatchUpdatedNoBatchEvent event){
-        Timber.tag(TAG).d("received ActiveBatchUpdatedNoBatchEvent");
-        navigator.gotoActivityHome(activity);
-        EventBus.getDefault().removeStickyEvent(event);
     }
 
 

@@ -12,11 +12,18 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
+import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.ActiveBatchUtilities;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailSwipeCompleteButtonComponent;
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.entities.PhotoRequest;
+import it.flube.libbatchdata.entities.batch.BatchDetail;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderAuthorizePaymentStep;
+import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailCompleteButtonComponents;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailDueByLayoutComponents;
@@ -35,121 +42,104 @@ import timber.log.Timber;
  */
 
 public class PhotoActivity extends AppCompatActivity implements
-        ActiveBatchUtilities.GetStepResponse,
-        SlideView.OnSlideCompleteListener,
-        ActiveBatchAlerts.ServiceOrderCompletedAlertHidden,
-        PhotoRequestListAdapter.Response {
+        PhotoController.GetDriverAndActiveBatchStepResponse,
+        PhotoActivityLayoutComponents.Response {
 
     private static final String TAG = "PhotoActivity";
 
-    private ActivityNavigator navigator;
+
     private PhotoController controller;
-    private DrawerMenu drawer;
+    private PhotoActivityLayoutComponents layoutComponents;
 
-    private StepDetailTitleLayoutComponents stepTitle;
-    private StepDetailDueByLayoutComponents stepDueBy;
-    private PhotoRequestListLayoutComponents photoList;
-    private StepDetailSwipeCompleteButtonComponent stepComplete;
-
-    private String milestoneEvent;
+    private String activityGuid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        activityGuid= BuilderUtilities.generateGuid();
+
         setContentView(R.layout.activity_photo_step);
 
-        stepTitle = new StepDetailTitleLayoutComponents(this);
-        stepDueBy = new StepDetailDueByLayoutComponents(this);
-        photoList = new PhotoRequestListLayoutComponents(this, this);
-        stepComplete = new StepDetailSwipeCompleteButtonComponent(this, getResources().getString(R.string.photo_step_completed_step_button_caption), this);
 
+        controller = new PhotoController();
+        layoutComponents = new PhotoActivityLayoutComponents(this, this);
+
+        Timber.tag(TAG).d("onCreate (%s)", activityGuid);
+    }
+
+    @Override
+    public void onStart(){
+        Timber.tag(TAG).d("onStart (%s)", activityGuid);
+        super.onStart();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-        navigator = new ActivityNavigator();
-        drawer = new DrawerMenu(this, navigator, R.string.photo_step_activity_title);
-        controller = new PhotoController();
-        controller.getActivityLaunchInfo(this,this);
-
-        EventBus.getDefault().register(this);
-
-        Timber.tag(TAG).d("onResume");
+        DrawerMenu.getInstance().setActivity(this, R.string.photo_step_activity_title);
+        controller.getDriverAndActiveBatchStep(this);
+        Timber.tag(TAG).d("onResume (%s)", activityGuid);
     }
 
     @Override
     public void onPause() {
-        Timber.tag(TAG).d("onPause");
+        Timber.tag(TAG).d("onPause (%s)", activityGuid);
+        DrawerMenu.getInstance().close();
         super.onPause();
+    }
 
-        drawer.close();
+    @Override
+    public void onStop(){
+        Timber.tag(TAG).d("onStop (%s)", activityGuid);
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy(){
+        Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
+
         controller.close();
-
-        EventBus.getDefault().unregister(this);
+        layoutComponents.close();
+        super.onDestroy();
     }
 
 
-    public void onSlideComplete(SlideView v){
-        Timber.tag(TAG).d("clicked step complete button");
-
-        photoList.setGone();
-        stepComplete.showWaitingAnimationAndBanner(getString(R.string.photo_step_completed_banner_text));
-        controller.stepFinished(photoList.getPhotoRequestList(), milestoneEvent);
-    }
-
-    ///
-    /// Activity Launch Info - orderStep response
-    ///
-    public void getStepSuccess(OrderStepInterface orderStep){
-        Timber.tag(TAG).d("getStepSuccess");
-
-        ServiceOrderPhotoStep photoStep = (ServiceOrderPhotoStep) orderStep;
-        milestoneEvent = photoStep.getMilestoneWhenFinished();
-
-        stepTitle.setValues(this, orderStep);
-        stepDueBy.setValues(this, orderStep);
-        photoList.setValues(photoStep.getPhotoRequestList());
-
-        stepTitle.setVisible();
-        stepDueBy.setVisible();
-        photoList.setVisible();
-
-        //check if we are ok to finish
-        if (photoList.readyToFinishStep()) {
-            Timber.tag(TAG).d("   ...readyToFinishStep");
-            stepComplete.setVisible();
-        } else {
-            Timber.tag(TAG).d("   ...NOT readyToFinishStep");
-            stepComplete.setInvisible();
-        }
-    }
-
-    public void getStepFailure(){
-        Timber.tag(TAG).d("getStepFailure");
+    /// PhotoActivityLayoutComponents interface
+    public void stepCompleteButtonClicked(ArrayList<PhotoRequest> photoList, String milestoneWhenFinished){
+        Timber.tag(TAG).d("clicked step complete button (%s)", activityGuid);
+        layoutComponents.showWaitingAnimationAndBanner(getString(R.string.photo_step_completed_banner_text));
+        controller.stepFinished(photoList, milestoneWhenFinished);
     }
 
     //// photo list interface
     public void photoRequestSelected(PhotoRequest photoRequest){
-        Timber.tag(TAG).d("photoRequestSelected -> " + photoRequest.getGuid());
-        navigator.gotoActivityPhotoDetail(this, photoRequest.getBatchGuid(), photoRequest.getStepGuid(), photoRequest.getGuid());
+        Timber.tag(TAG).d("photoRequestSelected (%s) -> " + photoRequest.getGuid(), activityGuid);
+        ActivityNavigator.getInstance().gotoActivityPhotoDetail(this, photoRequest.getBatchGuid(), photoRequest.getStepGuid(), photoRequest.getGuid());
     }
 
-    @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
-    public void onEvent(ShowCompletedServiceOrderAlertEvent event) {
-        EventBus.getDefault().removeStickyEvent(event);
-
-        Timber.tag(TAG).d("active batch -> service order completed!");
-
-        ActiveBatchAlerts alert = new ActiveBatchAlerts();
-        alert.showServiceOrderCompletedAlert(this, this);
+    ///
+    ///  PhotoController.GetDriverAndActiveBatchStepResponse interface
+    ///
+    public void gotDriverAndStep(Driver driver, BatchDetail batchDetail, ServiceOrder serviceOrder, ServiceOrderPhotoStep orderStep){
+        Timber.tag(TAG).d("gotDriverAndStep (%s)", activityGuid);
+        layoutComponents.setValues(this,orderStep);
+        layoutComponents.setVisible();
     }
 
-    public void serviceOrderCompletedAlertHidden() {
-        Timber.tag(TAG).d("service order completed alert hidden");
+    public void gotNoDriver(){
+        Timber.tag(TAG).d("gotNoDriver (%s)", activityGuid);
+        ActivityNavigator.getInstance().gotoActivityLogin(this);
     }
 
+    public void gotDriverButNoStep(Driver driver){
+        Timber.tag(TAG).d("gotDriverButNoStep (%s)", activityGuid);
+        ActivityNavigator.getInstance().gotoActivityHome(this);
+    }
+
+    public void gotStepMismatch(Driver driver, OrderStepInterface.TaskType taskType){
+        Timber.tag(TAG).d("gotStepMismatch (%s), taskType -> " + taskType.toString(), activityGuid);
+        ActivityNavigator.getInstance().gotoActiveBatchStep(this);
+    }
 
 }

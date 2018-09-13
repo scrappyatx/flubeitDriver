@@ -10,8 +10,10 @@ import java.util.Date;
 import java.util.HashMap;
 
 import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.builders.ProductListBuilder;
 import it.flube.libbatchdata.builders.StepIdBuilder;
 import it.flube.libbatchdata.builders.TimestampBuilder;
+import it.flube.libbatchdata.entities.ProductList;
 import it.flube.libbatchdata.entities.orderStep.StepId;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrderScaffold;
@@ -44,6 +46,9 @@ public class ServiceOrderScaffoldBuilder {
             //create the stepId & step list
             this.serviceOrderScaffold.setSteps(new HashMap<String, OrderStepInterface>());
             this.serviceOrderScaffold.setStepIds(new HashMap<String, StepId>());
+
+            //initialze product list
+            this.serviceOrderScaffold.setProductList(new ProductListBuilder.Builder().build());
 
         }
 
@@ -103,6 +108,11 @@ public class ServiceOrderScaffoldBuilder {
             this.serviceOrderScaffold.setStartTime(new TimestampBuilder.Builder()
                     .scheduledTime(BuilderUtilities.addMinutesToDate(finishTime, minutesToAdd))
                     .build());
+            return this;
+        }
+
+        public Builder productList(ProductList productList){
+            this.serviceOrderScaffold.setProductList(productList);
             return this;
         }
 

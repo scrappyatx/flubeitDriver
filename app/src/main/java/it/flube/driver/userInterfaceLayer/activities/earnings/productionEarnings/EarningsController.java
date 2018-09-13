@@ -6,15 +6,21 @@ package it.flube.driver.userInterfaceLayer.activities.earnings.productionEarning
 
 import android.util.Log;
 
+import timber.log.Timber;
+
 /**
  * Created on 5/29/2017
  * Project : Driver
  */
 
 public class EarningsController {
-    private final String TAG = "SplashScreenController";
+    private final String TAG = "EarningsController";
 
     public EarningsController() {
-        Log.d(TAG, "EarningsController Controller CREATED");
+        Timber.tag(TAG).d("created");
+    }
+
+    public void close(){
+        Timber.tag(TAG).d("close");
     }
 }

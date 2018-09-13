@@ -77,7 +77,7 @@ public class UseCaseSaveSignatureToDeviceImageStorage implements
 
         ///update our photoRequest object in the cloud to reflect we have saved an image on the device for this photo request
 
-        device.getCloudActiveBatch().updateSignatureRequestDeviceAbsoluteFileNameRequest(device.getUser().getDriver(), signatureRequest, absoluteFileName, true, this);
+        device.getCloudActiveBatch().updateSignatureRequestDeviceAbsoluteFileNameRequest(device.getCloudAuth().getDriver(), signatureRequest, absoluteFileName, true, this);
     }
 
     public void deviceImageStorageSaveFailure() {
@@ -85,7 +85,7 @@ public class UseCaseSaveSignatureToDeviceImageStorage implements
         saveImageSuccess = false;
 
         ///update our photoRequest object in the cloud to reflect we DON'T have an image save on this device for this photo request
-        device.getCloudActiveBatch().updateSignatureRequestDeviceAbsoluteFileNameRequest(device.getUser().getDriver(), signatureRequest, null, false, this);
+        device.getCloudActiveBatch().updateSignatureRequestDeviceAbsoluteFileNameRequest(device.getCloudAuth().getDriver(), signatureRequest, null, false, this);
 
     }
 

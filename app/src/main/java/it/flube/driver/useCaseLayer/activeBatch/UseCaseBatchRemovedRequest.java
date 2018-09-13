@@ -38,7 +38,7 @@ public class UseCaseBatchRemovedRequest implements
 
     public UseCaseBatchRemovedRequest(MobileDeviceInterface device, String batchGuid, UseCaseBatchRemovedRequest.Response response){
             this.device = device;
-            this.driver = device.getUser().getDriver();
+            this.driver = device.getCloudAuth().getDriver();
             this.batchGuid = batchGuid;
             this.response = response;
         }

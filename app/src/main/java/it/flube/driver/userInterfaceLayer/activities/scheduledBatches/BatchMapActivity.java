@@ -28,9 +28,7 @@ public class BatchMapActivity extends AppCompatActivity implements OnMapReadyCal
     private static final String TAG = "BatchManageActivity";
     private static final String API_KEY = "pk.eyJ1Ijoic2NyYXBweWF0eCIsImEiOiJjajViNjNjNHUwdTNxMzNwMWg4ZWMwN2thIn0.olrIh8570OamyDRxCaHBuA";
 
-    private ActivityNavigator navigator;
     private BatchMapController controller;
-    private DrawerMenu drawer;
 
     private MapView mapView;
 
@@ -76,8 +74,7 @@ public class BatchMapActivity extends AppCompatActivity implements OnMapReadyCal
         mapView.onResume();
         mapView.getMapAsync(this);
 
-        navigator = new ActivityNavigator();
-        drawer = new DrawerMenu(this, navigator, R.string.batch_map_activity_title);
+        DrawerMenu.getInstance().setActivity(this, R.string.batch_map_activity_title);
         controller = new BatchMapController();
 
         //EventBus.getDefault().register(this);
@@ -89,7 +86,7 @@ public class BatchMapActivity extends AppCompatActivity implements OnMapReadyCal
     public void onPause() {
         //EventBus.getDefault().unregister(this);
 
-        drawer.close();
+        DrawerMenu.getInstance().close();
         controller.close();
 
 

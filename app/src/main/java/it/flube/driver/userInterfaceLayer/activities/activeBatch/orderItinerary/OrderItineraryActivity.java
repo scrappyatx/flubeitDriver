@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
@@ -39,6 +40,10 @@ public class OrderItineraryActivity extends AppCompatActivity {
     private RecyclerView stepListView;
     private OrderStepListAdapter stepListAdapter;
 
+    private String activityGuid;
+
+    //TODO need to build a layout components for this activity
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,14 +56,7 @@ public class OrderItineraryActivity extends AppCompatActivity {
         orderDescription = (TextView) findViewById(R.id.order_detail_description);
 
         stepListView = (RecyclerView) findViewById(R.id.orderStepsView);
-    }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-
-        navigator = new ActivityNavigator();
-        drawer = new DrawerMenu(this, navigator, R.string.order_itinerary_activity_title);
         controller = new OrderItineraryController();
 
         stepListAdapter = new OrderStepListAdapter(this, controller);
@@ -67,6 +65,15 @@ public class OrderItineraryActivity extends AppCompatActivity {
         stepListView.setAdapter(stepListAdapter);
         stepListView.setVisibility(View.INVISIBLE);
 
+        activityGuid = BuilderUtilities.generateGuid();
+        Timber.tag(TAG).d("onCreate (%s)", activityGuid);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        DrawerMenu.getInstance().setActivity(this, R.string.order_itinerary_activity_title);
         updateOrderDetailInfo();
         updateStepListInfo();
 
@@ -74,17 +81,37 @@ public class OrderItineraryActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed(){
+        Timber.tag(TAG).d("onBackPressed (%s)", activityGuid);
+        ActivityNavigator.getInstance().gotoActivityHome(this);
+    }
+
+
+    @Override
     public void onPause(){
-
-        drawer.close();
-        controller.close();
-
-        stepListAdapter.close();
-
-        Timber.tag(TAG).d("onPause");
+        DrawerMenu.getInstance().clearActivity();
+        Timber.tag(TAG).d("onPause (%s)", activityGuid);
 
         super.onPause();
     }
+
+    @Override
+    public void onStop(){
+        Timber.tag(TAG).d("onStop (%s)", activityGuid);
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy(){
+        Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
+        controller.close();
+        stepListAdapter.close();
+
+        super.onDestroy();
+    }
+
+
+
 
     private void updateOrderDetailInfo(){
         Timber.tag(TAG).d("updating service order info...");

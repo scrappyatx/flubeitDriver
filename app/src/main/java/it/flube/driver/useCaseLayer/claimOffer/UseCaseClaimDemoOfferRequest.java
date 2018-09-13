@@ -30,7 +30,7 @@ public class UseCaseClaimDemoOfferRequest implements
         this.batchGuid = batchGuid;
         this.response = response;
         demoOffer = device.getCloudDemoOffer();
-        driver = device.getUser().getDriver();
+        driver = device.getCloudAuth().getDriver();
     }
 
     public void run(){

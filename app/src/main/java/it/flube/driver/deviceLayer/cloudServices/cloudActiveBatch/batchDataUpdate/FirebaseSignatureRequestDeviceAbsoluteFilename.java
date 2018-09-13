@@ -41,7 +41,8 @@ public class FirebaseSignatureRequestDeviceAbsoluteFilename implements OnComplet
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put(SIGNATURE_REQUEST_HAS_DEVICE_FILE_NODE, hasFile);
         data.put(SIGNATURE_REQUEST_DEVICE_ABSOLUTE_FILENAME_NODE, absoluteFileName);
-        data.put(SIGNATURE_REQUEST_ATTEMPT_COUNT_NODE, signatureRequest.getAttemptCount()+1);
+        // attempt count is for cloud upload attempts
+        //data.put(SIGNATURE_REQUEST_ATTEMPT_COUNT_NODE, signatureRequest.getAttemptCount()+1);
 
         if (hasFile) {
             data.put(SIGNATURE_REQUEST_STATUS_NODE, SignatureRequest.SignatureStatus.COMPLETED_SUCCESS);

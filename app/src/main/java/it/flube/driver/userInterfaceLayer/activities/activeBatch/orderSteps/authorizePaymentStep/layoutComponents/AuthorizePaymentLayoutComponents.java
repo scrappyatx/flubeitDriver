@@ -23,7 +23,7 @@ import timber.log.Timber;
  * Project : Driver
  */
 public class AuthorizePaymentLayoutComponents implements
-        SlideView.OnSlideCompleteListener,
+        StepDetailSwipeCompleteButtonComponent.Response,
         PaymentVerificationLayoutComponent.Response,
         ReceiptRequestLayoutComponent.Response {
     private static final String TAG = "AuthorizePaymentLayoutComponents";
@@ -46,8 +46,11 @@ public class AuthorizePaymentLayoutComponents implements
         stepDueBy = new StepDetailDueByLayoutComponents(activity);
         paymentType = (TextView) activity.findViewById(R.id.authorize_payment_type);
         paymentAccount = (TextView) activity.findViewById(R.id.authorize_payment_display_account);
+
         paymentRow = new PaymentVerificationLayoutComponent(activity, this);
+
         receiptRow = new ReceiptRequestLayoutComponent(activity, this);
+
         stepComplete = new StepDetailSwipeCompleteButtonComponent(activity, activity.getResources().getString(R.string.authorize_payment_completed_step_button_caption), this);
 
         Timber.tag(TAG).d("created");
@@ -107,11 +110,59 @@ public class AuthorizePaymentLayoutComponents implements
             } else {
                 receiptRow.setInvisible();
             }
-            stepComplete.setVisible();
+
+            setStepCompleteStatus();
+
         } else {
             setInvisible();
         }
         Timber.tag(TAG).d("...setVisible COMPLETE");
+    }
+
+    private void setStepCompleteStatus(){
+        if (orderStep.getRequireReceipt()){
+            //this step has to have receipt completed before we can finish
+            switch (orderStep.getReceiptRequest().getReceiptStatus()){
+                case COMPLETED_SUCCESS:
+                    checkPaymentAuthStatus();
+                    break;
+                case COMPLETED_FAILED:
+                    checkPaymentAuthStatus();
+                    break;
+                case NOT_ATTEMPTED:
+                    stepComplete.setInvisible();
+                    break;
+            }
+        } else {
+            //this step only needs payment auth complete before we can finish
+            checkPaymentAuthStatus();
+        }
+    }
+
+    private void checkPaymentAuthStatus(){
+        Timber.tag(TAG).d("checkPaymentAuthStatus -> " + orderStep.getPaymentAuthorization().getPaymentVerificationStatus().toString());
+
+        if (orderStep.getPaymentAuthorization().getVerifyPaymentAmount()) {
+            Timber.tag(TAG).d("   ...we need to verify payment amount");
+            switch (orderStep.getPaymentAuthorization().getPaymentVerificationStatus()) {
+                case NOT_VERIFIED:
+                    Timber.tag(TAG).d("   ...not verified, setInvisible");
+                    stepComplete.setInvisible();
+                    break;
+                case PAYMENT_AT_OR_BELOW_LIMIT:
+                    Timber.tag(TAG).d("   ...payment at or below, setVisible");
+                    stepComplete.setVisible();
+                    break;
+                case PAYMENT_EXCEEDS_LIMIT:
+                    Timber.tag(TAG).d("   ...payment exceeds, setVisible");
+                    stepComplete.setVisible();
+                    break;
+            }
+        } else {
+            //we don't need to verify payment amount
+            Timber.tag(TAG).d("   ...dont' need to set payment amount, setVisible");
+            stepComplete.setVisible();
+        }
     }
 
     public void setInvisible(){
@@ -153,6 +204,8 @@ public class AuthorizePaymentLayoutComponents implements
     ///
     public void paymentRowClicked(PaymentAuthorization paymentAuthorization){
         Timber.tag(TAG).d("paymentRowClicked, verificationStatus -> " + paymentAuthorization.getPaymentVerificationStatus().toString());
+        setStepCompleteStatus();
+        response.paymentRowClicked(paymentAuthorization);
     }
 
     ///
@@ -160,19 +213,22 @@ public class AuthorizePaymentLayoutComponents implements
     ///
     public void receiptPhotoRowClicked(ReceiptRequest receiptRequest){
         Timber.tag(TAG).d("receiptPhotoRowClicked");
+        setStepCompleteStatus();
         response.receiptRowClicked(receiptRequest);
     }
 
     ///
     /// StepDetailSwipeComplete response interface
     ///
-    public void onSlideComplete(SlideView v){
-        Timber.tag(TAG).d("onSlideComplete");
+    public void stepDetailSwipeCompleteButtonClicked(){
+        Timber.tag(TAG).d("stepDetailSwipeCompleteButtonClicked");
         response.stepCompleteClicked(orderStep.getMilestoneWhenFinished());
     }
 
     public interface Response {
         void receiptRowClicked(ReceiptRequest receiptRequest);
+
+        void paymentRowClicked(PaymentAuthorization paymentAuthorization);
 
         void stepCompleteClicked(String milestoneWhenFinished);
     }

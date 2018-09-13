@@ -62,6 +62,8 @@ public class GiveAssetGetSignatureLayoutComponents implements
 
         savingBanner = (TextView) activity.findViewById(R.id.signature_saving_banner);
         savingAnimation = (LottieAnimationView) activity.findViewById(R.id.signature_saving_animation);
+
+        setInvisible();
     }
 
     public ServiceOrderGiveAssetStep getOrderStep(){

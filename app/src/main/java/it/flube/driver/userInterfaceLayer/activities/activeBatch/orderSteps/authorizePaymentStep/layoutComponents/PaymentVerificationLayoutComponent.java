@@ -38,10 +38,11 @@ public class PaymentVerificationLayoutComponent implements
         this.response = response;
 
         border = (ConstraintLayout) activity.findViewById(R.id.payment_amount_row_item);
-        border.setClickable(true);
-        border.setFocusable(true);
-        border.setFocusableInTouchMode(true);
+
+        //border.setFocusable(true);
+        //border.setFocusableInTouchMode(true);
         border.setOnClickListener(this);
+        border.setClickable(true);
 
         paymentAmount = (TextView) activity.findViewById(R.id.payment_amount_title);
         paymentStatus = (IconTextView) activity.findViewById(R.id.payment_amount_status);

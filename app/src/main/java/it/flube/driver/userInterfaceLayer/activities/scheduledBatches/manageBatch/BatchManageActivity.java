@@ -28,6 +28,7 @@ import it.flube.driver.userInterfaceLayer.layoutComponents.batchDetail.BatchDeta
 import it.flube.driver.userInterfaceLayer.layoutComponents.batchDetail.batchDetailTab.tabLocations.TabLocationsLayoutComponents;
 import it.flube.driver.userInterfaceLayer.layoutComponents.batchManage.BatchManageLayoutComponents;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.demoBatch.DemoBatchStartedEvent;
+import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.entities.RouteStop;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
@@ -52,6 +53,8 @@ public class BatchManageActivity extends AppCompatActivity
         SlideView.OnSlideCompleteListener,
         BatchStartAlerts.Response {
 
+    //TODO write layoutComponents for this class
+
     private static final String TAG = "BatchManageActivity";
 
     private ActivityNavigator navigator;
@@ -67,10 +70,14 @@ public class BatchManageActivity extends AppCompatActivity
     private TextView batchForfeit;
     private SlideView batchStart;
 
+    private String activityGuid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_batch_manage_new);
+
+        controller = new BatchManageController();
 
         //title block
         batchDetailTitle = new BatchDetailTitleLayoutComponents(this);
@@ -86,17 +93,16 @@ public class BatchManageActivity extends AppCompatActivity
         batchTab.setGone();
         batchButtons.setGone();
 
-        Timber.tag(TAG).d("onCreate");
+        activityGuid = BuilderUtilities.generateGuid();
+        Timber.tag(TAG).d("onCreate (%s)", activityGuid);
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
+        DrawerMenu.getInstance().setActivity(this, R.string.batch_manage_activity_title);
 
-        navigator = new ActivityNavigator();
-        drawer = new DrawerMenu(this, navigator, R.string.batch_manage_activity_title);
-        controller = new BatchManageController();
 
         /// get the batch data for the batchGuid that was used to launch this activity
         if (getIntent().hasExtra(BATCH_GUID_KEY)){
@@ -113,12 +119,36 @@ public class BatchManageActivity extends AppCompatActivity
 
     @Override
     public void onPause() {
-        drawer.close();
-        controller.close();
-        Timber.tag(TAG).d( "onPause");
+        DrawerMenu.getInstance().clearActivity();
+        Timber.tag(TAG).d("onPause (%s)", activityGuid);
 
         super.onPause();
     }
+
+    @Override
+    public void onBackPressed(){
+        Timber.tag(TAG).d("onBackPressed (%s)", activityGuid);
+        ActivityNavigator.getInstance().gotoActivityHome(this);
+    }
+
+    @Override
+    public void onStop(){
+        Timber.tag(TAG).d("onStop (%s)", activityGuid);
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy(){
+        Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
+
+        controller.close();
+        batchDetailTitle.close();
+        batchTab.onDestroy();
+        batchButtons.close();
+        super.onDestroy();
+
+    }
+
 
     public void onForfeitClicked(View view){
         Timber.tag(TAG).d("clicked Batch Forfeit");
@@ -127,7 +157,7 @@ public class BatchManageActivity extends AppCompatActivity
     }
 
     public void goBack() {
-        navigator.gotoActivityScheduledBatches(this);
+        ActivityNavigator.getInstance().gotoActivityScheduledBatches(this);
     }
 
 
@@ -212,23 +242,23 @@ public class BatchManageActivity extends AppCompatActivity
 
     public void forfeitBatchSuccess(String batchGuid){
         Timber.tag(TAG).d("forfeitBatchSuccess");
-        navigator.gotoActivityScheduledBatchesAndShowBatchForfeitSuccessAlert(this);
+        ActivityNavigator.getInstance().gotoActivityScheduledBatchesAndShowBatchForfeitSuccessAlert(this);
     }
 
     public void forfeitBatchFailure(String batchGuid){
         Timber.tag(TAG).d("forfeitBatchFailure");
-        navigator.gotoActivityScheduledBatchesAndShowBatchForfeitFailureAlert(this);
+        ActivityNavigator.getInstance().gotoActivityScheduledBatchesAndShowBatchForfeitFailureAlert(this);
     }
 
     public void forfeitBatchTimeout(String batchGuid){
         Timber.tag(TAG).d("forfeitBatchTimeout");
-        navigator.gotoActivityScheduledBatchesAndShowBatchForfeitTimeoutAlert(this);
+        ActivityNavigator.getInstance().gotoActivityScheduledBatchesAndShowBatchForfeitTimeoutAlert(this);
 
     }
 
     public void forfeitBatchDenied(String batchGuid, String reason){
         Timber.tag(TAG).d("forfeitBatchDenied");
-        navigator.gotoActivityScheduledBatchesAndShowBatchForfeitDeniedAlert(this, reason);
+        ActivityNavigator.getInstance().gotoActivityScheduledBatchesAndShowBatchForfeitDeniedAlert(this, reason);
     }
 
     public void forfeitBatchDialogCancelled(String batchGuid){

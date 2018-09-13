@@ -29,11 +29,10 @@ public class UserInterfaceClaimPublicOfferEventHandler {
     public final static String TAG = "UserInterfaceClaimPublicOfferEventHandler";
 
     private AppCompatActivity activity;
-    private ActivityNavigator navigator;
 
-    public UserInterfaceClaimPublicOfferEventHandler(@NonNull AppCompatActivity activity, @NonNull ActivityNavigator navigator){
+
+    public UserInterfaceClaimPublicOfferEventHandler(@NonNull AppCompatActivity activity){
         this.activity = activity;
-        this.navigator = navigator;
         EventBus.getDefault().register(this);
 
         Timber.tag(TAG).d("created");
@@ -42,7 +41,6 @@ public class UserInterfaceClaimPublicOfferEventHandler {
     public void close(){
         EventBus.getDefault().unregister(this);
         activity = null;
-        navigator = null;
         Timber.tag(TAG).d("closed");
     }
 
@@ -53,7 +51,7 @@ public class UserInterfaceClaimPublicOfferEventHandler {
         Timber.tag(TAG).d("claim public offer SUCCESS!");
 
         EventBus.getDefault().postSticky(new ShowClaimOfferSuccessAlertEvent());
-        navigator.gotoActivityPublicOffers(activity);
+        ActivityNavigator.getInstance().gotoActivityPublicOffers(activity);
     }
 
     @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
@@ -63,7 +61,7 @@ public class UserInterfaceClaimPublicOfferEventHandler {
         Timber.tag(TAG).d("claim public offer FAILURE!");
 
         EventBus.getDefault().postSticky(new ShowClaimOfferFailureAlertEvent());
-        navigator.gotoActivityPublicOffers(activity);
+        ActivityNavigator.getInstance().gotoActivityPublicOffers(activity);
     }
 
     @Subscribe(sticky=true, threadMode = ThreadMode.MAIN)
@@ -73,7 +71,7 @@ public class UserInterfaceClaimPublicOfferEventHandler {
         Timber.tag(TAG).d("claim public offer TIMEOUT!");
 
         EventBus.getDefault().postSticky(new ShowClaimOfferTimeoutAlertEvent());
-        navigator.gotoActivityPublicOffers(activity);
+        ActivityNavigator.getInstance().gotoActivityPublicOffers(activity);
     }
 
 }

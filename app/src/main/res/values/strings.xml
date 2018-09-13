@@ -329,6 +329,7 @@
 
     <!-- Strings related to photo detail activity layout -->
     <string name="photo_detail_activity_title">Photo Detail</string>
+    <string name="photo_detail_step_complete_button_caption">Take a Photo</string>
 
     <!-- Strings related to photo take activity layout -->
     <string name="photo_take_button_caption">{fa-camera}</string>
@@ -395,6 +396,14 @@
     <string name="authorize_payment_payment_type_charge_to_card_on_file_text">Charge to Card On File</string>
     <string name="authorize_payment_receipt_request_row_text">Receipt Photo</string>
     <string name="authorize_payment_amount_row_text">Max Payment %s"</string>
+
+    <!-- Strings related to receipt detail activity layout -->
+    <string name="receipt_detail_activity_title">Receipt Detail</string>
+    <string name="receipt_detail_photo_button_caption">Take a photo</string>
+    <string name="receipt_detail_receipt_request_title">Take a photo of the receipt</string>
+
+    <!-- Strings related to receipt photo activity layout -->
+    <string name="receipt_photo_take_activity_title">Receipt Photo</string>
 
 
     <!-- Strings related to contact person info panel.xml -->

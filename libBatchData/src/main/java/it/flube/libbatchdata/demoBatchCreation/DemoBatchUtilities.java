@@ -28,6 +28,8 @@ public class DemoBatchUtilities {
     private static final String CUSTOMER_EMAIL = "jqcustomer@mailinator.com";
     private static final String CUSTOMER_ID = "f0f176f8-3be7-4e56-97dd-9f8fc8bcd0dd";
 
+    private static final String CUSTOMER_CART_ITEM = "Full Synthetic Oil Change";
+
     private static final String CUSTOMER_CONTACT_PERSON_GUID = "8793eff8-b7f5-4360-98ea-5187fb2f0bef";
     private static final String CUSTOMER_CONTACT_PERSON_NAME = "John Q. Customer";
     private static final String CUSTOMER_DIAL_PHONE_NUMBER = "5122979032"; // phone number of one of the dev phones
@@ -64,8 +66,6 @@ public class DemoBatchUtilities {
     private static final String SERVICE_PROVIDER_PROXY_DIAL_PHONE_NUMBER = "5127483079";
     private static final String SERVICE_PROVIDER_PROXY_DISPLAY_PHONE_NUMBER = "(512) 748-3079";
 
-
-
     private static final String SERVICE_PROVIDER_NAME = "Slippery Lester's Quick Lube";
     private static final String SERVICE_PROVIDER_ADDRESS_STREET = "3700 North Lamar Blvd";
     private static final String SERVICE_PROVIDER_ADDRESS_CITY = "Austin";
@@ -82,6 +82,10 @@ public class DemoBatchUtilities {
             .username(CUSTOMER_USERNAME)
             .id(CUSTOMER_ID)
             .build();
+    }
+
+    public static String getCustomerCartItem(){
+        return CUSTOMER_CART_ITEM;
     }
 
     public static ContactPerson getCustomerContactPerson(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){

@@ -27,17 +27,14 @@ public class UserInterfaceAuthAlertEventHandler {
     public final static String TAG = "UserInterfaceAuthAlertEventHandler";
 
     private AppCompatActivity activity;
-    private ActivityNavigator navigator;
 
-    public UserInterfaceAuthAlertEventHandler(@NonNull AppCompatActivity activity, @NonNull ActivityNavigator navigator ){
+    public UserInterfaceAuthAlertEventHandler(@NonNull AppCompatActivity activity){
         this.activity = activity;
-        this.navigator = navigator;
         EventBus.getDefault().register(this);
     }
 
     public void close(){
         EventBus.getDefault().unregister(this);
-        navigator = null;
         activity = null;
     }
 

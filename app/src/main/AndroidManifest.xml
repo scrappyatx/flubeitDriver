@@ -52,8 +52,7 @@
         <activity android:name=".userInterfaceLayer.activities.offers.personalOffers.PersonalOffersActivity" />
 
         <activity android:name=".userInterfaceLayer.activities.offers.demoOffers.DemoOffersActivity" />
-        <activity android:name=".userInterfaceLayer.activities.offers.demoOffers.demoOfferMake.DemoOffersMakeActivity"
-            android:noHistory="true" />
+        <activity android:name=".userInterfaceLayer.activities.offers.demoOffers.demoOfferMake.DemoOffersMakeActivity" />
 
         <activity android:name=".userInterfaceLayer.activities.scheduledBatches.scheduledBatchList.ScheduledBatchesActivity" />
 
@@ -62,70 +61,51 @@
         <activity android:name=".userInterfaceLayer.activities.help.HelpActivity" />
 
 
-        <activity android:name=".userInterfaceLayer.activities.offers.claimOffer.OfferClaimActivity"
-            android:noHistory="true" />
+        <activity android:name=".userInterfaceLayer.activities.offers.claimOffer.OfferClaimActivity" />
         <activity android:name=".userInterfaceLayer.activities.scheduledBatches.manageBatch.BatchManageActivity"
             android:noHistory="true" />
         <activity android:name=".userInterfaceLayer.activities.scheduledBatches.BatchMapActivity"
             android:noHistory="true" />
+
+        <!-- NAVIGATION ACTIVITY -->
         <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.NavigationActivity"
             android:noHistory="true" />
 
-        <!-- RECEIVE ASSET ACTIVITIES -->
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.photoList.PhotoActivity"
-            android:noHistory="true"/>
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.photoDetail.PhotoDetailActivity"
-            android:noHistory="true"/>
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.photoTake.PhotoTakeActivity"
-            android:noHistory="true"/>
+        <!-- PHOTO ACTIVITIES ACTIVITIES -->
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.photoList.PhotoActivity" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.photoDetail.PhotoDetailActivity" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.photoTake.PhotoTakeActivity" />
 
         <!-- RECEIVE ASSET ACTIVITIES -->
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep.ReceiveAssetActivity"
-            android:noHistory="true" />
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep.getSignature.ReceiveAssetGetSignatureActivity"
-            android:noHistory="true" />
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep.itemList.ReceiveAssetItemListActivity"
-            android:noHistory="true" />
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep.itemDetail.ReceiveAssetItemActivity"
-            android:noHistory="true" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep.ReceiveAssetActivity" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep.getSignature.ReceiveAssetGetSignatureActivity" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep.itemList.ReceiveAssetItemListActivity" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep.itemDetail.ReceiveAssetItemActivity" />
 
         <!-- GIVE ASSET ACTIVITIES -->
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.giveAssetStep.GiveAssetActivity"
-            android:noHistory="true" />
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.giveAssetStep.itemDetail.GiveAssetItemActivity"
-            android:noHistory="true" />
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.giveAssetStep.getSignature.GiveAssetGetSignatureActivity"
-            android:noHistory="true" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.giveAssetStep.GiveAssetActivity" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.giveAssetStep.itemDetail.GiveAssetItemActivity" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.giveAssetStep.getSignature.GiveAssetGetSignatureActivity" />
 
 
         <!-- USER TRIGGER ACTIVITIES -->
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.userTriggerStep.UserTriggerActivity"
-            android:noHistory="true" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.userTriggerStep.UserTriggerActivity" />
 
         <!-- AUTHORIZE PAYMENT ACTIVITIES -->
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.AuthorizePaymentActivity"
-            android:noHistory="true" />
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.receiptDetail.ReceiptDetailActivity"
-            android:noHistory="true" />
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.receiptPhotoTake.ReceiptPhotoTake"
-            android:noHistory="true" />
-
-
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.AuthorizePaymentActivity" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.receiptDetail.ReceiptDetailActivity" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.receiptPhotoTake.ReceiptPhotoTakeActivity" />
 
         <!-- WAITING TO FINISH BATCH ACTIVITIES -->
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.waitingToFinishBatch.WaitingToFinishBatchActivity"
-            android:noHistory="true" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.waitingToFinishBatch.WaitingToFinishBatchActivity" />
 
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.batchItinerary.BatchItineraryActivity"
-            android:noHistory="true" />
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderItinerary.OrderItineraryActivity"
-            android:noHistory="true" />
+        <!-- BATCH & ORDER ITINERARY ACTIVITIES -->
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.batchItinerary.BatchItineraryActivity" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderItinerary.OrderItineraryActivity" />
 
-        <activity android:name=".userInterfaceLayer.activities.earnings.testEarnings.TestEarningsActivity"
-            android:noHistory="true" />
-
-        <activity android:name=".userInterfaceLayer.activities.offers.testOffers.TestOffersMakeActivity"
-            android:noHistory="true" />
+        <!-- TEST EARNINGS & TEST OFFERS ACTIVITIES -->
+        <activity android:name=".userInterfaceLayer.activities.earnings.testEarnings.TestEarningsActivity" />
+        <activity android:name=".userInterfaceLayer.activities.offers.testOffers.TestOffersMakeActivity" />
 
         <service
             android:name=".deviceLayer.deviceServices.activeBatchForegroundService.ActiveBatchForegroundService"

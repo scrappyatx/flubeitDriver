@@ -31,9 +31,25 @@ public class ActiveBatchNodeWithoutBatchData {
 
         switch (nodeData.getActionType()){
             case NO_BATCH:
+                switch (nodeData.getActorType()){
+                    case SERVER_ADMIN:
+                        Timber.tag(TAG).d("         ...response -> noBatchByServerAdmin");
+                        response.noBatchByServerAdmin();
+                        break;
+                    case MOBILE_USER:
+                        Timber.tag(TAG).d("         ...response -> noBatchByMobileUser");
+                        response.noBatchByMobileUser();
+                        break;
+                    case NOT_SPECIFIED:
+                        Timber.tag(TAG).d("         ...response -> dataMismatchOnNode");
+                        response.dataMismatchOnNode();
+                        break;
+                }
+                break;
+
             case NOT_SPECIFIED:
-                Timber.tag(TAG).d("         ...response -> noBatch");
-                response.noBatch();
+                Timber.tag(TAG).d("         ...response -> noDataOnNode");
+                response.noDataOnNode();
                 break;
 
             case BATCH_REMOVED:
@@ -41,8 +57,8 @@ public class ActiveBatchNodeWithoutBatchData {
                     Timber.tag(TAG).d("         ...response -> batchRemoved");
                     response.batchRemoved(nodeData.getActorType(), nodeData.getBatchGuid());
                 } else {
-                    Timber.tag(TAG).w("         ...batchRemoved, but nodeData is missing batchGuid");
-                    response.noBatch();
+                    Timber.tag(TAG).w("         ...response -> dataMismatchOnNode");
+                    response.dataMismatchOnNode();
                 }
                 break;
 
@@ -51,8 +67,8 @@ public class ActiveBatchNodeWithoutBatchData {
                     Timber.tag(TAG).d("         ...response -> batchWaitingToFinish");
                     response.batchWaitingToFinish(nodeData.getActorType(), nodeData.getBatchGuid());
                 } else {
-                    Timber.tag(TAG).w("         ...batchWaitingToFinish, but nodeData is missing batchGuid");
-                    response.noBatch();
+                    Timber.tag(TAG).w("         ...response -> dataMismatchOnNode");
+                    response.dataMismatchOnNode();
                 }
                 break;
 
@@ -61,8 +77,8 @@ public class ActiveBatchNodeWithoutBatchData {
                     Timber.tag(TAG).d("         ...response -> batchFinished");
                     response.batchFinished(nodeData.getActorType(), nodeData.getBatchGuid());
                 } else {
-                    Timber.tag(TAG).w("         ...batchFinished, but nodeData is missing batchGuid");
-                    response.noBatch();
+                    Timber.tag(TAG).w("         ...response -> dataMismatchOnNode");
+                    response.dataMismatchOnNode();
                 }
                 break;
 
@@ -72,7 +88,7 @@ public class ActiveBatchNodeWithoutBatchData {
                 // should never see these action types WITHOUT batch data.
                 Timber.tag(TAG).w("         ...this action type should always have batch data --> " + nodeData.getActionType().toString());
                 Timber.tag(TAG).d("         ...response -> noBatch");
-                response.noBatch();
+                response.dataMismatchOnNode();
                 break;
         }
         Timber.tag(TAG).d("      ...processing COMPLETE!");

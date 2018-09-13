@@ -8,6 +8,7 @@ import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.builders.DestinationBuilder;
 import it.flube.libbatchdata.builders.PhotoRequestBuilder;
 import it.flube.libbatchdata.builders.PotentialEarningsBuilder;
+import it.flube.libbatchdata.builders.ProductListBuilder;
 import it.flube.libbatchdata.builders.batch.BatchHolderBuilder;
 import it.flube.libbatchdata.builders.orderSteps.NavigationStepBuilder;
 import it.flube.libbatchdata.builders.orderSteps.PhotoStepBuilder;
@@ -76,6 +77,9 @@ public class DemoBatchSimpleTwoStep implements DemoBatchInterface {
                         .description("Walk to the destination and take a photo")
                         .startTime(BuilderUtilities.getNowDate())
                         .finishTime(BuilderUtilities.getFutureDate(30))
+                        .productList(new ProductListBuilder.Builder()
+                                .addCartItem(DemoBatchUtilities.getCustomerCartItem())
+                                .build())
                         .addStep(new NavigationStepBuilder.Builder()
                                 .title("Go to end of street")
                                 .description("Navigate to the end of the street")
