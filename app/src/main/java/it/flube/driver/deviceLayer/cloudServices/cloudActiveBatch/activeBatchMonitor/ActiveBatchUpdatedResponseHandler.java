@@ -112,6 +112,8 @@ public class ActiveBatchUpdatedResponseHandler implements
     public void batchFinished(ActiveBatchManageInterface.ActorType actorType, String batchGuid){
         Timber.tag(TAG).d("received batchFinished");
         Timber.tag(TAG).d("    actorType        --> " + actorType.toString());
+        this.actorType = actorType;
+        this.batchGuid = batchGuid;
 
         device = AndroidDevice.getInstance();
         device.getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseBatchFinishedRequest(device, batchGuid, this));

@@ -38,7 +38,7 @@ public class OffersListLayoutComponent  {
 
     private Boolean hasOffers;
 
-    public OffersListLayoutComponent(AppCompatActivity activity, String noOffersText){
+    public OffersListLayoutComponent(AppCompatActivity activity, String noOffersText, OffersListAdapter.Response response){
         layout = (ConstraintLayout) activity.findViewById(R.id.offers_list);
 
         //create orderListView, and set it invisible
@@ -47,22 +47,23 @@ public class OffersListLayoutComponent  {
         noOffers = (TextView) activity.findViewById(R.id.no_offers_text);
         noOffers.setText(noOffersText);
 
+        //create the adapter for the recycler view
+        offersListAdapter = new OffersListAdapter(activity, response);
+        offerListView.setLayoutManager(new LinearLayoutManager(activity));
+        offerListView.setAdapter(offersListAdapter);
+
         hasOffers = false;
 
         setInvisible();
         Timber.tag(TAG).d("...components created");
     }
 
-    public void onResume(AppCompatActivity activity, OffersListAdapter.Response response){
-        //create the adapter for the recycler view
-        offersListAdapter = new OffersListAdapter(activity, response);
-        offerListView.setLayoutManager(new LinearLayoutManager(activity));
-        offerListView.setAdapter(offersListAdapter);
+    public void onResume(){
         Timber.tag(TAG).d("...onResume");
     }
 
     public void onPause(){
-        offersListAdapter.close();
+        Timber.tag(TAG).d("...onResume");
     }
 
     public void setValues(AppCompatActivity activity, ArrayList<Batch> offersList){
@@ -104,6 +105,11 @@ public class OffersListLayoutComponent  {
         offerListView.setVisibility(View.GONE);
         noOffers.setVisibility(View.GONE);
         Timber.tag(TAG).d("...set GONE");
+    }
+
+    public void close(){
+        Timber.tag(TAG).d("close");
+        offersListAdapter.close();
     }
 
 

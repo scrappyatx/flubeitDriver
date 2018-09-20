@@ -32,7 +32,8 @@ import timber.log.Timber;
 public class GiveAssetActivity extends AppCompatActivity implements
         CheckCallPermission.Response,
         GiveAssetController.GetDriverAndActiveBatchStepResponse,
-        GiveAssetLayoutComponents.Response {
+        GiveAssetLayoutComponents.Response,
+        GiveAssetController.StepFinishedResponse {
 
     private static final String TAG = "GiveAssetActivity";
 
@@ -73,7 +74,7 @@ public class GiveAssetActivity extends AppCompatActivity implements
     public void onResume() {
         super.onResume();
 
-        DrawerMenu.getInstance().setActivity(this, R.string.give_asset_step_activity_title);
+        DrawerMenu.getInstance().setActivityDontMonitorActiveBatch(this, R.string.give_asset_step_activity_title);
         //see if we have permission to make a call
         checkCallPermission.checkCallPermissionRequest(this, this);
 
@@ -159,7 +160,7 @@ public class GiveAssetActivity extends AppCompatActivity implements
     public void stepCompleteClicked(String milestoneWhenFinished){
         Timber.tag(TAG).d("stepCompleteClicked (%s)", activityGuid);
         layoutComponents.showWaitingAnimationAndBanner(this);
-        controller.stepFinished(milestoneWhenFinished);
+        controller.stepFinishedRequest(milestoneWhenFinished, this);
     }
 
     ///
@@ -183,6 +184,15 @@ public class GiveAssetActivity extends AppCompatActivity implements
 
     public void gotStepMismatch(Driver driver, OrderStepInterface.TaskType taskType){
         Timber.tag(TAG).d("gotStepMismatch (%s), taskType -> " + taskType.toString(), activityGuid);
+        ActivityNavigator.getInstance().gotoActiveBatchStep(this);
+    }
+
+    ////
+    //// StepFinsished interface
+    ////
+    public void stepFinished(){
+        Timber.tag(TAG).d("stepFinished");
+        //go to the next step
         ActivityNavigator.getInstance().gotoActiveBatchStep(this);
     }
 

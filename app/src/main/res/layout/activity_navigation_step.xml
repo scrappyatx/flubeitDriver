@@ -58,35 +58,31 @@
         mapbox:mapbox_cameraTargetLng="-97.757811"
         mapbox:mapbox_styleUrl="mapbox://styles/mapbox/traffic-day-v2"
         mapbox:mapbox_cameraZoom="13"
-        mapbox:mapbox_cameraBearing="34.33"
-        mapbox:mapbox_cameraTilt="50.25"
+        mapbox:mapbox_cameraBearing="0"
+        mapbox:mapbox_cameraTilt="0"
         mapbox:mapbox_cameraZoomMax="16"
         mapbox:mapbox_cameraZoomMin="6"
-        mapbox:mapbox_uiRotateGestures="false"/>
+
+        mapbox:mapbox_uiZoomGestures="true"
+        mapbox:mapbox_uiScrollGestures="true"
+        mapbox:mapbox_uiTiltGestures="true"
+        mapbox:mapbox_uiDoubleTapGestures="true"
+
+        mapbox:mapbox_uiZoomControls="true"
+        mapbox:mapbox_uiCompass="true"
+
+
+        />
 
     <include layout="@layout/navigation_detail_address"
         android:id="@+id/step_address_block"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
-        app:layout_constraintTop_toBottomOf="@+id/mapView"
-        app:layout_constraintBottom_toTopOf="@+id/user_has_arrived_button"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <Button
-        android:id="@+id/calculate_route_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-
-        android:visibility="gone"
-
         android:layout_marginBottom="4dp"
 
-        android:onClick="clickCalculateRouteButton"
-        android:text="@string/navigation_step_calculate_route_button_caption"
-
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mapView"
+        app:layout_constraintBottom_toTopOf="@+id/start_navigation_button"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
@@ -97,29 +93,33 @@
 
         android:layout_marginBottom="4dp"
 
-        android:visibility="gone"
+        android:visibility="visible"
 
         android:onClick="clickStartNavigationButton"
         android:text="@string/navigation_step_start_navigation_button_caption"
 
+        android:background="@drawable/step_detail_swipe_complete_button_state"
+        android:textColor="@color/colorButtonText"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <Button
-        android:id="@+id/user_has_arrived_button"
+    <include layout="@layout/step_detail_swipe_complete"
+        android:id="@+id/step_detail_swipe_complete"
 
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:elevation="8dp"
 
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="0dp"
         android:layout_marginBottom="4dp"
-
-        android:onClick="clickUserHasArrivedButton"
-        android:text="@string/navigation_step_user_has_arrived_button_caption"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent" tools:targetApi="lollipop" />
 
 
 

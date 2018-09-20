@@ -45,7 +45,8 @@ import timber.log.Timber;
 public class ReceiveAssetActivity extends AppCompatActivity implements
         CheckCallPermission.Response,
         ReceiveAssetController.GetDriverAndActiveBatchStepResponse,
-        ReceiveAssetLayoutComponents.Response {
+        ReceiveAssetLayoutComponents.Response,
+        ReceiveAssetController.StepFinishedResponse {
 
     private static final String TAG = "ReceiveAssetActivity";
 
@@ -86,7 +87,7 @@ public class ReceiveAssetActivity extends AppCompatActivity implements
     public void onResume() {
         super.onResume();
         //see if we have permission to make a call
-        DrawerMenu.getInstance().setActivity(this, R.string.receive_asset_step_activity_title);
+        DrawerMenu.getInstance().setActivityDontMonitorActiveBatch(this, R.string.receive_asset_step_activity_title);
         checkCallPermission.checkCallPermissionRequest(this, this);
 
         Timber.tag(TAG).d("onResume (%s)", activityGuid);
@@ -95,10 +96,9 @@ public class ReceiveAssetActivity extends AppCompatActivity implements
     @Override
     public void onPause() {
         Timber.tag(TAG).d("onPause (%s)", activityGuid);
-        super.onPause();
-
         DrawerMenu.getInstance().clearActivity();
 
+        super.onPause();
     }
 
     @Override
@@ -165,7 +165,7 @@ public class ReceiveAssetActivity extends AppCompatActivity implements
     public void stepCompleteClicked(String milestoneWhenFinished){
         Timber.tag(TAG).d("stepCompleteClicked");
         layoutComponents.showWaitingAnimationAndBanner(this);
-        controller.stepFinished(milestoneWhenFinished);
+        controller.stepFinishedRequest(milestoneWhenFinished, this);
     }
 
     ///
@@ -191,6 +191,15 @@ public class ReceiveAssetActivity extends AppCompatActivity implements
         Timber.tag(TAG).d("gotStepMismatch, taskType -> " + taskType.toString());
         ActivityNavigator.getInstance().gotoActiveBatchStep(this);
     }
+    ////
+    //// StepFinsished interface
+    ////
+    public void stepFinished(){
+        Timber.tag(TAG).d("stepFinished");
+        //go to the next step
+        ActivityNavigator.getInstance().gotoActiveBatchStep(this);
+    }
+
 
 
 }

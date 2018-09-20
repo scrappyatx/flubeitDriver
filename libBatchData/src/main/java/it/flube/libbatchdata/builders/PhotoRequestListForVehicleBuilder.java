@@ -85,6 +85,7 @@ public class PhotoRequestListForVehicleBuilder {
     }
 
     public static class Builder {
+        private TargetEnvironmentConstants.TargetEnvironment targetEnvironment;
         private String frontCornerDriverViewHintUrl;
         private String frontCornerPassengerViewHintUrl;
         private String frontViewHintUrl;
@@ -101,6 +102,7 @@ public class PhotoRequestListForVehicleBuilder {
         ///}
 
         public Builder(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
+            this.targetEnvironment = targetEnvironment;
             initializeStuff(targetEnvironment);
         }
 
@@ -150,6 +152,10 @@ public class PhotoRequestListForVehicleBuilder {
                     break;
             }
 
+
+        }
+
+        public Builder addFullSetPhotos(){
             addFrontCornerDriver(targetEnvironment);
             addFrontView(targetEnvironment);
             addFrontCornerPassenger(targetEnvironment);
@@ -160,6 +166,17 @@ public class PhotoRequestListForVehicleBuilder {
 
             addSideDriver(targetEnvironment);
             addSidePassenger(targetEnvironment);
+
+            return this;
+        }
+
+        public Builder addReducedSetPhotos(){
+            addFrontView(targetEnvironment);
+            addRearView(targetEnvironment);
+            addSideDriver(targetEnvironment);
+            addSidePassenger(targetEnvironment);
+
+            return this;
         }
 
         private void addFrontCornerDriver(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){

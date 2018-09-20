@@ -132,7 +132,7 @@ public class ReceiveAssetLayoutComponents implements
         if (orderStep != null) {
             stepTitle.setVisible();
             stepDueBy.setVisible();
-            transferType.setVisibility(View.VISIBLE);
+            transferType.setVisibility(View.INVISIBLE);
             itemsRow.setVisible();
             signatureRow.setVisible();
             contact.setVisible(hasPermissionToCall);

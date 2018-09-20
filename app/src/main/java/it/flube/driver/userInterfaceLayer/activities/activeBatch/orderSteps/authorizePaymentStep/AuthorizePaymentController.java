@@ -4,20 +4,14 @@
 
 package it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep;
 
-import java.util.concurrent.ExecutorService;
-
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.activeBatch.UseCaseFinishCurrentStepResponseHandler;
 import it.flube.driver.modelLayer.entities.driver.Driver;
-import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
-import it.flube.driver.useCaseLayer.activeBatch.UseCaseCompareActivtyLaunchDataToCurrentStep;
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseFinishCurrentStepRequest;
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseGetDriverAndActiveBatchCurrentStep;
 import it.flube.driver.useCaseLayer.authorizePaymentStep.UseCaseUpdatePaymentAuthorization;
 import it.flube.libbatchdata.entities.PaymentAuthorization;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderAuthorizePaymentStep;
-import it.flube.libbatchdata.entities.orderStep.ServiceOrderReceiveAssetStep;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import timber.log.Timber;
@@ -28,11 +22,13 @@ import timber.log.Timber;
  */
 public class AuthorizePaymentController implements
         UseCaseGetDriverAndActiveBatchCurrentStep.Response,
-        UseCaseUpdatePaymentAuthorization.Response {
+        UseCaseUpdatePaymentAuthorization.Response,
+        UseCaseFinishCurrentStepRequest.Response {
 
     private final String TAG = "AuthorizePaymentController";
 
     private GetDriverAndActiveBatchStepResponse response;
+    private StepFinishedResponse stepResponse;
 
     public AuthorizePaymentController() {
         Timber.tag(TAG).d("controller CREATED");
@@ -50,10 +46,13 @@ public class AuthorizePaymentController implements
         AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseUpdatePaymentAuthorization(AndroidDevice.getInstance(), paymentAuthorization, this));
     }
 
-    public void stepFinished(String milestoneEvent){
+    public void stepFinishedRequest(String milestoneEvent, StepFinishedResponse stepResponse){
         Timber.tag(TAG).d("finishing STEP");
-        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseFinishCurrentStepRequest(AndroidDevice.getInstance(), milestoneEvent, new UseCaseFinishCurrentStepResponseHandler()));
+        this.stepResponse = stepResponse;
+        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseFinishCurrentStepRequest(AndroidDevice.getInstance(), milestoneEvent, this));
     }
+
+
 
     public void close(){
         Timber.tag(TAG).d("close");
@@ -87,6 +86,12 @@ public class AuthorizePaymentController implements
         Timber.tag(TAG).d("useCaseUpdatePaymentAuthorizationComplete");
     }
 
+    /// UseCaseFinishStepRequest.Response
+    public void finishCurrentStepComplete(){
+        Timber.tag(TAG).d("finishCurrentStepComplete");
+        stepResponse.stepFinished();
+    }
+
     public interface GetDriverAndActiveBatchStepResponse {
         void gotDriverAndStep(Driver driver, BatchDetail batchDetail, ServiceOrder serviceOrder, ServiceOrderAuthorizePaymentStep orderStep);
 
@@ -96,5 +101,11 @@ public class AuthorizePaymentController implements
 
         void gotStepMismatch(Driver driver, OrderStepInterface.TaskType taskType);
     }
+
+    public interface StepFinishedResponse {
+        void stepFinished();
+    }
+
+
 
 }

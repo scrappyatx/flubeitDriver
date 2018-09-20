@@ -46,7 +46,7 @@
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textColorSecondary">@android:color/white</item>
         <item name="actionMenuTextColor">@android:color/white</item>
-        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:background">@color/colorPrimaryDark</item>
     </style>
 
     <!-- Overflow button -->
@@ -76,7 +76,7 @@
         <item name="android:textColor">@color/colorOfferRowHeader</item>
     </style>
 
-    <style name="OfferRowExpenses" parent="TextAppearance.AppCompat.Display1">
+    <style name="OfferRowExpenses" parent="TextAppearance.AppCompat.Headline">
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/colorOfferRowExpenses</item>
@@ -88,7 +88,7 @@
         <item name="android:textColor">@color/colorOfferRowExpenses</item>
     </style>
 
-    <style name="OfferRowTitle" parent="TextAppearance.AppCompat.Headline">
+    <style name="OfferRowTitle" parent="TextAppearance.AppCompat.Title">
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/colorOfferRowTitle</item>
@@ -133,13 +133,13 @@
     <style name="HomeSummaryStyleTitle" parent="TextAppearance.AppCompat.Headline">
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/colorHomeSummaryTitle</item>
+        <item name="android:textColor">@color/offblack</item>
     </style>
 
     <style name="HomeSummaryStyleDescription" parent="TextAppearance.AppCompat.Caption">
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textColor">@color/colorHomeSummaryDescription</item>
+        <item name="android:textColor">@color/ltgray</item>
     </style>
 
     <!-- DEMO OFFER styles -->
@@ -216,7 +216,7 @@
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textAlignment">center</item>
-        <item name="android:textColor">@color/colorBatchDetailDisplayTimingExpiry</item>
+        <item name="android:textColor">@color/expiryRed</item>
     </style>
 
     <style name="BatchDetailDisplayTimingDate" parent="TextAppearance.AppCompat.Title">

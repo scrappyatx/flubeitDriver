@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -72,6 +73,7 @@ public class PhotoRequestDetailLayoutComponents {
             Picasso.get()
                     .load(photoRequest.getPhotoHintUrl())
                     //.resize(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT)
+                    //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                     .fit()
                     .centerInside()
                     .into(hint);
@@ -89,12 +91,27 @@ public class PhotoRequestDetailLayoutComponents {
             String fileName = "file://" + photoRequest.getDeviceAbsoluteFileName();
             Timber.tag(TAG).d("filename -> " + fileName);
 
+            Timber.tag(TAG).d("decoding device file bitmap...");
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(photoRequest.getDeviceAbsoluteFileName(), options);
+
+            int imageHeight = options.outHeight;
+            int imageWidth = options.outWidth;
+            String imageType = options.outMimeType;
+
+            Timber.tag(TAG).d("   ...imageHeight -> " + imageHeight);
+            Timber.tag(TAG).d("   ...imageWidth  -> " + imageWidth);
+            Timber.tag(TAG).d("   ....imageType -> " + imageType);
+
+
             //// GLIDE TEST
             Picasso.get()
                     //.load(new File(photoRequest.getDeviceAbsoluteFileName()))
                     .load(fileName)
                     //.placeholder(R.drawable.placeholder_image)
                     //.resize(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                     .fit()
                     .centerInside()
                     .into(actual);
@@ -113,6 +130,7 @@ public class PhotoRequestDetailLayoutComponents {
                     .load(photoRequest.getNoAttemptImageUrl())
                     //.placeholder(R.drawable.no_attempts_placeholder)
                     //.resize(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT)
+                    //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                     .fit()
                     .centerInside()
                     .into(actual);
@@ -128,8 +146,9 @@ public class PhotoRequestDetailLayoutComponents {
 
             //// GLIDE TEST
             Picasso.get()
-                    .load(R.drawable.no_attempts_placeholder)
+                    .load(R.drawable.no_attempt_placeholder_really_small)
                    //.resize(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                     .fit()
                     .centerInside()
                    .into(actual);

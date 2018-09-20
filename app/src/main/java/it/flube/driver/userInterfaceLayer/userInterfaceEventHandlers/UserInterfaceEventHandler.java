@@ -26,24 +26,28 @@ public class UserInterfaceEventHandler {
 
 
     public UserInterfaceEventHandler(@NonNull AppCompatActivity activity){
-
         userInterfaceAuthChangeEventHandler = new UserInterfaceAuthChangeEventHandler(activity);
         userInterfaceClaimPublicOfferEventHandler = new UserInterfaceClaimPublicOfferEventHandler(activity);
         userInterfaceClaimPersonalOfferEventHandler = new UserInterfaceClaimPersonalOfferEventHandler(activity);
         userInterfaceClaimDemoOfferEventHandler = new UserInterfaceClaimDemoOfferEventHandler(activity);
-        userInterfaceActiveBatchEventHandler = new UserInterfaceActiveBatchEventHandler(activity);
         userInterfaceForfeitBatchEventHandler = new UserInterfaceForfeitBatchEventHandler(activity);
-
-
     }
+
+    public void startMonitoringActiveBatch(@NonNull AppCompatActivity activity){
+        userInterfaceActiveBatchEventHandler = new UserInterfaceActiveBatchEventHandler(activity);
+    }
+
 
     public void close(){
         userInterfaceAuthChangeEventHandler.close();
         userInterfaceClaimPublicOfferEventHandler.close();
         userInterfaceClaimPersonalOfferEventHandler.close();
         userInterfaceClaimDemoOfferEventHandler.close();
-        userInterfaceActiveBatchEventHandler.close();
         userInterfaceForfeitBatchEventHandler.close();
+
+        if (userInterfaceActiveBatchEventHandler != null){
+            userInterfaceActiveBatchEventHandler.close();
+        }
 
     }
 

@@ -111,6 +111,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            useProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             //signingConfig signingConfigs.release
             /// RELEASE variants will use a signingConfig that corresponds to their target firebase environment (for the SHA1)
@@ -124,6 +125,7 @@ android {
 
         debug {
             minifyEnabled false
+            useProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             applicationIdSuffix ".debug"
             debuggable true
@@ -245,13 +247,14 @@ dependencies {
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
-    implementation 'com.airbnb.android:lottie:2.0.0-rc2'
+    implementation 'com.airbnb.android:lottie:2.6.1'
     implementation 'com.tapadoo.android:alerter:3.0.0'
     implementation 'com.instabug.library:instabug:4.3.3'
     implementation 'com.wonderkiln:camerakit:0.13.1'
     implementation 'io.fotoapparat.fotoapparat:library:2.2.0'
     implementation 'com.github.gcacace:signature-pad:1.2.1'
     implementation 'com.karumi:dexter:5.0.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
 
     //implementation('com.mapbox.mapboxsdk:mapbox-android-sdk:5.1.1@aar') {
 
@@ -263,7 +266,7 @@ dependencies {
 
     //implementation 'com.google.maps.android:android-maps-utils:0.5+'
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
-    implementation 'com.mapzen.android:lost:3.0.4'
+    //implementation 'com.mapzen.android:lost:3.0.4'
 
     //implementation('com.mapbox.mapboxsdk:mapbox-android-sdk:5.2.1@aar') {
 
@@ -272,7 +275,7 @@ dependencies {
     //}
 
     //implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:6.0.1'
-    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:6.3.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:6.5.0'
 
     //implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:5.3.1'
 

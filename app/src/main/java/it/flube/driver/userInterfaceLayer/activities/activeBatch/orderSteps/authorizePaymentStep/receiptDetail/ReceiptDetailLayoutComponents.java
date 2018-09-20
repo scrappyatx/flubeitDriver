@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import it.flube.driver.R;
@@ -55,12 +56,14 @@ public class ReceiptDetailLayoutComponents implements
 
             Picasso.get()
                     .load(fileName)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                     .fit()
                     .centerInside()
                     .into(receiptImage);
         } else {
             Picasso.get()
-                    .load(R.drawable.no_attempts_placeholder)
+                    .load(R.drawable.no_attempt_placeholder_really_small)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                     .fit()
                     .centerInside()
                     .into(receiptImage);

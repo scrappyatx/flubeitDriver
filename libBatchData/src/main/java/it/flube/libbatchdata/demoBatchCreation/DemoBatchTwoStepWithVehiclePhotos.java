@@ -101,6 +101,7 @@ public class DemoBatchTwoStepWithVehiclePhotos implements DemoBatchInterface {
                                 .finishTime(BuilderUtilities.getNowDate(), 20)
                                 .milestoneWhenFinished("Photos Taken")
                                 .addVehiclePhotoRequests(new PhotoRequestListForVehicleBuilder.Builder(targetEnvironment)
+                                        .addReducedSetPhotos()
                                         .build())
                                 .build())
                         .build())

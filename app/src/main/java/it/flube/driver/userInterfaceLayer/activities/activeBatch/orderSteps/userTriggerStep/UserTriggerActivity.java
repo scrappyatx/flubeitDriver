@@ -38,7 +38,8 @@ import timber.log.Timber;
  */
 public class UserTriggerActivity extends AppCompatActivity implements
         UserTriggerLayoutComponents.Response,
-        UserTriggerController.GetDriverAndActiveBatchStepResponse {
+        UserTriggerController.GetDriverAndActiveBatchStepResponse,
+        UserTriggerController.StepFinishedResponse {
 
     private static final String TAG = "UserTriggerActivity";
 
@@ -65,7 +66,7 @@ public class UserTriggerActivity extends AppCompatActivity implements
     @Override
     public void onResume() {
         super.onResume();
-        DrawerMenu.getInstance().setActivity(this, R.string.user_trigger_step_activity_title);
+        DrawerMenu.getInstance().setActivityDontMonitorActiveBatch(this, R.string.user_trigger_step_activity_title);
         controller.getDriverAndActiveBatchStep(this);
         Timber.tag(TAG).d("onResume (%s)", activityGuid);
     }
@@ -130,7 +131,16 @@ public class UserTriggerActivity extends AppCompatActivity implements
     public void stepCompleteButtonSwiped(String milestoneEvent){
         Timber.tag(TAG).d("stepCompleteButtonSwiped (%s), milestone event -> " + milestoneEvent, activityGuid);
         layoutComponents.showStepCompletingAnimation(this);
-        controller.stepFinished(milestoneEvent);
+        controller.stepFinishedRequest(milestoneEvent, this);
+    }
+
+    ////
+    //// StepFinsished interface
+    ////
+    public void stepFinished(){
+        Timber.tag(TAG).d("stepFinished");
+        //go to the next step
+        ActivityNavigator.getInstance().gotoActiveBatchStep(this);
     }
 
 

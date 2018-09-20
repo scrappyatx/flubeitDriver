@@ -43,7 +43,8 @@ import timber.log.Timber;
 
 public class PhotoActivity extends AppCompatActivity implements
         PhotoController.GetDriverAndActiveBatchStepResponse,
-        PhotoActivityLayoutComponents.Response {
+        PhotoActivityLayoutComponents.Response,
+        PhotoController.StepFinishedResponse {
 
     private static final String TAG = "PhotoActivity";
 
@@ -77,7 +78,7 @@ public class PhotoActivity extends AppCompatActivity implements
     @Override
     public void onResume() {
         super.onResume();
-        DrawerMenu.getInstance().setActivity(this, R.string.photo_step_activity_title);
+        DrawerMenu.getInstance().setActivityDontMonitorActiveBatch(this, R.string.photo_step_activity_title);
         controller.getDriverAndActiveBatchStep(this);
         Timber.tag(TAG).d("onResume (%s)", activityGuid);
     }
@@ -109,7 +110,7 @@ public class PhotoActivity extends AppCompatActivity implements
     public void stepCompleteButtonClicked(ArrayList<PhotoRequest> photoList, String milestoneWhenFinished){
         Timber.tag(TAG).d("clicked step complete button (%s)", activityGuid);
         layoutComponents.showWaitingAnimationAndBanner(getString(R.string.photo_step_completed_banner_text));
-        controller.stepFinished(photoList, milestoneWhenFinished);
+        controller.stepFinishedRequest(photoList, milestoneWhenFinished, this);
     }
 
     //// photo list interface
@@ -139,6 +140,15 @@ public class PhotoActivity extends AppCompatActivity implements
 
     public void gotStepMismatch(Driver driver, OrderStepInterface.TaskType taskType){
         Timber.tag(TAG).d("gotStepMismatch (%s), taskType -> " + taskType.toString(), activityGuid);
+        ActivityNavigator.getInstance().gotoActiveBatchStep(this);
+    }
+
+    ////
+    //// StepFinsished interface
+    ////
+    public void stepFinished(){
+        Timber.tag(TAG).d("stepFinished");
+        //go to the next step
         ActivityNavigator.getInstance().gotoActiveBatchStep(this);
     }
 

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.joanzapata.iconify.widget.IconTextView;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import it.flube.driver.R;
@@ -99,6 +100,9 @@ public class ReceiveAssetItemLayoutComponents implements
 
         Picasso.get()
                 .load(assetTransfer.getAsset().getDisplayImageUrl())
+                //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                //.fit()
+                //.centerInside()
                 .into(assetIcon);
 
         title.setText(assetTransfer.getAsset().getDisplayTitle());

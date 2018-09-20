@@ -51,7 +51,7 @@ public class PersonalOffersActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_offers);
-        offersList = new OffersListLayoutComponent(this, getString(R.string.personal_offers_no_offers_available));
+        offersList = new OffersListLayoutComponent(this, getString(R.string.personal_offers_no_offers_available), this);
         controller = new PersonalOffersController();
 
         activityGuid = BuilderUtilities.generateGuid();
@@ -66,7 +66,7 @@ public class PersonalOffersActivity extends AppCompatActivity implements
         DrawerMenu.getInstance().setActivity(this, R.string.personal_offers_activity_title);
         EventBus.getDefault().register(this);
 
-        offersList.onResume(this, this);
+        offersList.onResume();
         offersList.setValues(this, AndroidDevice.getInstance().getOfferLists().getPersonalOffers());
         offersList.setVisible();
 
@@ -104,7 +104,7 @@ public class PersonalOffersActivity extends AppCompatActivity implements
         Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
 
         controller.close();
-        //offersList.close();
+        offersList.close();
         super.onDestroy();
 
     }

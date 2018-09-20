@@ -140,7 +140,7 @@ public class ActiveBatchForegroundService extends Service
 
         return new NotificationCompat.Builder(getApplicationContext(),null)
                 .setLargeIcon(getLargeIcon())
-                .setSmallIcon(R.drawable.app_logo_round)
+                .setSmallIcon(R.drawable.logo20)
                 .setContentTitle(getResources().getString(R.string.active_batch_service_notification_title))
                 .setSubText(notificationSubText)
                 .setContentText(notificationText)
@@ -214,7 +214,7 @@ public class ActiveBatchForegroundService extends Service
         // scale the icon to use as large icon in notification
         int height = (int) getResources().getDimension(android.R.dimen.notification_large_icon_height);
         int width = (int) getResources().getDimension(android.R.dimen.notification_large_icon_width);
-        return Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.app_logo_round), width, height, false);
+        return Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.logo50), width, height, false);
     }
 
 

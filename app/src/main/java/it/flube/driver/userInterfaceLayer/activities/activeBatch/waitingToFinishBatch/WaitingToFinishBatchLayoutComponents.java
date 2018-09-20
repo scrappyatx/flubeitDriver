@@ -104,10 +104,10 @@ public class WaitingToFinishBatchLayoutComponents implements
     }
 
     public void close(){
-        waitingAnimation = null;
-        finishedAnimation = null;
-        banner = null;
-        response = null;
+        //waitingAnimation = null;
+        //finishedAnimation = null;
+       // banner = null;
+       // response = null;
         Timber.tag(TAG).d("components closed");
     }
 

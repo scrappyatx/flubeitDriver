@@ -54,7 +54,7 @@ public class StepDetailTitleLayoutComponents {
     public void setVisible(){
         stepSequence.setVisibility(View.VISIBLE);
         stepTitle.setVisibility(View.VISIBLE);
-        stepDescription.setVisibility(View.VISIBLE);
+        stepDescription.setVisibility(View.GONE);
         stepWorkStage.setVisibility(View.VISIBLE);
         Timber.tag(TAG).d("...setVisible");
     }
@@ -62,7 +62,7 @@ public class StepDetailTitleLayoutComponents {
     public void setInvisible(){
         stepSequence.setVisibility(View.INVISIBLE);
         stepTitle.setVisibility(View.INVISIBLE);
-        stepDescription.setVisibility(View.INVISIBLE);
+        stepDescription.setVisibility(View.GONE);
         stepWorkStage.setVisibility(View.INVISIBLE);
         Timber.tag(TAG).d("...set INVISIBLE");
     }

@@ -5,19 +5,14 @@
 package it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.photoList;
 
 
-import android.support.v7.app.AppCompatActivity;
-
 import java.util.ArrayList;
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.activeBatch.UseCaseFinishCurrentStepResponseHandler;
 import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseFinishCurrentStepRequest;
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseGetDriverAndActiveBatchCurrentStep;
 import it.flube.driver.useCaseLayer.photoStep.UseCaseAddAllPhotosToUploadList;
-import it.flube.driver.userInterfaceLayer.activities.activeBatch.ActiveBatchUtilities;
 import it.flube.libbatchdata.entities.PhotoRequest;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
-import it.flube.libbatchdata.entities.orderStep.ServiceOrderAuthorizePaymentStep;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderPhotoStep;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
@@ -30,12 +25,14 @@ import timber.log.Timber;
 
 public class PhotoController implements
         UseCaseGetDriverAndActiveBatchCurrentStep.Response,
-        UseCaseAddAllPhotosToUploadList.Response {
+        UseCaseAddAllPhotosToUploadList.Response,
+        UseCaseFinishCurrentStepRequest.Response {
 
     private final String TAG = "PhotoController";
 
     private String milestoneEvent;
     private GetDriverAndActiveBatchStepResponse response;
+    private StepFinishedResponse stepResponse;
 
     public PhotoController() {
         Timber.tag(TAG).d("controller CREATED");
@@ -47,10 +44,16 @@ public class PhotoController implements
         AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseGetDriverAndActiveBatchCurrentStep(AndroidDevice.getInstance(), OrderStepInterface.TaskType.TAKE_PHOTOS, this));
     }
 
-    public void stepFinished(ArrayList<PhotoRequest> photoList, String milestoneEvent){
+    public void stepFinishedRequest(ArrayList<PhotoRequest> photoList, String milestoneEvent, StepFinishedResponse stepResponse){
         Timber.tag(TAG).d("stepFinished START...");
         this.milestoneEvent = milestoneEvent;
-        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseAddAllPhotosToUploadList(AndroidDevice.getInstance(), photoList, this));
+        this.stepResponse = stepResponse;
+
+       //// TODO think this is using a lot of memory for some reason? need to investigate. for now, just take it out
+       /// AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseAddAllPhotosToUploadList(AndroidDevice.getInstance(), photoList, this));
+
+        //TODO this will need to be removed once we get "adding all to upload list complete" working properly
+        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseFinishCurrentStepRequest(AndroidDevice.getInstance(), milestoneEvent, this));
     }
 
     ////
@@ -58,7 +61,7 @@ public class PhotoController implements
     ////
     public void addAllPhotosToUploadListComplete(){
         Timber.tag(TAG).d("   ...addAllPhotosToUploadListComplete");
-        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseFinishCurrentStepRequest(AndroidDevice.getInstance(), milestoneEvent, new UseCaseFinishCurrentStepResponseHandler()));
+        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseFinishCurrentStepRequest(AndroidDevice.getInstance(), milestoneEvent, this));
     }
 
     public void close(){
@@ -88,6 +91,12 @@ public class PhotoController implements
         response.gotStepMismatch(driver, foundTaskType);
     }
 
+    /// UseCaseFinishStepRequest.Response
+    public void finishCurrentStepComplete(){
+        Timber.tag(TAG).d("finishCurrentStepComplete");
+        stepResponse.stepFinished();
+    }
+
 
     public interface GetDriverAndActiveBatchStepResponse {
         void gotDriverAndStep(Driver driver, BatchDetail batchDetail, ServiceOrder serviceOrder, ServiceOrderPhotoStep orderStep);
@@ -97,6 +106,10 @@ public class PhotoController implements
         void gotDriverButNoStep(Driver driver);
 
         void gotStepMismatch(Driver driver, OrderStepInterface.TaskType taskType);
+    }
+
+    public interface StepFinishedResponse {
+        void stepFinished();
     }
 
 }

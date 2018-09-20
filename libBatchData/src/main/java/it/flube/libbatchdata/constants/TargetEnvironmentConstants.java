@@ -117,10 +117,10 @@ public class TargetEnvironmentConstants {
     ///
     ///  VehicleBuilder CONSTANTS
     ///
-    public static final String DEFAULT_DISPLAY_IMAGE_URL_DEVELOPMENT="https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/orderStepImages%2FassetTransferImages%2Fasset_vehicle.jpg?alt=media&token=8c4a88f0-9000-4a3e-a368-fdbcecbb14bf";
-    public static final String DEFAULT_DISPLAY_IMAGE_URL_STAGING="https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/orderStepImages%2FassetTransferImages%2Fasset_vehicle.jpg?alt=media&token=8c4a88f0-9000-4a3e-a368-fdbcecbb14bf";
-    public static final String DEFAULT_DISPLAY_IMAGE_URL_DEMO="https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/orderStepImages%2FassetTransferImages%2Fasset_vehicle.jpg?alt=media&token=8c4a88f0-9000-4a3e-a368-fdbcecbb14bf";
-    public static final String DEFAULT_DISPLAY_IMAGE_URL_PRODUCTION="https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/orderStepImages%2FassetTransferImages%2Fasset_vehicle.jpg?alt=media&token=8c4a88f0-9000-4a3e-a368-fdbcecbb14bf";
+    public static final String DEFAULT_DISPLAY_IMAGE_URL_DEVELOPMENT="https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/orderStepImages%2FassetTransferImages%2Fasset_vehicle_icon.png?alt=media&token=9439942b-e667-47e7-94a6-2b06f42e2d48";
+    public static final String DEFAULT_DISPLAY_IMAGE_URL_STAGING="https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/orderStepImages%2FassetTransferImages%2Fasset_vehicle_icon.png?alt=media&token=9439942b-e667-47e7-94a6-2b06f42e2d48";
+    public static final String DEFAULT_DISPLAY_IMAGE_URL_DEMO="https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/orderStepImages%2FassetTransferImages%2Fasset_vehicle_icon.png?alt=media&token=9439942b-e667-47e7-94a6-2b06f42e2d48";
+    public static final String DEFAULT_DISPLAY_IMAGE_URL_PRODUCTION="https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/orderStepImages%2FassetTransferImages%2Fasset_vehicle_icon.png?alt=media&token=9439942b-e667-47e7-94a6-2b06f42e2d48";
 
     ///
     /// ServiceProviderBuilder CONSTANTS

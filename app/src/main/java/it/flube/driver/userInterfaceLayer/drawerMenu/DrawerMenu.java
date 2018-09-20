@@ -139,6 +139,10 @@ public class DrawerMenu implements
         toolbar = new DrawerManager().createToolbar(activity, titleId);
         createDrawer(toolbar);
 
+        ///create alert event handler BEFORE registering on eventbus
+        alertEventHandler = new UserInterfaceEventHandler(activity);
+        alertEventHandler.startMonitoringActiveBatch(activity);
+
         if (!EventBus.getDefault().isRegistered(this)){
             EventBus.getDefault().register(this);
 
@@ -147,9 +151,31 @@ public class DrawerMenu implements
         }
 
 
-        alertEventHandler = new UserInterfaceEventHandler(activity);
+
         Timber.tag(TAG).d("setActivity (%s)", objectGuid);
     }
+
+    public void setActivityDontMonitorActiveBatch(@NonNull AppCompatActivity activity, int titleId){
+        //TODO this is just a hack.  really need to go into active batch update events and create SEPARATE events for server-generated chagnes & user generated chagnes.  only monitor server generated changes
+
+        this.activity = activity;
+
+        toolbar = new DrawerManager().createToolbar(activity, titleId);
+        createDrawer(toolbar);
+
+        ///create alert event handler BEFORE registering on eventbus
+        alertEventHandler = new UserInterfaceEventHandler(activity);
+
+        if (!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+
+        } else {
+            Timber.tag(TAG).w("...eventBus already registered, this shouldn't happen");
+        }
+
+        Timber.tag(TAG).d("setActivityDontMonitorActiveBatch (%s)", objectGuid);
+    }
+
 
     public void clearActivity(){
         close();

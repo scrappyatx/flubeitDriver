@@ -56,7 +56,7 @@ public class DemoOffersActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_demo_offers);
 
         offersLayout = new DemoOffersLayoutComponents(this);
-        offersList = new OffersListLayoutComponent(this, getString(R.string.demo_offers_no_offers_available));
+        offersList = new OffersListLayoutComponent(this, getString(R.string.demo_offers_no_offers_available), this);
         controller = new DemoOffersController();
 
         activityGuid = BuilderUtilities.generateGuid();
@@ -75,7 +75,7 @@ public class DemoOffersActivity extends AppCompatActivity implements
 
         offersLayout.setVisible();
 
-        offersList.onResume(this, this);
+        offersList.onResume();
         offersList.setValues(this, AndroidDevice.getInstance().getOfferLists().getDemoOffers());
         offersList.setVisible();
 
@@ -117,7 +117,7 @@ public class DemoOffersActivity extends AppCompatActivity implements
         Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
 
         controller.close();
-        //offersList.close();
+        offersList.close();
         super.onDestroy();
 
     }

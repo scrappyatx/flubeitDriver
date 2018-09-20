@@ -14,6 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import it.flube.driver.R;
+import it.flube.driver.userInterfaceLayer.layoutComponents.offers.OfferRowListBuilder;
 import it.flube.driver.userInterfaceLayer.layoutComponents.offers.OffersListAdapter;
 import it.flube.libbatchdata.entities.batch.Batch;
 import timber.log.Timber;
@@ -32,7 +33,7 @@ public class BatchListLayoutComponents {
 
     private Boolean hasBatches;
 
-    public BatchListLayoutComponents(AppCompatActivity activity, String noBatchesText){
+    public BatchListLayoutComponents(AppCompatActivity activity, String noBatchesText, BatchListAdapter.Response response){
         layout = (ConstraintLayout) activity.findViewById(R.id.batch_list);
 
         //create orderListView, and set it invisible
@@ -41,31 +42,32 @@ public class BatchListLayoutComponents {
         noBatches = (TextView) activity.findViewById(R.id.no_batches_text);
         noBatches.setText(noBatchesText);
 
+        //create the adapter for the recycler view
+        batchListAdapter = new BatchListAdapter(activity, response);
+        batchListView.setLayoutManager(new LinearLayoutManager(activity));
+        batchListView.setAdapter(batchListAdapter);
+
         hasBatches = false;
 
         setInvisible();
         Timber.tag(TAG).d("...components created");
     }
 
-    public void onResume(AppCompatActivity activity, BatchListAdapter.Response response){
-        //create the adapter for the recycler view
-        batchListAdapter = new BatchListAdapter(activity, response);
-        batchListView.setLayoutManager(new LinearLayoutManager(activity));
-        batchListView.setAdapter(batchListAdapter);
+    public void onResume(){
         Timber.tag(TAG).d("...onResume");
     }
 
     public void onPause(){
-        batchListAdapter.close();
+        Timber.tag(TAG).d("...onPause");
     }
 
-    public void setValues(ArrayList<Batch> batchList){
+    public void setValues(AppCompatActivity activity, ArrayList<Batch> batchList){
         Timber.tag(TAG).d("   setValues --> batch list has " + batchList.size() + " items");
         if (batchList.size() > 0) {
             //we have offers
             hasBatches = true;
             Timber.tag(TAG).d("   ...updating list!");
-            batchListAdapter.updateList(batchList);
+            batchListAdapter.updateList(OfferRowListBuilder.getOfferRowList(activity, batchList));
         } else {
             //we have no offers
             Timber.tag(TAG).d("   ...no offers");
@@ -97,6 +99,10 @@ public class BatchListLayoutComponents {
         batchListView.setVisibility(View.GONE);
         noBatches.setVisibility(View.GONE);
         Timber.tag(TAG).d("...set GONE");
+    }
+
+    public void close(){
+        batchListAdapter.close();
     }
 
 }

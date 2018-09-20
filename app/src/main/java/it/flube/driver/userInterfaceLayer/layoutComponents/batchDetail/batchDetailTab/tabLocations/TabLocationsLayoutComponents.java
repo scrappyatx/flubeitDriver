@@ -23,8 +23,26 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import java.util.ArrayList;
 
 import it.flube.driver.R;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.layoutComponents.MapboxOnChangeListener;
 import it.flube.libbatchdata.entities.RouteStop;
 import timber.log.Timber;
+
+import static com.mapbox.mapboxsdk.maps.MapView.DID_FAIL_LOADING_MAP;
+import static com.mapbox.mapboxsdk.maps.MapView.DID_FINISH_LOADING_MAP;
+import static com.mapbox.mapboxsdk.maps.MapView.DID_FINISH_LOADING_STYLE;
+import static com.mapbox.mapboxsdk.maps.MapView.DID_FINISH_RENDERING_FRAME;
+import static com.mapbox.mapboxsdk.maps.MapView.DID_FINISH_RENDERING_FRAME_FULLY_RENDERED;
+import static com.mapbox.mapboxsdk.maps.MapView.DID_FINISH_RENDERING_MAP;
+import static com.mapbox.mapboxsdk.maps.MapView.DID_FINISH_RENDERING_MAP_FULLY_RENDERED;
+import static com.mapbox.mapboxsdk.maps.MapView.REGION_DID_CHANGE;
+import static com.mapbox.mapboxsdk.maps.MapView.REGION_DID_CHANGE_ANIMATED;
+import static com.mapbox.mapboxsdk.maps.MapView.REGION_IS_CHANGING;
+import static com.mapbox.mapboxsdk.maps.MapView.REGION_WILL_CHANGE;
+import static com.mapbox.mapboxsdk.maps.MapView.REGION_WILL_CHANGE_ANIMATED;
+import static com.mapbox.mapboxsdk.maps.MapView.SOURCE_DID_CHANGE;
+import static com.mapbox.mapboxsdk.maps.MapView.WILL_START_LOADING_MAP;
+import static com.mapbox.mapboxsdk.maps.MapView.WILL_START_RENDERING_FRAME;
+import static com.mapbox.mapboxsdk.maps.MapView.WILL_START_RENDERING_MAP;
 
 /**
  * Created on 1/8/2018
@@ -50,6 +68,8 @@ public class TabLocationsLayoutComponents
         layout = (ConstraintLayout) activity.findViewById(R.id.batch_tab_locations_viewgroup);
 
         mapView = (MapView) activity.findViewById(R.id.mapView);
+        mapView.addOnMapChangedListener(new MapboxOnChangeListener());
+
         mapView.onCreate(savedInstanceState);
 
         setInvisible();
@@ -163,4 +183,5 @@ public class TabLocationsLayoutComponents
         mapView.onDestroy();
         Timber.tag(TAG).d("onDestroy");
     }
+
 }

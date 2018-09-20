@@ -24,14 +24,14 @@ import it.flube.libbatchdata.entities.asset.Vehicle;
  */
 public class DemoBatchUtilities {
 
-    private static final String CUSTOMER_USERNAME = "jqcustomer";
-    private static final String CUSTOMER_EMAIL = "jqcustomer@mailinator.com";
+    private static final String CUSTOMER_USERNAME = "Elizabeth Mathis";
+    private static final String CUSTOMER_EMAIL = "flubeitcustomer@gmail.com";
     private static final String CUSTOMER_ID = "f0f176f8-3be7-4e56-97dd-9f8fc8bcd0dd";
 
     private static final String CUSTOMER_CART_ITEM = "Full Synthetic Oil Change";
 
     private static final String CUSTOMER_CONTACT_PERSON_GUID = "8793eff8-b7f5-4360-98ea-5187fb2f0bef";
-    private static final String CUSTOMER_CONTACT_PERSON_NAME = "John Q. Customer";
+    private static final String CUSTOMER_CONTACT_PERSON_NAME = "Elizabeth Mathis";
     private static final String CUSTOMER_DIAL_PHONE_NUMBER = "5122979032"; // phone number of one of the dev phones
     private static final String CUSTOMER_DISPLAY_PHONE_NUMBER = "(512) XXX-XXXX";
     private static final Boolean CUSTOMER_CAN_SMS = true;
@@ -40,24 +40,24 @@ public class DemoBatchUtilities {
     private static final String CUSTOMER_CONTACT_PROXY_DIAL_PHONE_NUMBER = "5125732942";
     private static final String CUSTOMER_CONTACT_PROXY_DISPLAY_PHONE_NUMBER = "(512) 573-2942";
 
-    private static final String CUSTOMER_VEHICLE_MAKE = "Audi";
-    private static final String CUSTOMER_VEHICLE_MODEL = "A6";
+    private static final String CUSTOMER_VEHICLE_MAKE = "Toyota";
+    private static final String CUSTOMER_VEHICLE_MODEL = "Camry";
     private static final String CUSTOMER_VEHICLE_YEAR = "2011";
-    private static final String CUSTOMER_VEHICLE_COLOR = "black";
+    private static final String CUSTOMER_VEHICLE_COLOR = "Red";
     private static final String CUSTOMER_VEHICLE_LICENSE_STATE = "TX";
     private static final String CUSTOMER_VEHICLE_LICENSE_PLATE = "ATX 555";
     private static final String CUSTOMER_VEHICLE_ENGINE_DETAIL = "GS 1.6L MFI DOHC 4cyl";
 
-    private static final Double CUSTOMER_LATITUDE = 30.3007342;
-    private static final Double CUSTOMER_LONGITUDE = -97.7545089;
+    private static final Double CUSTOMER_LATITUDE = 30.230962;
+    private static final Double CUSTOMER_LONGITUDE = -97.802700;
 
-    private static final String CUSTOMER_ADDRESS_STREET = "1606 Mohle Drive";
+    private static final String CUSTOMER_ADDRESS_STREET = "4534 West Gate Blvd #100";
     private static final String CUSTOMER_ADDRESS_CITY = "Austin";
     private static final String CUSTOMER_ADDRESS_STATE = "TX";
-    private static final String CUSTOMER_ADDRESS_ZIP = "78703";
+    private static final String CUSTOMER_ADDRESS_ZIP = "78745";
 
     private static final String SERVICE_PROVIDER_CONTACT_PERSON_GUID = "b898b9d5-2921-42e6-8404-a21a584889b6";
-    private static final String SERVICE_PROVIDER_CONTACT_PERSON_NAME = "Billy Oilchange";
+    private static final String SERVICE_PROVIDER_CONTACT_PERSON_NAME = "Jiffy Lube";
     private static final String SERVICE_PROVIDER_DIAL_PHONE_NUMBER = "5122979032"; // phone number of one of the dev phones
     private static final String SERVICE_PROVIDER_DISPLAY_PHONE_NUMBER = "(512) XXX-XXXX";
     private static final Boolean SERVICE_PROVIDER_CAN_SMS = false;
@@ -66,14 +66,14 @@ public class DemoBatchUtilities {
     private static final String SERVICE_PROVIDER_PROXY_DIAL_PHONE_NUMBER = "5127483079";
     private static final String SERVICE_PROVIDER_PROXY_DISPLAY_PHONE_NUMBER = "(512) 748-3079";
 
-    private static final String SERVICE_PROVIDER_NAME = "Slippery Lester's Quick Lube";
-    private static final String SERVICE_PROVIDER_ADDRESS_STREET = "3700 North Lamar Blvd";
+    private static final String SERVICE_PROVIDER_NAME = "Jiffy Lube";
+    private static final String SERVICE_PROVIDER_ADDRESS_STREET = "1705 W Ben White Blvd";
     private static final String SERVICE_PROVIDER_ADDRESS_CITY = "Austin";
     private static final String SERVICE_PROVIDER_ADDRESS_STATE = "TX";
-    private static final String SERVICE_PROVIDER_ADDRESS_ZIP = "78705";
+    private static final String SERVICE_PROVIDER_ADDRESS_ZIP = "78704";
 
-    private static final Double SERVICE_PROVIDER_LATITUDE = 30.3046318;
-    private static final Double SERVICE_PROVIDER_LONGITUDE = -97.7438983;
+    private static final Double SERVICE_PROVIDER_LATITUDE = 30.228385;
+    private static final Double SERVICE_PROVIDER_LONGITUDE = -97.785958;
 
 
     public static Customer getCustomer(){
@@ -147,7 +147,7 @@ public class DemoBatchUtilities {
 
     public static ServiceProvider getServiceProvider(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
         return new ServiceProviderBuilder.Builder(targetEnvironment)
-                .iconURL(BatchIconGenerator.getRandomIconUrl(targetEnvironment))
+                .iconURL(BatchIconGenerator.getJiffyLubeIconUrl(targetEnvironment))
                 .name(SERVICE_PROVIDER_NAME)
                 .addressLocation(new AddressLocationBuilder.Builder()
                         .street(SERVICE_PROVIDER_ADDRESS_STREET)

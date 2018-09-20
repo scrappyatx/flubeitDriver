@@ -160,5 +160,28 @@ public class BatchIconGenerator {
         return urlList.get(random.nextInt(urlList.size()));
     }
 
+    public static String getJiffyLubeIconUrl(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
+        String jiffyLubeUrl;
+
+        switch (targetEnvironment){
+            case PRODUCTION:
+                jiffyLubeUrl = JIFFYLUBE_ICON_URL_PRODUCTION;
+                break;
+            case DEMO:
+                jiffyLubeUrl = JIFFYLUBE_ICON_URL_DEMO;
+                break;
+            case STAGING:
+                jiffyLubeUrl = JIFFYLUBE_ICON_URL_STAGING;
+                break;
+            case DEVELOPMENT:
+                jiffyLubeUrl = JIFFYLUBE_ICON_URL_DEVELOPMENT;
+                break;
+            default:
+                jiffyLubeUrl = JIFFYLUBE_ICON_URL_DEVELOPMENT;
+                break;
+        }
+        return jiffyLubeUrl;
+    }
+
 
 }

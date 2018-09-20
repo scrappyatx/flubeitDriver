@@ -95,6 +95,7 @@ public class DemoBatchSingleStepVehiclePhotos implements DemoBatchInterface {
                                 .finishTime(BuilderUtilities.getNowDate(), 20)
                                 .milestoneWhenFinished(MILESTONE_WHEN_FINISHED)
                                 .addVehiclePhotoRequests(new PhotoRequestListForVehicleBuilder.Builder(targetEnvironment)
+                                        .addReducedSetPhotos()
                                         .build())
                                 .build())
 

@@ -28,7 +28,7 @@ public class PhotoRequestBuilder {
     private static final String PHOTO_SUCCESS_ICON_TEXT = "{fa-check-circle}";
     private static final String FAILED_ATTEMPTS_ICON_TEXT = "{fa-question-circle}";
 
-    private static final Boolean DEFAULT_DO_DEVICE_IMAGE_DETECTION = true;
+    private static final Boolean DEFAULT_DO_DEVICE_IMAGE_DETECTION = false;
 
     private PhotoRequest photoRequest;
 

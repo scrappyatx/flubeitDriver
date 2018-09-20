@@ -53,7 +53,7 @@ public class PublicOffersActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_offers);
-        offersList = new OffersListLayoutComponent(this, getString(R.string.public_offers_no_offers_available));
+        offersList = new OffersListLayoutComponent(this, getString(R.string.public_offers_no_offers_available), this);
         controller = new PublicOffersController();
 
         activityGuid = BuilderUtilities.generateGuid();
@@ -69,7 +69,7 @@ public class PublicOffersActivity extends AppCompatActivity implements
 
         EventBus.getDefault().register(this);
 
-        offersList.onResume(this, this);
+        offersList.onResume();
         offersList.setValues(this, AndroidDevice.getInstance().getOfferLists().getPublicOffers());
         offersList.setVisible();
 
@@ -106,7 +106,7 @@ public class PublicOffersActivity extends AppCompatActivity implements
     public void onDestroy(){
         Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
         controller.close();
-        //offersList.close();
+        offersList.close();
         super.onDestroy();
 
     }

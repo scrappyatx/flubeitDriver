@@ -27,8 +27,8 @@
         mapbox:mapbox_cameraTargetLng="-97.757811"
         mapbox:mapbox_styleUrl="mapbox://styles/mapbox/streets-v9"
         mapbox:mapbox_cameraZoom="13"
-        mapbox:mapbox_cameraBearing="34.33"
-        mapbox:mapbox_cameraTilt="50.25"
+        mapbox:mapbox_cameraBearing="0"
+        mapbox:mapbox_cameraTilt="0"
         mapbox:mapbox_cameraZoomMax="16"
         mapbox:mapbox_cameraZoomMin="6"
 

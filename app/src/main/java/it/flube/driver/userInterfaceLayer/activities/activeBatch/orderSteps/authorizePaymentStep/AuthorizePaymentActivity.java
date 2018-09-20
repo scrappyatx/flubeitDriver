@@ -41,15 +41,14 @@ import timber.log.Timber;
  */
 public class AuthorizePaymentActivity extends AppCompatActivity implements
         AuthorizePaymentLayoutComponents.Response,
-        AuthorizePaymentController.GetDriverAndActiveBatchStepResponse {
+        AuthorizePaymentController.GetDriverAndActiveBatchStepResponse,
+        AuthorizePaymentController.StepFinishedResponse {
 
     private static final String TAG = "AuthorizePaymentActivity";
 
     private String activityGuid;
 
-    private ActivityNavigator navigator;
     private AuthorizePaymentController controller;
-    private DrawerMenu drawer;
     private AuthorizePaymentLayoutComponents layoutComponents;
 
     @Override
@@ -68,7 +67,7 @@ public class AuthorizePaymentActivity extends AppCompatActivity implements
     @Override
     public void onResume() {
         super.onResume();
-        DrawerMenu.getInstance().setActivity(this, R.string.authorize_payment_step_activity_title);
+        DrawerMenu.getInstance().setActivityDontMonitorActiveBatch(this, R.string.authorize_payment_step_activity_title);
         controller.getDriverAndActiveBatchStep(this);
 
         Timber.tag(TAG).d("onResume (%s)", activityGuid);
@@ -120,7 +119,7 @@ public class AuthorizePaymentActivity extends AppCompatActivity implements
     public void stepCompleteClicked(String milestoneWhenFinished){
         Timber.tag(TAG).d("stepCompleteClicked (%s)", activityGuid);
         layoutComponents.showWaitingAnimationAndBanner(this);
-        controller.stepFinished(milestoneWhenFinished);
+        controller.stepFinishedRequest(milestoneWhenFinished, this);
     }
 
     ///
@@ -144,6 +143,15 @@ public class AuthorizePaymentActivity extends AppCompatActivity implements
 
     public void gotStepMismatch(Driver driver, OrderStepInterface.TaskType taskType){
         Timber.tag(TAG).d("gotStepMismatch (%s), taskType -> " + taskType.toString(), activityGuid);
+        ActivityNavigator.getInstance().gotoActiveBatchStep(this);
+    }
+
+    ////
+    //// StepFinsished interface
+    ////
+    public void stepFinished(){
+        Timber.tag(TAG).d("stepFinished");
+        //go to the next step
         ActivityNavigator.getInstance().gotoActiveBatchStep(this);
     }
 

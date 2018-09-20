@@ -56,6 +56,8 @@ public class BatchDetailOrdersAndStopsLayoutComponents {
         //Picasso.with(activity)
         Picasso.get()
                 .load(UserInterfaceUtilities.getCountIconUrl(batchDetail.getServiceOrderCount()))
+                .fit()
+                .centerInside()
                 .into(orders_count_icon);
 
         if (batchDetail.getServiceOrderCount()==1) {
@@ -68,6 +70,8 @@ public class BatchDetailOrdersAndStopsLayoutComponents {
         //Picasso.with(activity)
         Picasso.get()
                 .load(UserInterfaceUtilities.getCountIconUrl(batchDetail.getRouteStopCount()))
+                .fit()
+                .centerInside()
                 .into(stops_count_icon);
 
         if (batchDetail.getRouteStopCount()==1){

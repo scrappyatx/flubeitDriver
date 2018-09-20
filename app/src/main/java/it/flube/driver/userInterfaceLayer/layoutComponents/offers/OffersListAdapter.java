@@ -9,6 +9,7 @@ package it.flube.driver.userInterfaceLayer.layoutComponents.offers;
  */
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -56,7 +57,7 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Of
     }
 
     @Override
-    public OfferViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public OfferViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View inflatedView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.offers_item_row_with_header, parent, false);
         Timber.tag(TAG).d("created new OfferViewHolder");
@@ -166,6 +167,7 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Of
             String displayDistance = offer.getDisplayDistance().getDistanceToTravel();
 
 
+
             offerDescription.setText(displayDescription);
             offerDate.setText(displayDate);
             offerTime.setText(displayTime);
@@ -174,11 +176,14 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Of
             extraEarnings.setText(displayExtraEarnings);
             distance.setText(displayDistance);
 
-            //Picasso.with(activityContext)
-            Picasso.get()
-                    .load(serviceProviderUrl)
-                    .into(serviceProviderImage);
+            //don't show service provider image
+            serviceProviderImage.setVisibility(View.INVISIBLE);
+            //Picasso.get()
+            //        .load(serviceProviderUrl)
+            //        .into(serviceProviderImage);
 
+
+            //// don't show distance image
             //Picasso.with(activityContext)
             //Picasso.get()
             //        .load(distanceUrl)

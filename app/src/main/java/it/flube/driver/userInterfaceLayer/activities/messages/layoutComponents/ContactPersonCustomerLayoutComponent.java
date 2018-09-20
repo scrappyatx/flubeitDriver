@@ -63,6 +63,8 @@ public class ContactPersonCustomerLayoutComponent implements
 
         Picasso.get()
                 .load(contactPerson.getDisplayIconUrl())
+                .fit()
+                .centerInside()
                 .into(displayIcon);
 
 

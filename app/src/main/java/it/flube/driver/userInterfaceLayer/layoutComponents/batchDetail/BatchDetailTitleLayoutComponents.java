@@ -74,6 +74,8 @@ public class BatchDetailTitleLayoutComponents {
         //Picasso.with(activity)
         Picasso.get()
                 .load(batchDetail.getIconUrl())
+                .fit()
+                .centerInside()
                 .into(batch_icon);
 
         batch_title.setText(batchDetail.getTitle());

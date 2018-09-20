@@ -13,6 +13,7 @@ import it.flube.driver.useCaseLayer.activeBatch.UseCaseFinishBatchRequest;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.interfaces.ActiveBatchManageInterface;
 import timber.log.Timber;
 
 /**
@@ -22,8 +23,8 @@ import timber.log.Timber;
 public class WaitingToFinishBatchActivity extends AppCompatActivity implements
         WaitingToFinishBatchLayoutComponents.FinishedAnimationResponse,
         WaitingToFinishUtilities.Response,
-        UseCaseDoAllTheThingsBeforeBatchCanBeFinished.Response,
-        UseCaseFinishBatchRequest.Response {
+        WaitingToFinishBatchController.ReadyToFinishResponse,
+        WaitingToFinishBatchController.FinishBatchResponse {
 
 
     private static final String TAG = "WaitingToFinishBatchActivity";
@@ -53,7 +54,7 @@ public class WaitingToFinishBatchActivity extends AppCompatActivity implements
     @Override
     public void onResume() {
         Timber.tag(TAG).d("onResume (%s)", activityGuid);
-        DrawerMenu.getInstance().setActivity(this, R.string.batch_waiting_to_finish_activity_title);
+        DrawerMenu.getInstance().setActivityDontMonitorActiveBatch(this, R.string.batch_waiting_to_finish_activity_title);
         controller.getActivityLaunchData(this, this);
         super.onResume();
 
@@ -109,8 +110,8 @@ public class WaitingToFinishBatchActivity extends AppCompatActivity implements
     ////
     ////    UseCaseDoAllTheThingsBeforeBatchCanBeFinished.Response
     ////
-    public void batchIsReadyToFinish(String batchGuid){
-        Timber.tag(TAG).d("batchFinished (%s)", activityGuid);
+    public void batchReadyToFinish(){
+        Timber.tag(TAG).d("batchReadyToFinish (%s)", activityGuid);
         //show complete animation
         components.showFinishedAnimation(this, this);
 
@@ -127,11 +128,11 @@ public class WaitingToFinishBatchActivity extends AppCompatActivity implements
     }
 
     ///
-    ///  UseCaseFinishBatchRequest.Response
+    ///  WaitingToFinishController.batch finish response
     ///
-    public void finishBatchComplete(){
-        Timber.tag(TAG).d("finishBatchComplete (%s)", activityGuid);
-        ActivityNavigator.getInstance().gotoActivityHome(this);
+    public void batchFinished(ActiveBatchManageInterface.ActorType actorType, String batchGuid){
+        Timber.tag(TAG).d("batchFinished (%s)", activityGuid);
+        ActivityNavigator.getInstance().gotoActivityHomeAndShowBatchFinishedMessage(this, actorType, batchGuid);
     }
 
 }

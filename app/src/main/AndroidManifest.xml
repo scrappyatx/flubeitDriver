@@ -47,65 +47,64 @@
 
         <activity android:name=".userInterfaceLayer.activities.home.HomeActivity" />
 
-        <activity android:name=".userInterfaceLayer.activities.messages.MessagesActivity" />
-        <activity android:name=".userInterfaceLayer.activities.offers.publicOffers.PublicOffersActivity" />
-        <activity android:name=".userInterfaceLayer.activities.offers.personalOffers.PersonalOffersActivity" />
+        <activity android:name=".userInterfaceLayer.activities.messages.MessagesActivity" android:launchMode="singleTask" />
+        <activity android:name=".userInterfaceLayer.activities.offers.publicOffers.PublicOffersActivity"  />
+        <activity android:name=".userInterfaceLayer.activities.offers.personalOffers.PersonalOffersActivity"  />
 
-        <activity android:name=".userInterfaceLayer.activities.offers.demoOffers.DemoOffersActivity" />
-        <activity android:name=".userInterfaceLayer.activities.offers.demoOffers.demoOfferMake.DemoOffersMakeActivity" />
+        <activity android:name=".userInterfaceLayer.activities.offers.demoOffers.DemoOffersActivity"  />
+        <activity android:name=".userInterfaceLayer.activities.offers.demoOffers.demoOfferMake.DemoOffersMakeActivity" android:launchMode="singleTask" />
 
-        <activity android:name=".userInterfaceLayer.activities.scheduledBatches.scheduledBatchList.ScheduledBatchesActivity" />
+        <activity android:name=".userInterfaceLayer.activities.scheduledBatches.scheduledBatchList.ScheduledBatchesActivity"  />
 
-        <activity android:name=".userInterfaceLayer.activities.account.AccountActivity" />
-        <activity android:name=".userInterfaceLayer.activities.earnings.productionEarnings.EarningsActivity" />
-        <activity android:name=".userInterfaceLayer.activities.help.HelpActivity" />
+        <activity android:name=".userInterfaceLayer.activities.account.AccountActivity" android:launchMode="singleTask" />
+        <activity android:name=".userInterfaceLayer.activities.earnings.productionEarnings.EarningsActivity" android:launchMode="singleTask" />
+        <activity android:name=".userInterfaceLayer.activities.help.HelpActivity" android:launchMode="singleTask" />
 
 
-        <activity android:name=".userInterfaceLayer.activities.offers.claimOffer.OfferClaimActivity" />
+        <activity android:name=".userInterfaceLayer.activities.offers.claimOffer.OfferClaimActivity"  />
         <activity android:name=".userInterfaceLayer.activities.scheduledBatches.manageBatch.BatchManageActivity"
             android:noHistory="true" />
         <activity android:name=".userInterfaceLayer.activities.scheduledBatches.BatchMapActivity"
             android:noHistory="true" />
 
         <!-- NAVIGATION ACTIVITY -->
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.NavigationActivity"
-            android:noHistory="true" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.NavigationActivity"  />
 
         <!-- PHOTO ACTIVITIES ACTIVITIES -->
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.photoList.PhotoActivity" />
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.photoDetail.PhotoDetailActivity" />
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.photoTake.PhotoTakeActivity" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.photoList.PhotoActivity" android:launchMode="singleTask" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.photoDetail.PhotoDetailActivity" android:launchMode="singleTask" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.photoTake.PhotoTakeActivity" android:launchMode="singleTask" />
 
         <!-- RECEIVE ASSET ACTIVITIES -->
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep.ReceiveAssetActivity" />
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep.getSignature.ReceiveAssetGetSignatureActivity" />
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep.itemList.ReceiveAssetItemListActivity" />
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep.itemDetail.ReceiveAssetItemActivity" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep.ReceiveAssetActivity" android:launchMode="singleTask" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep.getSignature.ReceiveAssetGetSignatureActivity" android:launchMode="singleTask" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep.itemList.ReceiveAssetItemListActivity" android:launchMode="singleTask" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep.itemDetail.ReceiveAssetItemActivity" android:launchMode="singleTask" />
 
         <!-- GIVE ASSET ACTIVITIES -->
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.giveAssetStep.GiveAssetActivity" />
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.giveAssetStep.itemDetail.GiveAssetItemActivity" />
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.giveAssetStep.getSignature.GiveAssetGetSignatureActivity" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.giveAssetStep.GiveAssetActivity" android:launchMode="singleTask" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.giveAssetStep.itemDetail.GiveAssetItemActivity" android:launchMode="singleTask" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.giveAssetStep.getSignature.GiveAssetGetSignatureActivity" android:launchMode="singleTask" />
 
 
         <!-- USER TRIGGER ACTIVITIES -->
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.userTriggerStep.UserTriggerActivity" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.userTriggerStep.UserTriggerActivity" android:launchMode="singleTask" />
 
         <!-- AUTHORIZE PAYMENT ACTIVITIES -->
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.AuthorizePaymentActivity" />
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.receiptDetail.ReceiptDetailActivity" />
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.receiptPhotoTake.ReceiptPhotoTakeActivity" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.AuthorizePaymentActivity" android:launchMode="singleTask" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.receiptDetail.ReceiptDetailActivity" android:launchMode="singleTask" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.receiptPhotoTake.ReceiptPhotoTakeActivity" android:launchMode="singleTask" />
 
         <!-- WAITING TO FINISH BATCH ACTIVITIES -->
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.waitingToFinishBatch.WaitingToFinishBatchActivity" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.waitingToFinishBatch.WaitingToFinishBatchActivity" android:launchMode="singleTask" />
 
         <!-- BATCH & ORDER ITINERARY ACTIVITIES -->
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.batchItinerary.BatchItineraryActivity" />
-        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderItinerary.OrderItineraryActivity" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.batchItinerary.BatchItineraryActivity" android:launchMode="singleTask" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderItinerary.OrderItineraryActivity" android:launchMode="singleTask" />
 
         <!-- TEST EARNINGS & TEST OFFERS ACTIVITIES -->
-        <activity android:name=".userInterfaceLayer.activities.earnings.testEarnings.TestEarningsActivity" />
-        <activity android:name=".userInterfaceLayer.activities.offers.testOffers.TestOffersMakeActivity" />
+        <activity android:name=".userInterfaceLayer.activities.earnings.testEarnings.TestEarningsActivity" android:launchMode="singleTask" />
+        <activity android:name=".userInterfaceLayer.activities.offers.testOffers.TestOffersMakeActivity" android:launchMode="singleTask" />
 
         <service
             android:name=".deviceLayer.deviceServices.activeBatchForegroundService.ActiveBatchForegroundService"

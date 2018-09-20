@@ -42,7 +42,7 @@ public class ScheduledBatchesActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_scheduled_batches);
-        batchList = new BatchListLayoutComponents(this, getString(R.string.scheduled_batches_no_batches));
+        batchList = new BatchListLayoutComponents(this, getString(R.string.scheduled_batches_no_batches), this);
         controller = new ScheduledBatchesController();
 
         activityGuid = BuilderUtilities.generateGuid();
@@ -56,8 +56,8 @@ public class ScheduledBatchesActivity extends AppCompatActivity implements
         DrawerMenu.getInstance().setActivity(this, R.string.scheduled_batches_activity_title);
         EventBus.getDefault().register(this);
 
-        batchList.onResume(this, this);
-        batchList.setValues(AndroidDevice.getInstance().getOfferLists().getScheduledBatches());
+        batchList.onResume();
+        batchList.setValues(this, AndroidDevice.getInstance().getOfferLists().getScheduledBatches());
         batchList.setVisible();
 
         controller.checkIfForfeitAlertNeedsToBeShown(this);
@@ -95,7 +95,7 @@ public class ScheduledBatchesActivity extends AppCompatActivity implements
         Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
 
         controller.close();
-        //batchList.close();
+        batchList.close();
         super.onDestroy();
 
     }
@@ -108,7 +108,7 @@ public class ScheduledBatchesActivity extends AppCompatActivity implements
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ScheduledBatchListUpdateEvent event) {
         Timber.tag(TAG).d("received ScheduledBatchListUpdateEvent");
-        batchList.setValues(AndroidDevice.getInstance().getOfferLists().getScheduledBatches());
+        batchList.setValues(this, AndroidDevice.getInstance().getOfferLists().getScheduledBatches());
         batchList.setVisible();
     }
 

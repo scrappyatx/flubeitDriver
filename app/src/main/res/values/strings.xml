@@ -357,8 +357,8 @@
     <string name="asset_item_have_item_button_caption">{fa-check-circle}</string>
     <string name="asset_item_dont_have_item_button_caption">{fa-ban}</string>
     <string name="asset_item_finished_button_caption">finished</string>
-    <string name="asset_item_have_item_text">I have this item</string>
-    <string name="asset_item_dont_have_item_text">I don\'t have this item</string>
+    <string name="asset_item_have_item_text">This item is ready to transfer</string>
+    <string name="asset_item_dont_have_item_text">This item is not ready to transfer</string>
 
     <!-- Strings related to signature request -->
     <string name="signature_request_row_title">Signature</string>

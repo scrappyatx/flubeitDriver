@@ -16,14 +16,15 @@
     <color name="colorButtonText">@color/white</color>
     <color name="colorErrorText">@color/lightred</color>
     <color name="colorBackground">@color/translucentLightBlue</color>
+    <color name="colorBackgroundLight">@color/verytranslucentLightBlue</color>
     <color name="colorControlActivated">@color/yellow</color>
 
     <color name="colorTextPrimaryLight">@color/white</color>
-    <color name="colorTextPrimaryDark">@color/colorPrimaryDark</color>
-    <color name="colorTextPrimary">@color/colorPrimary</color>
+    <color name="colorTextPrimaryDark">@color/offblack</color>
+    <color name="colorTextPrimary">@color/ltgray</color>
 
-    <color name="colorOrderActive">@color/colorPrimary</color>
-    <color name="colorOrderNotActive">@color/translucentMedBlue</color>
+    <color name="colorOrderActive">@color/offblack</color>
+    <color name="colorOrderNotActive">@color/ltgray</color>
     <color name="colorOrderComplete">@color/alerterGREEN</color>
 
 
@@ -34,21 +35,21 @@
     <color name="colorNavMenuScheduledBatchHighlight">@color/colorPrimary</color>
 
     <color name="colorOfferRowExpenses">@color/colorTextPrimaryLight</color>
-    <color name="colorOfferRowTitle">@color/colorTextPrimaryDark</color>
-    <color name="colorOfferRowDate">@color/colorTextPrimary</color>
-    <color name="colorOfferRowTime">@color/colorTextPrimary</color>
-    <color name="colorOfferRowDuration">@color/colorTextPrimary</color>
-    <color name="colorOfferRowDistanceLabel">@color/colorTextPrimary</color>
-    <color name="colorOfferRowDistance">@color/colorTextPrimary</color>
-    <color name="colorOfferRowHeader">@color/colorTextPrimaryDark</color>
+    <color name="colorOfferRowTitle">@color/offblack</color>
+    <color name="colorOfferRowDate">@color/ltgray</color>
+    <color name="colorOfferRowTime">@color/ltgray</color>
+    <color name="colorOfferRowDuration">@color/ltgray</color>
+    <color name="colorOfferRowDistanceLabel">@color/ltgray</color>
+    <color name="colorOfferRowDistance">@color/ltgray</color>
+    <color name="colorOfferRowHeader">@color/offblack</color>
 
 
 
-    <color name="colorStepTitle">@color/colorPrimaryDark</color>
-    <color name="colorStepDescription">@color/colorPrimary</color>
-    <color name="colorStepCompleteBy">@color/colorPrimary</color>
+    <color name="colorStepTitle">@color/offblack</color>
+    <color name="colorStepDescription">@color/ltgray</color>
+    <color name="colorStepCompleteBy">@color/ltgray</color>
 
-    <color name="colorStepStageNotStarted">@color/colorPrimaryDark</color>
+    <color name="colorStepStageNotStarted">@color/offblack</color>
     <color name="colorStepStageActive">@color/alerterGREEN</color>
     <color name="colorStepStageComplete">@color/alerterGREEN</color>
 
@@ -59,77 +60,77 @@
     <color name="colorStepDetailSwipeCompleteBanner">@color/translucentGreenCC</color>
     <color name="colorStepDetailCompleteBanner">@color/translucentGreenCC</color>
 
-    <color name="colorHomeSummaryTitle">@color/translucentBlackCC</color>
-    <color name="colorHomeSummaryDescription">@color/translucentBlackAA</color>
+    <color name="colorHomeSummaryTitle">@color/offblack</color>
+    <color name="colorHomeSummaryDescription">@color/colorTextPrimary</color>
 
     <color name="colorOfferClaimRequestBanner">@color/translucentGreenCC</color>
 
-    <color name="colorBatchDetailTitle">@color/colorPrimaryDark</color>
-    <color name="colorBatchDetailBatchType">@color/translucentOrangeFF</color>
+    <color name="colorBatchDetailTitle">@color/offblack</color>
+    <color name="colorBatchDetailBatchType">@color/ltgray</color>
     <color name="colorBatchDetailDescription">@color/translucentBlackAA</color>
     <color name="colorBatchDetailForfeitBanner">@color/translucentOrangeCC</color>
     <color name="colorBatchDetailStartBanner">@color/translucentGreenCC</color>
     <color name="colorBatchWaitingToFinishBanner">@color/translucentGreenCC</color>
     <color name="colorBatchDetailTabText">@color/colorTextPrimaryLight</color>
     <color name="colorBatchDetailTabSelected">@color/colorPrimaryDark</color>
-    <color name="colorBatchDetailTabNotSelected">@color/colorPrimaryLight</color>
+    <color name="colorBatchDetailTabNotSelected">@color/colorPrimary</color>
 
-    <color name="colorBatchDetailDisplayTimingExpiry">@color/translucentOrangeFF</color>
-    <color name="colorBatchDetailDisplayTimingDate">@color/colorPrimaryDark</color>
-    <color name="colorBatchDetailDisplayTimingTime">@color/colorPrimary</color>
-    <color name="colorBatchDetailDisplayTimingDuration">@color/colorPrimary</color>
+    <color name="colorBatchDetailDisplayTimingExpiry">@color/expiryRed</color>
+    <color name="colorBatchDetailDisplayTimingDate">@color/offblack</color>
+    <color name="colorBatchDetailDisplayTimingTime">@color/ltgray</color>
+    <color name="colorBatchDetailDisplayTimingDuration">@color/ltgray</color>
 
     <color name="colorBatchDetailDisplayEarningsPayment">@color/colorTextPrimaryLight</color>
 
-    <color name="colorBatchDetailDisplayDistance">@color/colorPrimary</color>
+    <color name="colorBatchDetailDisplayDistance">@color/offblack</color>
 
     <color name="colorBatchDetailOrdersSequence">@color/colorTextPrimaryLight</color>
-    <color name="colorBatchDetailOrdersTitle">@color/colorPrimaryDark</color>
-    <color name="colorBatchDetailOrdersTiming">@color/colorPrimary</color>
+    <color name="colorBatchDetailOrdersTitle">@color/offblack</color>
+    <color name="colorBatchDetailOrdersTiming">@color/ltgray</color>
 
 
-    <color name="colorNavStepDestinationCaption">@color/colorTextPrimaryDark</color>
-    <color name="colorNavStepDestinationAddress">@color/translucentBlackCC</color>
+    <color name="colorNavStepDestinationCaption">@color/offblack</color>
+    <color name="colorNavStepDestinationAddress">@color/ltgray</color>
 
     <color name="colorUserTriggerStepChronometer">@color/colorTextPrimaryDark</color>
     <color name="colorUserTriggerDisplayMessage">@color/colorTextPrimary</color>
 
     <color name="colorPhotoRequestRowSequence">@color/colorTextPrimaryLight</color>
-    <color name="colorPhotoRequestRowTitle">@color/translucentBlackCC</color>
-    <color name="colorPhotoRequestRowDescription">@color/translucentBlackAA</color>
-    <color name="colorPhotoRequestRowStatus">@color/translucentBlackAA</color>
+    <color name="colorPhotoRequestRowTitle">@color/offblack</color>
+    <color name="colorPhotoRequestRowDescription">@color/ltgray</color>
+    <color name="colorPhotoRequestRowStatus">@color/ltgray</color>
     <color name="colorPhotoRequestImageBackground">@color/lightgrey</color>
 
-    <color name="colorCommunicationsDisplayName">@color/colorPrimaryDark</color>
-    <color name="colorCommunicationsDisplayPhoneNumber">@color/colorPrimary</color>
-    <color name="colorCommunicationsTab">@color/colorPrimaryDark</color>
+    <color name="colorCommunicationsDisplayName">@color/offblack</color>
+    <color name="colorCommunicationsDisplayPhoneNumber">@color/ltgray</color>
+    <color name="colorCommunicationsTab">@color/offblack</color>
     <color name="colorCommunicationsBanner">@color/translucentGreenCC</color>
-    <color name="colorCommunicationNoPermissionText">@color/colorPrimaryDark</color>
+    <color name="colorCommunicationNoPermissionText">@color/offblack</color>
 
-    <color name="colorAssetTransferType">@color/colorPrimaryDark</color>
-    <color name="colorAssetTransferRowTitle">@color/colorPrimaryDark</color>
-    <color name="colorAssetTransferRowStatus">@color/colorPrimaryDark</color>
-    <color name="colorAssetTransferNoPermissionText">@color/colorPrimaryDark</color>
+    <color name="colorAssetTransferType">@color/offblack</color>
+    <color name="colorAssetTransferRowTitle">@color/offblack</color>
+    <color name="colorAssetTransferRowStatus">@color/offblack</color>
+    <color name="colorAssetTransferNoPermissionText">@color/offblack</color>
 
-    <color name="colorSignatureRequestRowTitle">@color/colorPrimaryDark</color>
-    <color name="colorSignatureRequestRowStatus">@color/colorPrimaryDark</color>
-    <color name="colorSignatureInstructions">@color/colorPrimaryDark</color>
+    <color name="colorSignatureRequestRowTitle">@color/offblack</color>
+    <color name="colorSignatureRequestRowStatus">@color/offblack</color>
+    <color name="colorSignatureInstructions">@color/offblack</color>
     <color name="colorSignatureRequestSavingBanner">@color/translucentGreenCC</color>
 
-    <color name="colorAssetItemTitle">@color/colorPrimaryDark</color>
-    <color name="colorAssetItemDescription">@color/colorPrimary</color>
-    <color name="colorAssetItemIdentifier">@color/colorPrimary</color>
+    <color name="colorAssetItemTitle">@color/offblack</color>
+    <color name="colorAssetItemDescription">@color/ltgray</color>
+    <color name="colorAssetItemIdentifier">@color/ltgray</color>
 
     <color name="colorAssetTransferStatusCompletedSuccess">@color/alerterGREEN</color>
     <color name="colorAssetTransferStatusCompletedFailed">@color/yellow</color>
     <color name="colorAssetTransferStatusNotAttempted">@color/alerterRED</color>
 
-    <color name="colorAuthorizePaymentType">@color/colorPrimaryDark</color>
+    <color name="colorAuthorizePaymentType">@color/offblack</color>
     <color name="colorAuthorizePaymentDisplayAccount">@color/colorPrimary</color>
-    <color name="colorMaxPaymentDisplay">@color/colorPrimaryDark</color>
-    <color name="colorVerificationPaymentStatus">@color/colorPrimaryDark</color>
-    <color name="colorReceiptRequestTitle">@color/colorPrimaryDark</color>
-    <color name="colorReceiptRequestStatus">@color/colorPrimaryDark</color>
+    <color name="colorMaxPaymentDisplay">@color/offblack</color>
+    <color name="colorVerificationPaymentStatus">@color/offblack</color>
+    <color name="colorReceiptRequestTitle">@color/offblack</color>
+    <color name="colorReceiptRequestStatus">@color/offblack</color>
 
 
     <!-- COLOR PALETTE (all colors here should be in the form #TTRRGGBB)
@@ -140,14 +141,17 @@
      -->
 
     <color name="grey">#FF788FA0</color>
-    <color name="lightblue">#FF77CEE7</color>
+    <color name="lightblue">#FF76CEE6</color>
     <color name="mediumblue">#FF009CC8</color>
     <color name="darkblue">#FF005989</color>
-    <color name="yellow">#FFFACF00</color>
+    <color name="yellow">#FFF9CF01</color>
     <color name="lightred">#FFEF5350</color>
     <color name="white">#FFFFFFFF</color>
     <color name="offwhite">#FFF3F3F3</color>
     <color name="black">#FF000000</color>
+    <color name="offblack">#DD000000</color>
+    <color name="ltgray">#89000000</color>
+    <color name="verytranslucentLightBlue">#2277CEE7</color>
     <color name="translucentLightBlue">#8877CEE7</color>
     <color name="translucentMedBlue">#88009CC8</color>
     <color name="translucentDarkBlue">#88005989</color>
@@ -159,6 +163,7 @@
     <color name="translucentOrangeCC">#CCFF8000</color>
     <color name="translucentGreenCC">#CC009900</color>
     <color name="translucentOrangeFF">#FFFF8000</color>
+    <color name="expiryRed">#FF8A2708</color>
     <color name="alerterRED">#FFCC0000</color>
     <color name="alerterGREEN">#FF009900</color>
     <color name="alerterORANGE">#FFFF8000</color>

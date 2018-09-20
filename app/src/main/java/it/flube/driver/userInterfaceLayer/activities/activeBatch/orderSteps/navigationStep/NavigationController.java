@@ -13,17 +13,17 @@ import android.support.v7.app.AppCompatActivity;
 //import com.mapbox.services.android.navigation.v5.navigation.MapboxNavigation;
 //import com.mapbox.services.android.telemetry.location.LocationEngine;
 
-import com.mapbox.services.api.directions.v5.models.DirectionsRoute;
-
-import java.util.concurrent.ExecutorService;
-
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.dataLayer.useCaseResponseHandlers.activeBatch.UseCaseFinishCurrentStepResponseHandler;
+import it.flube.driver.modelLayer.entities.driver.Driver;
+import it.flube.driver.useCaseLayer.activeBatch.UseCaseGetDriverAndActiveBatchCurrentStep;
 import it.flube.libbatchdata.entities.LatLonLocation;
+import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderNavigationStep;
-import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseFinishCurrentStepRequest;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderUserTriggerStep;
+import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
+import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import timber.log.Timber;
 
 /**
@@ -31,65 +31,38 @@ import timber.log.Timber;
  * Project : Driver
  */
 
-public class NavigationController  {
+public class NavigationController implements
+        UseCaseGetDriverAndActiveBatchCurrentStep.Response,
+        UseCaseFinishCurrentStepRequest.Response {
 
     private final String TAG = "NavigationController";
-    private ExecutorService useCaseExecutor;
-    private MobileDeviceInterface device;
 
-    //private MapboxNavigation navigation;
-    //private LocationEngine locationEngine;
-
-    private CalculateRoute calculateRoute;
-    private String accessToken;
+    private StepFinishedResponse stepResponse;
+    private GetDriverAndActiveBatchStepResponse response;
+    private ManualConfirmResponse confirmResponse;
 
 
     @SuppressWarnings( {"MissingPermission"})
-    public NavigationController(AppCompatActivity activity, String accessToken) {
-        Timber.tag(TAG).d("controller CREATED");
-
-        device = AndroidDevice.getInstance();
-        useCaseExecutor = device.getUseCaseEngine().getUseCaseExecutor();
-
-        //this.accessToken = accessToken;
-
-        //locationEngine = LostLocationEngine.getLocationEngine(activity);
-        //locationEngine.setPriority(LocationEnginePriority.HIGH_ACCURACY);
-        //locationEngine.activate();
-
-        //navigation = new MapboxNavigation(activity,accessToken);
-        //navigation.setLocationEngine(locationEngine);
+    public NavigationController(AppCompatActivity activity) {
+        Timber.tag(TAG).d("created");
     }
 
-    public void startNavigation(AppCompatActivity activity, LatLonLocation origin, LatLonLocation destination){
+    public void getDriverAndActiveBatchStep(GetDriverAndActiveBatchStepResponse response){
+        Timber.tag(TAG).d("getDriverAndActiveBatchStep...");
+        this.response = response;
+        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseGetDriverAndActiveBatchCurrentStep(AndroidDevice.getInstance(), OrderStepInterface.TaskType.NAVIGATION, this));
 
-        // Pass in your Amazon Polly pool id for speech synthesis using Amazon Polly
-        // Set to null to use the default Android speech synthesizer
-        //String awsPool = null;
-
-        //Boolean simulateRoute = true;
-
-
-        //calculateRoute = new CalculateRoute();
-
-        //Position originPosition = Position.fromCoordinates(origin.getLongitude(), origin.getLatitude());
-        //Position destinationPosition = Position.fromCoordinates(destination.getLongitude(), destination.getLatitude());
-
-        //Point originPoint = Point.fromLngLat(origin.getLongitude(), origin.getLatitude());
-        //Point destinationPoint = Point.fromLngLat(destination.getLongitude(), destination.getLatitude());
-
-
-        //Timber.tag(TAG).d("requesting route...");
-        //calculateRoute.getRouteRequest(accessToken, origin, destination, this);
-        //NavigationLauncher.startNavigation(activity, originPoint, destinationPoint, awsPool, simulateRoute);
     }
 
-    public void finishStep(String milestoneEvent){
+    public void stepFinishedRequest(String milestoneEvent, StepFinishedResponse stepResponse){
         Timber.tag(TAG).d("finishing STEP");
-        useCaseExecutor.execute(new UseCaseFinishCurrentStepRequest(device, milestoneEvent, new UseCaseFinishCurrentStepResponseHandler()));
+        this.stepResponse = stepResponse;
+        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseFinishCurrentStepRequest(AndroidDevice.getInstance(), milestoneEvent, this));
     }
 
-    public void manuallyConfirmArrival(Context activityContext, ServiceOrderNavigationStep step) {
+    public void manuallyConfirmArrival(Context activityContext, ServiceOrderNavigationStep step, ManualConfirmResponse confirmResponse) {
+        this.confirmResponse = confirmResponse;
+
         AlertDialog.Builder builder = new AlertDialog.Builder(activityContext);
 
         builder.setMessage("I have arrived at the destination, but GPS is not working");
@@ -99,34 +72,20 @@ public class NavigationController  {
 
         AlertDialog dialog = builder.create();
         dialog.show();
-
     }
 
 
     public void close(){
-        useCaseExecutor = null;
-        device = null;
-        //navigation.endNavigation();
-        //navigation.onDestroy();
-
-        Timber.tag(TAG).d("controller CLOSED");
+        Timber.tag(TAG).d("close");
     }
 
-    //public void getRouteSuccess(DirectionsRoute directionsRoute) {
-    //    Timber.tag(TAG).d("...got a route!");
 
-        // Pass in your Amazon Polly pool id for speech synthesis using Amazon Polly
-        // Set to null to use the default Android speech synthesizer
-       // String awsPoolId = null;
+    /// UseCaseFinishStepRequest.Response
+    public void finishCurrentStepComplete(){
+        Timber.tag(TAG).d("finishCurrentStepComplete");
+        stepResponse.stepFinished();
+    }
 
-        //boolean simulateRoute = true;
-
-
-    //}
-
-    //public void getRouteFailure() {
-    //    Timber.tag(TAG).d("... couldn't get a route");
-    //}
 
     private class YesClick implements DialogInterface.OnClickListener {
         private ServiceOrderNavigationStep step;
@@ -138,7 +97,7 @@ public class NavigationController  {
         public void onClick(DialogInterface dialog, int id) {
             // User clicked OK button
             Timber.tag(TAG).d("user clicked yes");
-            finishStep(step.getMilestoneWhenFinished());
+            confirmResponse.manualConfirmYes();
         }
     }
 
@@ -146,7 +105,52 @@ public class NavigationController  {
         public void onClick(DialogInterface dialog, int id) {
             // User clicked No button
             Timber.tag(TAG).d("user clicked no");
+            confirmResponse.manualConfirmNo();
         }
+    }
+
+    ///
+    /// UseCaseGetDriverAndActiveBatchCurrentStep response interface
+    ///
+    public void useCaseGetDriverAndActiveBatchCurrentStepSuccess(Driver driver, BatchDetail batchDetail, ServiceOrder serviceOrder, OrderStepInterface orderStep){
+        Timber.tag(TAG).d("useCaseGetDriverAndActiveBatchCurrentStepSuccess");
+        response.gotDriverAndStep(driver, batchDetail, serviceOrder, (ServiceOrderNavigationStep) orderStep);
+    }
+
+    public void useCaseGetDriverAndActiveBatchCurrentStepFailureDriverOnly(Driver driver){
+        Timber.tag(TAG).d("useCaseGetDriverAndActiveBatchCurrentStepFailureDriverOnly");
+        response.gotDriverButNoStep(driver);
+    }
+
+    public void useCaseGetDriverAndActiveBatchCurrentStepFailureNoDriverNoStep(){
+        Timber.tag(TAG).d("useCaseGetDriverAndActiveBatchCurrentStepFailureNoDriverNoStep");
+        response.gotNoDriver();
+    }
+
+    public void useCaseGetDriverAndActiveBatchCurrentStepFailureStepMismatch(Driver driver, OrderStepInterface.TaskType foundTaskType){
+        Timber.tag(TAG).d("useCaseGetDriverAndActiveBatchCurrentStepFailureStepMismatch");
+        response.gotStepMismatch(driver, foundTaskType);
+    }
+
+    public interface GetDriverAndActiveBatchStepResponse {
+        void gotDriverAndStep(Driver driver, BatchDetail batchDetail, ServiceOrder serviceOrder, ServiceOrderNavigationStep orderStep);
+
+        void gotNoDriver();
+
+        void gotDriverButNoStep(Driver driver);
+
+        void gotStepMismatch(Driver driver, OrderStepInterface.TaskType taskType);
+    }
+
+    public interface ManualConfirmResponse{
+        void manualConfirmYes();
+
+        void manualConfirmNo();
+    }
+
+
+    public interface StepFinishedResponse {
+        void stepFinished();
     }
 
 }

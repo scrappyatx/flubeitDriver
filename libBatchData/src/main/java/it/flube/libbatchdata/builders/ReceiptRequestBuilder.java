@@ -17,7 +17,7 @@ public class ReceiptRequestBuilder {
     private static final String NOT_ATTEMPTED_ICON_TEXT = "{fa-ban}";
     private static final String COMPLETED_SUCCESS_ICON_TEXT = "{fa-check-circle}";
     private static final String COMPLETED_FAILED_ICON_TEXT = "{fa-question-circle}";
-    private static final Boolean DEFAULT_DO_TEXT_RECOGNITION = true;
+    private static final Boolean DEFAULT_DO_TEXT_RECOGNITION = false;
 
     private ReceiptRequest receiptRequest;
 

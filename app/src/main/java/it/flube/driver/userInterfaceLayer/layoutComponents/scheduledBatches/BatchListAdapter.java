@@ -5,6 +5,8 @@
 package it.flube.driver.userInterfaceLayer.layoutComponents.scheduledBatches;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,7 @@ import java.util.Locale;
 
 import it.flube.driver.R;
 import it.flube.driver.userInterfaceLayer.layoutComponents.LayoutComponentUtilities;
+import it.flube.driver.userInterfaceLayer.layoutComponents.offers.OfferRowHolder;
 import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.entities.batch.Batch;
 import timber.log.Timber;
@@ -34,16 +37,16 @@ public class BatchListAdapter extends RecyclerView.Adapter<BatchListAdapter.Batc
     private static final String TAG = "BatchListAdapter";
 
     private Context activityContext;
-    private ArrayList<Batch> batchList;
+    private ArrayList<OfferRowHolder> batchList;
     private BatchListAdapter.Response response;
 
     public BatchListAdapter(Context activityContext, BatchListAdapter.Response response ) {
         this.activityContext = activityContext;
         this.response = response;
-        batchList = new ArrayList<Batch>();
+        batchList = new ArrayList<OfferRowHolder>();
     }
 
-    public void updateList(ArrayList<Batch> batchList) {
+    public void updateList(ArrayList<OfferRowHolder> batchList) {
         this.batchList.clear();
         this.batchList.addAll(batchList);
         notifyDataSetChanged();
@@ -51,18 +54,18 @@ public class BatchListAdapter extends RecyclerView.Adapter<BatchListAdapter.Batc
     }
 
     @Override
-    public BatchViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BatchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View inflatedView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.batches_view_item_row_new, parent, false);
+                .inflate(R.layout.batches_item_row_with_header, parent, false);
         Timber.tag(TAG).d("created new BatchViewHolder");
         return new BatchViewHolder(inflatedView, response);
     }
 
     @Override
     public void onBindViewHolder(BatchListAdapter.BatchViewHolder holder, int position) {
-        Batch batch = batchList.get(position);
+        OfferRowHolder batch = batchList.get(position);
         holder.bindBatch(batch);
-        Timber.tag(TAG).d("Binding batch " + batch.getGuid() + " to position " + Integer.toString(position));
+        Timber.tag(TAG).d("Binding batch " + batch.getBatch().getGuid() + " to position " + Integer.toString(position));
     }
 
     @Override
@@ -88,6 +91,10 @@ public class BatchListAdapter extends RecyclerView.Adapter<BatchListAdapter.Batc
         private TextView distance;
 
         private Batch batch;
+        private OfferRowHolder offerRowHolder;
+
+        private ConstraintLayout offerHeader;
+        private TextView displayHeader;
 
         private Response response;
 
@@ -106,6 +113,9 @@ public class BatchListAdapter extends RecyclerView.Adapter<BatchListAdapter.Batc
             distance = (TextView) v.findViewById(R.id.item_distance);
             //distanceImage = (ImageView) v.findViewById(R.id.distance_image);
 
+            offerHeader = (ConstraintLayout) v.findViewById(R.id.offers_item_row_header);
+            displayHeader = (TextView) v.findViewById(R.id.date_header);
+
             v.setOnClickListener(this);
         }
 
@@ -116,8 +126,20 @@ public class BatchListAdapter extends RecyclerView.Adapter<BatchListAdapter.Batc
             Timber.tag(TAG).d("batch selected --> " + batch.getGuid());
         }
 
-        public void bindBatch(Batch batch) {
-            this.batch = batch;
+        public void bindBatch(OfferRowHolder offerRowHolder) {
+            this.batch = offerRowHolder.getBatch();
+            this.offerRowHolder = offerRowHolder;
+
+            //set display header
+            displayHeader.setText(offerRowHolder.getDisplayHeader());
+
+            if (offerRowHolder.getShowHeader()){
+                offerHeader.setVisibility(View.VISIBLE);
+                displayHeader.setVisibility(View.VISIBLE);
+            } else {
+                offerHeader.setVisibility(View.GONE);
+                displayHeader.setVisibility(View.GONE);
+            }
 
             String displayDescription = batch.getTitle();
 
@@ -147,10 +169,11 @@ public class BatchListAdapter extends RecyclerView.Adapter<BatchListAdapter.Batc
             extraEarnings.setText(displayExtraEarnings);
             distance.setText(displayDistance);
 
-            //Picasso.with(activityContext)
-            Picasso.get()
-                    .load(serviceProviderUrl)
-                    .into(serviceProviderImage);
+            //don't display service provider image
+            serviceProviderImage.setVisibility(View.INVISIBLE);
+            //Picasso.get()
+            //        .load(serviceProviderUrl)
+            //        .into(serviceProviderImage);
 
             //Picasso.with(activityContext)
             //Picasso.get()
