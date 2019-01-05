@@ -12,10 +12,10 @@ import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import it.flube.libbatchdata.entities.ImageLabel;
 import it.flube.libbatchdata.entities.PhotoRequest;
 
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_NO_ATTEMPT_IMAGE_URL_DEMO;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_NO_ATTEMPT_IMAGE_URL_DEVELOPMENT;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_NO_ATTEMPT_IMAGE_URL_PRODUCTION;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_NO_ATTEMPT_IMAGE_URL_STAGING;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsDemo.DEFAULT_NO_ATTEMPT_IMAGE_URL_DEMO;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsDevelopment.DEFAULT_NO_ATTEMPT_IMAGE_URL_DEVELOPMENT;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsProduction.DEFAULT_NO_ATTEMPT_IMAGE_URL_PRODUCTION;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsStaging.DEFAULT_NO_ATTEMPT_IMAGE_URL_STAGING;
 import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_TARGET_ENVIRONMENT;
 
 /**

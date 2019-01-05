@@ -23,7 +23,7 @@ import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import it.flube.libbatchdata.builders.BuilderUtilities;
 import timber.log.Timber;
 
-import static junit.framework.Assert.assertNotNull;
+
 
 
 /**

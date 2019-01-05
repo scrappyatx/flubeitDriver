@@ -1,35 +1,35 @@
 {
   "project_info": {
-    "project_number": "570374155299",
-    "firebase_url": "https://flubeitdriver-prod.firebaseio.com",
-    "project_id": "flubeitdriver-prod",
-    "storage_bucket": "flubeitdriver-prod.appspot.com"
+    "project_number": "266938982659",
+    "firebase_url": "https://flubeitdriver.firebaseio.com",
+    "project_id": "flubeitdriver",
+    "storage_bucket": "flubeitdriver.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:570374155299:android:7428437e876fcde3",
+        "mobilesdk_app_id": "1:266938982659:android:991ebebd7d046378",
         "android_client_info": {
-          "package_name": "it.flube.driver"
+          "package_name": "it.flube.driver.develop"
         }
       },
       "oauth_client": [
         {
-          "client_id": "570374155299-hu4ju6bkuvva493n5ktei1gmtuvcrjhf.apps.googleusercontent.com",
+          "client_id": "266938982659-5qtqmlohgrd5o5ksbhhq277h3pgmh4f0.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "it.flube.driver",
-            "certificate_hash": "9c0a1aa8710fba48a92ab6be307595d9193080b0"
+            "package_name": "it.flube.driver.develop",
+            "certificate_hash": "ff7d7d105a86aa21a760db7a33bf9fb6c8673add"
           }
         },
         {
-          "client_id": "570374155299-42ncoaqljh9neje99dttc2tbabdvr88o.apps.googleusercontent.com",
+          "client_id": "266938982659-pk5dd4qcgc6276j506rp9cghu8r1m4pj.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDfKylg_yxVAK4pxTQRtK-4Ntpz5gTu5gA"
+          "current_key": "AIzaSyAPEut5Wyg6jX3aOzb2I2m1dRJL2imbyT0"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "570374155299-42ncoaqljh9neje99dttc2tbabdvr88o.apps.googleusercontent.com",
+              "client_id": "266938982659-pk5dd4qcgc6276j506rp9cghu8r1m4pj.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
@@ -52,28 +52,28 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:570374155299:android:94692adc97c74345",
+        "mobilesdk_app_id": "1:266938982659:android:49fd4c7181090707",
         "android_client_info": {
-          "package_name": "it.flube.driver.debug"
+          "package_name": "it.flube.driver.develop.debug"
         }
       },
       "oauth_client": [
         {
-          "client_id": "570374155299-0m90s2dlcuapkpaq2m7dt56aok6gpcdt.apps.googleusercontent.com",
+          "client_id": "266938982659-5t5k5q6ptm705o23ocgg5ajafvfkjt7g.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "it.flube.driver.debug",
+            "package_name": "it.flube.driver.develop.debug",
             "certificate_hash": "3f9db7ee05bd1fc060f5c23955a444a299b7d5c0"
           }
         },
         {
-          "client_id": "570374155299-42ncoaqljh9neje99dttc2tbabdvr88o.apps.googleusercontent.com",
+          "client_id": "266938982659-pk5dd4qcgc6276j506rp9cghu8r1m4pj.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDfKylg_yxVAK4pxTQRtK-4Ntpz5gTu5gA"
+          "current_key": "AIzaSyAPEut5Wyg6jX3aOzb2I2m1dRJL2imbyT0"
         }
       ],
       "services": {
@@ -84,7 +84,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "570374155299-42ncoaqljh9neje99dttc2tbabdvr88o.apps.googleusercontent.com",
+              "client_id": "266938982659-pk5dd4qcgc6276j506rp9cghu8r1m4pj.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

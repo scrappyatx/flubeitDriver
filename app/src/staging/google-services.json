@@ -1,299 +1,35 @@
 {
   "project_info": {
-    "project_number": "266938982659",
-    "firebase_url": "https://flubeitdriver.firebaseio.com",
-    "project_id": "flubeitdriver",
-    "storage_bucket": "flubeitdriver.appspot.com"
+    "project_number": "579892910557",
+    "firebase_url": "https://flubeitdriver-staging.firebaseio.com",
+    "project_id": "flubeitdriver-staging",
+    "storage_bucket": "flubeitdriver-staging.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:266938982659:android:7428437e876fcde3",
-        "android_client_info": {
-          "package_name": "it.flube.driver"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "266938982659-7uofj2kf7g51jec1np9srmrd1nte3jca.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "it.flube.driver",
-            "certificate_hash": "3a289c30778d4c20e02eef4c293407319b84c588"
-          }
-        },
-        {
-          "client_id": "266938982659-pk5dd4qcgc6276j506rp9cghu8r1m4pj.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAPEut5Wyg6jX3aOzb2I2m1dRJL2imbyT0"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "266938982659-pk5dd4qcgc6276j506rp9cghu8r1m4pj.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:266938982659:android:94692adc97c74345",
-        "android_client_info": {
-          "package_name": "it.flube.driver.debug"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "266938982659-lvmtvtaf48jsrpui1nsiuknsu2teo09p.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "it.flube.driver.debug",
-            "certificate_hash": "1140022c22d1d8834d0c116ee7728777b075879a"
-          }
-        },
-        {
-          "client_id": "266938982659-pk5dd4qcgc6276j506rp9cghu8r1m4pj.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAPEut5Wyg6jX3aOzb2I2m1dRJL2imbyT0"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "266938982659-pk5dd4qcgc6276j506rp9cghu8r1m4pj.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:266938982659:android:6b25cecc44763807",
-        "android_client_info": {
-          "package_name": "it.flube.driver.demo"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "266938982659-bn6ft8vl6j882dsrd8ut9ifon8suenv8.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "it.flube.driver.demo",
-            "certificate_hash": "3a289c30778d4c20e02eef4c293407319b84c588"
-          }
-        },
-        {
-          "client_id": "266938982659-pk5dd4qcgc6276j506rp9cghu8r1m4pj.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAPEut5Wyg6jX3aOzb2I2m1dRJL2imbyT0"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "266938982659-pk5dd4qcgc6276j506rp9cghu8r1m4pj.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:266938982659:android:17f4529c99e4bda9",
-        "android_client_info": {
-          "package_name": "it.flube.driver.demo.debug"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "266938982659-6t42brqul7edfrcalmirn5aou3cantku.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "it.flube.driver.demo.debug",
-            "certificate_hash": "1140022c22d1d8834d0c116ee7728777b075879a"
-          }
-        },
-        {
-          "client_id": "266938982659-pk5dd4qcgc6276j506rp9cghu8r1m4pj.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAPEut5Wyg6jX3aOzb2I2m1dRJL2imbyT0"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "266938982659-pk5dd4qcgc6276j506rp9cghu8r1m4pj.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:266938982659:android:3dc9958bf524690e",
-        "android_client_info": {
-          "package_name": "it.flube.driver.dev"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "266938982659-ld6s5l4rva0rn0ob9r9jt07pl00r39ad.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "it.flube.driver.dev",
-            "certificate_hash": "3a289c30778d4c20e02eef4c293407319b84c588"
-          }
-        },
-        {
-          "client_id": "266938982659-pk5dd4qcgc6276j506rp9cghu8r1m4pj.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAPEut5Wyg6jX3aOzb2I2m1dRJL2imbyT0"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "266938982659-pk5dd4qcgc6276j506rp9cghu8r1m4pj.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:266938982659:android:69b94e52fe4d5198",
-        "android_client_info": {
-          "package_name": "it.flube.driver.dev.debug"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "266938982659-sbf758u03m2ba8u0hveae4m305kds1rg.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "it.flube.driver.dev.debug",
-            "certificate_hash": "1140022c22d1d8834d0c116ee7728777b075879a"
-          }
-        },
-        {
-          "client_id": "266938982659-pk5dd4qcgc6276j506rp9cghu8r1m4pj.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAPEut5Wyg6jX3aOzb2I2m1dRJL2imbyT0"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "266938982659-pk5dd4qcgc6276j506rp9cghu8r1m4pj.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:266938982659:android:c7cedf223955f64c",
+        "mobilesdk_app_id": "1:579892910557:android:c7cedf223955f64c",
         "android_client_info": {
           "package_name": "it.flube.driver.staging"
         }
       },
       "oauth_client": [
         {
-          "client_id": "266938982659-jgoj0h33r3qcmoai8cfoe9p1m5ga0ed4.apps.googleusercontent.com",
+          "client_id": "579892910557-co9geeagtrttvtrs4jjl9htae6pqv7p6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "it.flube.driver.staging",
-            "certificate_hash": "3a289c30778d4c20e02eef4c293407319b84c588"
+            "certificate_hash": "8e1582e0cf3d5529d995f9f5292c08573ddd22f9"
           }
         },
         {
-          "client_id": "266938982659-pk5dd4qcgc6276j506rp9cghu8r1m4pj.apps.googleusercontent.com",
+          "client_id": "579892910557-8d42pdn0lndb3886dftriqb03rjmevmt.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAPEut5Wyg6jX3aOzb2I2m1dRJL2imbyT0"
+          "current_key": "AIzaSyAU2provpiSrv60Bdbs2xtxHaHuHQbtOWE"
         }
       ],
       "services": {
@@ -304,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "266938982659-pk5dd4qcgc6276j506rp9cghu8r1m4pj.apps.googleusercontent.com",
+              "client_id": "579892910557-8d42pdn0lndb3886dftriqb03rjmevmt.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
@@ -316,28 +52,28 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:266938982659:android:54bf5172480adfd6",
+        "mobilesdk_app_id": "1:579892910557:android:54bf5172480adfd6",
         "android_client_info": {
           "package_name": "it.flube.driver.staging.debug"
         }
       },
       "oauth_client": [
         {
-          "client_id": "266938982659-6ncn9v113ggvu6mnsk40dlstam7uu7v7.apps.googleusercontent.com",
+          "client_id": "579892910557-p1u10iiu5pktlmj6oi1tac19qq1a1tih.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "it.flube.driver.staging.debug",
-            "certificate_hash": "1140022c22d1d8834d0c116ee7728777b075879a"
+            "certificate_hash": "3f9db7ee05bd1fc060f5c23955a444a299b7d5c0"
           }
         },
         {
-          "client_id": "266938982659-pk5dd4qcgc6276j506rp9cghu8r1m4pj.apps.googleusercontent.com",
+          "client_id": "579892910557-8d42pdn0lndb3886dftriqb03rjmevmt.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAPEut5Wyg6jX3aOzb2I2m1dRJL2imbyT0"
+          "current_key": "AIzaSyAU2provpiSrv60Bdbs2xtxHaHuHQbtOWE"
         }
       ],
       "services": {
@@ -348,7 +84,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "266938982659-pk5dd4qcgc6276j506rp9cghu8r1m4pj.apps.googleusercontent.com",
+              "client_id": "579892910557-8d42pdn0lndb3886dftriqb03rjmevmt.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -28,6 +28,8 @@ import static com.google.firebase.remoteconfig.FirebaseRemoteConfig.LAST_FETCH_S
 import static com.google.firebase.remoteconfig.FirebaseRemoteConfig.LAST_FETCH_STATUS_SUCCESS;
 import static com.google.firebase.remoteconfig.FirebaseRemoteConfig.LAST_FETCH_STATUS_THROTTLED;
 
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.DRIVER_PRIVACY_URL_KEY;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.DRIVER_TERMS_URL_KEY;
 import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FIREBASE_DATABASE_BASE_NODE_ACTIVE_BATCH;
 import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FIREBASE_DATABASE_BASE_NODE_BATCH_DATA;
 import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FIREBASE_DATABASE_BASE_NODE_DEMO_OFFERS;
@@ -86,7 +88,7 @@ public class FirebaseRemoteConfigWrapper implements
     private void setDefaultValues(){
         // set the default parameter values
         //remoteConfig.setDefaults(R.xml.remote_config_defaults);
-        remoteConfig.setDefaults(FirebaseRemoteConfigDefaults.getDefaults());
+        remoteConfig.setDefaults(FirebaseRemoteConfigDefaults.getDefaults(targetEnvironment));
         Timber.tag(TAG).d("set default values");
 
         //set value for cache expiry
@@ -169,6 +171,15 @@ public class FirebaseRemoteConfigWrapper implements
                 Timber.tag(TAG).e(e);
             }
         }
+    }
+
+    /// privacy & terms url
+    public String getDriverPrivacyUrl(){
+        return remoteConfig.getString(DRIVER_PRIVACY_URL_KEY);
+    }
+
+    public String getDriverTermsUrl(){
+        return remoteConfig.getString(DRIVER_TERMS_URL_KEY);
     }
 
     //// flube it support

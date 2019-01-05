@@ -37,6 +37,7 @@ public class SplashScreenActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_splash_screen);
 
         controller = new SplashScreenController(getApplicationContext(), this);
+        eventHandler = new UserInterfaceEventHandler(this);
 
         activityGuid = BuilderUtilities.generateGuid();
         Timber.tag(TAG).d("onCreate (%s)", activityGuid);
@@ -47,9 +48,6 @@ public class SplashScreenActivity extends AppCompatActivity implements
     public void onResume(){
         super.onResume();
         Timber.tag(TAG).d("onResume (%s)", activityGuid);
-
-        eventHandler = new UserInterfaceEventHandler(this);
-
         Timber.tag(TAG).d("about to check for google play services");
         controller.doDeviceCheck(this);
     }
@@ -59,7 +57,7 @@ public class SplashScreenActivity extends AppCompatActivity implements
     public void onPause(){
         super.onPause();
         Timber.tag(TAG).d("onPause (%s)", activityGuid);
-        eventHandler.close();
+
     }
 
     @Override
@@ -72,7 +70,9 @@ public class SplashScreenActivity extends AppCompatActivity implements
     public void onDestroy(){
         Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
 
+        eventHandler.close();
         controller.close();
+
         super.onDestroy();
 
     }

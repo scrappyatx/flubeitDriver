@@ -34,11 +34,13 @@ public class UserInterfaceAuthChangeEventHandler {
     public UserInterfaceAuthChangeEventHandler(@NonNull AppCompatActivity activity){
         this.activity = activity;
         EventBus.getDefault().register(this);
+        Timber.tag(TAG).d("created");
     }
 
     public void close(){
         EventBus.getDefault().unregister(this);
         activity = null;
+        Timber.tag(TAG).d("close");
     }
 
     ////

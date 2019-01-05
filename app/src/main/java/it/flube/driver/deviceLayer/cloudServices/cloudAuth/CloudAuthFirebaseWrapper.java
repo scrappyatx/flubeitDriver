@@ -76,7 +76,7 @@ public class CloudAuthFirebaseWrapper implements
     }
 
     public Boolean hasDriver(){
-        Timber.tag(TAG).d("hasDriver");
+        Timber.tag(TAG).d("hasDriver -> " + this.gotDriver.toString());
         return this.gotDriver;
     }
 
@@ -138,6 +138,7 @@ public class CloudAuthFirebaseWrapper implements
         } else {
             // we have a signed in user
             Timber.tag(TAG).d("   ...there IS a current signed in user, userId -> " + auth.getUid());
+            Timber.tag(TAG).d("   .......checking for id Token...");
             new FirebaseAuthGetUserToken().getUserTokenRequest(auth.getCurrentUser(), this);
         }
         Timber.tag(TAG).d("...onAuthStateChange COMPLETE");
@@ -145,15 +146,17 @@ public class CloudAuthFirebaseWrapper implements
 
     //// FirebaseAuthGetUserToken interface
     public void idTokenSuccess(String clientId, String email, String idToken){
+        Timber.tag(TAG).d("   .......idToken SUCCESS");
         new CloudAuthStateChangedResponseHandler(this).doUserChanged(clientId, email, idToken);
     }
 
     public void idTokenFailure(){
+        Timber.tag(TAG).d("   .......idToken FAILURE");
         new CloudAuthStateChangedResponseHandler(this).doNoToken();
     }
 
     ///
-    /// CloudAuthStateChangedResponeHandler interface
+    /// CloudAuthStateChangedResponseHandler interface
     ///
     public void userChangeGotDriver(Driver driver, String idToken){
         Timber.tag(TAG).d("userChangeGotDriver");

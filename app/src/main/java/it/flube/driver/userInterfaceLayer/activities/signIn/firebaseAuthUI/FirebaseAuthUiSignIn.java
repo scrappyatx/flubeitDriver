@@ -12,6 +12,7 @@ import com.firebase.ui.auth.AuthUI;
 
 import java.util.Arrays;
 
+import it.flube.driver.dataLayer.AndroidDevice;
 import timber.log.Timber;
 
 /**
@@ -21,9 +22,6 @@ import timber.log.Timber;
 
 public class FirebaseAuthUiSignIn {
     private static final String TAG = "FirebaseAuthUiSignIn";
-
-    private String TermsOfServiceUrl = "https://docs.google.com/document/d/e/2PACX-1vRCZQiR9RYPpxvCnkWbHJeQJB2_6dNXfMVJTc0_NVrQU_VfnpKf9KDcACFz-EsvhEoRxVMiSYbJGYGA/pub";
-    private String PrivacyPolicyUrl = "https://docs.google.com/document/d/e/2PACX-1vSQ6o176q6gvvGHk5aj4S8U1yvDflZKjir1hAAoa2sitkNERW1KHvOuEWfUYW_Cy1Fnu8pC9Xi6XCXP/pub";
 
     public void signInForResult(AppCompatActivity activity, int requestCode){
         Timber.tag(TAG).d("startingActivityForResult for AuthUI signin, requestCode -> " + requestCode);
@@ -35,15 +33,21 @@ public class FirebaseAuthUiSignIn {
         context.startActivity(getSignInIntent());
     }
 
+    //TODO rework per this url https://firebase.google.com/docs/auth/android/firebaseui
+
     private Intent getSignInIntent(){
+        String termsUrl = AndroidDevice.getInstance().getCloudConfig().getDriverTermsUrl();
+        String privacyUrl = AndroidDevice.getInstance().getCloudConfig().getDriverPrivacyUrl();
+
         return AuthUI.getInstance().createSignInIntentBuilder()
-                .setAvailableProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()))
+                .setAvailableProviders(Arrays.asList(new AuthUI.IdpConfig.EmailBuilder().build()))
                 //.setAvailableProviders(
                 //        Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
                 //                new AuthUI.IdpConfig.Builder(AuthUI.PHONE_VERIFICATION_PROVIDER).build()))
-                .setAllowNewEmailAccounts(false)
-                .setTosUrl(TermsOfServiceUrl)
-                .setPrivacyPolicyUrl(PrivacyPolicyUrl)
+                //.setAllowNewEmailAccounts(false)
+                .setTosAndPrivacyPolicyUrls(termsUrl,privacyUrl)
+                //.setTosUrl(TermsOfServiceUrl)
+                //.setPrivacyPolicyUrl(PrivacyPolicyUrl)
                 .setIsSmartLockEnabled(true)
                 .build();
     }

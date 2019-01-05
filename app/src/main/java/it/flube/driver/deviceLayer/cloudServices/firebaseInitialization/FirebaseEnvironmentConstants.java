@@ -9,20 +9,17 @@ package it.flube.driver.deviceLayer.cloudServices.firebaseInitialization;
  * Project : Driver
  */
 public class FirebaseEnvironmentConstants {
-    //TODO set proper environment strings
     //// TARGET ENVIRONMENT -> PRODUCTION
-    public static final String DRIVER_DB_PROD = "https://flubeitdriver.firebaseio.com/";
-    public static final String USER_PROFILE_DB_PROD = "https://flubeitdriver-userprofiles.firebaseio.com/";
+    public static final String DRIVER_DB_PROD = "https://flubeitdriver-prod.firebaseio.com/";
+    public static final String USER_PROFILE_DB_PROD = "https://flubeitdriver-prod-userprofiles.firebaseio.com/";
 
-    //TODO set proper environment strings
     //// TARGET ENVIRONMENT -> DEMO
-    public static final String DRIVER_DB_DEMO = "https://flubeitdriver.firebaseio.com/";
-    public static final String USER_PROFILE_DB_DEMO = "https://flubeitdriver-userprofiles.firebaseio.com/";
+    public static final String DRIVER_DB_DEMO = "https://flubeitdriver-demo.firebaseio.com/";
+    public static final String USER_PROFILE_DB_DEMO = "https://flubeitdriver-demo-userprofiles.firebaseio.com/";
 
-    //TODO set proper environment strings
     //// TARGET ENVIRONMENT -> STAGING
-    public static final String DRIVER_DB_STAGING = "https://flubeitdriver.firebaseio.com/";
-    public static final String USER_PROFILE_DB_STAGING = "https://flubeitdriver-userprofiles.firebaseio.com/";
+    public static final String DRIVER_DB_STAGING = "https://flubeitdriver-staging.firebaseio.com/";
+    public static final String USER_PROFILE_DB_STAGING = "https://flubeitdriver-staging-userprofiles.firebaseio.com/";
 
     //// TARGET ENVIRONMENT -> DEVELOPMENT
     public static final String DRIVER_DB_DEV = "https://flubeitdriver.firebaseio.com/";

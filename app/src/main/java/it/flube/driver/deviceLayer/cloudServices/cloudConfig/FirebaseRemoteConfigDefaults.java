@@ -7,6 +7,18 @@ package it.flube.driver.deviceLayer.cloudServices.cloudConfig;
 import java.util.HashMap;
 import java.util.Map;
 
+import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
+
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.DRIVER_PRIVACY_URL_DEFAULT_DEMO;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.DRIVER_PRIVACY_URL_DEFAULT_DEV;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.DRIVER_PRIVACY_URL_DEFAULT_PROD;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.DRIVER_PRIVACY_URL_DEFAULT_STAGING;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.DRIVER_PRIVACY_URL_KEY;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.DRIVER_TERMS_URL_DEFAULT_DEMO;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.DRIVER_TERMS_URL_DEFAULT_DEV;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.DRIVER_TERMS_URL_DEFAULT_PROD;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.DRIVER_TERMS_URL_DEFAULT_STAGING;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.DRIVER_TERMS_URL_KEY;
 import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FIREBASE_DATABASE_BASE_NODE_ACTIVE_BATCH;
 import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FIREBASE_DATABASE_BASE_NODE_ACTIVE_BATCH_DEFAULT;
 import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FIREBASE_DATABASE_BASE_NODE_BATCH_DATA;
@@ -29,7 +41,10 @@ import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemo
 import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FLUBE_IT_SUPPORT_CAN_VOICE_KEY;
 import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FLUBE_IT_SUPPORT_CONTACT_NUMBER_DEFAULT;
 import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FLUBE_IT_SUPPORT_CONTACT_NUMBER_KEY;
-import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FLUBE_IT_SUPPORT_DISPLAY_ICON_URL_DEFAULT;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FLUBE_IT_SUPPORT_DISPLAY_ICON_URL_DEFAULT_DEMO;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FLUBE_IT_SUPPORT_DISPLAY_ICON_URL_DEFAULT_DEV;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FLUBE_IT_SUPPORT_DISPLAY_ICON_URL_DEFAULT_PROD;
+import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FLUBE_IT_SUPPORT_DISPLAY_ICON_URL_DEFAULT_STAGING;
 import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FLUBE_IT_SUPPORT_DISPLAY_ICON_URL_KEY;
 import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FLUBE_IT_SUPPORT_DISPLAY_NAME_DEFAULT;
 import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemoteConfigConstants.FLUBE_IT_SUPPORT_DISPLAY_NAME_KEY;
@@ -49,12 +64,39 @@ import static it.flube.driver.deviceLayer.cloudServices.cloudConfig.FirebaseRemo
 public class FirebaseRemoteConfigDefaults {
     private static final String TAG = "FirebaseRemoteConfigDefaults";
 
-    public static Map<String, Object> getDefaults(){
+    public static Map<String, Object> getDefaults(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
         HashMap<String, Object> defaults = new HashMap<String, Object>();
 
-        //defaults for flube.it support
+
+        //defaults for driver privacy & terms, flube.it support
+        switch (targetEnvironment){
+            case PRODUCTION:
+                defaults.put(DRIVER_PRIVACY_URL_KEY, DRIVER_PRIVACY_URL_DEFAULT_PROD);
+                defaults.put(DRIVER_TERMS_URL_KEY, DRIVER_TERMS_URL_DEFAULT_PROD);
+                defaults.put(FLUBE_IT_SUPPORT_DISPLAY_ICON_URL_KEY, FLUBE_IT_SUPPORT_DISPLAY_ICON_URL_DEFAULT_PROD);
+                break;
+            case DEMO:
+                defaults.put(DRIVER_PRIVACY_URL_KEY, DRIVER_PRIVACY_URL_DEFAULT_DEMO);
+                defaults.put(DRIVER_TERMS_URL_KEY, DRIVER_TERMS_URL_DEFAULT_DEMO);
+                defaults.put(FLUBE_IT_SUPPORT_DISPLAY_ICON_URL_KEY, FLUBE_IT_SUPPORT_DISPLAY_ICON_URL_DEFAULT_DEMO);
+                break;
+            case STAGING:
+                defaults.put(DRIVER_PRIVACY_URL_KEY, DRIVER_PRIVACY_URL_DEFAULT_STAGING);
+                defaults.put(DRIVER_TERMS_URL_KEY, DRIVER_TERMS_URL_DEFAULT_STAGING);
+                defaults.put(FLUBE_IT_SUPPORT_DISPLAY_ICON_URL_KEY, FLUBE_IT_SUPPORT_DISPLAY_ICON_URL_DEFAULT_STAGING);
+                break;
+            case DEVELOPMENT:
+                defaults.put(DRIVER_PRIVACY_URL_KEY, DRIVER_PRIVACY_URL_DEFAULT_DEV);
+                defaults.put(DRIVER_TERMS_URL_KEY, DRIVER_TERMS_URL_DEFAULT_DEV);
+                defaults.put(FLUBE_IT_SUPPORT_DISPLAY_ICON_URL_KEY, FLUBE_IT_SUPPORT_DISPLAY_ICON_URL_DEFAULT_DEV);
+                break;
+            default:
+                defaults.put(DRIVER_PRIVACY_URL_KEY, DRIVER_PRIVACY_URL_DEFAULT_DEV);
+                defaults.put(DRIVER_TERMS_URL_KEY, DRIVER_TERMS_URL_DEFAULT_DEV);
+                defaults.put(FLUBE_IT_SUPPORT_DISPLAY_ICON_URL_KEY, FLUBE_IT_SUPPORT_DISPLAY_ICON_URL_DEFAULT_DEV);
+                break;
+        }
         defaults.put(FLUBE_IT_SUPPORT_DISPLAY_NAME_KEY, FLUBE_IT_SUPPORT_DISPLAY_NAME_DEFAULT);
-        defaults.put(FLUBE_IT_SUPPORT_DISPLAY_ICON_URL_KEY, FLUBE_IT_SUPPORT_DISPLAY_ICON_URL_DEFAULT);
         defaults.put(FLUBE_IT_SUPPORT_CONTACT_NUMBER_KEY, FLUBE_IT_SUPPORT_CONTACT_NUMBER_DEFAULT);
         defaults.put(FLUBE_IT_SUPPORT_CAN_SMS_KEY, FLUBE_IT_SUPPORT_CAN_SMS_DEFAULT);
         defaults.put(FLUBE_IT_SUPPORT_CAN_VOICE_KEY, FLUBE_IT_SUPPORT_CAN_VOICE_DEFAULT);

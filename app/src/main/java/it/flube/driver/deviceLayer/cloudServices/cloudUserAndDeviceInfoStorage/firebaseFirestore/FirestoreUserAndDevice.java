@@ -108,6 +108,7 @@ public class FirestoreUserAndDevice implements
         //commit the batch
         batch.commit().addOnCompleteListener(this);
         Timber.tag(TAG).d("   ...committing batch");
+
     }
 
     public void onComplete(@NonNull Task<Void> task) {

@@ -9,35 +9,40 @@ import java.util.Random;
 
 import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 
+import static it.flube.libbatchdata.constants.EnvironmentConstantsDemo.EXPRESS_ICON_URL_DEMO;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsDemo.GENERIC_ICON_URL_DEMO;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsDemo.JIFFYLUBE_ICON_URL_DEMO;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsDemo.KWIKKAR_ICON_URL_DEMO;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsDemo.LONG_DISTANCE_ICON_URL_DEMO;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsDemo.MED_DISTANCE_ICON_URL_DEMO;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsDemo.SERVICE_ONE_URL_DEMO;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsDemo.SHORT_DISTANCE_ICON_URL_DEMO;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsDevelopment.EXPRESS_ICON_URL_DEVELOPMENT;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsDevelopment.GENERIC_ICON_URL_DEVELOPMENT;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsDevelopment.JIFFYLUBE_ICON_URL_DEVELOPMENT;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsDevelopment.KWIKKAR_ICON_URL_DEVELOPMENT;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsDevelopment.LONG_DISTANCE_ICON_URL_DEVELOPMENT;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsDevelopment.MED_DISTANCE_ICON_URL_DEVELOPMENT;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsDevelopment.SERVICE_ONE_URL_DEVELOPMENT;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsDevelopment.SHORT_DISTANCE_ICON_URL_DEVELOPMENT;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsProduction.EXPRESS_ICON_URL_PRODUCTION;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsProduction.GENERIC_ICON_URL_PRODUCTON;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsProduction.JIFFYLUBE_ICON_URL_PRODUCTION;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsProduction.KWIKKAR_ICON_URL_PRODUCTION;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsProduction.LONG_DISTANCE_ICON_URL_PRODUCTION;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsProduction.MED_DISTANCE_ICON_URL_PRODUCTION;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsProduction.SERVICE_ONE_URL_PRODUCTION;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsProduction.SHORT_DISTANCE_ICON_URL_PRODUCTION;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsStaging.EXPRESS_ICON_URL_STAGING;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsStaging.GENERIC_ICON_URL_STAGING;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsStaging.JIFFYLUBE_ICON_URL_STAGING;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsStaging.KWIKKAR_ICON_URL_STAGING;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsStaging.LONG_DISTANCE_ICON_URL_STAGING;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsStaging.MED_DISTANCE_ICON_URL_STAGING;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsStaging.SERVICE_ONE_URL_STAGING;
+import static it.flube.libbatchdata.constants.EnvironmentConstantsStaging.SHORT_DISTANCE_ICON_URL_STAGING;
 import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_TARGET_ENVIRONMENT;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.EXPRESS_ICON_URL_DEMO;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.EXPRESS_ICON_URL_DEVELOPMENT;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.EXPRESS_ICON_URL_PRODUCTION;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.EXPRESS_ICON_URL_STAGING;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.GENERIC_ICON_URL_DEMO;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.GENERIC_ICON_URL_DEVELOPMENT;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.GENERIC_ICON_URL_PRODUCTON;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.GENERIC_ICON_URL_STAGING;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.JIFFYLUBE_ICON_URL_DEMO;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.JIFFYLUBE_ICON_URL_DEVELOPMENT;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.JIFFYLUBE_ICON_URL_PRODUCTION;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.JIFFYLUBE_ICON_URL_STAGING;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.KWIKKAR_ICON_URL_DEMO;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.KWIKKAR_ICON_URL_DEVELOPMENT;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.KWIKKAR_ICON_URL_PRODUCTION;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.KWIKKAR_ICON_URL_STAGING;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.LONG_DISTANCE_ICON_URL_DEMO;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.LONG_DISTANCE_ICON_URL_DEVELOPMENT;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.LONG_DISTANCE_ICON_URL_PRODUCTION;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.LONG_DISTANCE_ICON_URL_STAGING;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.MED_DISTANCE_ICON_URL_DEMO;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.MED_DISTANCE_ICON_URL_DEVELOPMENT;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.MED_DISTANCE_ICON_URL_PRODUCTION;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.MED_DISTANCE_ICON_URL_STAGING;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.SHORT_DISTANCE_ICON_URL_DEMO;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.SHORT_DISTANCE_ICON_URL_DEVELOPMENT;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.SHORT_DISTANCE_ICON_URL_PRODUCTION;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.SHORT_DISTANCE_ICON_URL_STAGING;
+
 
 /**
  * Created on 4/23/2018
@@ -114,6 +119,7 @@ public class BatchIconGenerator {
         String kwikkarUrl;
         String jiffyLubeUrl;
         String expressUrl;
+        String serviceOneUrl;
         String genericUrl;
 
         switch (targetEnvironment){
@@ -121,42 +127,50 @@ public class BatchIconGenerator {
                 kwikkarUrl = KWIKKAR_ICON_URL_PRODUCTION;
                 jiffyLubeUrl = JIFFYLUBE_ICON_URL_PRODUCTION;
                 expressUrl = EXPRESS_ICON_URL_PRODUCTION;
+                serviceOneUrl = SERVICE_ONE_URL_PRODUCTION;
                 genericUrl = GENERIC_ICON_URL_PRODUCTON;
                 break;
             case DEMO:
                 kwikkarUrl = KWIKKAR_ICON_URL_DEMO;
                 jiffyLubeUrl = JIFFYLUBE_ICON_URL_DEMO;
                 expressUrl = EXPRESS_ICON_URL_DEMO;
+                serviceOneUrl = SERVICE_ONE_URL_DEMO;
                 genericUrl = GENERIC_ICON_URL_DEMO;
                 break;
             case STAGING:
                 kwikkarUrl = KWIKKAR_ICON_URL_STAGING;
                 jiffyLubeUrl = JIFFYLUBE_ICON_URL_STAGING;
                 expressUrl = EXPRESS_ICON_URL_STAGING;
+                serviceOneUrl = SERVICE_ONE_URL_STAGING;
                 genericUrl = GENERIC_ICON_URL_STAGING;
                 break;
             case DEVELOPMENT:
                 kwikkarUrl = KWIKKAR_ICON_URL_DEVELOPMENT;
                 jiffyLubeUrl = JIFFYLUBE_ICON_URL_DEVELOPMENT;
                 expressUrl = EXPRESS_ICON_URL_DEVELOPMENT;
+                serviceOneUrl = SERVICE_ONE_URL_DEVELOPMENT;
                 genericUrl = GENERIC_ICON_URL_DEVELOPMENT;
                 break;
             default:
                 kwikkarUrl = KWIKKAR_ICON_URL_DEVELOPMENT;
                 jiffyLubeUrl = JIFFYLUBE_ICON_URL_DEVELOPMENT;
                 expressUrl = EXPRESS_ICON_URL_DEVELOPMENT;
+                serviceOneUrl = SERVICE_ONE_URL_DEVELOPMENT;
                 genericUrl = GENERIC_ICON_URL_DEVELOPMENT;
                 break;
         }
 
+        /// create a list of the service provider logo urls
         ArrayList<String> urlList = new ArrayList<String>();
         Random random = new Random();
 
         urlList.add(kwikkarUrl);
         urlList.add(jiffyLubeUrl);
         urlList.add(expressUrl);
+        urlList.add(serviceOneUrl);
         urlList.add(genericUrl);
 
+        /// randomly return one from the list
         return urlList.get(random.nextInt(urlList.size()));
     }
 

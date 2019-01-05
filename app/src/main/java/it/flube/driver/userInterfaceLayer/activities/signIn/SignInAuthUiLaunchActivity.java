@@ -55,6 +55,7 @@ public class SignInAuthUiLaunchActivity extends AppCompatActivity {
     @Override
     public void onResume(){
         super.onResume();
+        Timber.tag(TAG).d("onResume (%s)", activityGuid);
 
 
 
@@ -68,7 +69,7 @@ public class SignInAuthUiLaunchActivity extends AppCompatActivity {
             Timber.tag(TAG).d("...we don't have a signed in user");
             signInButton.setVisibility(View.VISIBLE);
         }
-        Timber.tag(TAG).d("onResume (%s)", activityGuid);
+
     }
 
 

@@ -27,30 +27,30 @@ android {
         ///
         /// The SHA1 is used to tie the build variant to the firebase project
         developmentEnvironment {
-            keyAlias 'flubeitdriverkey'
-            keyPassword 'makethisprogramrun#1'
-            storeFile file('C:/Users/Bryan/Google Drive/Personal/android development/keystore/android.jks')
-            storePassword 'holdthesekeysforme#1'
+            keyAlias 'development'
+            keyPassword 'development#220'
+            storeFile file('C:/Users/Bryan/Google Drive/Personal/android development/keystore/flubeitdriver.jks')
+            storePassword 'oilchange#220'
         }
         demoEnvironment {
-            keyAlias 'flubeitdriverdemo'
-            keyPassword 'popthatdemo#1'
-            storeFile file('C:/Users/Bryan/Google Drive/Personal/android development/keystore/android.jks')
-            storePassword 'holdthesekeysforme#1'
+            keyAlias 'demo'
+            keyPassword 'demo#220'
+            storeFile file('C:/Users/Bryan/Google Drive/Personal/android development/keystore/flubeitdriver.jks')
+            storePassword 'oilchange#220'
 
         }
         stagingEnvironment {
-            keyAlias 'flubeitdriverstaging'
-            keyPassword 'getonthatstage#1'
-            storeFile file('C:/Users/Bryan/Google Drive/Personal/android development/keystore/android.jks')
-            storePassword 'holdthesekeysforme#1'
+            keyAlias 'staging'
+            keyPassword 'staging#220'
+            storeFile file('C:/Users/Bryan/Google Drive/Personal/android development/keystore/flubeitdriver.jks')
+            storePassword 'oilchange#220'
 
         }
         productionEnvironment {
-            keyAlias 'flubeitdriverprod'
-            keyPassword 'nowitsforreal#1'
-            storeFile file('C:/Users/Bryan/Google Drive/Personal/android development/keystore/android.jks')
-            storePassword 'holdthesekeysforme#1'
+            keyAlias 'production'
+            keyPassword 'production#220'
+            storeFile file('C:/Users/Bryan/Google Drive/Personal/android development/keystore/flubeitdriver.jks')
+            storePassword 'oilchange#220'
         }
     }
     dexOptions {
@@ -60,13 +60,13 @@ android {
         disable 'BinaryOperationInTimber'
         disable 'TimberTagLength'
     }
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         applicationId "it.flube.driver"
         minSdkVersion 18
-        targetSdkVersion 27
+        targetSdkVersion 28
         multiDexEnabled true
         versionCode buildVersionCode()
         versionName version
@@ -100,9 +100,9 @@ android {
             //manifestPlaceholders = [appIcon: "@drawable/app_logo_round_staging"]
         }
 
-        dev {
+        develop {
             dimension "targetEnvironment"
-            applicationIdSuffix ".dev"
+            applicationIdSuffix ".develop"
             //manifestPlaceholders = [appIcon: "@drawable/app_logo_round_development"]
         }
 
@@ -115,10 +115,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             //signingConfig signingConfigs.release
             /// RELEASE variants will use a signingConfig that corresponds to their target firebase environment (for the SHA1)
-            productFlavors.production.signingConfig signingConfigs.developmentEnvironment
-            productFlavors.demo.signingConfig signingConfigs.developmentEnvironment
-            productFlavors.staging.signingConfig signingConfigs.developmentEnvironment
-            productFlavors.dev.signingConfig signingConfigs.developmentEnvironment
+            productFlavors.production.signingConfig signingConfigs.productionEnvironment
+            productFlavors.demo.signingConfig signingConfigs.demoEnvironment
+            productFlavors.staging.signingConfig signingConfigs.stagingEnvironment
+            productFlavors.develop.signingConfig signingConfigs.developmentEnvironment
 
             debuggable false
         }
@@ -137,22 +137,24 @@ android {
 
         /// RELEASE variants will use a signingConfig that corresponds to their target firebase environment (for the SHA1)
         if (variant.buildType.name.equals("release") && variant.flavorName.equals("production")) {
-                mergedFlavor.manifestPlaceholders = [appIcon: "@drawable/production_app_logo"]}
+                mergedFlavor.manifestPlaceholders = [appLabel: "@string/app_name_prod", appIconSquare: "@drawable/app_logo_v2_prod_release_square", appIconRound: "@drawable/app_logo_v2_prod_release_circle"]}
         if (variant.buildType.name.equals("release") && variant.flavorName.equals("demo")) {
-                mergedFlavor.manifestPlaceholders = [appIcon: "@drawable/demo_app_logo"]}
+                mergedFlavor.manifestPlaceholders = [appLabel: "@string/app_name_demo", appIconSquare: "@drawable/app_logo_v2_demo_release_square", appIconRound: "@drawable/app_logo_v2_demo_release_circle"]}
         if (variant.buildType.name.equals("release") && variant.flavorName.equals("staging")) {
-                mergedFlavor.manifestPlaceholders = [appIcon: "@drawable/staging_app_logo"]}
-        if (variant.buildType.name.equals("release") && variant.flavorName.equals("dev")) {
-                mergedFlavor.manifestPlaceholders = [appIcon: "@drawable/development_app_logo"]}
+                mergedFlavor.manifestPlaceholders = [appLabel: "@string/app_name_staging", appIconSquare: "@drawable/app_logo_v2_staging_release_square", appIconRound: "@drawable/app_logo_v2_staging_release_circle"]}
+        if (variant.buildType.name.equals("release") && variant.flavorName.equals("develop")) {
+                mergedFlavor.manifestPlaceholders = [appLabel: "@string/app_name_dev", appIconSquare: "@drawable/app_logo_v2_dev_release_square", appIconRound: "@drawable/app_logo_v2_dev_release_circle"]}
+
+
         /// DEBUG variants will use default android studio debug certificate
         if (variant.buildType.name.equals("debug") && variant.flavorName.equals("production")) {
-                mergedFlavor.manifestPlaceholders = [appIcon: "@drawable/production_debug_app_logo"]}
+                mergedFlavor.manifestPlaceholders = [appLabel: "@string/app_name_prod_debug", appIconSquare: "@drawable/app_logo_v2_prod_debug_square", appIconRound: "@drawable/app_logo_v2_prod_debug_circle"]}
         if (variant.buildType.name.equals("debug") && variant.flavorName.equals("demo")) {
-                mergedFlavor.manifestPlaceholders = [appIcon: "@drawable/demo_debug_app_logo"]}
+                mergedFlavor.manifestPlaceholders = [appLabel: "@string/app_name_demo_debug", appIconSquare: "@drawable/app_logo_v2_demo_debug_square", appIconRound: "@drawable/app_logo_v2_demo_debug_circle"]}
         if (variant.buildType.name.equals("debug") && variant.flavorName.equals("staging")) {
-                mergedFlavor.manifestPlaceholders = [appIcon: "@drawable/staging_debug_app_logo"]}
-        if (variant.buildType.name.equals("debug") && variant.flavorName.equals("dev")) {
-                mergedFlavor.manifestPlaceholders = [appIcon: "@drawable/development_debug_app_logo"]}
+                mergedFlavor.manifestPlaceholders = [appLabel: "@string/app_name_staging_debug", appIconSquare: "@drawable/app_logo_v2_staging_debug_square", appIconRound: "@drawable/app_logo_v2_staging_debug_circle"]}
+        if (variant.buildType.name.equals("debug") && variant.flavorName.equals("develop")) {
+                mergedFlavor.manifestPlaceholders = [appLabel: "@string/app_name_dev_debug", appIconSquare: "@drawable/app_logo_v2_dev_debug_square", appIconRound: "@drawable/app_logo_v2_dev_debug_circle"]}
     }
 
     applicationVariants.all { variant ->
@@ -166,7 +168,7 @@ android {
     }
 }
 
-def supportVersion = '27.1.1'
+def supportVersion = '28.0.0'
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -208,28 +210,28 @@ dependencies {
     implementation "com.android.support:support-compat:$supportVersion"
 
     //implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.android.support:multidex:1.0.3'
     implementation "com.android.support:animated-vector-drawable:$supportVersion"
     implementation "com.android.support:exifinterface:$supportVersion"
 
     // google credentials for saved signin
-    implementation 'com.google.android.gms:play-services-auth:15.0.1'
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
 
     // was using firebase 10.2.6
-    implementation 'com.firebaseui:firebase-ui-auth:3.1.0'
-    implementation 'com.google.firebase:firebase-config:16.0.0'
-    implementation 'com.google.firebase:firebase-auth:16.0.2'
-    implementation 'com.google.firebase:firebase-database:16.0.1'
-    implementation 'com.google.firebase:firebase-storage:16.0.1'
-    implementation 'com.google.firebase:firebase-firestore:17.0.3'
-    implementation 'com.google.firebase:firebase-messaging:17.1.0'
-    implementation 'com.google.firebase:firebase-ml-vision:16.0.0'
-    implementation 'com.google.firebase:firebase-ml-vision-image-label-model:15.0.0'
-    implementation 'com.google.android.gms:play-services-location:15.0.1'
-    implementation 'com.google.android.gms:play-services-maps:15.0.1'
+    implementation 'com.firebaseui:firebase-ui-auth:4.2.0'
+    implementation 'com.google.firebase:firebase-config:16.1.0'
+    implementation 'com.google.firebase:firebase-auth:16.0.5'
+    implementation 'com.google.firebase:firebase-database:16.0.3'
+    implementation 'com.google.firebase:firebase-storage:16.0.3'
+    implementation 'com.google.firebase:firebase-firestore:17.1.1'
+    implementation 'com.google.firebase:firebase-messaging:17.3.4'
+    implementation 'com.google.firebase:firebase-ml-vision:18.0.1'
+    implementation 'com.google.firebase:firebase-ml-vision-image-label-model:17.0.2'
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
+    implementation 'com.google.android.gms:play-services-maps:16.0.0'
     implementation 'com.google.maps.android:android-maps-utils:0.5+'
-    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.2'
 
     // (v4.5)

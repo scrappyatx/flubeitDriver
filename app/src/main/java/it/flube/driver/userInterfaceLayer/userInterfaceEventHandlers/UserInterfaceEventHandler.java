@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
+import timber.log.Timber;
 
 /**
  * Created on 10/14/2017
@@ -31,14 +32,17 @@ public class UserInterfaceEventHandler {
         userInterfaceClaimPersonalOfferEventHandler = new UserInterfaceClaimPersonalOfferEventHandler(activity);
         userInterfaceClaimDemoOfferEventHandler = new UserInterfaceClaimDemoOfferEventHandler(activity);
         userInterfaceForfeitBatchEventHandler = new UserInterfaceForfeitBatchEventHandler(activity);
+        Timber.tag(TAG).d("created");
     }
 
     public void startMonitoringActiveBatch(@NonNull AppCompatActivity activity){
+        Timber.tag(TAG).d("startMonitoringActiveBatch");
         userInterfaceActiveBatchEventHandler = new UserInterfaceActiveBatchEventHandler(activity);
     }
 
 
     public void close(){
+        Timber.tag(TAG).d("close");
         userInterfaceAuthChangeEventHandler.close();
         userInterfaceClaimPublicOfferEventHandler.close();
         userInterfaceClaimPersonalOfferEventHandler.close();

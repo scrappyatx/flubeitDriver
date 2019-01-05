@@ -15,6 +15,10 @@ public interface CloudConfigInterface {
 
     ContactPerson getFlubeItSupportContactPerson();
 
+    String getDriverPrivacyUrl();
+
+    String getDriverTermsUrl();
+
     String getCloudDatabaseBaseNodePublicOffers();
 
     String getCloudDatabaseBaseNodePersonalOffers();

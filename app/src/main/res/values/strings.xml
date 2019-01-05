@@ -5,6 +5,16 @@
 <resources>
     <string name="app_name">flube.it Driver</string>
 
+    <string name="app_name_prod">flube.it Driver</string>
+    <string name="app_name_demo">flube.it Driver DEMO</string>
+    <string name="app_name_staging">flube.it Driver STAGING</string>
+    <string name="app_name_dev">flube.it Driver DEV</string>
+
+    <string name="app_name_prod_debug">flube.it Driver</string>
+    <string name="app_name_demo_debug">flube.it Driver DEMO</string>
+    <string name="app_name_staging_debug">flube.it Driver STAGING</string>
+    <string name="app_name_dev_debug">flube.it Driver DEV</string>
+
     <!--
 
     <string name="new_message_notification_title_template">New message: %1$s</string>

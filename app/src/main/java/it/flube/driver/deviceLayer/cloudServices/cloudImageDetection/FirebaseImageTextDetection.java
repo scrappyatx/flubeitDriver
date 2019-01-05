@@ -14,7 +14,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
-import com.google.firebase.ml.vision.text.FirebaseVisionTextDetector;
+import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 
 import java.util.HashMap;
 
@@ -45,11 +45,11 @@ public class FirebaseImageTextDetection implements
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
 
         Timber.tag(TAG).d("   ...getting detector with desired options");
-        FirebaseVisionTextDetector detector = FirebaseVision.getInstance()
-                .getVisionTextDetector();
+        FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
+                .getOnDeviceTextRecognizer();
 
         Timber.tag(TAG).d("   ...detecting the image");
-        detector.detectInImage(image).addOnSuccessListener(this).addOnFailureListener(this);
+        detector.processImage(image).addOnSuccessListener(this).addOnFailureListener(this);
     }
 
     public void onSuccess(FirebaseVisionText firebaseVisionText){
@@ -60,7 +60,10 @@ public class FirebaseImageTextDetection implements
         HashMap<String, String> resultMap = new HashMap<String, String>();
 
         Timber.tag(TAG).d("   ...looping through results");
-        for (FirebaseVisionText.Block block: firebaseVisionText.getBlocks()) {
+        for (FirebaseVisionText.TextBlock block: firebaseVisionText.getTextBlocks()) {
+
+            //// https://firebase.google.com/docs/ml-kit/android/recognize-text
+            //// TODO update code per this url
 
             Rect boundingBox = block.getBoundingBox();
             Point[] cornerPoints = block.getCornerPoints();
