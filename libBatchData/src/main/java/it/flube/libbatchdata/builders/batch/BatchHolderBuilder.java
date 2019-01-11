@@ -11,6 +11,8 @@ import java.util.Map;
 import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.builders.RouteStopBuilder;
 import it.flube.libbatchdata.builders.serviceOrder.ServiceOrderBuilder;
+import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
+import it.flube.libbatchdata.entities.BatchNotificationSettings;
 import it.flube.libbatchdata.entities.ChatHistory;
 import it.flube.libbatchdata.entities.ChatMessage;
 import it.flube.libbatchdata.entities.ContactPerson;
@@ -44,18 +46,22 @@ public class BatchHolderBuilder {
     private BatchHolder getBatchHolder(){
         return batchHolder;
     }
+
     public static class Builder{
         private BatchHolder batchHolder;
+        private TargetEnvironmentConstants.TargetEnvironment targetEnvironment;
 
-        public Builder(){
+        public Builder(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
             this.batchHolder = new BatchHolder();
+            this.targetEnvironment = targetEnvironment;
+
             initializeData();
         }
 
         private void initializeData(){
             //create a single batch & batch detail object
             this.batchHolder.setBatch(new BatchBuilder.Builder().build());
-            this.batchHolder.setBatchDetail(new BatchDetailBuilder.Builder().build());
+            this.batchHolder.setBatchDetail(new BatchDetailBuilder.Builder(targetEnvironment).build());
 
             // link batch detail to the batch
             this.batchHolder.getBatchDetail().setBatchGuid(batchHolder.getBatch().getGuid());
@@ -214,13 +220,17 @@ public class BatchHolderBuilder {
             return this;
         }
 
+        public Builder batchNotificationSettings(BatchNotificationSettings batchNotificationSettings){
+            this.batchHolder.getBatchDetail().setBatchNotificationSettings(batchNotificationSettings);
+            return this;
+        }
 
 
         public Builder addServiceOrder(ServiceOrderScaffold serviceOrderScaffold) {
 
 
             // build a service order object
-            ServiceOrder serviceOrder = new ServiceOrderBuilder.Builder()
+            ServiceOrder serviceOrder = new ServiceOrderBuilder.Builder(targetEnvironment)
                     .guid(serviceOrderScaffold.getGuid())
                     .batchGuid(this.batchHolder.getBatch().getGuid())
                     .batchDetailGuid(this.batchHolder.getBatchDetail().getGuid())
@@ -232,6 +242,7 @@ public class BatchHolderBuilder {
                     .sequence(this.batchHolder.getServiceOrders().size()+1)
                     .totalSteps(serviceOrderScaffold.getStepIds().size())
                     .productList(serviceOrderScaffold.getProductList())
+                    .serviceOrderNotificationSettings(serviceOrderScaffold.getServiceOrderNotificationSettings())
                     .build();
 
             //put this service order in the service order list & the service order hash map

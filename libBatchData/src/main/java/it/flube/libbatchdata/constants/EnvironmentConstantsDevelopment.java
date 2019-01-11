@@ -73,4 +73,55 @@ public class EnvironmentConstantsDevelopment {
     public static final String JIFFYLUBE_ICON_URL_DEVELOPMENT = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/serviceProviderImages%2Fjiffy-lube_ver2.png?alt=media&token=d4d79f18-1d4c-463f-98f3-11b3572bfd37";
     public static final String GENERIC_ICON_URL_DEVELOPMENT = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver.appspot.com/o/serviceProviderImages%2Foil-change-icon.png?alt=media&token=b1599ce2-67ec-4bda-9a4b-d3a4ae8cdea3";
 
+    ///
+    ///  BatchNotificationSettings
+    ///
+    ///
+    // notifications when order is placed by customer
+    public static final Boolean SEND_EMAIL_TO_CUSTOMER_WITH_ORDER_CONFIRMATION_DEVELOPMENT = true;
+
+    // notifications to driver when this batch is available as an offer
+    public static final Boolean SEND_TEXT_TO_DRIVER_WHEN_BATCH_IS_MADE_AVAILABLE_AS_PUBLIC_OFFER_DEVELOPMENT = false;
+    public static final Boolean SEND_TEXT_TO_DRIVER_WHEN_BATCH_IS_MADE_AVAILABLE_AS_PERSONAL_OFFER_DEVELOPMENT = false;
+
+    // notifications when offer expires without being claimed
+    public static final Boolean SEND_TEXT_TO_ADMIN_WHEN_OFFER_EXPIRES_DEVELOPMENT = false;
+
+    // notifications to driver prior to batch starting
+    public static final int UPCOMING_SCHEDULED_BATCH_WARNING_MINUTES_DEVELOPMENT = 5;
+    public static final Boolean SEND_APP_NOTIFICATION_TO_DRIVER_UPCOMING_SCHEDULED_BATCH_DEVELOPMENT = true;
+    public static final Boolean SEND_TEXT_TO_DRIVER_UPCOMING_SCHEDULED_BATCH_DEVELOPMENT = true;
+
+    // notifications to driver for batch late start
+    public static final int LATE_WARNING_TEXT_SCHEDULED_BATCH_SECONDS_DEVELOPMENT = 10;
+    public static final int LATE_WARNING_VOICE_CALL_SCHEDULED_BATCH_SECONDS_DEVELOPMENT = 90;
+    public static final Boolean SEND_TEXT_TO_DRIVER_LATE_START_WARNING_SCHEDULED_BATCH_DEVELOPMENT = true;
+    public static final Boolean VOICE_CALL_TO_DRIVER_LATE_START_WARNING_SCHEDULED_BATCH_DEVELOPMENT = true;
+
+    // notifications to send when batch is removed from driver due to NO START
+    public static final Boolean SEND_TEXT_TO_ADMIN_WHEN_SCHEDULED_BATCH_REMOVED_DUE_TO_NO_START_DEVELOPMENT = true;
+
+    ///  ServiceOrderNotificationSettings
+    ///
+    // notifications when order is started
+    public static final Boolean SEND_TEXT_TO_SERVICE_PROVIDER_WHEN_ORDER_IS_STARTED_DEVELOPMENT = false;
+    public static final Boolean SEND_EMAIL_TO_SERVICE_PROVIDER_WHEN_ORDER_IS_STARTED_DEVELOPMENT = false;
+    public static final Boolean SEND_VOICE_CALL_TO_SERVICE_PROVIDER_WHEN_ORDER_IS_STARTED_DEVELOPMENT = false;
+
+    //notifications when driver is navigating to customer
+    public static final Boolean SEND_TEXT_TO_CUSTOMER_WHEN_DRIVER_NAVIGATING_TO_THEIR_LOCATION_DEVELOPMENT = false;
+    public static final Boolean SEND_EMAIL_TO_CUSTOMER_WHEN_DRIVER_NAVIGATING_TO_THEIR_LOCATION_DEVELOPMENT = false;
+
+
+    // notifications to send if an order step is late
+    public static final int STEP_LATE_MINUTES_DEVELOPMENT = 2;
+    public static final int STEP_VERY_LATE_MINUTES_DEVELOPMENT = 5;
+
+    public static final Boolean SEND_APP_NOTIFICATION_TO_DRIVER_WHEN_STEP_IS_LATE_DEVELOPMENT = false;
+    public static final Boolean SEND_TEXT_TO_DRIVER_WHEN_STEP_IS_LATE_DEVELOPMENT = false;
+    public static final Boolean SEND_VOICE_CALL_TO_DRIVER_WHEN_STEP_IS_LATE_DEVELOPMENT = false;
+
+    public static final Boolean SEND_TEXT_TO_ADMIN_WHEN_STEP_IS_LATE_DEVELOPMENT = false;
+    public static final Boolean SEND_TEXT_TO_ADMIN_WHEN_STEP_IS_VERY_LATE_DEVELOPMENT = false;
+
 }

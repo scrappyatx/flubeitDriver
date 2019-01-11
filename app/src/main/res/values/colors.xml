@@ -5,10 +5,7 @@
 
 <resources>
 
-    <!-- COLOR DEFINITIONS (all colors here should be from the color palette)
-
-     -->
-
+    <!-- COLOR DEFINITIONS (all colors here should be from the color palette)-->
     <color name="colorPrimary">@color/mediumblue</color>
     <color name="colorPrimaryDark">@color/darkblue</color>
     <color name="colorAccent">@color/mediumblue</color>
@@ -34,6 +31,7 @@
     <color name="colorNavMenuDemoOfferHighlight">@color/colorPrimary</color>
     <color name="colorNavMenuScheduledBatchHighlight">@color/colorPrimary</color>
 
+    <!-- OFFER ROW COLORS -->
     <color name="colorOfferRowExpenses">@color/colorTextPrimaryLight</color>
     <color name="colorOfferRowTitle">@color/offblack</color>
     <color name="colorOfferRowDate">@color/ltgray</color>
@@ -43,8 +41,11 @@
     <color name="colorOfferRowDistance">@color/ltgray</color>
     <color name="colorOfferRowHeader">@color/offblack</color>
 
+    <!-- SIGN IN ACTIVITY COLORS -->
+    <color name="colorSignInBackground">@color/white</color>
+    <color name="colorSigningInBannerText">@color/translucentGreenCC</color>
 
-
+    <!-- ORDER STEP COLORS -->
     <color name="colorStepTitle">@color/offblack</color>
     <color name="colorStepDescription">@color/ltgray</color>
     <color name="colorStepCompleteBy">@color/ltgray</color>

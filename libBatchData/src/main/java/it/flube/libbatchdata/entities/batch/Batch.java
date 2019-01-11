@@ -7,6 +7,7 @@ package it.flube.libbatchdata.entities.batch;
 import java.util.ArrayList;
 import java.util.Date;
 
+import it.flube.libbatchdata.entities.BatchNotificationSettings;
 import it.flube.libbatchdata.entities.DisplayDistance;
 import it.flube.libbatchdata.entities.DisplayTiming;
 import it.flube.libbatchdata.entities.PotentialEarnings;
@@ -96,4 +97,5 @@ public class Batch {
     public void setOfferExpiryTime(Long offerExpiryTime) {
         this.offerExpiryTime = offerExpiryTime;
     }
+
 }

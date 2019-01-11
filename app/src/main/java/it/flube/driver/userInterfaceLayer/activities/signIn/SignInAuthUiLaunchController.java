@@ -20,8 +20,8 @@ public class SignInAuthUiLaunchController {
 
     public void doSignIn(AppCompatActivity activity, int requestCode){
         Timber.tag(TAG).d("clicked sign in button");
-        //new FirebaseAuthUiSignIn().signInForResult(activity, requestCode);
-        new FirebaseAuthUiSignIn().signIn(activity);
+        new FirebaseAuthUiSignIn().signInForResult(activity, requestCode);
+        //new FirebaseAuthUiSignIn().signIn(activity);
     }
     public void close(){
 

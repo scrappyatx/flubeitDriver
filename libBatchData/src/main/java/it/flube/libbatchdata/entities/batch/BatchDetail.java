@@ -6,6 +6,7 @@ package it.flube.libbatchdata.entities.batch;
 
 import java.util.Map;
 
+import it.flube.libbatchdata.entities.BatchNotificationSettings;
 import it.flube.libbatchdata.entities.ContactPerson;
 import it.flube.libbatchdata.entities.Customer;
 import it.flube.libbatchdata.entities.DriverInfo;
@@ -71,6 +72,8 @@ public class BatchDetail {
     private Map<String, Map<String, ContactPerson>> contactPersonsByServiceOrder;
 
     private Customer customer;
+
+    private BatchNotificationSettings batchNotificationSettings;
 
 
     public BatchType getBatchType() {
@@ -263,5 +266,13 @@ public class BatchDetail {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public BatchNotificationSettings getBatchNotificationSettings() {
+        return batchNotificationSettings;
+    }
+
+    public void setBatchNotificationSettings(BatchNotificationSettings batchNotificationSettings) {
+        this.batchNotificationSettings = batchNotificationSettings;
     }
 }

@@ -53,7 +53,7 @@ public class DemoBatchTwoStepWithVehiclePhotos implements DemoBatchInterface {
 
     private BatchHolder createBatch(String clientId, String batchGuid, TargetEnvironmentConstants.TargetEnvironment targetEnvironment) {
 
-        return new BatchHolderBuilder.Builder()
+        return new BatchHolderBuilder.Builder(targetEnvironment)
                 .batchType(BatchDetail.BatchType.MOBILE_DEMO)
                 .claimStatus(BatchDetail.ClaimStatus.NOT_CLAIMED)
                 .guid(batchGuid)
@@ -73,7 +73,7 @@ public class DemoBatchTwoStepWithVehiclePhotos implements DemoBatchInterface {
                 .expectedStartTime(BuilderUtilities.getNowDate())
                 .expectedFinishTime(BuilderUtilities.getFutureDate(150))
                 .offerExpiryTime(BuilderUtilities.getFutureDate(150))
-                .addServiceOrder(new ServiceOrderScaffoldBuilder.Builder()
+                .addServiceOrder(new ServiceOrderScaffoldBuilder.Builder(targetEnvironment)
                         .title("DEMO ORDER")
                         .description("Go to destination and take photos of a car")
                         .startTime(BuilderUtilities.getNowDate())

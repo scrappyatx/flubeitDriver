@@ -2,8 +2,8 @@
   ~ Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
   -->
 
-<resources>
-    <string name="app_name">flube.it Driver</string>
+<resources xmlns:ns2="http://schemas.android.com/tools">
+    <string name="app_name_not_used">flube.it Driver</string>
 
     <string name="app_name_prod">flube.it Driver</string>
     <string name="app_name_demo">flube.it Driver DEMO</string>
@@ -108,7 +108,12 @@
     <string name="login_error_text">error text</string>
 
     <!-- Strings related to auth ui signin launch activity  -->
+    <string name="signing_in_banner_text">Signing In...</string>
     <string name="signin_submit_caption">Sign In</string>
+    <string name="signin_authui_response_error_dialog_title">SignIn Problem</string>
+    <string name="fui_welcome_back_email_header">You\'re a flube.it Driver!</string>
+    <string name="fui_welcome_back_password_prompt_body">Enter your password for %1$s.</string>
+
 
     <!-- Strings related to login controller -->
     <string name="login_auth_failure_message">The email address or password is incorrect</string>

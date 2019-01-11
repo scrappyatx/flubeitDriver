@@ -11,9 +11,12 @@ import java.util.HashMap;
 
 import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.builders.ProductListBuilder;
+import it.flube.libbatchdata.builders.ServiceOrderNotificationSettingsBuilder;
 import it.flube.libbatchdata.builders.StepIdBuilder;
 import it.flube.libbatchdata.builders.TimestampBuilder;
+import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import it.flube.libbatchdata.entities.ProductList;
+import it.flube.libbatchdata.entities.ServiceOrderNotificationSettings;
 import it.flube.libbatchdata.entities.orderStep.StepId;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrderScaffold;
@@ -38,7 +41,7 @@ public class ServiceOrderScaffoldBuilder {
     public static class Builder {
         private ServiceOrderScaffold serviceOrderScaffold;
 
-        public Builder(){
+        public Builder(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
             this.serviceOrderScaffold = new ServiceOrderScaffold();
             this.serviceOrderScaffold.setGuid(BuilderUtilities.generateGuid());
             this.serviceOrderScaffold.setStatus(ServiceOrder.ServiceOrderStatus.NOT_STARTED);
@@ -50,6 +53,8 @@ public class ServiceOrderScaffoldBuilder {
             //initialze product list
             this.serviceOrderScaffold.setProductList(new ProductListBuilder.Builder().build());
 
+            //initialize service order notification status
+            this.serviceOrderScaffold.setServiceOrderNotificationSettings(new ServiceOrderNotificationSettingsBuilder.Builder(targetEnvironment).build());
         }
 
         public Builder guid(String guid) {
@@ -113,6 +118,11 @@ public class ServiceOrderScaffoldBuilder {
 
         public Builder productList(ProductList productList){
             this.serviceOrderScaffold.setProductList(productList);
+            return this;
+        }
+
+        public Builder serviceOrderNotificationSettings(ServiceOrderNotificationSettings serviceOrderNotificationSettings){
+            this.serviceOrderScaffold.setServiceOrderNotificationSettings(serviceOrderNotificationSettings);
             return this;
         }
 

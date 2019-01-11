@@ -40,6 +40,8 @@ public class AccountActivityLayoutComponents implements
         softwareVersion = (TextView) activity.findViewById(R.id.account_software_version);
         buildFlavor = (TextView) activity.findViewById(R.id.account_build_flavor);
         logoutButton = (Button) activity.findViewById(R.id.account_logout_button);
+        logoutButton.setOnClickListener(this);
+
         setInvisible();
         Timber.tag(TAG).d("created");
     }

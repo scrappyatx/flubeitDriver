@@ -9,8 +9,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import it.flube.libbatchdata.builders.BatchNotificationSettingsBuilder;
 import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.builders.DriverInfoBuilder;
+import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import it.flube.libbatchdata.entities.ContactPerson;
 import it.flube.libbatchdata.entities.Customer;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
@@ -40,7 +42,7 @@ public class BatchDetailBuilder {
     public static class Builder{
         private BatchDetail batchDetail;
 
-        public Builder(){
+        public Builder(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
             this.batchDetail = new BatchDetail();
             this.batchDetail.setGuid(BuilderUtilities.generateGuid());
             this.batchDetail.setWorkStatus(BatchDetail.WorkStatus.NOT_STARTED);
@@ -55,6 +57,9 @@ public class BatchDetailBuilder {
             // a batch can have multiple contact persons
             this.batchDetail.setContactPersons(new HashMap<String, ContactPerson>());
             this.batchDetail.setContactPersonsByServiceOrder(new HashMap<String, Map<String, ContactPerson>>());
+
+            //setup batch notification settings
+            this.batchDetail.setBatchNotificationSettings(new BatchNotificationSettingsBuilder.Builder(targetEnvironment).build());
         }
 
         public Builder batchGuid(String guid){

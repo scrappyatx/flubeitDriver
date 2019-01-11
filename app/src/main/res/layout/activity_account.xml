@@ -107,8 +107,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+
         android:background="@color/colorButton"
-        android:onClick="clickLogoutButton"
+        android:textColor="@color/colorButtonText"
+
         android:text="@string/account_logout_caption"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

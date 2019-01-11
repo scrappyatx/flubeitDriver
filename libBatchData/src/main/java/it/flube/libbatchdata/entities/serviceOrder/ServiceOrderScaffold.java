@@ -7,6 +7,7 @@ package it.flube.libbatchdata.entities.serviceOrder;
 import java.util.Map;
 
 import it.flube.libbatchdata.entities.ProductList;
+import it.flube.libbatchdata.entities.ServiceOrderNotificationSettings;
 import it.flube.libbatchdata.entities.Timestamp;
 import it.flube.libbatchdata.entities.orderStep.StepId;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
@@ -34,6 +35,8 @@ public class ServiceOrderScaffold {
     private Map<String, OrderStepInterface> steps;
 
     private ProductList productList;
+
+    private ServiceOrderNotificationSettings serviceOrderNotificationSettings;
 
     public String getGuid() {
         return guid;
@@ -121,5 +124,13 @@ public class ServiceOrderScaffold {
 
     public void setProductList(ProductList productList) {
         this.productList = productList;
+    }
+
+    public ServiceOrderNotificationSettings getServiceOrderNotificationSettings() {
+        return serviceOrderNotificationSettings;
+    }
+
+    public void setServiceOrderNotificationSettings(ServiceOrderNotificationSettings serviceOrderNotificationSettings) {
+        this.serviceOrderNotificationSettings = serviceOrderNotificationSettings;
     }
 }

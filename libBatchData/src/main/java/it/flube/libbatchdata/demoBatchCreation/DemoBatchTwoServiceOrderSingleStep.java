@@ -5,9 +5,11 @@
 package it.flube.libbatchdata.demoBatchCreation;
 
 import it.flube.libbatchdata.builders.AssetTransferBuilder;
+import it.flube.libbatchdata.builders.BatchNotificationSettingsBuilder;
 import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.builders.PotentialEarningsBuilder;
 import it.flube.libbatchdata.builders.ProductListBuilder;
+import it.flube.libbatchdata.builders.ServiceOrderNotificationSettingsBuilder;
 import it.flube.libbatchdata.builders.batch.BatchHolderBuilder;
 import it.flube.libbatchdata.builders.orderSteps.GiveAssetStepBuilder;
 import it.flube.libbatchdata.builders.orderSteps.ReceiveAssetStepBuilder;
@@ -73,7 +75,7 @@ public class DemoBatchTwoServiceOrderSingleStep implements DemoBatchInterface {
 
     private BatchHolder createBatch(String clientId, String batchGuid, TargetEnvironmentConstants.TargetEnvironment targetEnvironment) {
 
-        return new BatchHolderBuilder.Builder()
+        return new BatchHolderBuilder.Builder(targetEnvironment)
                 .batchType(BatchDetail.BatchType.MOBILE_DEMO)
                 .claimStatus(BatchDetail.ClaimStatus.NOT_CLAIMED)
                 .guid(batchGuid)
@@ -94,13 +96,62 @@ public class DemoBatchTwoServiceOrderSingleStep implements DemoBatchInterface {
                 .expectedFinishTime(BuilderUtilities.getFutureDate(150))
                 .offerExpiryTime(BuilderUtilities.getFutureDate(150))
 
-                .addServiceOrder(new ServiceOrderScaffoldBuilder.Builder()
+                // demonstrates setting batch notification settings to something different than the defaults for the target environment
+                .batchNotificationSettings(new BatchNotificationSettingsBuilder.Builder(targetEnvironment)
+                        // order confirmation
+                        .sendEmailToCustomerWithOrderConfirmation(false)
+
+                        // notify driver offer is available
+                        .sendTextToDriverWhenBatchIsMadeAvailableAsPersonalOffer(false)
+                        .sendTextToDriverWhenBatchIsMadeAvailableAsPublicOffer(false)
+
+                        // notify admin when offer expires unclaimed
+                        .sendTextToAdminWhenOfferExpires(false)
+
+                        // notify driver of upcoming scheduled batch
+                        .upcomingScheduledBatchWarningMinutes(13)
+                        .sendAppNotificationToDriverUpcomingScheduledBatch(false)
+                        .sendTextToDriverUpcomingScheduledBatch(false)
+
+                        // warn driver of late start for scheduled batch
+                        .lateWarningTextScheduledBatchSeconds(22)
+                        .lateWarningVoiceCallScheduledBatchSeconds(43)
+                        .sendTextToDriverLateStartWarningScheduledBatch(false)
+                        .voiceCallToDriverLateStartWarningScheduledBatch(false)
+
+                        // notify admin when scheduled batch removed from driver due to NO START
+                        .sendTextToAdminWhenScheduledBatchRemovedDueToNoStart(false)
+                        .build())
+
+                .addServiceOrder(new ServiceOrderScaffoldBuilder.Builder(targetEnvironment)
                         .title(SERVICE_ORDER_ONE_TITLE)
                         .description(SERVICE_ORDER_ONE_DESCRIPTION)
                         .startTime(BuilderUtilities.getNowDate())
                         .finishTime(BuilderUtilities.getFutureDate(30))
                         .productList(new ProductListBuilder.Builder()
                                 .addCartItem(DemoBatchUtilities.getCustomerCartItem())
+                                .build())
+
+                        // demonstrates setting service order notification to something different than the default
+                        .serviceOrderNotificationSettings(new ServiceOrderNotificationSettingsBuilder.Builder(targetEnvironment)
+                                // notify when order started
+                                .sendTextToServiceProviderWhenOrderStarted(false)
+                                .sendVoiceCallToServiceProviderWhenOrderStarted(false)
+
+                                // notify when driver is navigating to customer
+                                .sendTextToCustomerWhenDriverNavigatingToTheirLocation(false)
+                                .sendEmailToCustomerWhenDriverNavigatingToTheirLocation(false)
+
+                                // notify driver when an order step is behind schedule
+                                .stepLateMinutes(18)
+                                .stepVeryLateMinutes(36)
+                                .sendAppNotificationToDriverWhenStepIsLate(false)
+                                .sendTextToDriverWhenStepIsLate(false)
+                                .voiceCallDriverWhenStepIsVeryLate(false)
+
+                                // notify admin when an order step is behind schedule
+                                .sendTextToAdminWhenStepIsLate(false)
+                                .sendTextToAdminWhenStepIsVeryLate(false)
                                 .build())
 
                         .addStep(new GiveAssetStepBuilder.Builder()
@@ -118,11 +169,33 @@ public class DemoBatchTwoServiceOrderSingleStep implements DemoBatchInterface {
 
                         .build())
 
-                .addServiceOrder(new ServiceOrderScaffoldBuilder.Builder()
+                .addServiceOrder(new ServiceOrderScaffoldBuilder.Builder(targetEnvironment)
                         .title(SERVICE_ORDER_TWO_TITLE)
                         .description(SERVICE_ORDER_TWO_DESCRIPTION)
                         .startTime(BuilderUtilities.getNowDate())
                         .finishTime(BuilderUtilities.getFutureDate(30))
+
+                        // demonstrates setting service order notification to something different than the default
+                        .serviceOrderNotificationSettings(new ServiceOrderNotificationSettingsBuilder.Builder(targetEnvironment)
+                                // notify when order started
+                                .sendTextToServiceProviderWhenOrderStarted(true)
+                                .sendVoiceCallToServiceProviderWhenOrderStarted(true)
+
+                                // notify when driver is navigating to customer
+                                .sendTextToCustomerWhenDriverNavigatingToTheirLocation(true)
+                                .sendEmailToCustomerWhenDriverNavigatingToTheirLocation(true)
+
+                                // notify driver when an order step is behind schedule
+                                .stepLateMinutes(22)
+                                .stepVeryLateMinutes(44)
+                                .sendAppNotificationToDriverWhenStepIsLate(true)
+                                .sendTextToDriverWhenStepIsLate(true)
+                                .voiceCallDriverWhenStepIsVeryLate(true)
+
+                                // notify admin when an order step is behind schedule
+                                .sendTextToAdminWhenStepIsLate(true)
+                                .sendTextToAdminWhenStepIsVeryLate(true)
+                                .build())
 
                         .addStep(new ReceiveAssetStepBuilder.Builder()
                                 .title(STEP_2_TITLE)

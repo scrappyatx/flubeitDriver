@@ -4,11 +4,13 @@
 
 package it.flube.libbatchdata.demoBatchCreation;
 
+import it.flube.libbatchdata.builders.BatchNotificationSettingsBuilder;
 import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.builders.DestinationBuilder;
 import it.flube.libbatchdata.builders.PhotoRequestBuilder;
 import it.flube.libbatchdata.builders.PotentialEarningsBuilder;
 import it.flube.libbatchdata.builders.ProductListBuilder;
+import it.flube.libbatchdata.builders.ServiceOrderNotificationSettingsBuilder;
 import it.flube.libbatchdata.builders.batch.BatchHolderBuilder;
 import it.flube.libbatchdata.builders.orderSteps.NavigationStepBuilder;
 import it.flube.libbatchdata.builders.orderSteps.PhotoStepBuilder;
@@ -52,7 +54,7 @@ public class DemoBatchSimpleTwoStep implements DemoBatchInterface {
 
     private BatchHolder createBatch(String clientId, String batchGuid, TargetEnvironmentConstants.TargetEnvironment targetEnvironment) {
 
-        return new BatchHolderBuilder.Builder()
+        return new BatchHolderBuilder.Builder(targetEnvironment)
                 .batchType(BatchDetail.BatchType.MOBILE_DEMO)
                 .claimStatus(BatchDetail.ClaimStatus.NOT_CLAIMED)
                 .guid(batchGuid)
@@ -72,7 +74,8 @@ public class DemoBatchSimpleTwoStep implements DemoBatchInterface {
                 .expectedStartTime(BuilderUtilities.getNowDate())
                 .expectedFinishTime(BuilderUtilities.getFutureDate(150))
                 .offerExpiryTime(BuilderUtilities.getFutureDate(150))
-                .addServiceOrder(new ServiceOrderScaffoldBuilder.Builder()
+
+                .addServiceOrder(new ServiceOrderScaffoldBuilder.Builder(targetEnvironment)
                         .title("DEMO ORDER")
                         .description("Walk to the destination and take a photo")
                         .startTime(BuilderUtilities.getNowDate())
@@ -80,6 +83,7 @@ public class DemoBatchSimpleTwoStep implements DemoBatchInterface {
                         .productList(new ProductListBuilder.Builder()
                                 .addCartItem(DemoBatchUtilities.getCustomerCartItem())
                                 .build())
+
                         .addStep(new NavigationStepBuilder.Builder()
                                 .title("Go to end of street")
                                 .description("Navigate to the end of the street")
@@ -92,6 +96,7 @@ public class DemoBatchSimpleTwoStep implements DemoBatchInterface {
                                         .build())
                                 .milestoneWhenFinished("Arrived At Destination")
                                 .build())
+
                         .addStep(new PhotoStepBuilder.Builder()
                                 .title("Take three photos")
                                 .description("Take three photos of things around you")

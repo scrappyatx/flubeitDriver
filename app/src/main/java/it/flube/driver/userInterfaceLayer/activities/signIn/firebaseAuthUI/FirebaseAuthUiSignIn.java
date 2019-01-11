@@ -12,6 +12,7 @@ import com.firebase.ui.auth.AuthUI;
 
 import java.util.Arrays;
 
+import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
 import timber.log.Timber;
 
@@ -40,11 +41,12 @@ public class FirebaseAuthUiSignIn {
         String privacyUrl = AndroidDevice.getInstance().getCloudConfig().getDriverPrivacyUrl();
 
         return AuthUI.getInstance().createSignInIntentBuilder()
-                .setAvailableProviders(Arrays.asList(new AuthUI.IdpConfig.EmailBuilder().build()))
+                .setAvailableProviders(Arrays.asList(new AuthUI.IdpConfig.EmailBuilder().setAllowNewAccounts(false).setRequireName(false).build()))
                 //.setAvailableProviders(
                 //        Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
                 //                new AuthUI.IdpConfig.Builder(AuthUI.PHONE_VERIFICATION_PROVIDER).build()))
                 //.setAllowNewEmailAccounts(false)
+                .setLogo(R.drawable.flubeit_logo_caption_white_background)
                 .setTosAndPrivacyPolicyUrls(termsUrl,privacyUrl)
                 //.setTosUrl(TermsOfServiceUrl)
                 //.setPrivacyPolicyUrl(PrivacyPolicyUrl)

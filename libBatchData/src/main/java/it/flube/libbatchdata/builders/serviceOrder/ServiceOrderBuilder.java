@@ -7,7 +7,10 @@ package it.flube.libbatchdata.builders.serviceOrder;
 
 import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.builders.ProductListBuilder;
+import it.flube.libbatchdata.builders.ServiceOrderNotificationSettingsBuilder;
+import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import it.flube.libbatchdata.entities.ProductList;
+import it.flube.libbatchdata.entities.ServiceOrderNotificationSettings;
 import it.flube.libbatchdata.entities.Timestamp;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 
@@ -30,11 +33,12 @@ public class ServiceOrderBuilder {
     public static class Builder {
         private ServiceOrder serviceOrder;
 
-        public Builder(){
+        public Builder(TargetEnvironmentConstants.TargetEnvironment targetEnvironment){
             this.serviceOrder = new ServiceOrder();
             this.serviceOrder.setGuid(BuilderUtilities.generateGuid());
             this.serviceOrder.setStatus(ServiceOrder.ServiceOrderStatus.NOT_STARTED);
             this.serviceOrder.setProductList(new ProductListBuilder.Builder().build());
+            this.serviceOrder.setServiceOrderNotificationSettings(new ServiceOrderNotificationSettingsBuilder.Builder(targetEnvironment).build());
         }
 
         public Builder guid(String guid){
@@ -89,6 +93,11 @@ public class ServiceOrderBuilder {
 
         public Builder productList(ProductList productList){
             this.serviceOrder.setProductList(productList);
+            return this;
+        }
+
+        public Builder serviceOrderNotificationSettings(ServiceOrderNotificationSettings serviceOrderNotificationSettings){
+            this.serviceOrder.setServiceOrderNotificationSettings(serviceOrderNotificationSettings);
             return this;
         }
 

@@ -4,14 +4,18 @@
 
 package it.flube.driver.userInterfaceLayer.activities.signIn;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.firebase.ui.auth.IdpResponse;
+
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
+import it.flube.driver.userInterfaceLayer.dialogs.AuthUiResponseErrorAlertDialog;
 import it.flube.driver.userInterfaceLayer.dialogs.QuitAppAlertDialog;
 import it.flube.driver.userInterfaceLayer.userInterfaceEventHandlers.UserInterfaceAuthAlertEventHandler;
 import it.flube.driver.userInterfaceLayer.userInterfaceEventHandlers.UserInterfaceAuthChangeEventHandler;
@@ -23,17 +27,18 @@ import timber.log.Timber;
  * Project : Driver
  */
 
-public class SignInAuthUiLaunchActivity extends AppCompatActivity {
+public class SignInAuthUiLaunchActivity extends AppCompatActivity
+        implements SignInAuthUiLaunchActivityLayoutComponents.Response {
 
     private static final String TAG = "SignInAuthUiLaunchActivity";
 
     private static final int REQUEST_CODE_SIGN_IN = 1172;
 
     private SignInAuthUiLaunchController controller;
+    private SignInAuthUiLaunchActivityLayoutComponents layout;
     private UserInterfaceAuthChangeEventHandler userInterfaceAuthChangeEventHandler;
     private UserInterfaceAuthAlertEventHandler userInterfaceAuthAlertEventHandler;
 
-    private Button signInButton;
 
     private String activityGuid;
 
@@ -44,9 +49,9 @@ public class SignInAuthUiLaunchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_sign_in_auth_ui_launch);
-        signInButton = (Button) findViewById(R.id.sign_in_auth_ui_sign_in_button);
 
         controller = new SignInAuthUiLaunchController();
+        layout = new SignInAuthUiLaunchActivityLayoutComponents(this, this);
 
         activityGuid = BuilderUtilities.generateGuid();
         Timber.tag(TAG).d("onCreate (%s)", activityGuid);
@@ -57,17 +62,15 @@ public class SignInAuthUiLaunchActivity extends AppCompatActivity {
         super.onResume();
         Timber.tag(TAG).d("onResume (%s)", activityGuid);
 
-
-
         userInterfaceAuthChangeEventHandler = new UserInterfaceAuthChangeEventHandler(this);
         userInterfaceAuthAlertEventHandler = new UserInterfaceAuthAlertEventHandler(this);
 
         if (AndroidDevice.getInstance().getCloudAuth().hasDriver()) {
             Timber.tag(TAG).d("...we have a signed in user");
-            signInButton.setVisibility(View.INVISIBLE);
+            layout.showSigningInAnimation();
         } else {
             Timber.tag(TAG).d("...we don't have a signed in user");
-            signInButton.setVisibility(View.VISIBLE);
+            layout.showSignInButton();
         }
 
     }
@@ -98,16 +101,51 @@ public class SignInAuthUiLaunchActivity extends AppCompatActivity {
     public void onDestroy(){
         Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
         controller.close();
+        layout.close();
         super.onDestroy();
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Timber.tag(TAG).d("onActivityResult (%s), requestCode -> (%s)", Integer.toString(requestCode), Integer.toString(requestCode));
 
-    public void clickSignInButton(View v) {
+        layout.showSigningInAnimation();
+
+        // Check which request we're responding to
+        if (requestCode == REQUEST_CODE_SIGN_IN) {
+            Timber.tag(TAG).d("...this is the response code for our activity");
+            IdpResponse response = IdpResponse.fromResultIntent(data);
+
+            if (resultCode == RESULT_OK) {
+                //sign in SUCCESS
+                Timber.tag(TAG).d("   ...Sign In SUCCESS!");
+            } else {
+                //sign in FAILURE
+                layout.showSignInButton();
+                Timber.tag(TAG).d("   ...Sign In FAILURE!");
+                if (response == null) {
+                    //user pressed the back button, show message cancelled
+                    Timber.tag(TAG).d("      ...user cancelled");
+
+                } else {
+                    //some other problem
+                    Timber.tag(TAG).d("      ...errorCode -> %s", Integer.toString(response.getError().getErrorCode()));
+                    Timber.tag(TAG).d("      ...errorDescription -> %s", response.getError().getLocalizedMessage());
+
+                    new AuthUiResponseErrorAlertDialog().getAlertDialog(this,response.getError().getLocalizedMessage());
+                }
+
+            }
+        } else {
+            Timber.tag(TAG).d("...this isn't the response code for our activity");
+        }
+    }
+
+
+    public void signInButtonClicked() {
         //submit button clicked
         Timber.tag(TAG).d("clicked SignIn");
-        signInButton.setVisibility(View.INVISIBLE);
-
         controller.doSignIn(this, REQUEST_CODE_SIGN_IN);
     }
 

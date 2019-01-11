@@ -71,4 +71,55 @@ public class EnvironmentConstantsStaging {
     public static final String GENERIC_ICON_URL_STAGING = "https://firebasestorage.googleapis.com/v0/b/flubeitdriver-staging.appspot.com/o/mobileAppDriver%2FserviceProviders%2Foil-change-icon.png?alt=media&token=9bd94245-cf13-4f59-be12-b33c6ff2c7fa";
 
 
+    ///
+    ///  BatchNotificationSettings
+    ///
+    ///
+    // notifications when order is placed by customer
+    public static final Boolean SEND_EMAIL_TO_CUSTOMER_WITH_ORDER_CONFIRMATION_STAGING = true;
+
+    // notifications to driver when this batch is available as an offer
+    public static final Boolean SEND_TEXT_TO_DRIVER_WHEN_BATCH_IS_MADE_AVAILABLE_AS_PUBLIC_OFFER_STAGING = true;
+    public static final Boolean SEND_TEXT_TO_DRIVER_WHEN_BATCH_IS_MADE_AVAILABLE_AS_PERSONAL_OFFER_STAGING = true;
+
+    // notifications when offer expires without being claimed
+    public static final Boolean SEND_TEXT_TO_ADMIN_WHEN_OFFER_EXPIRES_STAGING = true;
+
+    // notifications to driver prior to batch starting
+    public static final int UPCOMING_SCHEDULED_BATCH_WARNING_MINUTES_STAGING = 30;
+    public static final Boolean SEND_APP_NOTIFICATION_TO_DRIVER_UPCOMING_SCHEDULED_BATCH_STAGING = true;
+    public static final Boolean SEND_TEXT_TO_DRIVER_UPCOMING_SCHEDULED_BATCH_STAGING = true;
+
+    // notifications to driver for batch late start
+    public static final int LATE_WARNING_TEXT_SCHEDULED_BATCH_SECONDS_STAGING = 120;
+    public static final int LATE_WARNING_VOICE_CALL_SCHEDULED_BATCH_SECONDS_STAGING = 240;
+    public static final Boolean SEND_TEXT_TO_DRIVER_LATE_START_WARNING_SCHEDULED_BATCH_STAGING = true;
+    public static final Boolean VOICE_CALL_TO_DRIVER_LATE_START_WARNING_SCHEDULED_BATCH_STAGING = true;
+
+    // notifications to send when batch is removed from driver due to NO START
+    public static final Boolean SEND_TEXT_TO_ADMIN_WHEN_SCHEDULED_BATCH_REMOVED_DUE_TO_NO_START_STAGING = true;
+
+    ///  ServiceOrderNotificationSettings
+    ///
+    // notifications when order is started
+    public static final Boolean SEND_TEXT_TO_SERVICE_PROVIDER_WHEN_ORDER_IS_STARTED_STAGING = true;
+    public static final Boolean SEND_EMAIL_TO_SERVICE_PROVIDER_WHEN_ORDER_IS_STARTED_STAGING = true;
+    public static final Boolean SEND_VOICE_CALL_TO_SERVICE_PROVIDER_WHEN_ORDER_IS_STARTED_STAGING = true;
+
+    //notifications when driver is navigating to customer
+    public static final Boolean SEND_TEXT_TO_CUSTOMER_WHEN_DRIVER_NAVIGATING_TO_THEIR_LOCATION_STAGING = true;
+    public static final Boolean SEND_EMAIL_TO_CUSTOMER_WHEN_DRIVER_NAVIGATING_TO_THEIR_LOCATION_STAGING = true;
+
+
+    // notifications to send if an order step is late
+    public static final int STEP_LATE_MINUTES_STAGING = 20;
+    public static final int STEP_VERY_LATE_MINUTES_STAGING = 30;
+
+    public static final Boolean SEND_APP_NOTIFICATION_TO_DRIVER_WHEN_STEP_IS_LATE_STAGING = true;
+    public static final Boolean SEND_TEXT_TO_DRIVER_WHEN_STEP_IS_LATE_STAGING = true;
+    public static final Boolean SEND_VOICE_CALL_TO_DRIVER_WHEN_STEP_IS_LATE_STAGING = true;
+
+    public static final Boolean SEND_TEXT_TO_ADMIN_WHEN_STEP_IS_LATE_STAGING = true;
+    public static final Boolean SEND_TEXT_TO_ADMIN_WHEN_STEP_IS_VERY_LATE_STAGING = true;
+
 }
