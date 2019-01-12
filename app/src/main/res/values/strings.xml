@@ -108,9 +108,10 @@
     <string name="login_error_text">error text</string>
 
     <!-- Strings related to auth ui signin launch activity  -->
-    <string name="signing_in_banner_text">Signing In...</string>
+    <string name="signing_in_banner_text">Signing in...</string>
     <string name="signin_submit_caption">Sign In</string>
     <string name="signin_authui_response_error_dialog_title">SignIn Problem</string>
+    <string name="fui_sign_in_default">Sign in to flube.it </string>
     <string name="fui_welcome_back_email_header">You\'re a flube.it Driver!</string>
     <string name="fui_welcome_back_password_prompt_body">Enter your password for %1$s.</string>
 

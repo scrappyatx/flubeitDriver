@@ -18,7 +18,7 @@ public class BuildVariantTargetEnvironment {
     private static final String PRODUCTION_TAG = "production";
     private static final String DEMO_TAG = "demo";
     private static final String STAGING_TAG = "staging";
-    private static final String DEVELOPMENT_TAG = "dev";
+    private static final String DEVELOPMENT_TAG = "develop";
 
     public static TargetEnvironmentConstants.TargetEnvironment getTargetEnvironment(){
         Timber.tag(TAG).d("getTargetEnvironment");
@@ -33,7 +33,7 @@ public class BuildVariantTargetEnvironment {
             case STAGING_TAG:
                 return TargetEnvironmentConstants.TargetEnvironment.STAGING;
             case DEVELOPMENT_TAG:
-                return TargetEnvironmentConstants.TargetEnvironment.STAGING;
+                return TargetEnvironmentConstants.TargetEnvironment.DEVELOPMENT;
             default:
                 /// this should never happen
                 Timber.tag(TAG).w("   ...unrecognized flavor, BuildConfig.FLAVOR -> " + BuildConfig.FLAVOR);

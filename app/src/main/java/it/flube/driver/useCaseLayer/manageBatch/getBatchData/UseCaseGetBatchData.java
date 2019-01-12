@@ -27,7 +27,7 @@ public class UseCaseGetBatchData implements
         CloudScheduledBatchInterface.GetServiceOrderListResponse,
         CloudScheduledBatchInterface.GetRouteStopListResponse {
 
-    private final static String TAG = "UseCaseGetPublicOfferData";
+    private final static String TAG = "UseCaseGetBatchData";
 
     private final CloudScheduledBatchInterface cloudBatch;
     private final Driver driver;
@@ -74,7 +74,7 @@ public class UseCaseGetBatchData implements
     ////
     ////    A batch may not always have a route stop list (if there are no navigation steps in the service order)
     ////
-    public void cloudGetScheduledBatchRouteStopListSuccess(ArrayList<RouteStop> stopList){
+    public void cloudGetScheduledBatchRouteStopListSuccess(ArrayList<RouteStop> routeList){
         Timber.tag(TAG).d("step 3 -> got route stop list!");
         this.routeList = new ArrayList<RouteStop>();
         this.routeList.clear();
@@ -84,9 +84,20 @@ public class UseCaseGetBatchData implements
     }
 
     public void cloudGetScheduledBatchRouteStopListFailure(){
-        Timber.tag(TAG).w("couldn't get route stop list");
-        this.routeList = new ArrayList<RouteStop>();
-        response.getBatchDataSuccess(this.batchDetail, this.orderList, this.routeList);
+        Timber.tag(TAG).d("step 3 -> cloudGetScheduledBatchRouteStopListFailure");
+
+        if (batchDetail.getRouteStopCount() == 0){
+            /// normally an offer should have SOMEWHERE to go, but a lot of demo offers don't
+            /// so this is OK, we were expecting no route stops, and that is what we got
+            /// so we'll just make an empty route stop list, and return success
+            Timber.tag(TAG).d("...all good, we were expecting zero route stops, and got zero route stops");
+            this.routeList = new ArrayList<RouteStop>();
+            response.getBatchDataSuccess(this.batchDetail, this.orderList, this.routeList);
+        } else {
+            /// this is bad.  We were expecting some route stops, and got no data
+            Timber.tag(TAG).w("...uh oh, we were expecting " + batchDetail.getRouteStopCount().toString() + " route stops, but got zero route stops");
+            response.getBatchDataFailure();
+        }
     }
 
     ///
