@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import it.flube.driver.R;
+import it.flube.driver.dataLayer.AndroidDevice;
+import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.PhotoRequestUtilities;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.libbatchdata.builders.BuilderUtilities;
@@ -91,17 +93,19 @@ public class PhotoTakeActivity extends AppCompatActivity implements
         Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
         controller.close();
         camera.close();
+        controller = null;
+        camera = null;
         super.onDestroy();
 
     }
 
     public void clickPhotoButton(View view){
         Timber.tag(TAG).d("clickPhotoButton (%s) START...", activityGuid);
-        camera.captureRequest(controller.getDevice(), this);
+        camera.captureRequest(AndroidDevice.getInstance(), this);
     }
 
     /// response interface for getPhotoDetailRequest
-    public void photoDetailSuccess(PhotoRequest photoRequest){
+    public void photoDetailSuccess(Driver driver, PhotoRequest photoRequest){
         Timber.tag(TAG).d("photoDetailSuccess (%s) : photoRequestGuid -> " + photoRequest.getGuid(), activityGuid);
 
         launchActivityDataFound = true;
@@ -113,10 +117,22 @@ public class PhotoTakeActivity extends AppCompatActivity implements
         camera.setVisible();
     }
 
-    public void photoDetailFailure(){
-        Timber.tag(TAG).d("photoDetailFailure (%s)", activityGuid);
+    public void photoDetailFailureNoDriver(){
+        Timber.tag(TAG).d("photoDetailFailureNoDriver (%s)", activityGuid);
         launchActivityDataFound = false;
     }
+
+    public void photoDetailFailureDriverButNoPhotoRequest(Driver driver){
+        Timber.tag(TAG).d("photoDetailFailureDriverButNoPhotoRequest (%s)", activityGuid);
+        launchActivityDataFound = false;
+    }
+
+    public void photoDetailFailureIntentKeysNotFound(){
+        Timber.tag(TAG).d("photoDetailFailureIntentKeysNotFound (%s)", activityGuid);
+        launchActivityDataFound = false;
+    }
+
+    //// interface for PhotoTakeLayoutComponents.CaptureResponse
 
 
     public void captureSuccess(PhotoRequest photoRequest){

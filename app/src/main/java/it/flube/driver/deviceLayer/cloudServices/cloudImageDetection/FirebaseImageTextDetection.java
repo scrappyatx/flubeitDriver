@@ -44,6 +44,9 @@ public class FirebaseImageTextDetection implements
         //create a vision image from the bitmap
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
 
+        //recycle bitmap
+        bitmap.recycle();
+
         Timber.tag(TAG).d("   ...getting detector with desired options");
         FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
                 .getOnDeviceTextRecognizer();

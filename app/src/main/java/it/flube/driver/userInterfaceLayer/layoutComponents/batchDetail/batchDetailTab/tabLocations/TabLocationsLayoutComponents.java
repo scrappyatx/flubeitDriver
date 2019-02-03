@@ -5,6 +5,7 @@
 package it.flube.driver.userInterfaceLayer.layoutComponents.batchDetail.batchDetailTab.tabLocations;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -19,30 +20,27 @@ import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.mapbox.mapboxsdk.maps.Style;
+//import com.mapbox.mapboxsdk.maps.Style;
 
 import java.util.ArrayList;
 
 import it.flube.driver.R;
-import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.layoutComponents.MapboxOnChangeListener;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.layoutComponents.mapboxOnChangeListeners.MapboxOnCameraDidChangeListener;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.layoutComponents.mapboxOnChangeListeners.MapboxOnCameraIsChangingListener;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.layoutComponents.mapboxOnChangeListeners.MapboxOnCameraWillChangeListener;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.layoutComponents.mapboxOnChangeListeners.MapboxOnDidBecomeIdleListener;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.layoutComponents.mapboxOnChangeListeners.MapboxOnDidFailLoadingMapListener;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.layoutComponents.mapboxOnChangeListeners.MapboxOnDidFinishLoadingMapListener;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.layoutComponents.mapboxOnChangeListeners.MapboxOnDidFinishLoadingStyleListener;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.layoutComponents.mapboxOnChangeListeners.MapboxOnDidFinishRenderingFrameListener;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.layoutComponents.mapboxOnChangeListeners.MapboxOnDidFinishRenderingMapListener;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.layoutComponents.mapboxOnChangeListeners.MapboxOnSourceChangedListener;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.layoutComponents.mapboxOnChangeListeners.MapboxOnWillStartLoadingMapListener;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.layoutComponents.mapboxOnChangeListeners.MapboxOnWillStartRenderingFrameListener;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.layoutComponents.mapboxOnChangeListeners.MapboxOnWillStartRenderingMapListener;
 import it.flube.libbatchdata.entities.RouteStop;
 import timber.log.Timber;
-
-import static com.mapbox.mapboxsdk.maps.MapView.DID_FAIL_LOADING_MAP;
-import static com.mapbox.mapboxsdk.maps.MapView.DID_FINISH_LOADING_MAP;
-import static com.mapbox.mapboxsdk.maps.MapView.DID_FINISH_LOADING_STYLE;
-import static com.mapbox.mapboxsdk.maps.MapView.DID_FINISH_RENDERING_FRAME;
-import static com.mapbox.mapboxsdk.maps.MapView.DID_FINISH_RENDERING_FRAME_FULLY_RENDERED;
-import static com.mapbox.mapboxsdk.maps.MapView.DID_FINISH_RENDERING_MAP;
-import static com.mapbox.mapboxsdk.maps.MapView.DID_FINISH_RENDERING_MAP_FULLY_RENDERED;
-import static com.mapbox.mapboxsdk.maps.MapView.REGION_DID_CHANGE;
-import static com.mapbox.mapboxsdk.maps.MapView.REGION_DID_CHANGE_ANIMATED;
-import static com.mapbox.mapboxsdk.maps.MapView.REGION_IS_CHANGING;
-import static com.mapbox.mapboxsdk.maps.MapView.REGION_WILL_CHANGE;
-import static com.mapbox.mapboxsdk.maps.MapView.REGION_WILL_CHANGE_ANIMATED;
-import static com.mapbox.mapboxsdk.maps.MapView.SOURCE_DID_CHANGE;
-import static com.mapbox.mapboxsdk.maps.MapView.WILL_START_LOADING_MAP;
-import static com.mapbox.mapboxsdk.maps.MapView.WILL_START_RENDERING_FRAME;
-import static com.mapbox.mapboxsdk.maps.MapView.WILL_START_RENDERING_MAP;
 
 /**
  * Created on 1/8/2018
@@ -50,7 +48,8 @@ import static com.mapbox.mapboxsdk.maps.MapView.WILL_START_RENDERING_MAP;
  */
 
 public class TabLocationsLayoutComponents
-        implements OnMapReadyCallback {
+        implements OnMapReadyCallback, Style.OnStyleLoaded {
+
     public final static String TAG = "TabLocationsLayoutComponents";
     ///
     ///     wrapper class for the layout file:
@@ -63,12 +62,44 @@ public class TabLocationsLayoutComponents
     private ArrayList<RouteStop> routeList;
 
     public TabLocationsLayoutComponents(AppCompatActivity activity, Bundle savedInstanceState){
-        Mapbox.getInstance(activity, activity.getString(R.string.mapbox_access_token));
+        Timber.tag(TAG).d("creating...");
+
+        //Mapbox.getInstance(activity, activity.getString(R.string.mapbox_access_token));
 
         layout = (ConstraintLayout) activity.findViewById(R.id.batch_tab_locations_viewgroup);
 
         mapView = (MapView) activity.findViewById(R.id.mapView);
-        mapView.addOnMapChangedListener(new MapboxOnChangeListener());
+        // add listeners - there's a shit ton of them
+
+        // camera listeners
+        mapView.addOnCameraWillChangeListener(new MapboxOnCameraWillChangeListener());
+        mapView.addOnCameraDidChangeListener(new MapboxOnCameraDidChangeListener());
+        //mapView.addOnCameraIsChangingListener(new MapboxOnCameraIsChangingListener());
+
+        // map loading listener
+        mapView.addOnWillStartLoadingMapListener(new MapboxOnWillStartLoadingMapListener());
+        mapView.addOnDidFailLoadingMapListener(new MapboxOnDidFailLoadingMapListener());
+        mapView.addOnDidFinishLoadingMapListener(new MapboxOnDidFinishLoadingMapListener());
+
+
+        // style loading
+        mapView.addOnDidFinishLoadingStyleListener(new MapboxOnDidFinishLoadingStyleListener());
+
+        // frame rendering
+        //mapView.addOnWillStartRenderingFrameListener(new MapboxOnWillStartRenderingFrameListener());
+        //mapView.addOnDidFinishRenderingFrameListener(new MapboxOnDidFinishRenderingFrameListener());
+
+        //map rendering
+        mapView.addOnWillStartRenderingMapListener(new MapboxOnWillStartRenderingMapListener());
+        mapView.addOnDidFinishRenderingMapListener(new MapboxOnDidFinishRenderingMapListener());
+
+        // map source changes
+        mapView.addOnSourceChangedListener(new MapboxOnSourceChangedListener());
+
+
+
+        // map is idle
+        mapView.addOnDidBecomeIdleListener(new MapboxOnDidBecomeIdleListener());
 
         mapView.onCreate(savedInstanceState);
 
@@ -86,12 +117,23 @@ public class TabLocationsLayoutComponents
         Timber.tag(TAG).d("...setValues");
     }
 
-    public void onMapReady(MapboxMap mapboxMap) {
-        Timber.tag(TAG).d("     ...onMapReady START...");
+    public void onMapReady(@NonNull MapboxMap mapboxMap) {
+        Timber.tag(TAG).d("     ...onMapReady");
         this.map = mapboxMap;
+        //this.map.setStyle(Style.MAPBOX_STREETS);
+        // needed for mapbox sdk 7.0.0
+        this.map.setStyle(Style.MAPBOX_STREETS, this);
+        //addMarkersForRouteStops();
+        Timber.tag(TAG).d("     ...onMapReady COMPLETE");
+    }
+
+    //
+    // just needed for mapbox sdk 7.0.0
+    public void onStyleLoaded(@NonNull Style style){
+        Timber.tag(TAG).d("     ...onStyleLoaded");
         /// map the locations to visit on the map
         addMarkersForRouteStops();
-        Timber.tag(TAG).d("     ...onMapReady COMPLETE");
+        Timber.tag(TAG).d("     ...onStyleLoaded COMPLETE");
     }
 
     private void addMarkersForRouteStops(){
@@ -152,7 +194,7 @@ public class TabLocationsLayoutComponents
 
     public void onStart(){
         mapView.onStart();
-        Timber.tag(TAG).d("onSaveInstanceState");
+        Timber.tag(TAG).d("onStart");
     }
     public void onPause() {
         mapView.onPause();
@@ -161,12 +203,12 @@ public class TabLocationsLayoutComponents
 
     public void onResume(){
         mapView.onResume();
-        Timber.tag(TAG).d("onSaveInstanceState");
+        Timber.tag(TAG).d("onResume");
     }
 
     public void onStop(){
         mapView.onStop();
-        Timber.tag(TAG).d("onSaveInstanceState");
+        Timber.tag(TAG).d("onStop");
     }
 
     public void onSaveInstanceState(Bundle outState) {

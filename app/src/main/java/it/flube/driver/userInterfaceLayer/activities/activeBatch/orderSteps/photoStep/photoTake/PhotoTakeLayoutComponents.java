@@ -60,7 +60,6 @@ public class PhotoTakeLayoutComponents implements
 
     //private CameraView cameraView;
     private Fotoapparat fotoapparat;
-
     private io.fotoapparat.view.CameraView cameraView;
     private LottieAnimationView animation;
     private Button button;
@@ -74,6 +73,8 @@ public class PhotoTakeLayoutComponents implements
         //cameraView = (CameraView) activity.findViewById(R.id.camera);
         button = (Button) activity.findViewById(R.id.photo_button);
         animation = (LottieAnimationView) activity.findViewById(R.id.photo_processing_animation);
+        animation.useHardwareAcceleration(true);
+        animation.enableMergePathsForKitKatAndAbove(true);
 
         cameraView = (io.fotoapparat.view.CameraView) activity.findViewById(R.id.camera);
 
@@ -81,7 +82,7 @@ public class PhotoTakeLayoutComponents implements
                         .with(activity)
                         .into(cameraView)
                         .previewScaleType(ScaleType.CenterCrop)
-                        .photoResolution(ResolutionSelectorsKt.lowestResolution())
+                        .photoResolution(ResolutionSelectorsKt.highestResolution())
                         .lensPosition(back())       // we want back camera
                         .build();
 
@@ -94,7 +95,7 @@ public class PhotoTakeLayoutComponents implements
     }
 
     public void captureRequest(MobileDeviceInterface device, CaptureResponse response){
-        Timber.tag(TAG).d("...onResume");
+        Timber.tag(TAG).d("...captureRequest");
         this.device = device;
         this.response = response;
 
@@ -107,20 +108,18 @@ public class PhotoTakeLayoutComponents implements
         animation.playAnimation();
 
         //cameraView.captureImage(this);
-        PhotoResult photoResult = fotoapparat.autoFocus().takePicture();
+        //PhotoResult photoResult = fotoapparat.autoFocus().takePicture();
         //photoResult.toBitmap().whenDone(this);
         File saveFile = device.getDeviceImageStorage().createUniqueDeviceImageFile();
         imageDeviceAbsoluteFileName = saveFile.getAbsoluteFile().toString();
 
-        photoResult.saveToFile(saveFile).whenDone(this);
+        //photoResult.saveToFile(saveFile).whenDone(this);
+        fotoapparat.autoFocus().takePicture().saveToFile(saveFile).whenDone(this);
     }
 
     /// fotoapparat call back
     public void whenDone(Unit unit){
         Timber.tag(TAG).d("whenDone -> saved to file");
-
-
-
         device.getUseCaseEngine().getUseCaseExecutor().execute(new UseCasePhotoDetectImageLabel(device, imageDeviceAbsoluteFileName, photoRequest, this));
     }
 
@@ -220,9 +219,16 @@ public class PhotoTakeLayoutComponents implements
     }
 
     public void close(){
+        animation.setImageBitmap(null);
+
         cameraView = null;
         button = null;
         animation=null;
+        fotoapparat = null;
+        device = null;
+        photoRequest = null;
+        response = null;
+
         Timber.tag(TAG).d("components closed");
     }
 

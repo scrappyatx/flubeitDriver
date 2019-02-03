@@ -222,7 +222,7 @@ public class AuthorizePaymentLayoutComponents implements
     ///
     public void stepDetailSwipeCompleteButtonClicked(){
         Timber.tag(TAG).d("stepDetailSwipeCompleteButtonClicked");
-        response.stepCompleteClicked(orderStep.getMilestoneWhenFinished());
+        response.stepCompleteClicked(orderStep);
     }
 
     public interface Response {
@@ -230,6 +230,6 @@ public class AuthorizePaymentLayoutComponents implements
 
         void paymentRowClicked(PaymentAuthorization paymentAuthorization);
 
-        void stepCompleteClicked(String milestoneWhenFinished);
+        void stepCompleteClicked(ServiceOrderAuthorizePaymentStep orderStep);
     }
 }

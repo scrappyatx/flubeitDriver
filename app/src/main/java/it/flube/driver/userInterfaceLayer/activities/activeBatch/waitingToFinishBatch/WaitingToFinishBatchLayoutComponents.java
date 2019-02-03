@@ -37,7 +37,12 @@ public class WaitingToFinishBatchLayoutComponents implements
         Timber.tag(TAG).d("creating component");
 
         waitingAnimation = (LottieAnimationView) activity.findViewById(R.id.waiting_to_finish_animation);
+        waitingAnimation.useHardwareAcceleration(true);
+        waitingAnimation.enableMergePathsForKitKatAndAbove(true);
+
         finishedAnimation = (LottieAnimationView) activity.findViewById(R.id.finished_animation);
+        waitingAnimation.useHardwareAcceleration(true);
+        waitingAnimation.enableMergePathsForKitKatAndAbove(true);
 
         banner = (TextView) activity.findViewById(R.id.batch_waiting_to_finish_banner);
 
@@ -104,10 +109,13 @@ public class WaitingToFinishBatchLayoutComponents implements
     }
 
     public void close(){
-        //waitingAnimation = null;
-        //finishedAnimation = null;
-       // banner = null;
-       // response = null;
+        waitingAnimation.setImageBitmap(null);
+        finishedAnimation.setImageBitmap(null);
+
+        waitingAnimation = null;
+        finishedAnimation = null;
+        banner = null;
+        response = null;
         Timber.tag(TAG).d("components closed");
     }
 

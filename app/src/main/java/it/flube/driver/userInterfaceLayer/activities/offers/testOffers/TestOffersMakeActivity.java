@@ -85,7 +85,10 @@ public class TestOffersMakeActivity extends AppCompatActivity implements
         Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
 
         controller.close();
-        //components.close();
+        components.close();
+
+        controller = null;
+        components = null;
         super.onDestroy();
 
     }

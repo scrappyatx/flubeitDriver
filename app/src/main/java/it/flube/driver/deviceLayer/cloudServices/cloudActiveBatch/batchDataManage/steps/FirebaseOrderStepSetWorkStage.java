@@ -78,8 +78,13 @@ public class FirebaseOrderStepSetWorkStage implements OnCompleteListener<Void> {
             }
         }
         response.setOrderStepWorkStageComplete();
+        close();
     }
 
+    private void close(){
+        Timber.tag(TAG).d("close");
+        response = null;
+    }
     public interface Response {
         void setOrderStepWorkStageComplete();
     }

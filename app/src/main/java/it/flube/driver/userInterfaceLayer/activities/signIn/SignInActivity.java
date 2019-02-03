@@ -45,7 +45,10 @@ public class SignInActivity extends AppCompatActivity {
         mSubmitButton = (Button) findViewById(R.id.login_submit_button);
         mUsername = (EditText) findViewById(R.id.login_username_text);
         mPassword = (EditText) findViewById(R.id.login_password_text);
+
         mLoadingAnimation = (LottieAnimationView) findViewById(R.id.login_loading_animation);
+        mLoadingAnimation.useHardwareAcceleration(true);
+        mLoadingAnimation.enableMergePathsForKitKatAndAbove(true);
 
         mErrorText.setVisibility(View.INVISIBLE);
         mSubmitButton.setVisibility(View.INVISIBLE);
@@ -97,7 +100,12 @@ public class SignInActivity extends AppCompatActivity {
         super.onPause();
     }
 
-
+    @Override
+    public void onDestroy(){
+        Timber.tag(TAG).d("onDestroy");
+        mLoadingAnimation.setImageBitmap(null);
+        super.onDestroy();
+    }
 
     public void clickSubmitButton(View v) {
         //submit button clicked

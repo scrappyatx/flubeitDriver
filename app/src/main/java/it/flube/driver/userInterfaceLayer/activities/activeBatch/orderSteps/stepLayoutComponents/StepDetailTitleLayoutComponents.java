@@ -4,6 +4,7 @@
 
 package it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents;
 
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -41,9 +42,9 @@ public class StepDetailTitleLayoutComponents {
         Timber.tag(TAG).d("components created");
     }
 
-    public void setValues(AppCompatActivity activity, OrderStepInterface step){
+    public void setValues(@NonNull AppCompatActivity activity, @NonNull OrderStepInterface step){
         // title viewgroup elements
-        stepSequence.setText(step.getSequence().toString());
+        stepSequence.setText(String.format("%s",step.getSequence()));
         stepTitle.setText(step.getTitle());
         stepDescription.setText(step.getDescription());
         stepWorkStage.setText(step.getWorkStageIconTextMap().get(step.getWorkStage().toString()));

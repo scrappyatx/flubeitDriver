@@ -50,10 +50,15 @@ public class TestOffersMakeController implements
     ////
     //// UseCaseMakeDemoBatchRequest response
     ////
-    public void makeDemoBatchComplete(){
-        Timber.tag(TAG).d("makeDemoBatchComplete");
+    public void makeDemoBatchSuccess(){
+        Timber.tag(TAG).d("makeDemoBatchSuccess");
         //new DemoOfferAlerts().showDemoOfferCreatedAlert(activity, this);
         response.testBatchCreateSuccess();
+    }
+
+    public void makeDemoBatchFailure(){
+        Timber.tag(TAG).d("makeDemoBatchFailure");
+        response.testBatchCreateFailure();
     }
 
     public void close(){

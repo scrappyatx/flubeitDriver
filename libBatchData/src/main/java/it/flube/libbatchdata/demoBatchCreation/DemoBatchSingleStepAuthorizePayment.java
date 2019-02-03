@@ -9,6 +9,7 @@ import it.flube.libbatchdata.builders.BuilderUtilities;
 import it.flube.libbatchdata.builders.PaymentAuthorizationBuilder;
 import it.flube.libbatchdata.builders.PotentialEarningsBuilder;
 import it.flube.libbatchdata.builders.ProductListBuilder;
+import it.flube.libbatchdata.builders.ReceiptRequestBuilder;
 import it.flube.libbatchdata.builders.batch.BatchHolderBuilder;
 import it.flube.libbatchdata.builders.orderSteps.AuthorizePaymentStepBuilder;
 import it.flube.libbatchdata.builders.orderSteps.GiveAssetStepBuilder;
@@ -99,7 +100,9 @@ public class DemoBatchSingleStepAuthorizePayment implements DemoBatchInterface {
                                     .verifyPaymentAmount(true)
                                     .maxPaymentAmountCents(MAX_PAYMENT_AMOUNT_CENTS)
                                     .build())
-                            .requireReceipt(REQUIRE_RECEIPT)
+                            .receiptRequest(new ReceiptRequestBuilder.Builder()
+                                    .doTextRecognition(true)
+                                    .build())
                             .build())
 
                         .build())

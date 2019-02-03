@@ -6,6 +6,7 @@ package it.flube.driver.modelLayer.interfaces;
 
 import java.util.ArrayList;
 
+import it.flube.driver.deviceLayer.cloudServices.cloudImageStorage.fileInfoNode.FileToUploadInfo;
 import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.libbatchdata.entities.ContactPersonsByServiceOrder;
 import it.flube.libbatchdata.entities.LatLonLocation;
@@ -114,40 +115,61 @@ public interface CloudActiveBatchInterface {
     ////
     //// UPDATING THE ACTIVE BATCH
     ////
+
+    //// update driver proxy
     void updateDriverProxyInfoRequest(Driver driver, String batchGuid, String driverProxyDialNumber, String driverProxyDisplayNumber, UpdateDriverProxyInfoResponse response);
 
     interface UpdateDriverProxyInfoResponse {
         void cloudActiveBatchUpdateDriverProxyInfoComplete();
     }
+
+    //// update photo request
     void updatePhotoRequestDeviceAbsoluteFileNameRequest(Driver driver, PhotoRequest photoRequest, String absoluteFileName, Boolean hasFile, PhotoRequestDeviceAbsoluteFileNameResponse response);
 
     interface PhotoRequestDeviceAbsoluteFileNameResponse {
         void cloudActiveBatchUpdatePhotoRequestDeviceAbsoluteFilenameComplete();
     }
 
-    void updatePaymentAuthorizationRequest(Driver driver, PaymentAuthorization paymentAuthorization, PaymentAuthorizationUpdateResponse response);
 
-    interface PaymentAuthorizationUpdateResponse {
-        void cloudActiveBatchUpdatePaymentAuthorizationComplete();
-    }
-
-    void updateReceiptRequestDeviceAbsoluteFileNameRequest(Driver driver, ReceiptRequest receiptRequest, ReceiptRequestDeviceAbsoluteFileNameReponse response);
-
-    interface ReceiptRequestDeviceAbsoluteFileNameReponse {
-        void cloudActiveBatchUpdateReceiptRequestDeviceAbsoluteFilenameComplete();
-    }
-
+    /// update signature request
     void updateSignatureRequestDeviceAbsoluteFileNameRequest(Driver driver, SignatureRequest signatureRequest, String absoluteFileName, Boolean hasFile, SignatureRequestDeviceAbsoluteFileNameResponse response);
 
     interface SignatureRequestDeviceAbsoluteFileNameResponse {
         void cloudActiveBatchUpdateSignatureRequestDeviceAbsoluteFilenameComplete();
     }
 
+    /// update receipt request
+    void updateReceiptRequestDeviceAbsoluteFileNameRequest(Driver driver, ReceiptRequest receiptRequest, ReceiptRequestDeviceAbsoluteFileNameReponse response);
+
+    interface ReceiptRequestDeviceAbsoluteFileNameReponse {
+        void cloudActiveBatchUpdateReceiptRequestDeviceAbsoluteFilenameComplete();
+    }
+
+    //// update payment authorization request
+    void updatePaymentAuthorizationRequest(Driver driver, PaymentAuthorization paymentAuthorization, PaymentAuthorizationUpdateResponse response);
+
+    interface PaymentAuthorizationUpdateResponse {
+        void cloudActiveBatchUpdatePaymentAuthorizationComplete();
+    }
+
+    /// update asset transfer
     void updateAssetTransferRequest(Driver driver, String batchGuid, String serviceOrderGuid, String stepGuid, AssetTransfer assetTransfer, UpdateAssetTransferResponse response);
 
     interface UpdateAssetTransferResponse {
         void cloudActiveBatchUpdateAssetTransferComplete();
     }
+
+    //// update cloud file upload result
+    void updateCloudImageStorageUploadResult(Driver driver, FileToUploadInfo fileToUploadInfo, CloudUploadResultResponse response);
+
+    interface CloudUploadResultResponse {
+        void cloudActiveBatchCloudUploadComplete();
+    }
+
+
+
+
+
 
 
 

@@ -117,6 +117,16 @@ public class WaitingToFinishBatchActivity extends AppCompatActivity implements
 
     }
 
+    public void pendingDeviceFileDeletesRemaining(Integer pendingFilesToDelete){
+        Timber.tag(TAG).d("pendingDeviceFileDeletesRemaining %s",pendingFilesToDelete );
+        //TODO pass this to layout component to update the UI
+    }
+
+    public void pendingImageUploadsRemaining(Integer imagesToUpload){
+        Timber.tag(TAG).d("pendingImageUploadsRemaining %s",imagesToUpload );
+        //TODO pass this to layout component to update the UI
+    }
+
     ////
     //// interface for WaitingToFinishBatchLayoutComponents
     ////

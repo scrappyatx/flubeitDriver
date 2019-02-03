@@ -32,6 +32,10 @@ public class CommunicatingLayoutComponent {
 
     public CommunicatingLayoutComponent(AppCompatActivity activity){
         waitingAnimation = (LottieAnimationView) activity.findViewById(R.id.communication_animation);
+        waitingAnimation.useHardwareAcceleration(true);
+        waitingAnimation.enableMergePathsForKitKatAndAbove(true);
+
+
         banner = (TextView) activity.findViewById(R.id.communication_banner);
         bannerCalling = activity.getResources().getString(R.string.communication_activity_banner_caption_calling);
         bannerTexting = activity.getResources().getString(R.string.communication_activity_banner_caption_texting);
@@ -75,6 +79,7 @@ public class CommunicatingLayoutComponent {
     }
 
     public void close(){
+        waitingAnimation.setImageBitmap(null);
         waitingAnimation = null;
         banner = null;
         bannerCalling = null;

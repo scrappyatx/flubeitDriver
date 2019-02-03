@@ -50,6 +50,9 @@ public class BatchManageLayoutComponents {
 
         //animation
         batchStartWaitingAnimation = (LottieAnimationView) activity.findViewById(R.id.claim_offer_animation);
+        batchStartWaitingAnimation.useHardwareAcceleration(true);
+        batchStartWaitingAnimation.enableMergePathsForKitKatAndAbove(true);
+
         Timber.tag(TAG).d("...components created");
     }
 
@@ -142,6 +145,8 @@ public class BatchManageLayoutComponents {
         batchStartBanner = null;
 
         batchStart = null;
+
+        batchStartWaitingAnimation.setImageBitmap(null);
         batchStartWaitingAnimation = null;
         Timber.tag(TAG).d("components closed");
     }

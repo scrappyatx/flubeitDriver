@@ -258,10 +258,6 @@ public class ActivityNavigator {
         Timber.tag(TAG).d("starting activity BatchManageActivity.class");
     }
 
-    public void gotoActivityBatchMap(Context context) {
-        ScheduledBatchNavigator.gotoActivityBatchMap(context);
-        Timber.tag(TAG).d("starting activity BatchMapActivity.class");
-    }
 
     ///
     /// SPLASH START UP SCREEN

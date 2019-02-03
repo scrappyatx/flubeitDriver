@@ -30,10 +30,7 @@ public class ReceiptDetailActivity extends AppCompatActivity
 
     private static final String TAG="ReceiptDetailActivity";
 
-    private ActivityNavigator navigator;
     private ReceiptDetailController controller;
-    private DrawerMenu drawer;
-
     private ReceiptDetailLayoutComponents layoutComponents;
 
     private String activityGuid;
@@ -86,6 +83,8 @@ public class ReceiptDetailActivity extends AppCompatActivity
         Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
         controller.close();
         layoutComponents.close();
+        controller = null;
+        layoutComponents = null;
         super.onDestroy();
 
     }

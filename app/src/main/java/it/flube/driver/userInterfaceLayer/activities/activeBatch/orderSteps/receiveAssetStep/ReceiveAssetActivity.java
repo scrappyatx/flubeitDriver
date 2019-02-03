@@ -162,10 +162,16 @@ public class ReceiveAssetActivity extends AppCompatActivity implements
         checkCallPermission.gotoSettings(this);
     }
 
-    public void stepCompleteClicked(String milestoneWhenFinished){
+    public void stepCompleteClicked(ServiceOrderReceiveAssetStep orderStep){
         Timber.tag(TAG).d("stepCompleteClicked");
         layoutComponents.showWaitingAnimationAndBanner(this);
-        controller.stepFinishedRequest(milestoneWhenFinished, this);
+        if (orderStep.getRequireSignature()){
+            Timber.tag(TAG).d("   requires signature");
+            controller.stepFinishedRequest(orderStep.getMilestoneWhenFinished(), orderStep.getSignatureRequest(), this);
+        } else {
+            Timber.tag(TAG).d("   doesn't requires signature");
+            controller.stepFinishedRequest(orderStep.getMilestoneWhenFinished(), this);
+        }
     }
 
     ///

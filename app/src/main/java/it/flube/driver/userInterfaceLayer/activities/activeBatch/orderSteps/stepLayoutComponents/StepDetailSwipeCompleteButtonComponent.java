@@ -38,6 +38,9 @@ public class StepDetailSwipeCompleteButtonComponent
         this.response = response;
 
         animation = (LottieAnimationView) activity.findViewById(R.id.step_complete_animation);
+        animation.useHardwareAcceleration(true);
+        animation.enableMergePathsForKitKatAndAbove(true);
+
         banner = (TextView) activity.findViewById(R.id.step_complete_banner);
         slideButton = (SlideView) activity.findViewById(R.id.step_complete_swipe_button);
 
@@ -104,6 +107,7 @@ public class StepDetailSwipeCompleteButtonComponent
     }
 
     public void close(){
+        animation.setImageBitmap(null);
         animation = null;
         slideButton = null;
         banner = null;

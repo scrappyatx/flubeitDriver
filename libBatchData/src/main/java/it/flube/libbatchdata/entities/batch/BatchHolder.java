@@ -10,7 +10,7 @@ import java.util.Map;
 import it.flube.libbatchdata.entities.ChatHistory;
 import it.flube.libbatchdata.entities.ChatMessage;
 import it.flube.libbatchdata.entities.ContactPerson;
-import it.flube.libbatchdata.entities.FileAttachment;
+import it.flube.libbatchdata.entities.FileUpload;
 import it.flube.libbatchdata.entities.MapPing;
 import it.flube.libbatchdata.entities.RouteStop;
 import it.flube.libbatchdata.entities.orderStep.StepId;
@@ -42,7 +42,7 @@ public class BatchHolder {
     private Map<String, ChatHistory> customerChatHistories;
     private Map<String, ChatMessage> chatMessages;
 
-    private Map<String, FileAttachment> fileAttachments;
+    private Map<String, FileUpload> fileAttachments;
 
 
     public Batch getBatch() {
@@ -149,11 +149,11 @@ public class BatchHolder {
         this.chatMessages = chatMessages;
     }
 
-    public Map<String, FileAttachment> getFileAttachments() {
+    public Map<String, FileUpload> getFileAttachments() {
         return fileAttachments;
     }
 
-    public void setFileAttachments(Map<String, FileAttachment> fileAttachments) {
+    public void setFileAttachments(Map<String, FileUpload> fileAttachments) {
         this.fileAttachments = fileAttachments;
     }
 }

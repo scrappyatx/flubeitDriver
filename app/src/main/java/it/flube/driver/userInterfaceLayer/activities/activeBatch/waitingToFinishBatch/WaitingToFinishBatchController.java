@@ -64,6 +64,16 @@ public class WaitingToFinishBatchController implements
         readyResponse.batchReadyToFinish();
     }
 
+    public void pendingUploadsRemaining(Integer uploadsPending){
+        Timber.tag(TAG).d("pendingUploadsRemaining %s", Integer.toString(uploadsPending));
+        readyResponse.pendingImageUploadsRemaining(uploadsPending);
+    }
+
+    public void pendingDeviceFileDeletesRemaining(Integer deletesPending){
+        Timber.tag(TAG).d("pendingDeviceFileDeletesRemaining %s", deletesPending);
+        readyResponse.pendingDeviceFileDeletesRemaining(deletesPending);
+    }
+
     ///
     /// UseCaseFinishBatchRequest.Response
     ///
@@ -73,10 +83,16 @@ public class WaitingToFinishBatchController implements
     }
 
     public interface ReadyToFinishResponse {
+        void pendingDeviceFileDeletesRemaining(Integer pendingFilesToDelete);
+
+        void pendingImageUploadsRemaining(Integer imagesToUpload);
+
         void batchReadyToFinish();
     }
 
     public interface FinishBatchResponse {
+
+
         void batchFinished(ActiveBatchManageInterface.ActorType actorType, String batchGuid);
     }
 

@@ -36,6 +36,9 @@ public class OfferClaimLayoutComponents {
 
     public OfferClaimLayoutComponents(AppCompatActivity activity){
         claimOfferWaitingAnimation = (LottieAnimationView) activity.findViewById(R.id.claim_offer_animation);
+        claimOfferWaitingAnimation.useHardwareAcceleration(true);
+        claimOfferWaitingAnimation.enableMergePathsForKitKatAndAbove(true);
+
         offerClaimButton = (Button) activity.findViewById(R.id.offer_claim_button);
         offerClaimBanner = (TextView) activity.findViewById(R.id.offer_claim_request_banner);
         setInvisible();
@@ -94,6 +97,7 @@ public class OfferClaimLayoutComponents {
 
     public void close(){
         offerClaimButton = null;
+        claimOfferWaitingAnimation.setImageBitmap(null);
         claimOfferWaitingAnimation = null;
         offerClaimBanner = null;
         Timber.tag(TAG).d("components closed");

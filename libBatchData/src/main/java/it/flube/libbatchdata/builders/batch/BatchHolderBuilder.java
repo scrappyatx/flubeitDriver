@@ -17,12 +17,11 @@ import it.flube.libbatchdata.entities.ChatHistory;
 import it.flube.libbatchdata.entities.ChatMessage;
 import it.flube.libbatchdata.entities.ContactPerson;
 import it.flube.libbatchdata.entities.Customer;
-import it.flube.libbatchdata.entities.FileAttachment;
+import it.flube.libbatchdata.entities.FileUpload;
 import it.flube.libbatchdata.entities.MapPing;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.batch.BatchHolder;
 import it.flube.libbatchdata.entities.DisplayDistance;
-import it.flube.libbatchdata.entities.DisplayTiming;
 import it.flube.libbatchdata.entities.PotentialEarnings;
 import it.flube.libbatchdata.entities.RouteStop;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderNavigationStep;
@@ -92,7 +91,7 @@ public class BatchHolderBuilder {
             this.batchHolder.setChatMessages(new HashMap<String, ChatMessage>());
 
             //a batch can have multiple file attachments
-            this.batchHolder.setFileAttachments(new HashMap<String, FileAttachment>());
+            this.batchHolder.setFileAttachments(new HashMap<String, FileUpload>());
         }
 
         public Builder batchType(BatchDetail.BatchType batchType){

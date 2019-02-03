@@ -23,7 +23,7 @@ public class BatchStartResponseMonitor implements
         BatchStartResponseEventListener.Response {
 
     private static final String TAG="BatchStartResponseMonitor";
-    private static final Integer TIMEOUT_MSEC = 5000;    //5 seconds
+    private static final Integer TIMEOUT_MSEC = 10000;    //10 seconds
 
     private BatchStartResponseEventListener startResponseListener;
     private DatabaseReference startBatchResponseRef;

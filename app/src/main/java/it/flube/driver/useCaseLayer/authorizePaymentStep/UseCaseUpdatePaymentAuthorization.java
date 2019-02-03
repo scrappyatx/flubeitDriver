@@ -19,8 +19,8 @@ public class UseCaseUpdatePaymentAuthorization implements
         CloudActiveBatchInterface.PaymentAuthorizationUpdateResponse {
     private static final String TAG="UseCaseUpdatePaymentAuthorization";
 
-    private final MobileDeviceInterface device;
-    private final Response response;
+    private MobileDeviceInterface device;
+    private Response response;
 
     private PaymentAuthorization paymentAuthorization;
     private Driver driver;
@@ -44,6 +44,7 @@ public class UseCaseUpdatePaymentAuthorization implements
             // no user
             Timber.tag(TAG).d("...there is no signed in user");
             response.useCaseUpdatePaymentAuthorizationComplete();
+            close();
         }
 
     }
@@ -51,6 +52,15 @@ public class UseCaseUpdatePaymentAuthorization implements
     public void cloudActiveBatchUpdatePaymentAuthorizationComplete(){
         Timber.tag(TAG).d("cloudActiveBatchUpdatePaymentAuthorizationComplete");
         response.useCaseUpdatePaymentAuthorizationComplete();
+        close();
+    }
+
+    private void close(){
+        Timber.tag(TAG).d("close");
+        device = null;
+        response = null;
+        paymentAuthorization = null;
+        driver = null;
     }
 
     public interface Response {

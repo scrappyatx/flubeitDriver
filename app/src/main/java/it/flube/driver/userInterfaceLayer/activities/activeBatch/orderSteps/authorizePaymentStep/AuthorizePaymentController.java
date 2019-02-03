@@ -8,8 +8,10 @@ import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseFinishCurrentStepRequest;
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseGetDriverAndActiveBatchCurrentStep;
+import it.flube.driver.useCaseLayer.authorizePaymentStep.UseCaseAddReceiptRequestToUploadList;
 import it.flube.driver.useCaseLayer.authorizePaymentStep.UseCaseUpdatePaymentAuthorization;
 import it.flube.libbatchdata.entities.PaymentAuthorization;
+import it.flube.libbatchdata.entities.ReceiptRequest;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderAuthorizePaymentStep;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
@@ -23,12 +25,14 @@ import timber.log.Timber;
 public class AuthorizePaymentController implements
         UseCaseGetDriverAndActiveBatchCurrentStep.Response,
         UseCaseUpdatePaymentAuthorization.Response,
-        UseCaseFinishCurrentStepRequest.Response {
+        UseCaseFinishCurrentStepRequest.Response,
+        UseCaseAddReceiptRequestToUploadList.Response {
 
     private final String TAG = "AuthorizePaymentController";
 
     private GetDriverAndActiveBatchStepResponse response;
     private StepFinishedResponse stepResponse;
+    private String milestoneEvent;
 
     public AuthorizePaymentController() {
         Timber.tag(TAG).d("controller CREATED");
@@ -47,15 +51,30 @@ public class AuthorizePaymentController implements
     }
 
     public void stepFinishedRequest(String milestoneEvent, StepFinishedResponse stepResponse){
-        Timber.tag(TAG).d("finishing STEP");
+        Timber.tag(TAG).d("finishing STEP, with no receipt request");
         this.stepResponse = stepResponse;
         AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseFinishCurrentStepRequest(AndroidDevice.getInstance(), milestoneEvent, this));
     }
 
+    public void stepFinishedRequest(String milestoneEvent, ReceiptRequest receiptRequest, StepFinishedResponse stepResponse){
+        Timber.tag(TAG).d("finishing STEP, WITH receipt request");
+        this.stepResponse = stepResponse;
+        this.milestoneEvent = milestoneEvent;
+        // DO THIS ON THE UPLOAD EXECUTOR, uses lower priority threads
+        AndroidDevice.getInstance().getUseCaseEngine().getUploadExecutor().execute(new UseCaseAddReceiptRequestToUploadList(AndroidDevice.getInstance(), receiptRequest, this));
+    }
+
+    public void addReceiptRequestToUploadListComplete(){
+        Timber.tag(TAG).d("addReceiptRequestToUploadListComplete, now finishing step...");
+        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseFinishCurrentStepRequest(AndroidDevice.getInstance(), milestoneEvent, this));
+    }
 
 
     public void close(){
         Timber.tag(TAG).d("close");
+        response = null;
+        stepResponse = null;
+        milestoneEvent = null;
     }
 
     ///

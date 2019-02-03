@@ -29,6 +29,9 @@ public class DemoOffersLayoutComponents {
     public DemoOffersLayoutComponents(AppCompatActivity activity){
         instructions = (TextView) activity.findViewById(R.id.demo_offers_instructions);
         makeOfferWaitingAnimation = (LottieAnimationView) activity.findViewById(R.id.generate_offer_animation);
+        makeOfferWaitingAnimation.useHardwareAcceleration(true);
+        makeOfferWaitingAnimation.enableMergePathsForKitKatAndAbove(true);
+
         offerMakeButton = (Button) activity.findViewById(R.id.demo_offers_generate_button);
         setInvisible();
         Timber.tag(TAG).d("...components created");
@@ -79,6 +82,7 @@ public class DemoOffersLayoutComponents {
     public void close(){
         instructions =null;
         offerMakeButton = null;
+        makeOfferWaitingAnimation.setImageBitmap(null);
         makeOfferWaitingAnimation = null;
         Timber.tag(TAG).d("components closed");
     }

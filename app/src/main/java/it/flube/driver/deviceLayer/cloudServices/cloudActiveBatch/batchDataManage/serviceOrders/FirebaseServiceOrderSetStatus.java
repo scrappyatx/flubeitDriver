@@ -76,6 +76,12 @@ public class FirebaseServiceOrderSetStatus implements OnCompleteListener<Void> {
             }
         }
         response.setServiceOrderStatusComplete();
+        close();
+    }
+
+    private void close(){
+        Timber.tag(TAG).d("close");
+        response = null;
     }
 
     public interface Response {

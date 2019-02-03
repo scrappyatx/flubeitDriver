@@ -28,6 +28,8 @@ public class NavigationLayoutComponents implements
 
     private static final String TAG="NavigationLayoutComponents";
 
+    private String activityGuid;
+
     private StepDetailTitleLayoutComponents stepTitle;
     private StepDetailDueByLayoutComponents stepDueBy;
     private MapboxLayoutComponent map;
@@ -40,14 +42,15 @@ public class NavigationLayoutComponents implements
     private Boolean closeEnough;
     private Boolean shouldBeVisible;
 
-    public NavigationLayoutComponents(AppCompatActivity activity, Bundle savedInstanceState, String stepCompleteButtonCaption, Response response){
+    public NavigationLayoutComponents(AppCompatActivity activity, Bundle savedInstanceState, String activityGuid, String stepCompleteButtonCaption, Response response){
         this.response = response;
+        this.activityGuid = activityGuid;
 
         stepTitle = new StepDetailTitleLayoutComponents(activity);
         stepDueBy = new StepDetailDueByLayoutComponents(activity);
         address = new DestinationAddressLayoutComponent(activity);
 
-        map = new MapboxLayoutComponent(activity, savedInstanceState, this);
+        map = new MapboxLayoutComponent(activity, savedInstanceState, activityGuid, this);
 
         navigateButton = (Button) activity.findViewById(R.id.start_navigation_button);
         navigateButton.setOnClickListener(this);
@@ -72,6 +75,7 @@ public class NavigationLayoutComponents implements
     }
 
     public void setVisible(AppCompatActivity activity){
+        Timber.tag(TAG).d("setVisible");
         if (orderStep != null) {
             stepTitle.setVisible();
             stepDueBy.setVisible();
@@ -95,6 +99,7 @@ public class NavigationLayoutComponents implements
     }
 
     public void showFinishingAnimation(){
+        Timber.tag(TAG).d("showFinishingAnimation");
         map.setInvisible();
         address.setInvisible();
         navigateButton.setVisibility(View.INVISIBLE);
@@ -121,10 +126,11 @@ public class NavigationLayoutComponents implements
         navigateButton.setVisibility(View.GONE);
         stepComplete.setGone();
         shouldBeVisible=  false;
-        Timber.tag(TAG).d("setInvisible");
+        Timber.tag(TAG).d("setGone");
     }
 
     public void setButtonState(){
+        Timber.tag(TAG).d("setButtonState");
         if (shouldBeVisible){
             if (closeEnough){
                 navigateButton.setVisibility(View.INVISIBLE);
@@ -154,6 +160,7 @@ public class NavigationLayoutComponents implements
 
     public void onStop(){
         map.onStop();
+        Timber.tag(TAG).d("onStop");
     }
 
     public void onLowMemory() {
@@ -197,7 +204,7 @@ public class NavigationLayoutComponents implements
 
     /// StepDetailSwipeCompleteButtonComponent.Response interface
     public void stepDetailSwipeCompleteButtonClicked(){
-        Timber.tag(TAG).d("onSlideComplete");
+        Timber.tag(TAG).d("stepDetailSwipeCompleteButtonClicked");
         response.stepCompleteClicked(orderStep.getMilestoneWhenFinished());
     }
 

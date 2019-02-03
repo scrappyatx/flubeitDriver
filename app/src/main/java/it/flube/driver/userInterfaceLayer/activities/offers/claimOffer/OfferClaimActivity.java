@@ -52,7 +52,9 @@ public class OfferClaimActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Timber.tag(TAG).d("about to setContentView");
         setContentView(R.layout.activity_offer_claim_new);
+        Timber.tag(TAG).d("just did setContentView");
 
         //title block & tab selector
         batchTitle = new BatchDetailTitleLayoutComponents(this);

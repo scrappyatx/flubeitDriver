@@ -4,6 +4,8 @@
 
 package it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataGet;
 
+import android.support.annotation.NonNull;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,7 +44,7 @@ public class FirebaseActiveBatchPhotoRequestGet implements ValueEventListener {
                 .addListenerForSingleValueEvent(this);
     }
 
-    public void onDataChange(DataSnapshot dataSnapshot) {
+    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         Timber.tag(TAG).d("onDataChange...");
         if (dataSnapshot.exists()) {
 
@@ -52,20 +54,29 @@ public class FirebaseActiveBatchPhotoRequestGet implements ValueEventListener {
                 PhotoRequest photoRequest = dataSnapshot.getValue(PhotoRequest.class);
                 Timber.tag(TAG).d("      ...got photoRequest for photoRequest guid : " + photoRequest.getGuid());
                 response.cloudGetActiveBatchPhotoRequestSuccess(photoRequest);
+                close();
             } catch (Exception e) {
                 Timber.tag(TAG).w("   ...error while trying to get photo request!");
                 Timber.tag(TAG).e(e);
                 response.cloudGetActiveBatchPhotoRequestFailure();
+                close();
             }
         } else {
             // dataSnapshot DOES NOT EXIST
             Timber.tag(TAG).w("   ...dataSnapshot does not exist");
             response.cloudGetActiveBatchPhotoRequestFailure();
+            close();
         }
     }
 
-    public void onCancelled(DatabaseError databaseError){
+    public void onCancelled(@NonNull DatabaseError databaseError){
         Timber.tag(TAG).e("onCancelled -> error : " + databaseError.getCode() + " --> " + databaseError.getMessage());
         response.cloudGetActiveBatchPhotoRequestFailure();
+        close();
+    }
+
+    private void close(){
+        Timber.tag(TAG).d("close");
+        response = null;
     }
 }

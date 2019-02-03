@@ -34,7 +34,10 @@ public class DemoOffersMakeLayoutComponents {
 
     public DemoOffersMakeLayoutComponents(AppCompatActivity activity){
         instructions = (TextView) activity.findViewById(R.id.instructionText);
+
         makeOfferWaitingAnimation = (LottieAnimationView) activity.findViewById(R.id.demo_offer_make_animation);
+        makeOfferWaitingAnimation.useHardwareAcceleration(true);
+        makeOfferWaitingAnimation.enableMergePathsForKitKatAndAbove(true);
 
         twoStepButton = (Button) activity.findViewById(R.id.button_two_step);
         autoPhotoButton = (Button) activity.findViewById(R.id.button_auto_photo);
@@ -106,6 +109,9 @@ public class DemoOffersMakeLayoutComponents {
         autoPhotoButton = null;
         twoStepButton = null;
         oilChangeButton = null;
+
+        //makeOfferWaitingAnimation.
+        makeOfferWaitingAnimation.setImageBitmap(null);
         makeOfferWaitingAnimation = null;
         Timber.tag(TAG).d("components closed");
     }

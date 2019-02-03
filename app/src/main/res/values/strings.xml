@@ -49,6 +49,16 @@
     <string name="permission_rationale">Contacts permissions are needed for providing email completions.</string>
 
     -->
+
+    <!-- Strings for Notification Channel -->
+    <string name="active_batch_notification_channel_name">Active Batch</string>
+    <string name="active_batch_notification_channel_description">Shows status of your active batch</string>
+    <string name="public_offer_notification_channel_name">Public Offers</string>
+    <string name="public_offer_notification_channel_description">Lets you know when a new public offer is available</string>
+    <string name="personal_offer_notification_channel_name">Personal Offers</string>
+    <string name="personal_offer_notification_channel_description">Lets you know when a new public offer is available</string>
+
+
     <!-- Strings related to MapBox access token -->
     <string name="mapbox_access_token" translatable="false">pk.eyJ1Ijoic2NyYXBweWF0eCIsImEiOiJjajViNjNjNHUwdTNxMzNwMWg4ZWMwN2thIn0.olrIh8570OamyDRxCaHBuA</string>
 

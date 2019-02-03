@@ -22,9 +22,9 @@ public class UseCaseGetDriverAndActiveBatchCurrentStep implements
 
     private static final String TAG="UseCaseGetDriverAndActiveBatchCurrentStep";
 
-    private final MobileDeviceInterface device;
-    private final OrderStepInterface.TaskType expectedTaskType;
-    private final Response response;
+    private MobileDeviceInterface device;
+    private OrderStepInterface.TaskType expectedTaskType;
+    private Response response;
     private Driver driver;
 
     public UseCaseGetDriverAndActiveBatchCurrentStep(MobileDeviceInterface device, OrderStepInterface.TaskType expectedTaskType, Response response){
@@ -46,6 +46,7 @@ public class UseCaseGetDriverAndActiveBatchCurrentStep implements
             // no user
             Timber.tag(TAG).d("...there is no signed in user");
             response.useCaseGetDriverAndActiveBatchCurrentStepFailureNoDriverNoStep();
+            close();
         }
     }
 
@@ -56,16 +57,28 @@ public class UseCaseGetDriverAndActiveBatchCurrentStep implements
             //task type matches what we were expecting
             Timber.tag(TAG).d("...taskType matches expectedTaskType ->" + expectedTaskType.toString());
             response.useCaseGetDriverAndActiveBatchCurrentStepSuccess(driver, batchDetail, serviceOrder, orderStep);
+            close();
         } else {
             //task type doesn't match what we were expecting
             Timber.tag(TAG).d("...taskType (" + orderStep.getTaskType().toString() + "} doesn't match expectedTaskType ->" + expectedTaskType.toString());
             response.useCaseGetDriverAndActiveBatchCurrentStepFailureStepMismatch(driver, orderStep.getTaskType());
+            close();
         }
     }
 
     public void cloudGetActiveBatchCurrentStepFailure(){
         Timber.tag(TAG).d("cloudGetActiveBatchCurrentStepFailure");
         response.useCaseGetDriverAndActiveBatchCurrentStepFailureDriverOnly(driver);
+        close();
+    }
+
+    private void close(){
+        Timber.tag(TAG).d("close");
+        device = null;
+        expectedTaskType = null;
+        response = null;
+        driver = null;
+
     }
 
     public interface Response {

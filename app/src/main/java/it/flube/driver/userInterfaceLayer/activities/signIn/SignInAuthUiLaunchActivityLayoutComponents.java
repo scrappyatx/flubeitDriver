@@ -39,6 +39,9 @@ public class SignInAuthUiLaunchActivityLayoutComponents implements
         signInButton.setOnClickListener(this);
 
         animation = (LottieAnimationView) activity.findViewById(R.id.sign_in_animation);
+        animation.useHardwareAcceleration(true);
+        animation.enableMergePathsForKitKatAndAbove(true);
+
         banner = (TextView) activity.findViewById(R.id.signing_in_banner);
 
         this.response = response;
@@ -93,6 +96,7 @@ public class SignInAuthUiLaunchActivityLayoutComponents implements
     }
 
     public void close(){
+        animation.setImageBitmap(null);
         animation = null;
         signInButton = null;
         banner = null;

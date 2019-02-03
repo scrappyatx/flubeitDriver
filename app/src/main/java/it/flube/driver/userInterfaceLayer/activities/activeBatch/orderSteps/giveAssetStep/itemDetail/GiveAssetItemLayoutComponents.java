@@ -71,6 +71,9 @@ public class GiveAssetItemLayoutComponents implements
         finishedButton.setOnClickListener(this);
 
         waitingAnimation = (LottieAnimationView) activity.findViewById(R.id.asset_item_waiting_animation);
+        waitingAnimation.useHardwareAcceleration(true);
+        waitingAnimation.enableMergePathsForKitKatAndAbove(true);
+
 
         setInvisible();
         Timber.tag(TAG).d("created");
@@ -200,6 +203,7 @@ public class GiveAssetItemLayoutComponents implements
         finishedButton = null;
         haveText = null;
         dontHaveText = null;
+        waitingAnimation.setImageBitmap(null);
         waitingAnimation = null;
 
         assetTransfer = null;

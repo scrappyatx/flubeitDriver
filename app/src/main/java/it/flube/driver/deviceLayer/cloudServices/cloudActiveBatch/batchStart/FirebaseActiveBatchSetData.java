@@ -91,6 +91,12 @@ public class FirebaseActiveBatchSetData implements OnCompleteListener<Void> {
         }
         Timber.tag(TAG).d("COMPLETE");
         response.setDataComplete();
+        close();
+    }
+
+    private void close(){
+        Timber.tag(TAG).d("close");
+        response = null;
     }
 
     public interface Response {

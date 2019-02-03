@@ -13,6 +13,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import java.io.File;
 
 import io.fotoapparat.Fotoapparat;
+import io.fotoapparat.parameter.Resolution;
 import io.fotoapparat.parameter.ScaleType;
 import io.fotoapparat.result.PhotoResult;
 import io.fotoapparat.result.WhenDoneListener;
@@ -58,6 +59,8 @@ public class ReceiptPhotoTakeLayoutComponents implements
         button.setOnClickListener(this);
 
         animation = (LottieAnimationView) activity.findViewById(R.id.photo_processing_animation);
+        animation.useHardwareAcceleration(true);
+        animation.enableMergePathsForKitKatAndAbove(true);
 
         cameraView = (io.fotoapparat.view.CameraView) activity.findViewById(R.id.camera);
 
@@ -65,11 +68,12 @@ public class ReceiptPhotoTakeLayoutComponents implements
                 .with(activity)
                 .into(cameraView)
                 .previewScaleType(ScaleType.CenterCrop)
-                .photoResolution(ResolutionSelectorsKt.lowestResolution())
+                .photoResolution(ResolutionSelectorsKt.highestResolution())
                 .lensPosition(back())       // we want back camera
                 .build();
 
         setInvisible();
+
     }
 
     public void setValues(ReceiptRequest receiptRequest){
@@ -112,7 +116,9 @@ public class ReceiptPhotoTakeLayoutComponents implements
     public void close(){
         cameraView = null;
         button = null;
+        animation.setImageBitmap(null);
         animation=null;
+        fotoapparat = null;
         Timber.tag(TAG).d("components closed");
     }
 

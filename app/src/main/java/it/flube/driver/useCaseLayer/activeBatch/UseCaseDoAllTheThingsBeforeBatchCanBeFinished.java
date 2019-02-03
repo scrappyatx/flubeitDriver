@@ -16,8 +16,8 @@ import timber.log.Timber;
  */
 public class UseCaseDoAllTheThingsBeforeBatchCanBeFinished implements
     Runnable,
-        CloudImageStorageInterface.StartOrResumeResponse,
-        CloudImageStorageInterface.WaitForUploadToFinishResponse {
+        CloudImageStorageInterface.WaitForAllPendingUploadsToFinishResponse,
+        CloudImageStorageInterface.WaitForAllPendingDeviceFileDeletesToFinishResponse {
 
     private final static String TAG = "UseCaseDoAllTheThingsBeforeBatchCanBeFinished";
 
@@ -39,20 +39,46 @@ public class UseCaseDoAllTheThingsBeforeBatchCanBeFinished implements
         //// do all the things here that need to be done before the batch can be completed (uploading files, etc)
         Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
 
-        device.getCloudImageStorage().startOrResumeUploadingImagesForActiveBatch(driver,deviceInfo,batchGuid, this);
+        /// first, wait for all pending uploads to finish
+        device.getCloudImageStorage().waitForAllPendingUploadsToFinish(driver, deviceInfo, batchGuid, this);
     }
 
-    public void cloudImageStorageStartOrResumeComplete(){
-        Timber.tag(TAG).d("...cloudImageStorageStartOrResumeComplete");
-        device.getCloudImageStorage().waitForAllImageFilesForActiveBatchToFinishUploading(driver, deviceInfo, batchGuid, this);
+
+
+    //// wait for pending uploads interface
+    public void cloudImageStorageAllUploadsInProgress(Integer uploadsPending){
+        Timber.tag(TAG).d("cloudImageStorageAllUploadsInProgress -> %s", Integer.toString(uploadsPending));
+        //// this will fire to say how many uploads remain
+        response.pendingUploadsRemaining(uploadsPending);
     }
 
     public void cloudImageStorageAllUploadsComplete(){
         Timber.tag(TAG).d("...cloudImageStorageAllUploadsComplete");
+
+        /// once all the uploads are done, then delete all files
+        Timber.tag(TAG).d("...cloudImageStorageStartOrResumeComplete");
+        device.getCloudImageStorage().waitForAllPendingDeviceFilesToBeDeletedRequest(driver, deviceInfo, device.getDeviceImageStorage(),this);
+    }
+
+    //// wait for pending deletes interface
+    public void cloudImageStorageDeviceFileDeletesInProgress(Integer deletesPending){
+        Timber.tag(TAG).d("...cloudImageStorageAllUploadsComplete");
+        /// this will fire to say how many files that need to be deleted remain
+        response.pendingDeviceFileDeletesRemaining(deletesPending);
+    }
+
+    public void cloudImageStorageAllDeletesComplete(){
+        Timber.tag(TAG).d("...cloudImageStorageAllUploadsComplete");
+        //// and now we are ready to finish
         response.batchIsReadyToFinish(batchGuid);
     }
 
+
     public interface Response {
+        void pendingUploadsRemaining(Integer uploadsPending);
+
+        void pendingDeviceFileDeletesRemaining(Integer deletesPending);
+
         void batchIsReadyToFinish(String batchGuid);
     }
 }

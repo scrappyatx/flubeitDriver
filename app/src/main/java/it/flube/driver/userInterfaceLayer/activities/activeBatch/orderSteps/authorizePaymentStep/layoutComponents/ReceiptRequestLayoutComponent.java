@@ -114,6 +114,7 @@ public class ReceiptRequestLayoutComponent implements
         status=null;
         photo=null;
         response=null;
+        receiptRequest = null;
         Timber.tag(TAG).d("close");
     }
 

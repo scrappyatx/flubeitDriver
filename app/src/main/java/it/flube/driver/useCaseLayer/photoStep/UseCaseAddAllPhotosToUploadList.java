@@ -22,15 +22,14 @@ import timber.log.Timber;
  */
 public class UseCaseAddAllPhotosToUploadList implements
         Runnable,
-        CloudImageStorageInterface.AddDeviceImageResponse {
+        CloudImageStorageInterface.StopMonitoringForFilesToUploadResponse,
+        CloudImageStorageInterface.AddPhotoRequestListToUploadListResponse {
 
     private final static String TAG = "UseCaseAddAllPhotosToUploadList";
 
     private final MobileDeviceInterface device;
     private ArrayList<PhotoRequest> photoList;
     private Response response;
-
-    private ResponseCounter responseCounter;
 
     public UseCaseAddAllPhotosToUploadList(MobileDeviceInterface device, ArrayList<PhotoRequest> photoList, Response response){
         this.device = device;
@@ -40,35 +39,26 @@ public class UseCaseAddAllPhotosToUploadList implements
 
     public void run(){
         Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
+        /// first, stop monitoring for files to upload (will get turned on again when we go to the next step
+        device.getCloudImageStorage().stopMonitoringForFilesToUploadRequest(this);
+    }
 
+    public void cloudImageStorageStopMonitoringForFilesToUploadComplete(){
+        Timber.tag(TAG).d("cloudImageStorageStopMonitoringForFilesToUploadComplete");
+
+        // now add all photo requests to the update list
         Driver driver = device.getCloudAuth().getDriver();
         DeviceInfo deviceInfo = device.getDeviceInfo();
-
-        responseCounter = new ResponseCounter(photoList.size());
-
-        for (PhotoRequest photoRequest : photoList){
-            Timber.tag(TAG).d("   ...adding photo " + photoRequest.getSequence());
-            device.getCloudImageStorage().addDeviceImageToActiveBatchUploadList(driver, deviceInfo, photoRequest.getDeviceAbsoluteFileName(),
-                    photoRequest.getBatchGuid(), photoRequest.getServiceOrderGuid(), photoRequest.getStepGuid(), photoRequest.getGuid(),
-                    this);
-        }
-
+        Timber.tag(TAG).d("   ...add photoList to the upload list");
+        device.getCloudImageStorage().addPhotoRequestListToUploadList(driver, deviceInfo, photoList, this);
     }
 
-    public void cloudImageStorageAddDeviceImageComplete(){
-        Timber.tag(TAG).d("   ...cloudImageStorageAddDeviceImageComplete");
-        checkIfFinished();
+    public void cloudImageStorageAddPhotoRequestListToUploadListComplete() {
+        Timber.tag(TAG).d("   ...cloudImageStorageAddPhotoRequestListToUploadListComplete");
+        /// now respond that they have all been added
+        response.addAllPhotosToUploadListComplete();
     }
 
-    private void checkIfFinished(){
-        responseCounter.onResponse();
-        if (responseCounter.isFinished()){
-            Timber.tag(TAG).d("         ...FINISHED!");
-            response.addAllPhotosToUploadListComplete();
-        } else {
-            Timber.tag(TAG).d("         ...response " + responseCounter.getCount());
-        }
-    }
 
     public interface Response {
         void addAllPhotosToUploadListComplete();

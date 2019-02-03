@@ -4,56 +4,26 @@
 
 package it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
+
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.annotations.Icon;
-import com.mapbox.mapboxsdk.annotations.IconFactory;
-import com.mapbox.mapboxsdk.annotations.Marker;
-import com.mapbox.mapboxsdk.annotations.MarkerOptions;
-import com.mapbox.mapboxsdk.camera.CameraPosition;
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
-import com.mapbox.mapboxsdk.geometry.LatLng;
-import com.mapbox.mapboxsdk.geometry.LatLngBounds;
-import com.mapbox.mapboxsdk.maps.MapView;
-import com.mapbox.mapboxsdk.maps.MapboxMap;
-import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 import it.flube.driver.R;
-import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.dataLayer.deviceEvents.LocationTrackingPositionChangedEvent;
 import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.navigationStep.layoutComponents.NavigationLayoutComponents;
-import it.flube.driver.userInterfaceLayer.userInterfaceEvents.batchAlerts.ShowCompletedServiceOrderAlertEvent;
 import it.flube.libbatchdata.builders.BuilderUtilities;
-import it.flube.libbatchdata.entities.AddressLocation;
-import it.flube.libbatchdata.entities.LatLonLocation;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderNavigationStep;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
-import it.flube.driver.userInterfaceLayer.activities.activeBatch.ActiveBatchAlerts;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
@@ -83,17 +53,18 @@ public class NavigationActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        activityGuid = BuilderUtilities.generateGuid();
+        Timber.tag(TAG).d("onCreate (%s)", activityGuid);
+
         setContentView(R.layout.activity_navigation_step);
 
         controller = new NavigationController(this);
-        layoutComponents = new NavigationLayoutComponents(this, savedInstanceState, "I've arrived", this);
-
-        activityGuid = BuilderUtilities.generateGuid();
-        Timber.tag(TAG).d("onCreate (%s)", activityGuid);
+        layoutComponents = new NavigationLayoutComponents(this, savedInstanceState, activityGuid,"I've arrived", this);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
+        Timber.tag(TAG).d("onCreateOptionsMenu (%s)", activityGuid);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.navigation_step_overflow_menu, menu);
 
@@ -119,24 +90,23 @@ public class NavigationActivity extends AppCompatActivity implements
         DrawerMenu.getInstance().setActivityDontMonitorActiveBatch(this, R.string.navigation_step_activity_title);
         controller.getDriverAndActiveBatchStep(this);
 
-        Timber.tag(TAG).d("onStart (%s)", activityGuid);
+        Timber.tag(TAG).d("onResume (%s)", activityGuid);
     }
 
     @Override
     public void onPause() {
-        Timber.tag(TAG).d( "onPause");
         super.onPause();
         layoutComponents.onPause();
         DrawerMenu.getInstance().clearActivity();
 
-        Timber.tag(TAG).d("onStart (%s)", activityGuid);
+        Timber.tag(TAG).d("onPause (%s)", activityGuid);
     }
 
     @Override
     public void onStop(){
         super.onStop();
         layoutComponents.onStop();
-        Timber.tag(TAG).d("onStart (%s)", activityGuid);
+        Timber.tag(TAG).d("onStop (%s)", activityGuid);
 
     }
 
@@ -144,14 +114,20 @@ public class NavigationActivity extends AppCompatActivity implements
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         layoutComponents.onSaveInstanceState(outState);
-        Timber.tag(TAG).d("onStart (%s)", activityGuid);
+        Timber.tag(TAG).d("onSaveInstanceState (%s)", activityGuid);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle inState){
+        super.onRestoreInstanceState(inState);
+        Timber.tag(TAG).d("onRestoreInstanceState (%s)", activityGuid);
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
         layoutComponents.onLowMemory();
-        Timber.tag(TAG).d("onStart (%s)", activityGuid);
+        Timber.tag(TAG).d("onLowMemory (%s)", activityGuid);
     }
 
     @Override
@@ -159,13 +135,13 @@ public class NavigationActivity extends AppCompatActivity implements
         super.onDestroy();
         controller.close();
         layoutComponents.onDestroy();
-        Timber.tag(TAG).d("onStart (%s)", activityGuid);
+        Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
     }
 
     ///layout component interface
     public void navigateButtonClicked(){
         //start navigation button clicked
-        Timber.tag(TAG).d("clicked start navigation");
+        Timber.tag(TAG).d("navigateButtonClicked (%s)", activityGuid);
         MapUtilities.startNavigation(this, orderStep.getDestination().getTargetLatLon());
     }
 
@@ -179,19 +155,19 @@ public class NavigationActivity extends AppCompatActivity implements
 
     //// overflow menu
     public void clickOverflowMenuUserHasArrived(MenuItem item){
-        Timber.tag(TAG).d("clicked i've arrived in overflow menu");
+        Timber.tag(TAG).d("clickOverflowMenuUserHasArrived (%s)", activityGuid);
         if (orderStep != null) {
             controller.manuallyConfirmArrival(this, orderStep, this);
         }
     }
 
     public void clickConfirmManualUserHasArrivedButton(View v){
-        Timber.tag(TAG).d("clicked the OK button for manual arrival");
+        Timber.tag(TAG).d("clickConfirmManualUserHasArrivedButton (%s)", activityGuid);
     }
 
     //// NavigationController.ManualConfirmResponse interface
     public void manualConfirmYes(){
-        Timber.tag(TAG).d("manualConfirmYes");
+        Timber.tag(TAG).d("manualConfirmYes (%s)", activityGuid);
         if (orderStep != null) {
             layoutComponents.showFinishingAnimation();
             controller.stepFinishedRequest(orderStep.getMilestoneWhenFinished(), this);
@@ -199,7 +175,7 @@ public class NavigationActivity extends AppCompatActivity implements
     }
 
     public void manualConfirmNo(){
-        Timber.tag(TAG).d("manualConfirmNo");
+        Timber.tag(TAG).d("manualConfirmNo (%s)", activityGuid);
     }
 
     ///
@@ -234,7 +210,7 @@ public class NavigationActivity extends AppCompatActivity implements
     //// StepFinsished interface
     ////
     public void stepFinished(){
-        Timber.tag(TAG).d("stepFinished");
+        Timber.tag(TAG).d("stepFinished (%s)", activityGuid);
         //go to the next step
         ActivityNavigator.getInstance().gotoActiveBatchStep(this);
     }

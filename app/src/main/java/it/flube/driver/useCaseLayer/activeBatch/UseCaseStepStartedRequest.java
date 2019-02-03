@@ -34,7 +34,7 @@ public class UseCaseStepStartedRequest implements
         CloudActiveBatchInterface.GetServiceOrderListResponse,
         CloudActiveBatchInterface.GetRouteStopListResponse,
         CloudActiveBatchInterface.GetOrderStepListResponse,
-        CloudImageStorageInterface.StartOrResumeResponse,
+        CloudImageStorageInterface.StartMonitoringForFilesToUploadResponse,
         LocationTelemetryInterface.LocationTrackingStartResponse,
         ActiveBatchForegroundServiceInterface.StartActiveBatchForegroundServiceResponse,
         ActiveBatchForegroundServiceInterface.UpdateActiveBatchForegroundServiceResponse,
@@ -85,7 +85,7 @@ public class UseCaseStepStartedRequest implements
         device.getLocationTelemetry().locationTrackingStartRequest(this);
 
         // start or resume any file upload tasks
-        device.getCloudImageStorage().startOrResumeUploadingImagesForActiveBatch(driver, deviceInfo, batchDetail.getBatchGuid(), this);
+        device.getCloudImageStorage().startMonitoringForFilesToUploadRequest(driver, deviceInfo, batchDetail.getBatchGuid(), device.getCloudActiveBatch(), device.getDeviceImageStorage(), this);
 
         String notificationTitle;
         String notificationSubTitle;
@@ -185,8 +185,8 @@ public class UseCaseStepStartedRequest implements
         Timber.tag(TAG).d("   ...location tracking started FAILURE");
     }
 
-    public void cloudImageStorageStartOrResumeComplete(){
-        Timber.tag(TAG).d("   ...cloudImageStorageStartOrResumeComplete");
+    public void cloudImageStorageStartMonitoringForFilesToUploadComplete(){
+        Timber.tag(TAG).d("   ...cloudImageStorageStartMonitoringForFilesToUploadComplete");
     }
 
     public void activeBatchForegroundServiceStarted(){

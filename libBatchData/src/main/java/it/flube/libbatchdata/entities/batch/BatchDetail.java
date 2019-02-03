@@ -11,6 +11,7 @@ import it.flube.libbatchdata.entities.ContactPerson;
 import it.flube.libbatchdata.entities.Customer;
 import it.flube.libbatchdata.entities.DriverInfo;
 import it.flube.libbatchdata.entities.DisplayDistance;
+import it.flube.libbatchdata.entities.FileUpload;
 import it.flube.libbatchdata.entities.PotentialEarnings;
 
 /**
@@ -75,6 +76,9 @@ public class BatchDetail {
 
     private BatchNotificationSettings batchNotificationSettings;
 
+    private Map<String, FileUpload> fileUploads;
+
+    //// getters & setters
 
     public BatchType getBatchType() {
         return batchType;
@@ -274,5 +278,13 @@ public class BatchDetail {
 
     public void setBatchNotificationSettings(BatchNotificationSettings batchNotificationSettings) {
         this.batchNotificationSettings = batchNotificationSettings;
+    }
+
+    public Map<String, FileUpload> getFileUploads() {
+        return fileUploads;
+    }
+
+    public void setFileUploads(Map<String, FileUpload> fileUploads) {
+        this.fileUploads = fileUploads;
     }
 }

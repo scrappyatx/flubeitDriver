@@ -2,14 +2,19 @@
 <!--
   ~ Copyright (c) 2017. scrapdoodle, LLC.  All Rights Reserved
   -->
-
-<android.support.constraint.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:fillViewport="true"
 
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+<android.support.constraint.ConstraintLayout
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <include layout="@layout/toolbar"
         android:id="@+id/toolbar"
@@ -132,3 +137,4 @@
 
 
 </android.support.constraint.ConstraintLayout>
+</ScrollView>

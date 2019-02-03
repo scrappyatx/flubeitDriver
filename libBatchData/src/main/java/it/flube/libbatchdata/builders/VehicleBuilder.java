@@ -126,7 +126,7 @@ public class VehicleBuilder {
             }
 
             if (vehicle.getColor()==null){
-                throw new IllegalStateException("color is null");
+                //throw new IllegalStateException("color is null");
             }
 
             if (vehicle.getYear()==null){
@@ -134,11 +134,11 @@ public class VehicleBuilder {
             }
 
             if (vehicle.getLicenseState()==null){
-                throw new IllegalStateException("license state is null");
+                //throw new IllegalStateException("license state is null");
             }
 
             if (vehicle.getLicensePlate()==null){
-                throw new IllegalStateException("license plate is null");
+                //throw new IllegalStateException("license plate is null");
             }
 
             if (vehicle.getDisplayImageUrl()==null){

@@ -241,7 +241,6 @@ public class AndroidDevice implements
         return useCaseEngine;
     }
 
-
     ///
     /// application data
     ///

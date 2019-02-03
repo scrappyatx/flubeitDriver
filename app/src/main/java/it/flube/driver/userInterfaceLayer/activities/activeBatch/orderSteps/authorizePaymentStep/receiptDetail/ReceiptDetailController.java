@@ -39,6 +39,7 @@ public class ReceiptDetailController implements
 
     public void close(){
         Timber.tag(TAG).d("close");
+        response = null;
 
     }
 

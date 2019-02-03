@@ -19,6 +19,7 @@ import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataGet.F
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataGet.FirebaseActiveBatchSummaryGet;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebaseAssetTransfer;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebaseDriverProxyInfo;
+import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebaseImageStorageUploadResult;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebasePaymentAuthorizationUpdate;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebasePhotoRequestDeviceAbsoluteFilename;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebaseReceiptRequestDeviceAbsoluteFilenameRequest;
@@ -30,6 +31,7 @@ import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.stepFinish.Fir
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.acknowledgeFinishedBatch.FirebaseActiveBatchAcknowledgeFinishedBatch;
 //import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.updateActiveBatchServerNode.FirebaseActiveBatchServerNode;
 //import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.updateCompletedBatchesServerNode.FirebaseCompletedBatchesServerNode;
+import it.flube.driver.deviceLayer.cloudServices.cloudImageStorage.fileInfoNode.FileToUploadInfo;
 import it.flube.driver.deviceLayer.cloudServices.firebaseInitialization.FirebaseDbInitialization;
 import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.interfaces.CloudActiveBatchInterface;
@@ -186,7 +188,7 @@ public class ActiveBatchFirebaseWrapper implements
 
     public void finishActiveBatchRequest(Driver driver, ActiveBatchManageInterface.ActorType actorType, String batchGuid, FinishActiveBatchResponse response){
         Timber.tag(TAG).d("finishActiveBatchRequest START...");
-
+        Timber.tag(TAG).d("   batchGuid -> " + batchGuid);
         Timber.tag(TAG).d("   ....getNodes");
         getNodes(driver);
 
@@ -288,6 +290,11 @@ public class ActiveBatchFirebaseWrapper implements
         new FirebaseReceiptRequestDeviceAbsoluteFilenameRequest().updateReceiptRequestDeviceFilenameRequest(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), receiptRequest, response);
     }
 
+    public void updateCloudImageStorageUploadResult(Driver driver, FileToUploadInfo fileToUploadInfo, CloudUploadResultResponse response){
+        Timber.tag(TAG).d("updateCloudImageStorageUploadResult");
+        getNodes(driver);
+        new FirebaseImageStorageUploadResult().processUploadResult(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), fileToUploadInfo, response);
+    }
 
 
     ////

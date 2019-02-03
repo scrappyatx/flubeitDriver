@@ -47,8 +47,6 @@ public class FirebasePaymentAuthorizationUpdate implements OnCompleteListener<Vo
         batchDataNode.child(paymentAuthorization.getBatchGuid()).child(BATCH_DATA_STEPS_NODE).child(paymentAuthorization.getStepGuid()).child(PAYMENT_AUTHORIZATION_NODE).updateChildren(data).addOnCompleteListener(this);
 
         this.response = response;
-
-
     }
 
     public void onComplete(@NonNull Task<Void> task) {
@@ -67,5 +65,11 @@ public class FirebasePaymentAuthorizationUpdate implements OnCompleteListener<Vo
         }
         Timber.tag(TAG).d("COMPLETE");
         response.cloudActiveBatchUpdatePaymentAuthorizationComplete();
+        close();
+    }
+
+    private void close(){
+        Timber.tag(TAG).d("close");
+        response = null;
     }
 }

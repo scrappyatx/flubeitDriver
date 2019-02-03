@@ -35,6 +35,9 @@ public class StepDetailCompleteButtonComponents implements
     public StepDetailCompleteButtonComponents(AppCompatActivity activity, String buttonCaption, Response response){
         Timber.tag(TAG).d("creating component, buttonCaption -> " + buttonCaption);
         animation = (LottieAnimationView) activity.findViewById(R.id.step_complete_animation);
+        animation.useHardwareAcceleration(true);
+        animation.enableMergePathsForKitKatAndAbove(true);
+
         banner = (TextView) activity.findViewById(R.id.step_complete_banner);
 
         button = (Button) activity.findViewById(R.id.step_complete_button);
@@ -103,6 +106,7 @@ public class StepDetailCompleteButtonComponents implements
     }
 
     public void close(){
+        animation.setImageBitmap(null);
         animation = null;
         button = null;
         banner = null;

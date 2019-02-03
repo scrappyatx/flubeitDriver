@@ -41,6 +41,10 @@ public class TestOfferMakeLayoutComponents {
         //create orderListView, and set it invisible
         optionListView = (RecyclerView) activity.findViewById(R.id.options_recycler_view);
         waitingAnimation = (LottieAnimationView) activity.findViewById(R.id.waiting_animation);
+        waitingAnimation.useHardwareAcceleration(true);
+        waitingAnimation.enableMergePathsForKitKatAndAbove(true);
+
+
         setInvisible();
         Timber.tag(TAG).d("...components created");
     }
@@ -85,6 +89,17 @@ public class TestOfferMakeLayoutComponents {
         optionListView.setVisibility(View.GONE);
         waitingAnimation.setVisibility(View.GONE);
         Timber.tag(TAG).d("...set GONE");
+    }
+
+    public void close(){
+        optionListView = null;
+
+        waitingAnimation.setImageBitmap(null);
+
+        waitingAnimation = null;
+        optionListAdapter = null;
+
+        Timber.tag(TAG).d("close");
     }
 
 }

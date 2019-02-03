@@ -53,10 +53,10 @@ public class UseCaseLocationUpdateRequest implements
 
         ///save location update to batch data node
         Timber.tag(TAG).d("   ...sending location to cloud database");
-        //device.getCloudActiveBatch().saveMapLocationRequest(driver, batchGuid, serviceOrderGuid, orderStepGuid, location, this);
+        device.getCloudActiveBatch().saveMapLocationRequest(driver, batchGuid, serviceOrderGuid, orderStepGuid, location, this);
 
-        //TODO remember to take this one out you dumbass
-        device.getCloudServerMonitoring().locationUpdateRequest(batchGuid, location, this);
+        //TODO remember to take this one out you dumbass. this was here because we weren't updating to the batch node. next time put in cogent comments you fuckhead
+        //device.getCloudServerMonitoring().locationUpdateRequest(batchGuid, location, this);
     }
 
     public void cloudActiveBatchSaveMapLocationComplete(){

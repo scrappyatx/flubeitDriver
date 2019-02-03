@@ -23,59 +23,50 @@ import timber.log.Timber;
  */
 
 public class DemoOffersMakeController implements
-        UseCaseMakeDemoBatchRequest.Response,
-        DemoOfferAlerts.DemoOfferCreatedAlertHidden {
+        UseCaseMakeDemoBatchRequest.Response {
 
     private final String TAG = "DemoOffersMakeController";
-    private ExecutorService useCaseExecutor;
-    private MobileDeviceInterface device;
-    private AppCompatActivity activity;
-    private ActivityDone activityDone;
 
-    public DemoOffersMakeController(AppCompatActivity activity, ActivityDone activityDone) {
-        device = AndroidDevice.getInstance();
-        useCaseExecutor = device.getUseCaseEngine().getUseCaseExecutor();
-        this.activity = activity;
-        this.activityDone = activityDone;
+    private DemoBatchResponse response;
 
+    public DemoOffersMakeController(DemoBatchResponse response) {
         Timber.tag(TAG).d("created");
+        this.response = response;
     }
 
     public void doMakeTwoStepOffer(){
-        useCaseExecutor.execute(new UseCaseMakeDemoBatchRequest(device, new DemoBatchSimpleTwoStep(), this));
+        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseMakeDemoBatchRequest(AndroidDevice.getInstance(), new DemoBatchSimpleTwoStep(), this));
         Timber.tag(TAG).d("make demo two step offer REQUEST...");
     }
 
     public void doMakeAutoStepOffer(){
-        useCaseExecutor.execute(new UseCaseMakeDemoBatchRequest(device, new DemoBatchTwoStepWithVehiclePhotos(), this));
+        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseMakeDemoBatchRequest(AndroidDevice.getInstance(), new DemoBatchTwoStepWithVehiclePhotos(), this));
         Timber.tag(TAG).d("make demo auto batch offer REQUEST...");
     }
 
     public void doMakeOilChangeOffer(){
-        useCaseExecutor.execute(new UseCaseMakeDemoBatchRequest(device, new DemoBatchOilChange(), this));
+        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseMakeDemoBatchRequest(AndroidDevice.getInstance(), new DemoBatchOilChange(), this));
         Timber.tag(TAG).d("make oil change offer REQUEST...");
     }
 
-    public void makeDemoBatchComplete(){
+    public void makeDemoBatchSuccess(){
         Timber.tag(TAG).d("...make demo two step batch COMPLETE!");
-        //EventBus.getDefault().postSticky(new ShowDemoOfferCreatedAlertEvent());
-        new DemoOfferAlerts().showDemoOfferCreatedAlert(activity, this);
+        response.demoBatchCreated();
     }
 
-    public void demoOfferCreatedAlertHidden(){
-        //we are done, return to calling activity
-        activityDone.allDone();
+    public void makeDemoBatchFailure(){
+        Timber.tag(TAG).d("makeDemoBatchSuccess");
+        response.demoBatchNotCreated();
     }
 
     public void close(){
-        activity = null;
-        activityDone = null;
-        device = null;
-        useCaseExecutor = null;
+        response = null;
     }
 
-    public interface ActivityDone {
-        void allDone();
+    public interface DemoBatchResponse {
+        void demoBatchCreated();
+
+        void demoBatchNotCreated();
     }
 
 }

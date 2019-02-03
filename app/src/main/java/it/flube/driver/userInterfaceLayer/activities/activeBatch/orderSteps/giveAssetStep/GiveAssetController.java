@@ -8,6 +8,8 @@ import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseFinishCurrentStepRequest;
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseGetDriverAndActiveBatchCurrentStep;
+import it.flube.driver.useCaseLayer.receiveAssetStep.UseCaseAddSignatureRequestToUploadList;
+import it.flube.libbatchdata.entities.SignatureRequest;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderGiveAssetStep;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
@@ -20,11 +22,13 @@ import timber.log.Timber;
  */
 public class GiveAssetController implements
         UseCaseGetDriverAndActiveBatchCurrentStep.Response,
-        UseCaseFinishCurrentStepRequest.Response {
+        UseCaseFinishCurrentStepRequest.Response,
+        UseCaseAddSignatureRequestToUploadList.Response {
     private final String TAG = "GiveAssetController";
 
     private GetDriverAndActiveBatchStepResponse response;
     private StepFinishedResponse stepResponse;
+    private String milestoneEvent;
 
     public GiveAssetController() {
         Timber.tag(TAG).d("controller CREATED");
@@ -39,8 +43,21 @@ public class GiveAssetController implements
     }
 
     public void stepFinishedRequest(String milestoneEvent, StepFinishedResponse stepResponse){
-        Timber.tag(TAG).d("finishing STEP");
+        Timber.tag(TAG).d("finishing STEP, with no signature required");
         this.stepResponse = stepResponse;
+        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseFinishCurrentStepRequest(AndroidDevice.getInstance(), milestoneEvent, this));
+    }
+
+    public void stepFinishedRequest(String milestoneEvent, SignatureRequest signatureRequest, StepFinishedResponse stepResponse){
+        Timber.tag(TAG).d("finishing STEP, WITH signature required");
+        this.stepResponse = stepResponse;
+        this.milestoneEvent = milestoneEvent;
+        //DO THIS ON UPLOAD EXECUTOR USES LOWER PRIORITY THREADS
+        AndroidDevice.getInstance().getUseCaseEngine().getUploadExecutor().execute(new UseCaseAddSignatureRequestToUploadList(AndroidDevice.getInstance(),signatureRequest, this));
+    }
+
+    public void addSignatureRequestToUploadListComplete(){
+        Timber.tag(TAG).d("addSignatureRequestToUploadListComplete, finishing step");
         AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseFinishCurrentStepRequest(AndroidDevice.getInstance(), milestoneEvent, this));
     }
 

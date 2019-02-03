@@ -15,6 +15,7 @@ import it.flube.libbatchdata.builders.DriverInfoBuilder;
 import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import it.flube.libbatchdata.entities.ContactPerson;
 import it.flube.libbatchdata.entities.Customer;
+import it.flube.libbatchdata.entities.FileUpload;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.DisplayDistance;
 import it.flube.libbatchdata.entities.DisplayTiming;
@@ -60,6 +61,9 @@ public class BatchDetailBuilder {
 
             //setup batch notification settings
             this.batchDetail.setBatchNotificationSettings(new BatchNotificationSettingsBuilder.Builder(targetEnvironment).build());
+
+            //initialize fileUploads
+            this.batchDetail.setFileUploads(new HashMap<String, FileUpload>());
         }
 
         public Builder batchGuid(String guid){

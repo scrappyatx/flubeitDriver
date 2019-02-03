@@ -76,7 +76,7 @@ public class AuthorizePaymentActivity extends AppCompatActivity implements
     @Override
     public void onPause() {
         Timber.tag(TAG).d("onPause (%s)", activityGuid);
-        DrawerMenu.getInstance().close();
+        DrawerMenu.getInstance().clearActivity();
         super.onPause();
 
     }
@@ -99,6 +99,8 @@ public class AuthorizePaymentActivity extends AppCompatActivity implements
 
         controller.close();
         layoutComponents.close();
+        controller = null;
+        layoutComponents = null;
         super.onDestroy();
 
     }
@@ -116,10 +118,16 @@ public class AuthorizePaymentActivity extends AppCompatActivity implements
         ActivityNavigator.getInstance().gotoActivityReceiptDetail(this);
     }
 
-    public void stepCompleteClicked(String milestoneWhenFinished){
+    public void stepCompleteClicked(ServiceOrderAuthorizePaymentStep orderStep){
         Timber.tag(TAG).d("stepCompleteClicked (%s)", activityGuid);
         layoutComponents.showWaitingAnimationAndBanner(this);
-        controller.stepFinishedRequest(milestoneWhenFinished, this);
+        if (orderStep.getRequireReceipt()) {
+            Timber.tag(TAG).d("...has receipt attached (%s)", activityGuid);
+            controller.stepFinishedRequest(orderStep.getMilestoneWhenFinished(), orderStep.getReceiptRequest(), this);
+        } else {
+            Timber.tag(TAG).d("...no receipt attached (%s)", activityGuid);
+            controller.stepFinishedRequest(orderStep.getMilestoneWhenFinished(), this);
+        }
     }
 
     ///
@@ -127,7 +135,7 @@ public class AuthorizePaymentActivity extends AppCompatActivity implements
     ///
     public void gotDriverAndStep(Driver driver, BatchDetail batchDetail, ServiceOrder serviceOrder, ServiceOrderAuthorizePaymentStep orderStep){
         Timber.tag(TAG).d("gotDriverAndStep (%s)", activityGuid);
-        layoutComponents.setValues(this,orderStep);
+        layoutComponents.setValues(this, orderStep);
         layoutComponents.setVisible();
     }
 

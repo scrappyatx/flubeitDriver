@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import it.flube.driver.R;
+import it.flube.driver.userInterfaceLayer.activities.offers.demoOffers.DemoOfferAlerts;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.layoutComponents.demoOffers.DemoOffersMakeLayoutComponents;
 import it.flube.libbatchdata.builders.BuilderUtilities;
@@ -21,7 +22,8 @@ import timber.log.Timber;
 
 public class DemoOffersMakeActivity extends AppCompatActivity
         implements
-        DemoOffersMakeController.ActivityDone {
+        DemoOffersMakeController.DemoBatchResponse,
+        DemoOfferAlerts.DemoOfferCreatedAlertHidden {
 
     private static final String TAG = "DemoOffersMakeActivity";
 
@@ -35,9 +37,8 @@ public class DemoOffersMakeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo_offer_make);
         Timber.tag(TAG).d("onCreate");
-
         demoOffersMakeLayoutComponents = new DemoOffersMakeLayoutComponents(this);
-        controller = new DemoOffersMakeController(this, this);
+        controller = new DemoOffersMakeController(this);
 
         activityGuid = BuilderUtilities.generateGuid();
         Timber.tag(TAG).d("onCreate (%s)", activityGuid);
@@ -54,7 +55,6 @@ public class DemoOffersMakeActivity extends AppCompatActivity
     @Override
     public void onPause() {
         Timber.tag(TAG).d("onPause (%s)", activityGuid);
-        controller.close();
         super.onPause();
 
     }
@@ -98,8 +98,20 @@ public class DemoOffersMakeActivity extends AppCompatActivity
         controller.doMakeOilChangeOffer();
     }
 
-    public void allDone(){
-        //we are done, go to demo offers activity
+    // demo batch controller interface
+    public void demoBatchCreated(){
+        Timber.tag(TAG).d("demoBatchCreated");
+        new DemoOfferAlerts().showDemoOfferCreatedAlert(this, this);
+    }
+
+    public void demoBatchNotCreated(){
+        Timber.tag(TAG).d("demoBatchCreated");
+        //TODO put in an alert to the user here
+    }
+
+    //// demo batch alert interface
+    public void demoOfferCreatedAlertHidden(){
+        //we are done, return to calling activity
         Timber.tag(TAG).d("...we are done, go to activity demo offers");
         ActivityNavigator.getInstance().gotoActivityDemoOffers(this);
     }

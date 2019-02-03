@@ -43,7 +43,6 @@ public class PhotoDetailActivity extends AppCompatActivity implements
 
         setContentView(R.layout.activity_photo_detail);
 
-        DrawerMenu.getInstance().setActivity(this, R.string.photo_detail_activity_title);
         controller = new PhotoDetailController();
         layoutComponents = new PhotoDetailLayoutComponents(this, this);
 
@@ -51,6 +50,13 @@ public class PhotoDetailActivity extends AppCompatActivity implements
         Timber.tag(TAG).d("onCreate (%s)", activityGuid);
         Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
     }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        Timber.tag(TAG).d("onStart (%s)", activityGuid);
+    }
+
 
     @Override
     public void onResume() {
@@ -67,6 +73,7 @@ public class PhotoDetailActivity extends AppCompatActivity implements
     public void onPause() {
         Timber.tag(TAG).d("onPause (%s)", activityGuid);
         DrawerMenu.getInstance().clearActivity();
+
         super.onPause();
     }
 
@@ -85,9 +92,12 @@ public class PhotoDetailActivity extends AppCompatActivity implements
     @Override
     public void onDestroy(){
         Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
-        DrawerMenu.getInstance().close();
+
         controller.close();
         layoutComponents.close();
+        controller = null;
+        layoutComponents = null;
+
         super.onDestroy();
 
     }
@@ -121,6 +131,11 @@ public class PhotoDetailActivity extends AppCompatActivity implements
         Timber.tag(TAG).d("gotNoDriver (%s)", activityGuid);
         Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
         ActivityNavigator.getInstance().gotoActivityLogin(this);
+    }
+
+    public void intentKeysNotFound(){
+        Timber.tag(TAG).w("intentKeysNotFound");
+        ActivityNavigator.getInstance().gotoActivityHome(this);
     }
 
 }

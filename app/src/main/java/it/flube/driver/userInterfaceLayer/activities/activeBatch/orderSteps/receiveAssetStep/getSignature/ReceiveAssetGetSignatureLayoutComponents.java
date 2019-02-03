@@ -63,6 +63,8 @@ public class ReceiveAssetGetSignatureLayoutComponents implements
 
         savingBanner = (TextView) activity.findViewById(R.id.signature_saving_banner);
         savingAnimation = (LottieAnimationView) activity.findViewById(R.id.signature_saving_animation);
+        savingAnimation.useHardwareAcceleration(true);
+        savingAnimation.enableMergePathsForKitKatAndAbove(true);
     }
 
     public ServiceOrderReceiveAssetStep getOrderStep(){
@@ -126,6 +128,7 @@ public class ReceiveAssetGetSignatureLayoutComponents implements
         saveButton=null;
         clearButton=null;
         savingBanner=null;
+        savingAnimation.setImageBitmap(null);
         savingAnimation=null;
         response = null;
     }
@@ -167,7 +170,7 @@ public class ReceiveAssetGetSignatureLayoutComponents implements
         switch ((String) v.getTag()){
             case SAVE_BUTTON_TAG:
                 Timber.tag(TAG).d("...save button clicked");
-                response.gotSignature(orderStep.getSignatureRequest(), signaturePad.getTransparentSignatureBitmap());
+                response.gotSignature(orderStep.getSignatureRequest(), signaturePad.getSignatureBitmap());
                 break;
             case CLEAR_BUTTON_TAG:
                 Timber.tag(TAG).d("...clear button clicked");

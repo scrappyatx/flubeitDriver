@@ -30,9 +30,6 @@ public class UseCaseMakeDemoBatchRequest implements
     private final CloudDemoOfferInterface cloudDb;
     private final TargetEnvironmentConstants.TargetEnvironment targetEnvironment;
 
-    private BatchHolder demoBatchHolder;
-
-
     public UseCaseMakeDemoBatchRequest(MobileDeviceInterface device, DemoBatchInterface demoMaker, Response response){
         this.demoMaker = demoMaker;
         this.response = response;
@@ -40,26 +37,36 @@ public class UseCaseMakeDemoBatchRequest implements
         driver = device.getCloudAuth().getDriver();
         cloudDb = device.getCloudDemoOffer();
         targetEnvironment = device.getTargetEnvironment();
+
+
     }
 
     public void run(){
         Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
         //Step 1 - create a demo batch
-        BatchHolder demoBatchHolder = demoMaker.createDemoBatch(driver.getClientId(), targetEnvironment);
+        if (driver != null) {
+            Timber.tag(TAG).d("driver is not null OK");
+            BatchHolder demoBatchHolder = demoMaker.createDemoBatch(driver.getClientId(), targetEnvironment);
 
-        Timber.tag(TAG).d("   batchGuid -> " + demoBatchHolder.getBatch().getGuid());
-        //Step 2 - save the demo batch
-        cloudDb.addDemoOfferRequest(driver, demoBatchHolder, this);
+            Timber.tag(TAG).d("   batchGuid -> " + demoBatchHolder.getBatch().getGuid());
+            //Step 2 - save the demo batch
+            cloudDb.addDemoOfferRequest(driver, demoBatchHolder, this);
+        } else {
+            Timber.tag(TAG).d("driver is not null PROBLEM");
+            response.makeDemoBatchFailure();
+        }
     }
 
 
     public void cloudAddDemoOfferComplete(){
         //Step 4 - we are done
-        response.makeDemoBatchComplete();
+        response.makeDemoBatchSuccess();
         Timber.tag(TAG).d("   ...added to demo offer list");
     }
 
     public interface Response {
-        void makeDemoBatchComplete();
+        void makeDemoBatchSuccess();
+
+        void makeDemoBatchFailure();
     }
 }

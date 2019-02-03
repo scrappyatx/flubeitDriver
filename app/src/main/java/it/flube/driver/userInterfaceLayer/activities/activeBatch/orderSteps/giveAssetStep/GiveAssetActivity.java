@@ -157,10 +157,16 @@ public class GiveAssetActivity extends AppCompatActivity implements
         checkCallPermission.gotoSettings(this);
     }
 
-    public void stepCompleteClicked(String milestoneWhenFinished){
+    public void stepCompleteClicked(ServiceOrderGiveAssetStep orderStep){
         Timber.tag(TAG).d("stepCompleteClicked (%s)", activityGuid);
         layoutComponents.showWaitingAnimationAndBanner(this);
-        controller.stepFinishedRequest(milestoneWhenFinished, this);
+        if (orderStep.getRequireSignature()) {
+            Timber.tag(TAG).d("   signature required");
+            controller.stepFinishedRequest(orderStep.getMilestoneWhenFinished(), orderStep.getSignatureRequest(), this);
+        } else {
+            Timber.tag(TAG).d("   signature not required");
+            controller.stepFinishedRequest(orderStep.getMilestoneWhenFinished(), this);
+        }
     }
 
     ///

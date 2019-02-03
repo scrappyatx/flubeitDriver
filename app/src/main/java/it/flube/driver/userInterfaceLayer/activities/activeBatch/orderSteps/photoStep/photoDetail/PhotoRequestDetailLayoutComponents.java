@@ -206,7 +206,10 @@ public class PhotoRequestDetailLayoutComponents {
         title = null;
         description = null;
         hint = null;
+
+        actual.setImageBitmap(null);
         actual = null;
+
         Timber.tag(TAG).d("components closed");
     }
 

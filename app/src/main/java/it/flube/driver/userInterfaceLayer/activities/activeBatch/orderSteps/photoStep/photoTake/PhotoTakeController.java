@@ -22,29 +22,23 @@ public class PhotoTakeController {
 
     private static final String TAG = "PhotoTakeController";
 
-    private ExecutorService useCaseExecutor;
-    private MobileDeviceInterface device;
 
     public PhotoTakeController() {
         Timber.tag(TAG).d("controller CREATED");
-        device = AndroidDevice.getInstance();
-        useCaseExecutor = device.getUseCaseEngine().getUseCaseExecutor();
     }
 
     /// Get the photoRequest for the activity to display
     public void getPhotoDetailRequest(AppCompatActivity activity, PhotoRequestUtilities.GetPhotoDetailResponse response){
+        Timber.tag(TAG).d("getPhotoDetailRequest");
         //first get the data that was used to launch the activity
-        new PhotoRequestUtilities().getPhotoRequest(activity, device, response);
+        new PhotoRequestUtilities().getPhotoRequest(activity, AndroidDevice.getInstance(), response);
     }
 
     public void close(){
-        useCaseExecutor = null;
-        device = null;
+        Timber.tag(TAG).d("close");
     }
 
 
-    public MobileDeviceInterface getDevice(){
-        return device;
-    }
+
 
 }

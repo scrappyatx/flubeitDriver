@@ -30,10 +30,10 @@ public class UseCaseSaveSignatureToDeviceImageStorage implements
     private static final String TAG="UseCaseSaveSignatureToDeviceImageStorage";
 
 
-    private final MobileDeviceInterface device;
-    private final Bitmap bitmap;
-    private final Response response;
-    private final SignatureRequest signatureRequest;
+    private MobileDeviceInterface device;
+    private Bitmap bitmap;
+    private Response response;
+    private SignatureRequest signatureRequest;
 
     private String imageGuid;
     private Boolean saveImageSuccess;
@@ -92,6 +92,13 @@ public class UseCaseSaveSignatureToDeviceImageStorage implements
     /// response interface for updating photoRequest with file name for device image
     public void cloudActiveBatchUpdateSignatureRequestDeviceAbsoluteFilenameComplete(){
         Timber.tag(TAG).d("cloudActiveBatchUpdatePhotoRequestDeviceAbsoluteFilenameComplete");
+
+        /// now get rid of the bitmap
+        if (bitmap != null){
+            bitmap.recycle();
+            bitmap = null;
+        }
+
 
         if (saveImageSuccess){
             response.signatureSavedSuccess(imageGuid);

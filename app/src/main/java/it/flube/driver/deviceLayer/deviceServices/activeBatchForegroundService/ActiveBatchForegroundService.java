@@ -34,6 +34,7 @@ import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.phot
 import it.flube.driver.userInterfaceLayer.activities.home.HomeActivity;
 import timber.log.Timber;
 
+import static it.flube.driver.applicationLayer.ApplicationConstants.CHANNEL_ID_ACTIVE_BATCH;
 import static it.flube.driver.deviceLayer.deviceServices.activeBatchForegroundService.IntentUtilities.ACTION_GOTO_ACTIVE_BATCH;
 import static it.flube.driver.deviceLayer.deviceServices.activeBatchForegroundService.IntentUtilities.ACTION_SHUTDOWN;
 import static it.flube.driver.deviceLayer.deviceServices.activeBatchForegroundService.IntentUtilities.ACTION_START;
@@ -138,7 +139,7 @@ public class ActiveBatchForegroundService extends Service
 
     private Notification getNotification(String notificationText, String notificationSubText, OrderStepInterface.TaskType taskType) {
 
-        return new NotificationCompat.Builder(getApplicationContext(),null)
+        return new NotificationCompat.Builder(getApplicationContext(),CHANNEL_ID_ACTIVE_BATCH)
                 .setLargeIcon(getLargeIcon())
                 .setSmallIcon(R.drawable.logo20)
                 .setContentTitle(getResources().getString(R.string.active_batch_service_notification_title))

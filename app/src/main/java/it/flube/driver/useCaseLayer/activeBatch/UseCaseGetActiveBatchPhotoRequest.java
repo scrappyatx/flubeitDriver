@@ -20,11 +20,12 @@ public class UseCaseGetActiveBatchPhotoRequest implements
 
     private final static String TAG = "UseCaseGetActiveBatchPhotoRequest";
 
-    private final MobileDeviceInterface device;
-    private final String batchGuid;
-    private final String orderStepGuid;
-    private final String photoRequestGuid;
-    private final Response response;
+    private MobileDeviceInterface device;
+    private String batchGuid;
+    private String orderStepGuid;
+    private String photoRequestGuid;
+    private Response response;
+    private Driver driver;
 
     public UseCaseGetActiveBatchPhotoRequest(MobileDeviceInterface device, String batchGuid, String orderStepGuid, String photoRequestGuid, Response response){
         this.device = device;
@@ -39,29 +40,47 @@ public class UseCaseGetActiveBatchPhotoRequest implements
 
         if (device.getCloudAuth().hasDriver()) {
             Timber.tag(TAG).d("...getting photo request");
+            this.driver = device.getCloudAuth().getDriver();
             device.getCloudActiveBatch().getActiveBatchPhotoRequestRequest(device.getCloudAuth().getDriver(),batchGuid, orderStepGuid, photoRequestGuid, this);
         } else {
             // do nothing
             Timber.tag(TAG).d("...there is no signed in user, do nothing");
-            response.useCaseGetActiveBatchPhotoRequestFailure();
+            response.useCaseGetActiveBatchPhotoRequestFailureNoDriver();
+            close();
         }
     }
 
+    /// interface for GetActiveBatchPhotoRequest response
     public void cloudGetActiveBatchPhotoRequestSuccess(PhotoRequest photoRequest){
         Timber.tag(TAG).d("...cloudGetActiveBatchPhotoRequestSuccess");
-        response.useCaseGetActiveBatchPhotoRequestSuccess(photoRequest);
+        response.useCaseGetActiveBatchPhotoRequestSuccess(driver, photoRequest);
+        close();
     }
 
 
     public void cloudGetActiveBatchPhotoRequestFailure(){
         Timber.tag(TAG).d("...cloudGetActiveBatchPhotoRequestFailure");
-        response.useCaseGetActiveBatchPhotoRequestFailure();
+        response.useCaseGetActiveBatchPhotoRequestFailureDriverButNoPhotoRequest(driver);
+        close();
+    }
+
+    private void close(){
+        Timber.tag(TAG).d("close");
+        response = null;
+        device = null;
+        batchGuid = null;
+        orderStepGuid = null;
+        photoRequestGuid = null;
+
     }
 
     public interface Response {
-        void useCaseGetActiveBatchPhotoRequestSuccess(PhotoRequest photoRequest);
+        void useCaseGetActiveBatchPhotoRequestSuccess(Driver driver, PhotoRequest photoRequest);
 
-        void useCaseGetActiveBatchPhotoRequestFailure();
+        void useCaseGetActiveBatchPhotoRequestFailureDriverButNoPhotoRequest(Driver driver);
+
+        void useCaseGetActiveBatchPhotoRequestFailureNoDriver();
+
     }
 
 }

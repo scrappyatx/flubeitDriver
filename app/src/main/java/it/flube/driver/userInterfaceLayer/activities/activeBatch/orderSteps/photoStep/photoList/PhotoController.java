@@ -48,12 +48,10 @@ public class PhotoController implements
         Timber.tag(TAG).d("stepFinished START...");
         this.milestoneEvent = milestoneEvent;
         this.stepResponse = stepResponse;
+        Timber.tag(TAG).d("   adding all photos to the image upload list");
+        // DO THIS ON THE UPLOAD EXECUTOR, uses lower priority threads
+        AndroidDevice.getInstance().getUseCaseEngine().getUploadExecutor().execute(new UseCaseAddAllPhotosToUploadList(AndroidDevice.getInstance(), photoList, this));
 
-       //// TODO think this is using a lot of memory for some reason? need to investigate. for now, just take it out
-       /// AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseAddAllPhotosToUploadList(AndroidDevice.getInstance(), photoList, this));
-
-        //TODO this will need to be removed once we get "adding all to upload list complete" working properly
-        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseFinishCurrentStepRequest(AndroidDevice.getInstance(), milestoneEvent, this));
     }
 
     ////

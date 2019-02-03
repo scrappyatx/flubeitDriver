@@ -25,7 +25,6 @@
 
         mapbox:mapbox_cameraTargetLat="30.545767"
         mapbox:mapbox_cameraTargetLng="-97.757811"
-        mapbox:mapbox_styleUrl="mapbox://styles/mapbox/streets-v9"
         mapbox:mapbox_cameraZoom="13"
         mapbox:mapbox_cameraBearing="0"
         mapbox:mapbox_cameraTilt="0"
@@ -38,7 +37,6 @@
         mapbox:mapbox_uiTiltGestures="true"
         mapbox:mapbox_uiDoubleTapGestures="true"
 
-        mapbox:mapbox_uiZoomControls="true"
         mapbox:mapbox_uiCompass="true"/>
 
 </android.support.constraint.ConstraintLayout>

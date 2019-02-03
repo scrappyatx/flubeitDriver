@@ -36,7 +36,6 @@ public class ReceiptRequestBuilder {
             receiptRequest = new ReceiptRequest();
 
             receiptRequest.setGuid(BuilderUtilities.generateGuid());
-            receiptRequest.setDoTextRecognition(true);
             receiptRequest.setHasCloudFile(false);
             receiptRequest.setHasDeviceFile(false);
 

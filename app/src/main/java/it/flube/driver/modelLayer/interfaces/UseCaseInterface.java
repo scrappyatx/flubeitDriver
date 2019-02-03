@@ -5,6 +5,7 @@
 package it.flube.driver.modelLayer.interfaces;
 
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * Created on 10/4/2017
@@ -14,5 +15,7 @@ import java.util.concurrent.ExecutorService;
 public interface UseCaseInterface {
 
     public ExecutorService getUseCaseExecutor();
+
+    public ExecutorService getUploadExecutor();
 
 }

@@ -50,7 +50,7 @@ public class FirebaseAuthUiSignIn {
                 .setTosAndPrivacyPolicyUrls(termsUrl,privacyUrl)
                 //.setTosUrl(TermsOfServiceUrl)
                 //.setPrivacyPolicyUrl(PrivacyPolicyUrl)
-                .setIsSmartLockEnabled(true)
+                .setIsSmartLockEnabled(false) //TODO changed this to false due to issues on cory's motorola G6. would prefer to set it true so we can use smartlock
                 .build();
     }
 }

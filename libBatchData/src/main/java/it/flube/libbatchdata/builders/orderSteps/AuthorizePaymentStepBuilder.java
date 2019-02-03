@@ -15,6 +15,7 @@ import it.flube.libbatchdata.builders.PaymentAuthorizationBuilder;
 import it.flube.libbatchdata.builders.ReceiptRequestBuilder;
 import it.flube.libbatchdata.builders.TimestampBuilder;
 import it.flube.libbatchdata.entities.PaymentAuthorization;
+import it.flube.libbatchdata.entities.ReceiptRequest;
 import it.flube.libbatchdata.entities.assetTransfer.AssetTransfer;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderAuthorizePaymentStep;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderGiveAssetStep;
@@ -203,6 +204,16 @@ public class AuthorizePaymentStepBuilder {
                 this.paymentStep.setReceiptRequest(new ReceiptRequestBuilder.Builder().build());
             } else {
                 this.paymentStep.setReceiptRequest(null);
+            }
+            return this;
+        }
+
+        public Builder receiptRequest(ReceiptRequest receiptRequest){
+            this.paymentStep.setReceiptRequest(receiptRequest);
+            if (receiptRequest == null){
+                this.paymentStep.setRequireReceipt(false);
+            } else {
+                this.paymentStep.setRequireReceipt(true);
             }
             return this;
         }

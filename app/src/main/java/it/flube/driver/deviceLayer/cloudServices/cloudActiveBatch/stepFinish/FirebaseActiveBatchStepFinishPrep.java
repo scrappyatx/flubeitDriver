@@ -60,36 +60,51 @@ public class FirebaseActiveBatchStepFinishPrep implements
     public void batchWaitingToFinish(ActiveBatchManageInterface.ActorType actorType, String batchGuid){
         Timber.tag(TAG).w("   ...got batchWaitingToFinish -> this should never happen");
         response.cloudActiveBatchFinishStepComplete();
+        close();
     }
 
     public void batchFinished(ActiveBatchManageInterface.ActorType actorType, String batchGuid){
         Timber.tag(TAG).w("   ...got batchFinished -> this should never happen");
         response.cloudActiveBatchFinishStepComplete();
+        close();
     }
 
     public void batchRemoved(ActiveBatchManageInterface.ActorType actorType, String batchGuid){
         Timber.tag(TAG).w("   ...got batchRemoved -> this should never happen");
         response.cloudActiveBatchFinishStepComplete();
+        close();
     }
 
     public void noBatchByMobileUser(){
         Timber.tag(TAG).w("   ...noBatchByMobileUser -> this should never happen");
         response.cloudActiveBatchFinishStepComplete();
+        close();
     }
 
     public void noBatchByServerAdmin(){
         Timber.tag(TAG).w("   ...noBatchByServerAdmin -> this should never happen");
         response.cloudActiveBatchFinishStepComplete();
+        close();
     }
 
     public void noDataOnNode(){
         Timber.tag(TAG).w("   ...noDataOnNode -> this should never happen");
         response.cloudActiveBatchFinishStepComplete();
+        close();
     }
 
     public void dataMismatchOnNode(){
         Timber.tag(TAG).w("   ...dataMismatchOnNode -> this should never happen");
         response.cloudActiveBatchFinishStepComplete();
+        close();
+    }
+
+    private void close(){
+        Timber.tag(TAG).d("close");
+        response = null;
+        activeBatchRef = null;
+        batchDataRef = null;
+        actorType = null;
     }
 
 }

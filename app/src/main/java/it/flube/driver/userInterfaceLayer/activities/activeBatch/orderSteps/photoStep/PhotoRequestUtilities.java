@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import java.util.concurrent.ExecutorService;
 
+import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseGetActiveBatchPhotoRequest;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.ActiveBatchUtilities;
@@ -49,32 +50,53 @@ public class PhotoRequestUtilities implements
 
                 } else {
                     Timber.tag(TAG).d("   ...batchGuidKey NOT FOUND");
-                    response.photoDetailFailure();
+                    response.photoDetailFailureIntentKeysNotFound();
+                    close();
                 }
             } else {
                 Timber.tag(TAG).d("   ...orderStepGuidKey NOT FOUND");
-                response.photoDetailFailure();
+                response.photoDetailFailureIntentKeysNotFound();
+                close();
             }
         } else {
             Timber.tag(TAG).d("   ...photoRequestGuidKey NOT FOUND");
-            response.photoDetailFailure();
+            response.photoDetailFailureIntentKeysNotFound();
+            close();
         }
     }
 
     /// response interface for UseCaseGetActiveBatchPhotoRequest.Response
-    public void useCaseGetActiveBatchPhotoRequestSuccess(PhotoRequest photoRequest){
-        response.photoDetailSuccess(photoRequest);
+    public void useCaseGetActiveBatchPhotoRequestSuccess(Driver driver, PhotoRequest photoRequest){
+        Timber.tag(TAG).d("useCaseGetActiveBatchPhotoRequestSuccess");
+        response.photoDetailSuccess(driver, photoRequest);
+        close();
     }
 
-    public void useCaseGetActiveBatchPhotoRequestFailure(){
-        response.photoDetailFailure();
+    public void useCaseGetActiveBatchPhotoRequestFailureNoDriver(){
+        Timber.tag(TAG).d("useCaseGetActiveBatchPhotoRequestFailureNoDriver");
+        response.photoDetailFailureNoDriver();
+        close();
     }
 
+    public void useCaseGetActiveBatchPhotoRequestFailureDriverButNoPhotoRequest(Driver driver){
+        Timber.tag(TAG).d("useCaseGetActiveBatchPhotoRequestFailureNoPhotoRequest");
+        response.photoDetailFailureDriverButNoPhotoRequest(driver);
+        close();
+    }
+
+    private void close(){
+        Timber.tag(TAG).d("close");
+        response = null;
+    }
 
     public interface GetPhotoDetailResponse {
-        void photoDetailSuccess(PhotoRequest photoRequest);
+        void photoDetailSuccess(Driver driver, PhotoRequest photoRequest);
 
-        void photoDetailFailure();
+        void photoDetailFailureNoDriver();
+
+        void photoDetailFailureDriverButNoPhotoRequest(Driver driver);
+
+        void photoDetailFailureIntentKeysNotFound();
     }
 
 }

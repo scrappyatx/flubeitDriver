@@ -6,6 +6,7 @@ package it.flube.driver.useCaseLayer.activeBatch;
 
 import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.interfaces.CloudActiveBatchInterface;
+import it.flube.driver.modelLayer.interfaces.CloudImageStorageInterface;
 import it.flube.driver.modelLayer.interfaces.CloudServerMonitoringInterface;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.driver.modelLayer.interfaces.ActiveBatchForegroundServiceInterface;
@@ -26,7 +27,8 @@ public class UseCaseBatchFinishedRequest implements
     LocationTelemetryInterface.LocationTrackingStopResponse,
     ActiveBatchForegroundServiceInterface.StopActiveBatchForegroundServiceResponse,
     CloudServerMonitoringInterface.BatchFinishedResponse,
-    CloudActiveBatchInterface.AcknowledgeFinishedBatchResponse {
+    CloudActiveBatchInterface.AcknowledgeFinishedBatchResponse,
+        CloudImageStorageInterface.StopMonitoringForFilesToUploadResponse {
 
     private final static String TAG = "UseCaseBatchFinishedRequest";
 
@@ -70,6 +72,14 @@ public class UseCaseBatchFinishedRequest implements
         Timber.tag(TAG).d("   ...stop location tracking");
         device.getLocationTelemetry().locationTrackingStopRequest(this);
 
+        //stop file upload monitoring\
+        Timber.tag(TAG).d("   ...stop monitoring for files to upload");
+        device.getCloudImageStorage().stopMonitoringForFilesToUploadRequest(this);
+
+    }
+
+    public void cloudImageStorageStopMonitoringForFilesToUploadComplete(){
+        Timber.tag(TAG).d("cloudImageStorageStopMonitoringForFilesToUploadComplete");
     }
 
     public void locationTrackingStopComplete(){

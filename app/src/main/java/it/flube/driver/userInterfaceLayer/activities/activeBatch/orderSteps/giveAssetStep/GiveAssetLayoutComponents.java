@@ -238,7 +238,7 @@ public class GiveAssetLayoutComponents implements
     /// StepDetailSwipeCompleteButtonComponent.Response interface
     public void stepDetailSwipeCompleteButtonClicked(){
         Timber.tag(TAG).d("onSlideComplete");
-        response.stepCompleteClicked(orderStep.getMilestoneWhenFinished());
+        response.stepCompleteClicked(orderStep);
     }
 
     public interface Response {
@@ -252,7 +252,7 @@ public class GiveAssetLayoutComponents implements
 
         void contactPersonTextClicked(String dialPhoneNumber);
 
-        void stepCompleteClicked(String milestoneWhenFinished);
+        void stepCompleteClicked(ServiceOrderGiveAssetStep orderStep);
 
         void appInfoClicked();
     }

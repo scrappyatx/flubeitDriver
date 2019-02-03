@@ -37,7 +37,7 @@ public class ReceiptPhotoTakeController implements
 
     public void close(){
         Timber.tag(TAG).d("close");
-
+        response = null;
     }
 
     /// UseCaseGetDriverAndActiveBatchCurrentStep response

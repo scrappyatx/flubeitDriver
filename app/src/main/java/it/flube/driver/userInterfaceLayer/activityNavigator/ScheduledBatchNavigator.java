@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import it.flube.driver.userInterfaceLayer.activities.offers.publicOffers.PublicOffersActivity;
-import it.flube.driver.userInterfaceLayer.activities.scheduledBatches.BatchMapActivity;
 import it.flube.driver.userInterfaceLayer.activities.scheduledBatches.manageBatch.BatchManageActivity;
 import it.flube.driver.userInterfaceLayer.activities.scheduledBatches.scheduledBatchList.ScheduledBatchesActivity;
 import timber.log.Timber;
@@ -80,12 +79,6 @@ public class ScheduledBatchNavigator {
         Timber.tag(TAG).d("    ...batchGuid = " + batchGuid);
     }
 
-    ///
-    ///     BATCH MAP (Deprecated)
-    ///
-    public static void gotoActivityBatchMap(Context context) {
-        context.startActivity(new Intent(context, BatchMapActivity.class));
-        Timber.tag(TAG).d("starting activity BatchMapActivity.class");
-    }
+
 
 }

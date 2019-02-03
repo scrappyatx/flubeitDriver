@@ -45,6 +45,10 @@ public class FirebaseImageLabelDetection implements
         //create a vision image from the bitmap
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
 
+        //now recycle the bitmap
+        bitmap.recycle();
+        Timber.tag(TAG).d("   ...recycling the bitmap");
+
         Timber.tag(TAG).d("   ...creating detector options");
         //create the detector with desired options
         FirebaseVisionLabelDetectorOptions options =

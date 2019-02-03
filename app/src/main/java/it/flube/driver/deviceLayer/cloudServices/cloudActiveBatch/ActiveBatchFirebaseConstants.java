@@ -17,21 +17,30 @@ public class ActiveBatchFirebaseConstants {
     public static final String PHOTO_REQUEST_DEVICE_ABSOLUTE_FILENAME_NODE = "deviceAbsoluteFileName";
     public static final String PHOTO_REQUEST_HAS_LABEL_MAP_NODE = "hasLabelMap";
     public static final String PHOTO_REQUEST_LABEL_MAP_NODE = "labelMap";
+    public static final String PHOTO_REQUEST_HAS_CLOUD_FILE_NODE = "hasCloudFile";
+    public static final String PHOTO_REQUEST_CLOUD_STORAGE_FILENAME_NODE = "cloudStorageFileName";
+    public static final String PHOTO_REQUEST_CLOUD_STORAGE_DOWNLOAD_URL = "cloudStorageDownloadUrl";
+
 
     public static final String SIGNATURE_REQUEST_NODE = "signatureRequest";
     public static final String SIGNATURE_REQUEST_STATUS_NODE = "signatureStatus";
     public static final String SIGNATURE_REQUEST_HAS_DEVICE_FILE_NODE = "hasDeviceFile";
     public static final String SIGNATURE_REQUEST_DEVICE_ABSOLUTE_FILENAME_NODE = "deviceAbsoluteFileName";
     public static final String SIGNATURE_REQUEST_ATTEMPT_COUNT_NODE = "attemptCount";
+    public static final String SIGNATURE_REQUEST_HAS_CLOUD_FILE_NODE = "hasCloudFile";
+    public static final String SIGNATURE_REQUEST_CLOUD_STORAGE_FILENAME_NODE = "cloudStorageFileName";
+    public static final String SIGNATURE_REQUEST_CLOUD_STORAGE_DOWNLOAD_URL = "cloudStorageDownloadUrl";
 
     public static final String RECEIPT_REQUEST_NODE = "receiptRequest";
     public static final String RECEIPT_REQUEST_STATUS_NODE = "receiptStatus";
     public static final String RECEIPT_REQUEST_ATTEMPT_COUNT_NODE = "attemptCount";
     public static final String RECEIPT_REQUEST_HAS_DEVICE_FILE_NODE = "hasDeviceFile";
     public static final String RECEIPT_REQUEST_DEVICE_ABSOLUTE_FILENAME_NODE = "deviceAbsoluteFileName";
-    public static final String RECEIPT_REQUEST_HAS_CLOUD_FILE_NODE = "hasCloudFile";
     public static final String RECEIPT_REQUEST_HAS_TEXT_MAP_NODE = "hasTextMap";
     public static final String RECEIPT_REQUEST_TEXT_MAP_NODE = "textMap";
+    public static final String RECEIPT_REQUEST_HAS_CLOUD_FILE_NODE = "hasCloudFile";
+    public static final String RECEIPT_REQUEST_CLOUD_STORAGE_FILENAME_NODE = "cloudStorageFileName";
+    public static final String RECEIPT_REQUEST_CLOUD_STORAGE_DOWNLOAD_URL = "cloudStorageDownloadUrl";
 
     public static final String SERVICE_ORDER_GUID = "serviceOrderGuid";
 

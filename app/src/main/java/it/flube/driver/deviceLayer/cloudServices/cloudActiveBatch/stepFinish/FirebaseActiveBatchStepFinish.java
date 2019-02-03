@@ -144,8 +144,19 @@ public class FirebaseActiveBatchStepFinish implements
         Timber.tag(TAG).d("   ...setDataComplete");
         Timber.tag(TAG).d("...finishStepRequest COMPLETE");
         response.cloudActiveBatchFinishStepComplete();
+        close();
     }
 
+    private void close(){
+        Timber.tag(TAG).d("close");
+        activeBatchRef = null;
+        batchDataRef = null;
+        actorType = null;
+        batchDetail = null;
+        serviceOrder = null;
+        step = null;
+        response = null;
+    }
 
 
 }

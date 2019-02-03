@@ -76,6 +76,9 @@ public class ReceiptPhotoTakeActivity extends AppCompatActivity
     public void onDestroy(){
         controller.close();
         layoutComponents.close();
+        controller = null;
+        layoutComponents = null;
+
         super.onDestroy();
         Timber.tag(TAG).d("onDestroy (%s)", activityGuid);
     }

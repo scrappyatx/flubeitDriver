@@ -45,6 +45,8 @@ public class UserTriggerLayoutComponents implements
         stepComplete = new StepDetailSwipeCompleteButtonComponent(activity, activity.getResources().getString(R.string.user_trigger_step_completed_step_button_caption), this);
 
         waitingAnimation = (LottieAnimationView) activity.findViewById(R.id.user_trigger_waiting_animation);
+        waitingAnimation.useHardwareAcceleration(true);
+        waitingAnimation.enableMergePathsForKitKatAndAbove(true);
 
         displayMessage = (TextView) activity.findViewById(R.id.user_trigger_display_message);
 
@@ -98,6 +100,7 @@ public class UserTriggerLayoutComponents implements
         stepTitle = null;
         stepDueBy = null;
         stepComplete = null;
+        waitingAnimation.setImageBitmap(null);
         waitingAnimation = null;
         displayMessage = null;
         orderStep = null;

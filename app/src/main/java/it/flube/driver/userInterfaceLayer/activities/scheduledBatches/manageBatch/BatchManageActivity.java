@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.mapbox.mapboxsdk.Mapbox;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -65,16 +66,12 @@ public class BatchManageActivity extends AppCompatActivity
     private BatchDetailTabLayoutComponents batchTab;
     private BatchManageLayoutComponents batchButtons;
 
-    // forfeit offer & swipe to start button
-    private LottieAnimationView batchStartWaitingAnimation;
-    private TextView batchForfeit;
-    private SlideView batchStart;
-
     private String activityGuid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_batch_manage_new);
 
         controller = new BatchManageController();
