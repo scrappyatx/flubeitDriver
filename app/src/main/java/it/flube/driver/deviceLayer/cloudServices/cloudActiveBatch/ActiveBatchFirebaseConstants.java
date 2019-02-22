@@ -60,5 +60,9 @@ public class ActiveBatchFirebaseConstants {
 
     public static final String PAYMENT_AUTHORIZATION_NODE = "paymentAuthorization";
     public static final String PAYMENT_VERIFICATION_STATUS_NODE = "paymentVerificationStatus";
+    public static final String PAYMENT_AUTHORIZATION_SERVICE_PROVIDER_TRANSACTION_ID_NODE = "serviceProviderTransactionId";
+    public static final String PAYMENT_AUTHORIZATION_SERVICE_PROVIDER_TRANSACTION_ID_SOURCE_TYPE_NODE = "serviceProviderTransactionIdSourceType";
+
+
 
 }

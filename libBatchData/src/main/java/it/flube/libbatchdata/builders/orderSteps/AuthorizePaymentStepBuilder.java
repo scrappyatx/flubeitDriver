@@ -22,6 +22,8 @@ import it.flube.libbatchdata.entities.orderStep.ServiceOrderGiveAssetStep;
 import it.flube.libbatchdata.interfaces.AssetTransferInterface;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
 
+import static it.flube.libbatchdata.entities.orderStep.ServiceOrderAuthorizePaymentStep.ServiceProviderTransactionIdSourceType.NOT_ATTEMPTED;
+
 /**
  * Created on 4/24/2018
  * Project : Driver
@@ -32,6 +34,8 @@ public class AuthorizePaymentStepBuilder {
     private static final String DEFAULT_MILESTONE_WHEN_FINISHED = "Driver has made payment";
 
     private static final Boolean DEFAULT_REQUIRE_RECEIPT = true;
+    private static final Boolean DEFAULT_REQUIRE_SERVICE_PROVIDER_TRANSACTION_ID = true;
+    private static final ServiceOrderAuthorizePaymentStep.ServiceProviderTransactionIdSourceType DEFAULT_SERVICE_PROVIDER_TRANSACTION_ID_SOURCE_TYPE = NOT_ATTEMPTED;
 
     /// icon strings use fontawesome.io icon strings
     private static final String TASK_ICON_STRING = "{fa-thumbs-o-up}";
@@ -69,6 +73,11 @@ public class AuthorizePaymentStepBuilder {
 
             //this will add the receiptRequest object if required
             requireReceipt(DEFAULT_REQUIRE_RECEIPT);
+
+            /// transactionId
+            this.paymentStep.setRequireServiceProviderTransactionId(DEFAULT_REQUIRE_SERVICE_PROVIDER_TRANSACTION_ID);
+            this.paymentStep.setServiceProviderTransactionIdSourceType(DEFAULT_SERVICE_PROVIDER_TRANSACTION_ID_SOURCE_TYPE);
+            this.paymentStep.setServiceProviderTransactionId(null);
 
             //add the payment authorization object
             this.paymentStep.setPaymentAuthorization(new PaymentAuthorizationBuilder.Builder().build());
@@ -218,6 +227,20 @@ public class AuthorizePaymentStepBuilder {
             return this;
         }
 
+        public Builder requireServiceProviderTransactionId(Boolean requireServiceProviderTransactionId){
+            this.paymentStep.setRequireServiceProviderTransactionId(requireServiceProviderTransactionId);
+            return this;
+        }
+
+        public Builder serviceProviderTransactionId(String serviceProviderTransactionId){
+            this.paymentStep.setServiceProviderTransactionId(serviceProviderTransactionId);
+            return this;
+        }
+
+        public Builder serviceProviderTransactionIdSourceType(ServiceOrderAuthorizePaymentStep.ServiceProviderTransactionIdSourceType serviceProviderTransactionIdSourceType){
+            this.paymentStep.setServiceProviderTransactionIdSourceType(serviceProviderTransactionIdSourceType);
+            return this;
+        }
 
         private void validate(ServiceOrderAuthorizePaymentStep paymentStep){
             // required PRESENT (must not be null)

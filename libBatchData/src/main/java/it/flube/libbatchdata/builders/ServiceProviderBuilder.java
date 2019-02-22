@@ -93,10 +93,6 @@ public class ServiceProviderBuilder {
                 throw new IllegalStateException("name is null");
             }
 
-            if (serviceProvider.getName() == null){
-                throw new IllegalStateException("name is null");
-            }
-
             if (serviceProvider.getIconURL() == null){
                 throw new IllegalStateException("iconURL is null");
             }

@@ -123,10 +123,10 @@ public class AuthorizePaymentActivity extends AppCompatActivity implements
         layoutComponents.showWaitingAnimationAndBanner(this);
         if (orderStep.getRequireReceipt()) {
             Timber.tag(TAG).d("...has receipt attached (%s)", activityGuid);
-            controller.stepFinishedRequest(orderStep.getMilestoneWhenFinished(), orderStep.getReceiptRequest(), this);
+            controller.stepFinishedRequest(orderStep, orderStep.getMilestoneWhenFinished(), orderStep.getReceiptRequest(), this);
         } else {
             Timber.tag(TAG).d("...no receipt attached (%s)", activityGuid);
-            controller.stepFinishedRequest(orderStep.getMilestoneWhenFinished(), this);
+            controller.stepFinishedRequest(orderStep, orderStep.getMilestoneWhenFinished(), this);
         }
     }
 

@@ -18,6 +18,7 @@ import it.flube.libbatchdata.entities.SignatureRequest;
 import it.flube.libbatchdata.entities.assetTransfer.AssetTransfer;
 import it.flube.libbatchdata.entities.batch.Batch;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderAuthorizePaymentStep;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import it.flube.libbatchdata.interfaces.ActiveBatchManageInterface;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
@@ -144,6 +145,10 @@ public interface CloudActiveBatchInterface {
     interface ReceiptRequestDeviceAbsoluteFileNameReponse {
         void cloudActiveBatchUpdateReceiptRequestDeviceAbsoluteFilenameComplete();
     }
+
+    //// update payment authorization service provider transaction id
+    void updateAuthorizePaymentServiceProviderTransactionId(Driver driver, ServiceOrderAuthorizePaymentStep orderStep);
+    //TODO add a response interface here
 
     //// update payment authorization request
     void updatePaymentAuthorizationRequest(Driver driver, PaymentAuthorization paymentAuthorization, PaymentAuthorizationUpdateResponse response);

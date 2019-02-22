@@ -196,6 +196,11 @@ public class PhotoStepBuilder {
             return this;
         }
 
+        public Builder addServiceProviderPhotoRequest(HashMap<String, PhotoRequest> photoList){
+            this.photoStep.getPhotoRequestList().putAll(photoList);
+            return this;
+        }
+
         private void validate(ServiceOrderPhotoStep photoStep){
             // required PRESENT (must not be null)
             if (photoStep.getGuid() == null) {

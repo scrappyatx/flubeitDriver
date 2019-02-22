@@ -39,6 +39,9 @@ public class ReceiptRequest {
     private ReceiptStatus receiptStatus;
     private Map<String, String> statusIconText;
 
+    private ReceiptOcrSettings receiptOcrSettings;
+    private ReceiptOcrResults receiptOcrResults;
+
     public String getGuid() {
         return guid;
     }
@@ -165,5 +168,21 @@ public class ReceiptRequest {
 
     public void setStatusIconText(Map<String, String> statusIconText) {
         this.statusIconText = statusIconText;
+    }
+
+    public ReceiptOcrSettings getReceiptOcrSettings() {
+        return receiptOcrSettings;
+    }
+
+    public void setReceiptOcrSettings(ReceiptOcrSettings receiptOcrSettings) {
+        this.receiptOcrSettings = receiptOcrSettings;
+    }
+
+    public ReceiptOcrResults getReceiptOcrResults() {
+        return receiptOcrResults;
+    }
+
+    public void setReceiptOcrResults(ReceiptOcrResults receiptOcrResults) {
+        this.receiptOcrResults = receiptOcrResults;
     }
 }

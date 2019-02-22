@@ -23,6 +23,7 @@ import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdat
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebasePaymentAuthorizationUpdate;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebasePhotoRequestDeviceAbsoluteFilename;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebaseReceiptRequestDeviceAbsoluteFilenameRequest;
+import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebaseServiceProviderTransactionIdUpdate;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebaseSignatureRequestDeviceAbsoluteFilename;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchFinish.FirebaseActiveBatchFinishPrep;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchStart.FirebaseActiveBatchStart;
@@ -45,6 +46,7 @@ import it.flube.libbatchdata.entities.ReceiptRequest;
 import it.flube.libbatchdata.entities.SignatureRequest;
 import it.flube.libbatchdata.entities.assetTransfer.AssetTransfer;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderAuthorizePaymentStep;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import it.flube.libbatchdata.interfaces.ActiveBatchManageInterface;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
@@ -282,6 +284,12 @@ public class ActiveBatchFirebaseWrapper implements
         Timber.tag(TAG).d("updatePaymentAuthorizationRequest START...");
         getNodes(driver);
         new FirebasePaymentAuthorizationUpdate().updatePaymentAuthorizationRequest(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), paymentAuthorization, response);
+    }
+
+    public void updateAuthorizePaymentServiceProviderTransactionId(Driver driver, ServiceOrderAuthorizePaymentStep orderStep){
+        Timber.tag(TAG).d("updateAuthorizePaymentServiceProviderTransactionId");
+        getNodes(driver);
+        new FirebaseServiceProviderTransactionIdUpdate().updateServiceProviderTransactionIdRequest(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), orderStep);
     }
 
     public void updateReceiptRequestDeviceAbsoluteFileNameRequest(Driver driver, ReceiptRequest receiptRequest, ReceiptRequestDeviceAbsoluteFileNameReponse response){

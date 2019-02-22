@@ -10,6 +10,7 @@ import it.flube.driver.useCaseLayer.activeBatch.UseCaseFinishCurrentStepRequest;
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseGetDriverAndActiveBatchCurrentStep;
 import it.flube.driver.useCaseLayer.authorizePaymentStep.UseCaseAddReceiptRequestToUploadList;
 import it.flube.driver.useCaseLayer.authorizePaymentStep.UseCaseUpdatePaymentAuthorization;
+import it.flube.driver.useCaseLayer.authorizePaymentStep.UseCaseUpdateServiceProviderTransactionId;
 import it.flube.libbatchdata.entities.PaymentAuthorization;
 import it.flube.libbatchdata.entities.ReceiptRequest;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
@@ -26,6 +27,7 @@ public class AuthorizePaymentController implements
         UseCaseGetDriverAndActiveBatchCurrentStep.Response,
         UseCaseUpdatePaymentAuthorization.Response,
         UseCaseFinishCurrentStepRequest.Response,
+        UseCaseUpdateServiceProviderTransactionId.Response,
         UseCaseAddReceiptRequestToUploadList.Response {
 
     private final String TAG = "AuthorizePaymentController";
@@ -50,16 +52,24 @@ public class AuthorizePaymentController implements
         AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseUpdatePaymentAuthorization(AndroidDevice.getInstance(), paymentAuthorization, this));
     }
 
-    public void stepFinishedRequest(String milestoneEvent, StepFinishedResponse stepResponse){
+    public void stepFinishedRequest(ServiceOrderAuthorizePaymentStep orderStep, String milestoneEvent, StepFinishedResponse stepResponse){
         Timber.tag(TAG).d("finishing STEP, with no receipt request");
         this.stepResponse = stepResponse;
+        //TODO fix this with proper response interface at some point
+        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseUpdateServiceProviderTransactionId(AndroidDevice.getInstance(), orderStep, this));
+        //TODO just shoehorned this in for now
+
         AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseFinishCurrentStepRequest(AndroidDevice.getInstance(), milestoneEvent, this));
     }
 
-    public void stepFinishedRequest(String milestoneEvent, ReceiptRequest receiptRequest, StepFinishedResponse stepResponse){
+    public void stepFinishedRequest(ServiceOrderAuthorizePaymentStep orderStep, String milestoneEvent, ReceiptRequest receiptRequest, StepFinishedResponse stepResponse){
         Timber.tag(TAG).d("finishing STEP, WITH receipt request");
         this.stepResponse = stepResponse;
         this.milestoneEvent = milestoneEvent;
+        //TODO fix this with proper response interface at some point
+        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseUpdateServiceProviderTransactionId(AndroidDevice.getInstance(), orderStep, this));
+        //TODO just shoehorned this in for now
+
         // DO THIS ON THE UPLOAD EXECUTOR, uses lower priority threads
         AndroidDevice.getInstance().getUseCaseEngine().getUploadExecutor().execute(new UseCaseAddReceiptRequestToUploadList(AndroidDevice.getInstance(), receiptRequest, this));
     }
@@ -109,6 +119,11 @@ public class AuthorizePaymentController implements
     public void finishCurrentStepComplete(){
         Timber.tag(TAG).d("finishCurrentStepComplete");
         stepResponse.stepFinished();
+    }
+
+    // UseCaseUpdateServiceProviderTransactionId.Response
+    public void useCaseUpdateServiceProviderTransactionIdComplete(){
+        Timber.tag(TAG).d("useCaseUpdateServiceProviderTransactionIdComplete");
     }
 
     public interface GetDriverAndActiveBatchStepResponse {

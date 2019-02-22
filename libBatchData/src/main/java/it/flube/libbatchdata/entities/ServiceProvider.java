@@ -15,6 +15,7 @@ public class ServiceProvider {
     private AddressLocation addressLocation;
     private LatLonLocation latLonLocation;
 
+
     public ServiceProvider() {}
 
     public String getName() {
@@ -56,4 +57,6 @@ public class ServiceProvider {
     public void setLatLonLocation(LatLonLocation latLonLocation) {
         this.latLonLocation = latLonLocation;
     }
+
+
 }

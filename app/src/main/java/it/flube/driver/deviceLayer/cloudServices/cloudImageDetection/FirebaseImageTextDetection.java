@@ -49,6 +49,7 @@ public class FirebaseImageTextDetection implements
 
         Timber.tag(TAG).d("   ...getting detector with desired options");
         FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
+                //.getCloudDocumentTextRecognizer();
                 .getOnDeviceTextRecognizer();
 
         Timber.tag(TAG).d("   ...detecting the image");

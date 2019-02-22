@@ -222,6 +222,12 @@ public class AuthorizePaymentLayoutComponents implements
     ///
     public void stepDetailSwipeCompleteButtonClicked(){
         Timber.tag(TAG).d("stepDetailSwipeCompleteButtonClicked");
+
+        ///TODO take this out, only setting up a fake transaction id
+        orderStep.setServiceProviderTransactionId("18110900004361");
+        orderStep.setServiceProviderTransactionIdSourceType(ServiceOrderAuthorizePaymentStep.ServiceProviderTransactionIdSourceType.MANUAL_ENTRY);
+        // TODO end of stuff to take out
+
         response.stepCompleteClicked(orderStep);
     }
 

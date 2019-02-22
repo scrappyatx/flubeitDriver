@@ -11,6 +11,7 @@ import it.flube.libbatchdata.builders.ContactPersonBuilder;
 import it.flube.libbatchdata.builders.DestinationBuilder;
 import it.flube.libbatchdata.builders.LatLonLocationBuilder;
 import it.flube.libbatchdata.builders.PaymentAuthorizationBuilder;
+import it.flube.libbatchdata.builders.PhotoRequestListForServiceProviderBuilder;
 import it.flube.libbatchdata.builders.PhotoRequestListForVehicleBuilder;
 import it.flube.libbatchdata.builders.PotentialEarningsBuilder;
 import it.flube.libbatchdata.builders.ProductListBuilder;
@@ -175,6 +176,8 @@ public class DemoBatchOilChange implements DemoBatchInterface {
                                         .build())
                                 .build())
 
+
+
                         /// STEP 5 -> GIVE ASSET (give car to oil change location)
                         .addStep(new GiveAssetStepBuilder.Builder()
                                 .title("Give vehicle to service")
@@ -188,7 +191,18 @@ public class DemoBatchOilChange implements DemoBatchInterface {
                                         .build())
                                 .build())
 
-                        /// STEP 6 -> USER TRIGGER (oil change performed by oil change shop)
+                        /// STEP 6 -> TAKE PHOTOS OF SERVICE PROVIDER LOCATION
+                        .addStep(new PhotoStepBuilder.Builder()
+                                .title("Take photo")
+                                .description("Take photo of service provider")
+                                .milestoneWhenFinished("Photo Taken")
+                                .addServiceProviderPhotoRequest(new PhotoRequestListForServiceProviderBuilder.Builder(targetEnvironment)
+                                        .addFullSetPhotos()
+                                        .build())
+                                .build())
+
+
+                        /// STEP 7 -> USER TRIGGER (oil change performed by oil change shop)
                         .addStep(new UserTriggerStepBuilder.Builder()
                                 .title("Oil Change")
                                 .description("Wait for oil change to be completed")
@@ -198,7 +212,7 @@ public class DemoBatchOilChange implements DemoBatchInterface {
                                 .milestoneWhenFinished("Oil change completed")
                                 .build())
 
-                        /// STEP 7 -> AUTHORIZE PAYMENT (payment for oil change to oil change shop)
+                        /// STEP 8 -> AUTHORIZE PAYMENT (payment for oil change to oil change shop)
                         .addStep(new AuthorizePaymentStepBuilder.Builder()
                                 .title("Pay for service")
                                 .description("Pay for service")
@@ -211,7 +225,7 @@ public class DemoBatchOilChange implements DemoBatchInterface {
                                         .build())
                                 .build())
 
-                        /// STEP 8 -> RECEIVE ASSET (customer's vehicle)
+                        /// STEP 9 -> RECEIVE ASSET (customer's vehicle)
                         .addStep(new ReceiveAssetStepBuilder.Builder()
                                 .title("Get vehicle from service")
                                 .description("Get vehicle from service")
@@ -225,7 +239,7 @@ public class DemoBatchOilChange implements DemoBatchInterface {
                                         .build())
                                 .build())
 
-                        /// STEP 9 -> NAVIGATION (to customer's location)
+                        /// STEP 10 -> NAVIGATION (to customer's location)
                         .addStep(new NavigationStepBuilder.Builder()
                                 .title("Go to location")
                                 .description("Go to location")
@@ -238,7 +252,7 @@ public class DemoBatchOilChange implements DemoBatchInterface {
                                         .build())
                                 .build())
 
-                        /// STEP 10 -> TAKE PHOTOS (customer's vehicle)
+                        /// STEP 11 -> TAKE PHOTOS (customer's vehicle)
                         .addStep(new PhotoStepBuilder.Builder()
                                 .title("Take photos")
                                 .description("Take photos of customer's vehicle")
@@ -250,7 +264,7 @@ public class DemoBatchOilChange implements DemoBatchInterface {
                                         .build())
                                 .build())
 
-                        /// STEP 11 -> GIVE ASSET (give customer's vehicle to customer)
+                        /// STEP 12 -> GIVE ASSET (give customer's vehicle to customer)
                         .addStep(new GiveAssetStepBuilder.Builder()
                                 .title("Give vehicle to customer")
                                 .description("Give vehicle to customer")

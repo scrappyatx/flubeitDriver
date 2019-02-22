@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018. scrapdoodle, LLC.  All Rights Reserved
+ * Copyright (c) 2019. scrapdoodle, LLC.  All Rights Reserved
  */
 
 package it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate;
@@ -14,42 +14,37 @@ import java.util.HashMap;
 
 import it.flube.driver.modelLayer.interfaces.CloudActiveBatchInterface;
 import it.flube.libbatchdata.entities.PaymentAuthorization;
+import it.flube.libbatchdata.entities.orderStep.ServiceOrderAuthorizePaymentStep;
 import timber.log.Timber;
 
-import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseConstants.BATCH_DATA_ASSET_LIST_NODE;
 import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseConstants.BATCH_DATA_STEPS_NODE;
 import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseConstants.PAYMENT_AUTHORIZATION_NODE;
 import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseConstants.PAYMENT_AUTHORIZATION_SERVICE_PROVIDER_TRANSACTION_ID_NODE;
+import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseConstants.PAYMENT_AUTHORIZATION_SERVICE_PROVIDER_TRANSACTION_ID_SOURCE_TYPE_NODE;
 import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseConstants.PAYMENT_VERIFICATION_STATUS_NODE;
 
 /**
- * Created on 9/10/2018
+ * Created on 2/21/2019
  * Project : Driver
  */
-public class FirebasePaymentAuthorizationUpdate implements OnCompleteListener<Void> {
-    private static final String TAG="FirebasePaymentAuthorizationUpdate";
+public class FirebaseServiceProviderTransactionIdUpdate implements OnCompleteListener<Void> {
+    private static final String TAG="FirebaseServiceProviderTransactionIdUpdate";
 
-    private CloudActiveBatchInterface.PaymentAuthorizationUpdateResponse response;
+    public void updateServiceProviderTransactionIdRequest(DatabaseReference batchDataNode, ServiceOrderAuthorizePaymentStep orderStep){
 
-    public void updatePaymentAuthorizationRequest(DatabaseReference batchDataNode, PaymentAuthorization paymentAuthorization,
-                                                  CloudActiveBatchInterface.PaymentAuthorizationUpdateResponse response){
+        Timber.tag(TAG).d("updateServiceProviderTransactionIdRequest START...");
 
-        Timber.tag(TAG).d("updatePaymentAuthorizationRequest START...");
-
-        this.response = response;
         Timber.tag(TAG).d("   batchDataNode    = " + batchDataNode.toString());
-        Timber.tag(TAG).d("   batchGuid        = " + paymentAuthorization.getBatchGuid());
-        Timber.tag(TAG).d("   serviceOrderGuid = " + paymentAuthorization.getServiceOrderGuid());
-        Timber.tag(TAG).d("   stepGuid         = " + paymentAuthorization.getStepGuid());
+        Timber.tag(TAG).d("   batchGuid        = " + orderStep.getBatchGuid());
+        Timber.tag(TAG).d("   serviceOrderGuid = " + orderStep.getServiceOrderGuid());
+        Timber.tag(TAG).d("   stepGuid         = " + orderStep.getGuid());
 
         HashMap<String, Object> data = new HashMap<String, Object>();
-        data.put(PAYMENT_VERIFICATION_STATUS_NODE, paymentAuthorization.getPaymentVerificationStatus().toString());
+        data.put(PAYMENT_AUTHORIZATION_SERVICE_PROVIDER_TRANSACTION_ID_NODE, orderStep.getServiceProviderTransactionId());
+        data.put(PAYMENT_AUTHORIZATION_SERVICE_PROVIDER_TRANSACTION_ID_SOURCE_TYPE_NODE, orderStep.getServiceProviderTransactionIdSourceType().toString());
 
-        batchDataNode.child(paymentAuthorization.getBatchGuid()).child(BATCH_DATA_STEPS_NODE).child(paymentAuthorization.getStepGuid()).child(PAYMENT_AUTHORIZATION_NODE).updateChildren(data).addOnCompleteListener(this);
-
-        this.response = response;
+        batchDataNode.child(orderStep.getBatchGuid()).child(BATCH_DATA_STEPS_NODE).child(orderStep.getGuid()).updateChildren(data).addOnCompleteListener(this);
     }
-
     public void onComplete(@NonNull Task<Void> task) {
         Timber.tag(TAG).d("   onComplete...");
 
@@ -65,12 +60,10 @@ public class FirebasePaymentAuthorizationUpdate implements OnCompleteListener<Vo
             }
         }
         Timber.tag(TAG).d("COMPLETE");
-        response.cloudActiveBatchUpdatePaymentAuthorizationComplete();
         close();
     }
 
     private void close(){
         Timber.tag(TAG).d("close");
-        response = null;
     }
 }

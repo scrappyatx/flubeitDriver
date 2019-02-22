@@ -7,6 +7,8 @@ package it.flube.libbatchdata.builders;
 import java.util.HashMap;
 import java.util.Map;
 
+import it.flube.libbatchdata.entities.ReceiptOcrResults;
+import it.flube.libbatchdata.entities.ReceiptOcrSettings;
 import it.flube.libbatchdata.entities.ReceiptRequest;
 
 /**
@@ -56,6 +58,10 @@ public class ReceiptRequestBuilder {
             receiptRequest.setDoTextRecognition(DEFAULT_DO_TEXT_RECOGNITION);
             receiptRequest.setHasTextMap(false);
             receiptRequest.setTextMap(null);
+
+            //ocr settings & results
+            receiptRequest.setReceiptOcrSettings(new ReceiptOcrSettingsBuilder.Builder().build());
+            receiptRequest.setReceiptOcrResults(new ReceiptOcrResults());
         }
 
         public Builder guid(String guid){
@@ -120,6 +126,16 @@ public class ReceiptRequestBuilder {
 
         public Builder doTextRecognition(Boolean doTextRecognition){
             this.receiptRequest.setDoTextRecognition(doTextRecognition);
+            return this;
+        }
+
+        public Builder receiptOcrSettings(ReceiptOcrSettings receiptOcrSettings){
+            this.receiptRequest.setReceiptOcrSettings(receiptOcrSettings);
+            return this;
+        }
+
+        public Builder receiptOcrResults(ReceiptOcrResults receiptOcrResults){
+            this.receiptRequest.setReceiptOcrResults(receiptOcrResults);
             return this;
         }
 
