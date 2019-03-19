@@ -7,35 +7,21 @@ package it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.rec
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import it.flube.driver.R;
-import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.modelLayer.entities.driver.Driver;
-import it.flube.driver.userInterfaceLayer.activities.activeBatch.ActiveBatchAlerts;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.receiveAssetStep.layoutComponents.ReceiveAssetLayoutComponents;
-import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailCompleteButtonComponents;
-import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailSwipeCompleteButtonComponent;
 import it.flube.driver.userInterfaceLayer.activities.messages.CheckCallPermission;
 import it.flube.driver.userInterfaceLayer.activities.messages.MakePhoneCall;
 import it.flube.driver.userInterfaceLayer.activities.messages.SendTextMessage;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
-import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailDueByLayoutComponents;
-import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailTitleLayoutComponents;
-import it.flube.driver.userInterfaceLayer.userInterfaceEvents.batchAlerts.ShowCompletedServiceOrderAlertEvent;
-import it.flube.libbatchdata.builders.BuilderUtilities;
-import it.flube.libbatchdata.entities.ContactPerson;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.entities.SignatureRequest;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderReceiveAssetStep;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
-import ng.max.slideview.SlideView;
 import timber.log.Timber;
 
 /**

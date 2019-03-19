@@ -22,7 +22,7 @@ import timber.log.Timber;
  * Project : Driver
  */
 public class ReceiptDetailLayoutComponents implements
-    StepDetailCompleteButtonComponents.Response {
+        ReceiptDetailButtonLayoutComponents.Response {
     public static final String TAG="ReceiptDetailLayoutComponents";
     ///
     /// wrapper class for activity_receipt_detail.xml
@@ -30,7 +30,7 @@ public class ReceiptDetailLayoutComponents implements
 
     private TextView title;
     private ImageView receiptImage;
-    private StepDetailCompleteButtonComponents stepComplete;
+    private ReceiptDetailButtonLayoutComponents stepComplete;
 
     private ReceiptRequest receiptRequest;
     private Response response;
@@ -41,7 +41,7 @@ public class ReceiptDetailLayoutComponents implements
 
         receiptImage = (ImageView) activity.findViewById(R.id.image_receipt);
 
-        stepComplete = new StepDetailCompleteButtonComponents(activity, activity.getResources().getString(R.string.receipt_detail_photo_button_caption), this);
+        stepComplete = new ReceiptDetailButtonLayoutComponents(activity, this);
 
         this.response = response;
         Timber.tag(TAG).d("created");
@@ -108,12 +108,20 @@ public class ReceiptDetailLayoutComponents implements
 
 
     /// response interface StepDetailCompleteButtonComponents
-    public void stepDetailCompleteButtonClicked(){
+    public void receiptDetailRetakeButtonClicked(){
+        Timber.tag(TAG).d("receiptDetailRetakeButtonClicked");
         response.takePhotoButtonClicked();
+    }
+
+    public void receiptDetailKeepButtonClicked(){
+        Timber.tag(TAG).d("receiptDetailKeepButtonClicked");
+        response.keepPhotoButtonClicked(receiptRequest);
     }
 
     public interface Response {
         void takePhotoButtonClicked();
+
+        void keepPhotoButtonClicked(ReceiptRequest receiptRequest);
     }
 
 }

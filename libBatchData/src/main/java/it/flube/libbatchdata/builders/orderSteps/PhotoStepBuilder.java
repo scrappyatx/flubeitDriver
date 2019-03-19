@@ -6,13 +6,11 @@ package it.flube.libbatchdata.builders.orderSteps;
 
 
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.builders.TimestampBuilder;
 import it.flube.libbatchdata.entities.PhotoRequest;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderPhotoStep;

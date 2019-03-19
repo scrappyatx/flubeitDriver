@@ -7,9 +7,10 @@ package it.flube.libbatchdata.builders;
 import java.util.HashMap;
 import java.util.Map;
 
-import it.flube.libbatchdata.entities.ReceiptOcrResults;
+import it.flube.libbatchdata.entities.ReceiptAnalysis;
 import it.flube.libbatchdata.entities.ReceiptOcrSettings;
 import it.flube.libbatchdata.entities.ReceiptRequest;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 
 /**
  * Created on 8/11/2018
@@ -19,7 +20,8 @@ public class ReceiptRequestBuilder {
     private static final String NOT_ATTEMPTED_ICON_TEXT = "{fa-ban}";
     private static final String COMPLETED_SUCCESS_ICON_TEXT = "{fa-check-circle}";
     private static final String COMPLETED_FAILED_ICON_TEXT = "{fa-question-circle}";
-    private static final Boolean DEFAULT_DO_TEXT_RECOGNITION = false;
+
+    private static final Boolean DEFAULT_SHARE_WITH_CUSTOMER = false;
 
     private ReceiptRequest receiptRequest;
 
@@ -54,14 +56,12 @@ public class ReceiptRequestBuilder {
             //set default attempt count
             receiptRequest.setAttemptCount(0);
 
-            //set textmap defaults
-            receiptRequest.setDoTextRecognition(DEFAULT_DO_TEXT_RECOGNITION);
-            receiptRequest.setHasTextMap(false);
-            receiptRequest.setTextMap(null);
+            //set share with customer default
+            receiptRequest.setShareWithCustomer(DEFAULT_SHARE_WITH_CUSTOMER);
 
-            //ocr settings & results
-            receiptRequest.setReceiptOcrSettings(new ReceiptOcrSettingsBuilder.Builder().build());
-            receiptRequest.setReceiptOcrResults(new ReceiptOcrResults());
+            //set receipt analysis
+            receiptRequest.setReceiptAnalysis(new ReceiptAnalysisBuilder.Builder().build());
+
         }
 
         public Builder guid(String guid){
@@ -124,18 +124,8 @@ public class ReceiptRequestBuilder {
             return this;
         }
 
-        public Builder doTextRecognition(Boolean doTextRecognition){
-            this.receiptRequest.setDoTextRecognition(doTextRecognition);
-            return this;
-        }
-
-        public Builder receiptOcrSettings(ReceiptOcrSettings receiptOcrSettings){
-            this.receiptRequest.setReceiptOcrSettings(receiptOcrSettings);
-            return this;
-        }
-
-        public Builder receiptOcrResults(ReceiptOcrResults receiptOcrResults){
-            this.receiptRequest.setReceiptOcrResults(receiptOcrResults);
+        public Builder receiptAnalysis(ReceiptAnalysis receiptAnalysis){
+            this.receiptRequest.setReceiptAnalysis(receiptAnalysis);
             return this;
         }
 

@@ -21,6 +21,7 @@ import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveB
 import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseConstants.PAYMENT_AUTHORIZATION_NODE;
 import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseConstants.PAYMENT_AUTHORIZATION_SERVICE_PROVIDER_TRANSACTION_ID_NODE;
 import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseConstants.PAYMENT_AUTHORIZATION_SERVICE_PROVIDER_TRANSACTION_ID_SOURCE_TYPE_NODE;
+import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseConstants.PAYMENT_AUTHORIZATION_SERVICE_PROVIDER_TRANSACTION_ID_STATUS_NODE;
 import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseConstants.PAYMENT_VERIFICATION_STATUS_NODE;
 
 /**
@@ -30,9 +31,11 @@ import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveB
 public class FirebaseServiceProviderTransactionIdUpdate implements OnCompleteListener<Void> {
     private static final String TAG="FirebaseServiceProviderTransactionIdUpdate";
 
-    public void updateServiceProviderTransactionIdRequest(DatabaseReference batchDataNode, ServiceOrderAuthorizePaymentStep orderStep){
+    private CloudActiveBatchInterface.ServiceProviderTransactionIdUpdateResponse response;
 
+    public void updateServiceProviderTransactionIdRequest(DatabaseReference batchDataNode, ServiceOrderAuthorizePaymentStep orderStep, CloudActiveBatchInterface.ServiceProviderTransactionIdUpdateResponse response){
         Timber.tag(TAG).d("updateServiceProviderTransactionIdRequest START...");
+        this.response = response;
 
         Timber.tag(TAG).d("   batchDataNode    = " + batchDataNode.toString());
         Timber.tag(TAG).d("   batchGuid        = " + orderStep.getBatchGuid());
@@ -41,7 +44,8 @@ public class FirebaseServiceProviderTransactionIdUpdate implements OnCompleteLis
 
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put(PAYMENT_AUTHORIZATION_SERVICE_PROVIDER_TRANSACTION_ID_NODE, orderStep.getServiceProviderTransactionId());
-        data.put(PAYMENT_AUTHORIZATION_SERVICE_PROVIDER_TRANSACTION_ID_SOURCE_TYPE_NODE, orderStep.getServiceProviderTransactionIdSourceType().toString());
+        data.put(PAYMENT_AUTHORIZATION_SERVICE_PROVIDER_TRANSACTION_ID_SOURCE_TYPE_NODE, orderStep.getTransactionIdSourceType().toString());
+        data.put(PAYMENT_AUTHORIZATION_SERVICE_PROVIDER_TRANSACTION_ID_STATUS_NODE, orderStep.getTransactionIdStatus().toString());
 
         batchDataNode.child(orderStep.getBatchGuid()).child(BATCH_DATA_STEPS_NODE).child(orderStep.getGuid()).updateChildren(data).addOnCompleteListener(this);
     }
@@ -60,10 +64,12 @@ public class FirebaseServiceProviderTransactionIdUpdate implements OnCompleteLis
             }
         }
         Timber.tag(TAG).d("COMPLETE");
+        response.cloudActiveBatchUpdateServiceProviderTransactionIdComplete();
         close();
     }
 
     private void close(){
         Timber.tag(TAG).d("close");
+        response = null;
     }
 }

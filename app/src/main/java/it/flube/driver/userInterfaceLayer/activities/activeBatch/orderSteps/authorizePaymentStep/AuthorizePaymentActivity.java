@@ -6,33 +6,19 @@ package it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.aut
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import it.flube.driver.R;
-import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.modelLayer.entities.driver.Driver;
-import it.flube.driver.userInterfaceLayer.activities.activeBatch.ActiveBatchAlerts;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.layoutComponents.AuthorizePaymentLayoutComponents;
-import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailCompleteButtonComponents;
-import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailSwipeCompleteButtonComponent;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
-import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailDueByLayoutComponents;
-import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailTitleLayoutComponents;
-import it.flube.driver.userInterfaceLayer.userInterfaceEvents.batchAlerts.ShowCompletedServiceOrderAlertEvent;
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.entities.PaymentAuthorization;
 import it.flube.libbatchdata.entities.ReceiptRequest;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderAuthorizePaymentStep;
-import it.flube.libbatchdata.entities.orderStep.ServiceOrderReceiveAssetStep;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
-import ng.max.slideview.SlideView;
 import timber.log.Timber;
 
 /**
@@ -115,7 +101,24 @@ public class AuthorizePaymentActivity extends AppCompatActivity implements
 
     public void receiptRowClicked(ReceiptRequest receiptRequest){
         Timber.tag(TAG).d("receiptRowClicked (%s)", activityGuid);
-        ActivityNavigator.getInstance().gotoActivityReceiptDetail(this);
+        /// if we don't have a photo already, then we need to take one
+        if (receiptRequest.getHasDeviceFile()){
+            /// if we do have a photo already,then go to receipt detail
+            ActivityNavigator.getInstance().gotoActivityReceiptDetail(this);
+        } else {
+            /// if we don't have a photo already, then we need to take one
+            ActivityNavigator.getInstance().gotoActivityReceiptTakePhoto(this);
+        }
+    }
+
+    public void transactionIdClicked(){
+        Timber.tag(TAG).d("transactionIdRowClicked");
+        ActivityNavigator.getInstance().gotoActivityTransactionIdDetail(this);
+    }
+
+    public void transactionTotalClicked(){
+        Timber.tag(TAG).d("transactionTotalRowClicked");
+        ActivityNavigator.getInstance().gotoActivityTransactionTotalDetail(this);
     }
 
     public void stepCompleteClicked(ServiceOrderAuthorizePaymentStep orderStep){

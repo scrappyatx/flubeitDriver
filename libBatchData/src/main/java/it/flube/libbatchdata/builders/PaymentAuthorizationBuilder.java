@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import it.flube.libbatchdata.entities.PaymentAuthorization;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 
 /**
  * Created on 8/14/2018

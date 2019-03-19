@@ -6,6 +6,7 @@ package it.flube.libbatchdata.builders;
 
 import it.flube.libbatchdata.entities.FileUpload;
 import it.flube.libbatchdata.interfaces.FileUploadInterface;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 
 /**
  * Created on 9/25/2017

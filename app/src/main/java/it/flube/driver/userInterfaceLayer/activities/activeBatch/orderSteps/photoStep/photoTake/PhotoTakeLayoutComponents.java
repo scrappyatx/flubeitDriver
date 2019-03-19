@@ -7,39 +7,31 @@ package it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.pho
 
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.wonderkiln.camerakit.CameraKitEventCallback;
 import com.wonderkiln.camerakit.CameraKitImage;
-import com.wonderkiln.camerakit.CameraView;
 
 import java.io.File;
 
 import io.fotoapparat.Fotoapparat;
-import io.fotoapparat.FotoapparatBuilder;
 import io.fotoapparat.parameter.ScaleType;
 
 import io.fotoapparat.result.BitmapPhoto;
-import io.fotoapparat.result.PhotoResult;
 import io.fotoapparat.result.WhenDoneListener;
 import io.fotoapparat.selector.ResolutionSelectorsKt;
-import io.fotoapparat.view.CameraRenderer;
 import it.flube.driver.R;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
-import it.flube.driver.useCaseLayer.photoStep.UseCasePhotoDetectImageLabel;
+import it.flube.driver.useCaseLayer.photoStep.UseCaseImageAnalysis;
 import it.flube.driver.useCaseLayer.photoStep.UseCaseSavePhotoToDeviceImageStorage;
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.entities.PhotoRequest;
 import kotlin.Unit;
 import timber.log.Timber;
 
 import static io.fotoapparat.selector.LensPositionSelectorsKt.back;
-import static io.fotoapparat.selector.ResolutionSelectorsKt.highestResolution;
-import static io.fotoapparat.selector.SelectorsKt.firstAvailable;
 
 /**
  * Created on 5/5/2018
@@ -50,7 +42,7 @@ public class PhotoTakeLayoutComponents implements
         WhenDoneListener<Unit>,
         CameraKitEventCallback<CameraKitImage>,
         UseCaseSavePhotoToDeviceImageStorage.Response,
-        UseCasePhotoDetectImageLabel.Response {
+        UseCaseImageAnalysis.Response {
 
     public final static String TAG = "PhotoTakeLayoutComponents";
     ///
@@ -120,7 +112,7 @@ public class PhotoTakeLayoutComponents implements
     /// fotoapparat call back
     public void whenDone(Unit unit){
         Timber.tag(TAG).d("whenDone -> saved to file");
-        device.getUseCaseEngine().getUseCaseExecutor().execute(new UseCasePhotoDetectImageLabel(device, imageDeviceAbsoluteFileName, photoRequest, this));
+        device.getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseImageAnalysis(device, imageDeviceAbsoluteFileName, photoRequest, this));
     }
 
     /// fotoapparat call back
@@ -173,7 +165,7 @@ public class PhotoTakeLayoutComponents implements
     }
 
     ///use case response interface
-    public void photoDetectImageLabelComplete(){
+    public void useCaseImageAnalysisComplete(PhotoRequest photoRequest){
         Timber.tag(TAG).d("photoDetectImageLabelComplete");
         //stop the animation
         cameraView.setVisibility(View.INVISIBLE);

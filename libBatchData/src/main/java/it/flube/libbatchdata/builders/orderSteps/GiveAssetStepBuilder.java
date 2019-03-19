@@ -4,20 +4,17 @@
 
 package it.flube.libbatchdata.builders.orderSteps;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.builders.SignatureRequestBuilder;
 import it.flube.libbatchdata.builders.TimestampBuilder;
 import it.flube.libbatchdata.entities.ContactPerson;
 import it.flube.libbatchdata.entities.SignatureRequest;
 import it.flube.libbatchdata.entities.assetTransfer.AssetTransfer;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderGiveAssetStep;
-import it.flube.libbatchdata.entities.orderStep.ServiceOrderReceiveAssetStep;
 import it.flube.libbatchdata.interfaces.AssetTransferInterface;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
 

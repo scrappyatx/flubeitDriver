@@ -32,15 +32,12 @@ public class ReceiptRequest {
     private String cloudStorageFileName;
     private String cloudStorageDownloadUrl;
 
-    private Boolean doTextRecognition;
-    private Boolean hasTextMap;
-    private HashMap<String, String> textMap;
-
     private ReceiptStatus receiptStatus;
     private Map<String, String> statusIconText;
 
-    private ReceiptOcrSettings receiptOcrSettings;
-    private ReceiptOcrResults receiptOcrResults;
+    private Boolean shareWithCustomer;
+
+    private ReceiptAnalysis receiptAnalysis;
 
     public String getGuid() {
         return guid;
@@ -130,30 +127,6 @@ public class ReceiptRequest {
         this.cloudStorageDownloadUrl = cloudStorageDownloadUrl;
     }
 
-    public Boolean getDoTextRecognition() {
-        return doTextRecognition;
-    }
-
-    public void setDoTextRecognition(Boolean doTextRecognition) {
-        this.doTextRecognition = doTextRecognition;
-    }
-
-    public Boolean getHasTextMap() {
-        return hasTextMap;
-    }
-
-    public void setHasTextMap(Boolean hasTextMap) {
-        this.hasTextMap = hasTextMap;
-    }
-
-    public HashMap<String, String> getTextMap() {
-        return textMap;
-    }
-
-    public void setTextMap(HashMap<String, String> textMap) {
-        this.textMap = textMap;
-    }
-
     public ReceiptStatus getReceiptStatus() {
         return receiptStatus;
     }
@@ -170,19 +143,19 @@ public class ReceiptRequest {
         this.statusIconText = statusIconText;
     }
 
-    public ReceiptOcrSettings getReceiptOcrSettings() {
-        return receiptOcrSettings;
+    public Boolean getShareWithCustomer() {
+        return shareWithCustomer;
     }
 
-    public void setReceiptOcrSettings(ReceiptOcrSettings receiptOcrSettings) {
-        this.receiptOcrSettings = receiptOcrSettings;
+    public void setShareWithCustomer(Boolean shareWithCustomer) {
+        this.shareWithCustomer = shareWithCustomer;
     }
 
-    public ReceiptOcrResults getReceiptOcrResults() {
-        return receiptOcrResults;
+    public ReceiptAnalysis getReceiptAnalysis() {
+        return receiptAnalysis;
     }
 
-    public void setReceiptOcrResults(ReceiptOcrResults receiptOcrResults) {
-        this.receiptOcrResults = receiptOcrResults;
+    public void setReceiptAnalysis(ReceiptAnalysis receiptAnalysis) {
+        this.receiptAnalysis = receiptAnalysis;
     }
 }

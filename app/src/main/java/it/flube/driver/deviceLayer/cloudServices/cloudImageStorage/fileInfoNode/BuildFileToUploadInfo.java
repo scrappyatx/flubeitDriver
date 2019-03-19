@@ -6,8 +6,7 @@ package it.flube.driver.deviceLayer.cloudServices.cloudImageStorage.fileInfoNode
 
 import it.flube.driver.modelLayer.entities.DeviceInfo;
 import it.flube.driver.modelLayer.entities.driver.Driver;
-import it.flube.driver.modelLayer.interfaces.CloudImageStorageInterface;
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.entities.PhotoRequest;
 import it.flube.libbatchdata.entities.ReceiptRequest;
 import it.flube.libbatchdata.entities.SignatureRequest;

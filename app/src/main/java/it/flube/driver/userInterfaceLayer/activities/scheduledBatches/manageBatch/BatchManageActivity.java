@@ -7,29 +7,17 @@ package it.flube.driver.userInterfaceLayer.activities.scheduledBatches.manageBat
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.TextView;
-
-import com.airbnb.lottie.LottieAnimationView;
-import com.mapbox.mapboxsdk.Mapbox;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
 import it.flube.driver.R;
 import it.flube.driver.useCaseLayer.manageBatch.UseCaseStartBatchRequest;
 import it.flube.driver.useCaseLayer.manageBatch.getBatchData.UseCaseGetBatchData;
-import it.flube.driver.userInterfaceLayer.activities.offers.OfferConstants;
 import it.flube.driver.userInterfaceLayer.activities.scheduledBatches.BatchConstants;
 import it.flube.driver.userInterfaceLayer.layoutComponents.batchDetail.batchDetailTab.BatchDetailTabLayoutComponents;
-import it.flube.driver.userInterfaceLayer.layoutComponents.batchDetail.batchDetailTab.tabDetails.TabDetailLayoutComponents;
 import it.flube.driver.userInterfaceLayer.layoutComponents.batchDetail.BatchDetailTitleLayoutComponents;
-import it.flube.driver.userInterfaceLayer.layoutComponents.batchDetail.batchDetailTab.tabLocations.TabLocationsLayoutComponents;
 import it.flube.driver.userInterfaceLayer.layoutComponents.batchManage.BatchManageLayoutComponents;
-import it.flube.driver.userInterfaceLayer.userInterfaceEvents.demoBatch.DemoBatchStartedEvent;
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.entities.RouteStop;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;

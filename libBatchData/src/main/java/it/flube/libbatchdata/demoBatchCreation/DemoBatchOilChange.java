@@ -4,19 +4,14 @@
 
 package it.flube.libbatchdata.demoBatchCreation;
 
-import it.flube.libbatchdata.builders.AddressLocationBuilder;
 import it.flube.libbatchdata.builders.AssetTransferBuilder;
-import it.flube.libbatchdata.builders.BuilderUtilities;
-import it.flube.libbatchdata.builders.ContactPersonBuilder;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.builders.DestinationBuilder;
-import it.flube.libbatchdata.builders.LatLonLocationBuilder;
 import it.flube.libbatchdata.builders.PaymentAuthorizationBuilder;
 import it.flube.libbatchdata.builders.PhotoRequestListForServiceProviderBuilder;
 import it.flube.libbatchdata.builders.PhotoRequestListForVehicleBuilder;
 import it.flube.libbatchdata.builders.PotentialEarningsBuilder;
 import it.flube.libbatchdata.builders.ProductListBuilder;
-import it.flube.libbatchdata.builders.ServiceProviderBuilder;
-import it.flube.libbatchdata.builders.VehicleBuilder;
 import it.flube.libbatchdata.builders.batch.BatchHolderBuilder;
 import it.flube.libbatchdata.builders.orderSteps.AuthorizePaymentStepBuilder;
 import it.flube.libbatchdata.builders.orderSteps.GiveAssetStepBuilder;
@@ -30,7 +25,6 @@ import it.flube.libbatchdata.entities.AddressLocation;
 import it.flube.libbatchdata.entities.ContactPerson;
 import it.flube.libbatchdata.entities.Destination;
 import it.flube.libbatchdata.entities.DisplayDistanceBuilder;
-import it.flube.libbatchdata.entities.DisplayTimingBuilder;
 import it.flube.libbatchdata.entities.LatLonLocation;
 import it.flube.libbatchdata.entities.PotentialEarnings;
 import it.flube.libbatchdata.entities.ServiceProvider;

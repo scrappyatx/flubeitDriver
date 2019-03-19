@@ -11,7 +11,7 @@ import android.graphics.Bitmap;
 import java.io.File;
 
 import it.flube.driver.modelLayer.interfaces.DeviceImageStorageInterface;
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import timber.log.Timber;
 
 /**

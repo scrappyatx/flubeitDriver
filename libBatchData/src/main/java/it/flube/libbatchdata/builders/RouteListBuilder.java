@@ -5,6 +5,7 @@
 package it.flube.libbatchdata.builders;
 
 import it.flube.libbatchdata.entities.RouteList;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 
 /**
  * Created on 9/20/2017

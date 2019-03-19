@@ -4,12 +4,9 @@
 
 package it.flube.driver.modelLayer.interfaces;
 
-import android.graphics.Bitmap;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import it.flube.libbatchdata.entities.ImageLabel;
+import it.flube.libbatchdata.entities.ImageDetectionResults;
+import it.flube.libbatchdata.entities.ImageMatchResults;
+import it.flube.libbatchdata.entities.ImageMatchSettings;
 
 /**
  * Created on 8/9/2018
@@ -20,25 +17,19 @@ public interface CloudImageDetectionInterface {
     ///
     /// detect image label request
     ///
-    void detectImageLabelRequest(Bitmap bitmap, DetectImageLabelResponse response);
+    void detectImageLabelRequest(DeviceImageStorageInterface deviceImageStorage, String imageAbsoluteFilename, CloudDetectImageLabelResponse response);
 
-    interface DetectImageLabelResponse {
-        void detectImageLabelSuccess(HashMap<String, ImageLabel> imageLabelMap);
+    interface CloudDetectImageLabelResponse {
+        void cloudDetectImageLabelSuccess(ImageDetectionResults imageDetectionResults);
 
-        void detectImageLabelFailure();
+        void cloudDetectImageLabelFailure();
     }
 
-    ///
-    /// detect image text request
-    ///
-    void detectImageTextRequest(Bitmap bitmap, DetectImageTextResponse response);
+    void matchImageLabelRequest(DeviceImageStorageInterface deviceImageStorage, String absoluteFilename, ImageMatchSettings imageMatchSettings, CloudMatchImageLabelResponse response);
 
-    interface DetectImageTextResponse {
-        void detectImageTextSuccess(HashMap<String, String> textMap);
+    interface CloudMatchImageLabelResponse {
+        void cloudMatchImageLabelSuccess(ImageMatchResults imageMatchResults);
 
-        void detectImageTextFailure();
+        void cloudMatchImageLabelFailure();
     }
-
-
-
 }

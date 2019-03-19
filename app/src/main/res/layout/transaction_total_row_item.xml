@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2019. scrapdoodle, LLC.  All Rights Reserved
+  -->
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:orientation="vertical"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+
+    android:background="@drawable/offer_border"
+
+    android:elevation="8dp"
+    tools:targetApi="lollipop"
+
+    android:focusableInTouchMode="true"
+    android:clickable="true"
+    android:focusable="true">
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/vGuideline10"
+        app:layout_constraintGuide_percent="0.10"
+        android:orientation="vertical" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/vGuideline70"
+        app:layout_constraintGuide_percent="0.70"
+        android:orientation="vertical" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/vGuideline90"
+        app:layout_constraintGuide_percent="0.90"
+        android:orientation="vertical" />
+
+    <TextView
+        android:id="@+id/total_charged_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        tools:text="Total Charged: "
+        android:textAppearance="@style/TotalChargedStyle"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/vGuideline10"
+
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="12dp" />
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/total_charged_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        tools:text="X"
+        android:textAppearance="@style/TotalChargedStatusStyle"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/vGuideline90"
+        app:layout_constraintRight_toRightOf="parent"
+
+
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="12dp" />
+
+
+</android.support.constraint.ConstraintLayout>

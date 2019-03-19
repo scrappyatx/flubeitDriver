@@ -7,6 +7,7 @@ package it.flube.libbatchdata.builders;
 import java.util.ArrayList;
 
 import it.flube.libbatchdata.entities.FileAttachmentList;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 
 
 /**

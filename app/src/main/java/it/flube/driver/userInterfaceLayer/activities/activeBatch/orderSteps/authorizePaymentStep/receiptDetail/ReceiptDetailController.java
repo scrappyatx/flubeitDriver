@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.useCaseLayer.activeBatch.UseCaseGetDriverAndActiveBatchCurrentStep;
+import it.flube.driver.useCaseLayer.authorizePaymentStep.UseCaseReceiptOcr;
+import it.flube.libbatchdata.entities.ReceiptRequest;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderAuthorizePaymentStep;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
@@ -20,10 +22,12 @@ import timber.log.Timber;
  * Project : Driver
  */
 public class ReceiptDetailController implements
-    UseCaseGetDriverAndActiveBatchCurrentStep.Response {
+    UseCaseGetDriverAndActiveBatchCurrentStep.Response,
+    UseCaseReceiptOcr.Response {
     public static final String TAG="ReceiptDetailController";
 
     private GetDriverAndAuthorizePaymentStepResponse response;
+    private AnalyzePhotoResponse analyzeResponse;
 
     public ReceiptDetailController(){
         Timber.tag(TAG).d("created");
@@ -37,10 +41,23 @@ public class ReceiptDetailController implements
 
     }
 
+    public void analyzePhoto(ReceiptRequest receiptRequest, AnalyzePhotoResponse analyzeResponse){
+        Timber.tag(TAG).d("analyzePhoto");
+        this.analyzeResponse = analyzeResponse;
+        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseReceiptOcr(AndroidDevice.getInstance(), receiptRequest, this));
+    }
+
     public void close(){
         Timber.tag(TAG).d("close");
         response = null;
+        analyzeResponse = null;
 
+    }
+
+    /// UseCaseReceiptOcr
+    public void useCaseReceiptOcrComplete(ReceiptRequest receiptRequest){
+        Timber.tag(TAG).d("useCaseReceiptOcrComplete");
+        analyzeResponse.analyzePhotoComplete(receiptRequest);
     }
 
     /// UseCaseGetDriverAndActiveBatchCurrentStep response
@@ -72,5 +89,9 @@ public class ReceiptDetailController implements
         void getDriverAndAuthorizePaymentStepFailureNoDriverNoStep();
 
         void getDriverAndAuthorizePaymentStepFailureStepMismatch(Driver driver, OrderStepInterface.TaskType foundTaskType);
+    }
+
+    public interface AnalyzePhotoResponse{
+        void analyzePhotoComplete(ReceiptRequest receiptRequest);
     }
 }

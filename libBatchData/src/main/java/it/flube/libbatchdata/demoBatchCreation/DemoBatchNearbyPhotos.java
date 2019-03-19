@@ -8,7 +8,7 @@ package it.flube.libbatchdata.demoBatchCreation;
 
 import it.flube.libbatchdata.builders.ProductListBuilder;
 import it.flube.libbatchdata.builders.batch.BatchHolderBuilder;
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.builders.orderSteps.NavigationStepBuilder;
 import it.flube.libbatchdata.builders.PhotoRequestBuilder;
 import it.flube.libbatchdata.builders.orderSteps.PhotoStepBuilder;

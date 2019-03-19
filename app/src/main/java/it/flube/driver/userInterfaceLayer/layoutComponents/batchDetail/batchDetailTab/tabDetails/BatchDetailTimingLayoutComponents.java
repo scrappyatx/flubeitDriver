@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import it.flube.driver.R;
 import it.flube.driver.userInterfaceLayer.layoutComponents.LayoutComponentUtilities;
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import timber.log.Timber;
 

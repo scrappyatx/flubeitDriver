@@ -8,19 +8,24 @@ import android.content.Context;
 
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseWrapper;
 import it.flube.driver.deviceLayer.cloudServices.cloudDemoOffer.DemoOfferFirebaseWrapper;
-import it.flube.driver.deviceLayer.cloudServices.cloudImageDetection.ImageDetectionFirebaseWrapper;
+import it.flube.driver.deviceLayer.cloudServices.cloudImageDetection.FirebaseCloudImageLabelWrapper;
 import it.flube.driver.deviceLayer.cloudServices.cloudImageStorage.CloudImageStorageFirebaseWrapper;
 import it.flube.driver.deviceLayer.cloudServices.cloudPersonalOffer.PersonalOfferFirebaseWrapper;
 import it.flube.driver.deviceLayer.cloudServices.cloudPublicOffer.PublicOfferFirebaseWrapper;
 import it.flube.driver.deviceLayer.cloudServices.cloudRealTimeClock.FirebaseRealTimeClockWrapper;
 import it.flube.driver.deviceLayer.cloudServices.cloudScheduledBatch.ScheduledBatchFirebaseWrapper;
 import it.flube.driver.deviceLayer.cloudServices.cloudServerMonitoring.ServerMonitoringFirebaseWrapper;
+import it.flube.driver.deviceLayer.cloudServices.cloudTextDetection.FirebaseCloudTextDetectionWrapper;
 import it.flube.driver.deviceLayer.cloudServices.cloudUserAndDeviceInfoStorage.firebaseFirestore.UserAndDeviceInfoStorageFirestoreWrapper;
 import it.flube.driver.deviceLayer.cloudServices.cloudUserProfile.UserProfileFirebaseWrapper;
 import it.flube.driver.deviceLayer.cloudServices.firebaseInitialization.FirebaseDbInitialization;
 import it.flube.driver.deviceLayer.cloudServices.firebaseInitialization.FirestoreInitialization;
+import it.flube.driver.deviceLayer.deviceServices.deviceImageDetection.FirebaseDeviceImageLabelDetection;
+import it.flube.driver.deviceLayer.deviceServices.deviceImageDetection.FirebaseDeviceImageLabelWrapper;
 import it.flube.driver.deviceLayer.deviceServices.deviceImageStorage.DeviceImageStorage;
 import it.flube.driver.deviceLayer.deviceInfo.DeviceDetails;
+import it.flube.driver.deviceLayer.deviceServices.deviceTextDetection.FirebaseDeviceTextDetection;
+import it.flube.driver.deviceLayer.deviceServices.deviceTextDetection.FirebaseDeviceTextDetectionWrapper;
 import it.flube.driver.deviceLayer.deviceServices.googlePlayLocation.GooglePlayLocationWrapper;
 import it.flube.driver.deviceLayer.deviceServices.activeBatchForegroundService.ActiveBatchForegroundServiceController;
 import it.flube.driver.deviceLayer.appDataStructures.ActiveBatch;
@@ -46,10 +51,13 @@ import it.flube.driver.modelLayer.interfaces.CloudPublicOfferInterface;
 import it.flube.driver.modelLayer.interfaces.CloudRealTimeClockInterface;
 import it.flube.driver.modelLayer.interfaces.CloudScheduledBatchInterface;
 import it.flube.driver.modelLayer.interfaces.CloudServerMonitoringInterface;
+import it.flube.driver.modelLayer.interfaces.CloudTextDetectionInterface;
 import it.flube.driver.modelLayer.interfaces.CloudUserAndDeviceInfoStorageInterface;
 import it.flube.driver.modelLayer.interfaces.CloudUserProfileInterface;
+import it.flube.driver.modelLayer.interfaces.DeviceImageDetectionInterface;
 import it.flube.driver.modelLayer.interfaces.DeviceImageStorageInterface;
 import it.flube.driver.modelLayer.interfaces.DeviceStorageInterface;
+import it.flube.driver.modelLayer.interfaces.DeviceTextDetectionInterface;
 import it.flube.driver.modelLayer.interfaces.LocationTelemetryInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import it.flube.driver.modelLayer.interfaces.OffersInterface;
@@ -105,6 +113,7 @@ public class AndroidDevice implements
     private ActiveBatchFirebaseWrapper cloudActiveBatch;
     private ServerMonitoringFirebaseWrapper cloudServerMonitoring;
 
+
     //// device services
     private ActiveBatchForegroundServiceInterface foregroundService;
     private AppLoggingTimber logging;
@@ -112,6 +121,7 @@ public class AndroidDevice implements
     private DeviceImageStorageInterface localImageStorage;
     private LocationTelemetryInterface locationTelemetry;
     private UseCaseEngine useCaseEngine;
+
 
     //// application data
     private DeviceDetails deviceDetails;
@@ -134,6 +144,7 @@ public class AndroidDevice implements
         //setup cloud services
         cloudConfig = new FirebaseRemoteConfigWrapper(getTargetEnvironment());
         cloudAuth = new CloudAuthFirebaseWrapper(applicationContext);
+
 
         //initialize firebase realtime database before using any classes that reference it
         FirebaseDbInitialization.initializeDriverDb(getTargetEnvironment());
@@ -208,7 +219,11 @@ public class AndroidDevice implements
     }
 
     public CloudImageDetectionInterface getCloudImageDetection(){
-        return new ImageDetectionFirebaseWrapper();
+        return new FirebaseCloudImageLabelWrapper();
+    }
+
+    public CloudTextDetectionInterface getCloudTextDetection(){
+        return new FirebaseCloudTextDetectionWrapper();
     }
 
     ///
@@ -239,6 +254,14 @@ public class AndroidDevice implements
 
     public UseCaseInterface getUseCaseEngine(){
         return useCaseEngine;
+    }
+
+    public DeviceImageDetectionInterface getDeviceImageDetection(){
+        return new FirebaseDeviceImageLabelWrapper();
+    }
+
+    public DeviceTextDetectionInterface getDeviceTextDetection(){
+        return new FirebaseDeviceTextDetectionWrapper();
     }
 
     ///

@@ -20,6 +20,7 @@ public class ActiveBatchFirebaseConstants {
     public static final String PHOTO_REQUEST_HAS_CLOUD_FILE_NODE = "hasCloudFile";
     public static final String PHOTO_REQUEST_CLOUD_STORAGE_FILENAME_NODE = "cloudStorageFileName";
     public static final String PHOTO_REQUEST_CLOUD_STORAGE_DOWNLOAD_URL = "cloudStorageDownloadUrl";
+    public static final String PHOTO_REQUEST_IMAGE_ANALYSIS_NODE = "imageAnalysis";
 
 
     public static final String SIGNATURE_REQUEST_NODE = "signatureRequest";
@@ -41,6 +42,9 @@ public class ActiveBatchFirebaseConstants {
     public static final String RECEIPT_REQUEST_HAS_CLOUD_FILE_NODE = "hasCloudFile";
     public static final String RECEIPT_REQUEST_CLOUD_STORAGE_FILENAME_NODE = "cloudStorageFileName";
     public static final String RECEIPT_REQUEST_CLOUD_STORAGE_DOWNLOAD_URL = "cloudStorageDownloadUrl";
+    public static final String RECEIPT_REQUEST_DEVICE_OCR_RESULTS_NODE = "receiptAnalysis/deviceOcrResults";
+    public static final String RECEIPT_REQUEST_CLOUD_OCR_RESULTS_NODE = "receiptAnalysis/cloudOcrResults";
+    public static final String RECEIPT_REQUEST_RECEIPT_VALIDATION_RESULTS_NODE = "receiptAnalysis/receiptValidationResults";
 
     public static final String SERVICE_ORDER_GUID = "serviceOrderGuid";
 
@@ -60,8 +64,15 @@ public class ActiveBatchFirebaseConstants {
 
     public static final String PAYMENT_AUTHORIZATION_NODE = "paymentAuthorization";
     public static final String PAYMENT_VERIFICATION_STATUS_NODE = "paymentVerificationStatus";
+
     public static final String PAYMENT_AUTHORIZATION_SERVICE_PROVIDER_TRANSACTION_ID_NODE = "serviceProviderTransactionId";
-    public static final String PAYMENT_AUTHORIZATION_SERVICE_PROVIDER_TRANSACTION_ID_SOURCE_TYPE_NODE = "serviceProviderTransactionIdSourceType";
+    public static final String PAYMENT_AUTHORIZATION_SERVICE_PROVIDER_TRANSACTION_ID_SOURCE_TYPE_NODE = "transactionIdSourceType";
+    public static final String PAYMENT_AUTHORIZATION_SERVICE_PROVIDER_TRANSACTION_ID_STATUS_NODE = "transactionIdStatus";
+
+    public static final String PAYMENT_AUTHORIZATION_SERVICE_PROVIDER_TRANSACTION_TOTAL_NODE = "serviceProviderTransactionTotal";
+    public static final String PAYMENT_AUTHORIZATION_SERVICE_PROVIDER_TRANSACTION_TOTAL_SOURCE_TYPE_NODE = "transactionTotalSourceType";
+    public static final String PAYMENT_AUTHORIZATION_SERVICE_PROVIDER_TRANSACTION_TOTAL_STATUS_NODE = "transactionTotalStatus";
+
 
 
 

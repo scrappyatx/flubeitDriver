@@ -17,7 +17,7 @@ import it.flube.driver.userInterfaceLayer.activities.messages.MakePhoneCall;
 import it.flube.driver.userInterfaceLayer.activities.messages.SendTextMessage;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.entities.SignatureRequest;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderGiveAssetStep;

@@ -8,6 +8,7 @@ package it.flube.libbatchdata.builders;
 import it.flube.libbatchdata.entities.AddressLocation;
 import it.flube.libbatchdata.entities.LatLonLocation;
 import it.flube.libbatchdata.entities.RouteStop;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 
 /**
  * Created on 9/13/2017

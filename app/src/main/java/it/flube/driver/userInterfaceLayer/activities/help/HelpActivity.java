@@ -10,7 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import it.flube.driver.R;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import timber.log.Timber;
 
 /**

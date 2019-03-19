@@ -412,8 +412,6 @@
     <string name="user_trigger_step_completed_step_button_caption">I\'m finished</string>
     <string name="user_trigger_step_completed_banner_text">Finishing...</string>
 
-
-
     <!-- Strings related to authorized payment step activity layout -->
     <string name="authorize_payment_step_activity_title">Authorize Payment</string>
     <string name="authorize_payment_completed_step_button_caption">I\'m finished</string>
@@ -422,11 +420,29 @@
     <string name="authorize_payment_payment_type_charge_to_card_on_file_text">Charge to Card On File</string>
     <string name="authorize_payment_receipt_request_row_text">Receipt Photo</string>
     <string name="authorize_payment_amount_row_text">Max Payment %s"</string>
+    <string name="transaction_id_row_text_not_attempted">"Transaction Id"</string>
+    <string name="transaction_id_row_text_complete">"Transaction Id : %s"</string>
+    <string name="transaction_total_row_text_not_attempted">"Total Charged"</string>
+    <string name="transaction_total_row_text_complete">"Total Charged : %s"</string>
 
     <!-- Strings related to receipt detail activity layout -->
     <string name="receipt_detail_activity_title">Receipt Detail</string>
     <string name="receipt_detail_photo_button_caption">Take a photo</string>
-    <string name="receipt_detail_receipt_request_title">Take a photo of the receipt</string>
+    <string name="receipt_detail_receipt_request_title">Receipt Photo</string>
+    <string name="receipt_detail_keep_button_caption">Use This Photo</string>
+    <string name="receipt_detail_discard_button_caption">Take Another Photo</string>
+
+    <!-- Strings related to transaction id detail activity layout -->
+    <string name="transaction_id_detail_activity_title">Transaction Id</string>
+    <string name="transaction_id_detail_manual_title">Enter the Transaction Id</string>
+    <string name="transaction_id_detail_ocr_title">Select a detected Transaction Id</string>
+    <string name="transaction_id_detail_manual_entry_finished_button_caption">Done</string>
+
+    <!-- Strings related to transaction total detail activity layout -->
+    <string name="transaction_total_detail_activity_title">Transaction Total</string>
+    <string name="transaction_total_detail_manual_title">Enter the Transaction Total</string>
+    <string name="transaction_total_detail_ocr_title">Select a detected Transaction Total</string>
+    <string name="transaction_total_detail_manual_entry_finished_button_caption">Done</string>
 
     <!-- Strings related to receipt photo activity layout -->
     <string name="receipt_photo_take_activity_title">Receipt Photo</string>

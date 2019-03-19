@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import it.flube.libbatchdata.builders.BatchNotificationSettingsBuilder;
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.builders.DriverInfoBuilder;
 import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import it.flube.libbatchdata.entities.ContactPerson;
@@ -18,7 +18,6 @@ import it.flube.libbatchdata.entities.Customer;
 import it.flube.libbatchdata.entities.FileUpload;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.DisplayDistance;
-import it.flube.libbatchdata.entities.DisplayTiming;
 import it.flube.libbatchdata.entities.PotentialEarnings;
 
 /**

@@ -15,7 +15,7 @@ import it.flube.driver.R;
 import it.flube.driver.useCaseLayer.claimOffer.UseCaseClaimOfferRequest;
 import it.flube.driver.useCaseLayer.claimOffer.getOfferData.UseCaseGetOfferData;
 import it.flube.driver.userInterfaceLayer.activities.offers.OfferConstants;
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.entities.RouteStop;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;

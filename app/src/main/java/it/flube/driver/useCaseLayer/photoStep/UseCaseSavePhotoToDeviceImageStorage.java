@@ -28,8 +28,7 @@ public class UseCaseSavePhotoToDeviceImageStorage implements
         Runnable,
         DeviceImageStorageInterface.DeleteResponse,
         DeviceImageStorageInterface.SaveResponse,
-        CloudActiveBatchInterface.PhotoRequestDeviceAbsoluteFileNameResponse,
-        CloudImageDetectionInterface.DetectImageLabelResponse {
+        CloudActiveBatchInterface.PhotoRequestDeviceAbsoluteFileNameResponse {
 
     private final static String TAG = "UseCaseSavePhotoToDeviceImageStorage";
 
@@ -73,35 +72,6 @@ public class UseCaseSavePhotoToDeviceImageStorage implements
     //// once old photo is deleted, we can detect label and save the new bitmap
     private void detectImageLabelAndSaveBitmapToDevice(){
         //see if we need to detect the image on this photoRequest
-        if (photoRequest.getDoDeviceImageDetection()) {
-            Timber.tag(TAG).d("...starting image detection");
-            //first, let's detect the image
-            device.getCloudImageDetection().detectImageLabelRequest(bitmap, this);
-        } else {
-            Timber.tag(TAG).d("...skipping image detection");
-            photoRequest.setHasLabelMap(false);
-            photoRequest.setLabelMap(null);
-            //now save image to storage
-            device.getDeviceImageStorage().saveImageRequest(imageGuid, bitmap, this);
-        }
-    }
-
-    /// response interface for detectImageLabelRequest
-    ///
-    public void detectImageLabelFailure(){
-        //we didn't get an image detect success
-        photoRequest.setHasLabelMap(false);
-        photoRequest.setLabelMap(null);
-
-        //now save image to storage
-        device.getDeviceImageStorage().saveImageRequest(imageGuid, bitmap, this);
-    }
-
-    public void detectImageLabelSuccess(HashMap<String, ImageLabel> labelMap){
-        //we did get an image detect success
-        photoRequest.setHasLabelMap(true);
-        photoRequest.setLabelMap(labelMap);
-        //now save image to storage
         device.getDeviceImageStorage().saveImageRequest(imageGuid, bitmap, this);
     }
 

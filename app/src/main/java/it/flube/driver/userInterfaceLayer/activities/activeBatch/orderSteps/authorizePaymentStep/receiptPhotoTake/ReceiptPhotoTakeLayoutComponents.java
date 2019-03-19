@@ -13,15 +13,14 @@ import com.airbnb.lottie.LottieAnimationView;
 import java.io.File;
 
 import io.fotoapparat.Fotoapparat;
-import io.fotoapparat.parameter.Resolution;
+import io.fotoapparat.capability.Capabilities;
 import io.fotoapparat.parameter.ScaleType;
 import io.fotoapparat.result.PhotoResult;
 import io.fotoapparat.result.WhenDoneListener;
 import io.fotoapparat.selector.ResolutionSelectorsKt;
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
-import it.flube.driver.useCaseLayer.authorizePaymentStep.UseCaseReceiptDetectImageText;
-import it.flube.driver.useCaseLayer.photoStep.UseCasePhotoDetectImageLabel;
+import it.flube.driver.useCaseLayer.authorizePaymentStep.UseCaseReceiptOcr;
 import it.flube.libbatchdata.entities.ReceiptRequest;
 import kotlin.Unit;
 import timber.log.Timber;
@@ -34,8 +33,7 @@ import static io.fotoapparat.selector.LensPositionSelectorsKt.back;
  */
 public class ReceiptPhotoTakeLayoutComponents implements
         WhenDoneListener<Unit>,
-        Button.OnClickListener,
-        UseCaseReceiptDetectImageText.Response {
+        Button.OnClickListener {
 
     private static final String TAG="ReceiptPhotoTakeLayoutComponents";
     ///
@@ -64,6 +62,7 @@ public class ReceiptPhotoTakeLayoutComponents implements
 
         cameraView = (io.fotoapparat.view.CameraView) activity.findViewById(R.id.camera);
 
+
         fotoapparat = Fotoapparat
                 .with(activity)
                 .into(cameraView)
@@ -79,6 +78,11 @@ public class ReceiptPhotoTakeLayoutComponents implements
     public void setValues(ReceiptRequest receiptRequest){
         this.receiptRequest = receiptRequest;
         Timber.tag(TAG).d("setValues");
+    }
+
+    public Boolean hasDeviceFile(){
+        Timber.tag(TAG).d("hasDeviceFile");
+        return ((receiptRequest != null) && (receiptRequest.getHasDeviceFile()));
     }
 
     public void onResume(){
@@ -119,6 +123,7 @@ public class ReceiptPhotoTakeLayoutComponents implements
         animation.setImageBitmap(null);
         animation=null;
         fotoapparat = null;
+        receiptRequest = null;
         Timber.tag(TAG).d("components closed");
     }
 
@@ -143,17 +148,13 @@ public class ReceiptPhotoTakeLayoutComponents implements
     /// fotoapparat call back
     public void whenDone(Unit unit){
         Timber.tag(TAG).d("whenDone -> saved to file");
-        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseReceiptDetectImageText(AndroidDevice.getInstance(), imageDeviceAbsoluteFileName, receiptRequest, this));
-    }
-
-    ///useCaseReceiptDetectImageText response interface
-    public void receiptDetectImageTextComplete(){
-        Timber.tag(TAG).d("receiptDetectImageTextComplete");
-        response.receiptTakePhotoComplete();
+        //AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseReceiptOcr(AndroidDevice.getInstance(), imageDeviceAbsoluteFileName, receiptRequest, this));
+        //don't want to analyze photo at this point
+        response.receiptTakePhotoComplete(imageDeviceAbsoluteFileName, receiptRequest);
     }
 
     public interface Response {
-        void receiptTakePhotoComplete();
+        void receiptTakePhotoComplete(String imageDeviceAbsoluteFileName, ReceiptRequest receiptRequest);
     }
 
 

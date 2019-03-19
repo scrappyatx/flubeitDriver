@@ -4,10 +4,9 @@
 
 package it.flube.libbatchdata.builders;
 
-import java.util.HashMap;
-
 import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import it.flube.libbatchdata.entities.ContactPerson;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 
 import static it.flube.libbatchdata.constants.EnvironmentConstantsDemo.DEFAULT_CUSTOMER_ICON_URL_DEMO;
 import static it.flube.libbatchdata.constants.EnvironmentConstantsDemo.DEFAULT_FLUBEIT_SUPPORT_ICON_URL_DEMO;
@@ -21,7 +20,6 @@ import static it.flube.libbatchdata.constants.EnvironmentConstantsProduction.DEF
 import static it.flube.libbatchdata.constants.EnvironmentConstantsStaging.DEFAULT_CUSTOMER_ICON_URL_STAGING;
 import static it.flube.libbatchdata.constants.EnvironmentConstantsStaging.DEFAULT_FLUBEIT_SUPPORT_ICON_URL_STAGING;
 import static it.flube.libbatchdata.constants.EnvironmentConstantsStaging.DEFAULT_SERVICE_PROVIDER_ICON_URL_STAGING;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_TARGET_ENVIRONMENT;
 
 /**
  * Created on 4/23/2018

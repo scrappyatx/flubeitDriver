@@ -7,12 +7,12 @@ package it.flube.libbatchdata.builders;
 import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import it.flube.libbatchdata.entities.asset.Vehicle;
 import it.flube.libbatchdata.interfaces.AssetInterface;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 
 import static it.flube.libbatchdata.constants.EnvironmentConstantsDemo.DEFAULT_DISPLAY_IMAGE_URL_DEMO;
 import static it.flube.libbatchdata.constants.EnvironmentConstantsDevelopment.DEFAULT_DISPLAY_IMAGE_URL_DEVELOPMENT;
 import static it.flube.libbatchdata.constants.EnvironmentConstantsProduction.DEFAULT_DISPLAY_IMAGE_URL_PRODUCTION;
 import static it.flube.libbatchdata.constants.EnvironmentConstantsStaging.DEFAULT_DISPLAY_IMAGE_URL_STAGING;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_TARGET_ENVIRONMENT;
 
 
 /**

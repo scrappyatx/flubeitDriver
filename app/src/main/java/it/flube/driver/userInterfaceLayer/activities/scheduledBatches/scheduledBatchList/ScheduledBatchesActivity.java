@@ -16,7 +16,7 @@ import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.userInterfaceLayer.layoutComponents.scheduledBatches.BatchListAdapter;
 import it.flube.driver.userInterfaceLayer.layoutComponents.scheduledBatches.BatchListLayoutComponents;
 import it.flube.driver.userInterfaceLayer.userInterfaceEvents.scheduledBatchListUpdates.ScheduledBatchListUpdateEvent;
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.entities.batch.Batch;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;

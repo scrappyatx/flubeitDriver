@@ -140,15 +140,31 @@ public interface CloudActiveBatchInterface {
     }
 
     /// update receipt request
-    void updateReceiptRequestDeviceAbsoluteFileNameRequest(Driver driver, ReceiptRequest receiptRequest, ReceiptRequestDeviceAbsoluteFileNameReponse response);
+    void updateReceiptRequestDeviceAbsoluteFileNameRequest(Driver driver, ReceiptRequest receiptRequest, ReceiptRequestDeviceAbsoluteFileNameResponse response);
 
-    interface ReceiptRequestDeviceAbsoluteFileNameReponse {
+    interface ReceiptRequestDeviceAbsoluteFileNameResponse {
         void cloudActiveBatchUpdateReceiptRequestDeviceAbsoluteFilenameComplete();
     }
 
+    void updateReceiptRequestOcrResultsRequest(Driver driver, ReceiptRequest receiptRequest,ReceiptRequestOcrResultsResponse response);
+
+    interface ReceiptRequestOcrResultsResponse {
+        void cloudActiveBatchUpdateReceiptRequestOcrResultsComplete();
+    }
+
     //// update payment authorization service provider transaction id
-    void updateAuthorizePaymentServiceProviderTransactionId(Driver driver, ServiceOrderAuthorizePaymentStep orderStep);
-    //TODO add a response interface here
+    void updateAuthorizePaymentServiceProviderTransactionId(Driver driver, ServiceOrderAuthorizePaymentStep orderStep, ServiceProviderTransactionIdUpdateResponse response);
+
+    interface ServiceProviderTransactionIdUpdateResponse {
+        void cloudActiveBatchUpdateServiceProviderTransactionIdComplete();
+    }
+
+    /// update payment authorization service provider transaction total
+    void updateAuthorizePaymentServiceProviderTransactionTotal(Driver driver, ServiceOrderAuthorizePaymentStep orderStep, ServiceProviderTransactionTotalUpdateResponse response);
+
+    interface ServiceProviderTransactionTotalUpdateResponse {
+        void cloudActiveBatchUpdateServiceProviderTransactionTotalComplete();
+    }
 
     //// update payment authorization request
     void updatePaymentAuthorizationRequest(Driver driver, PaymentAuthorization paymentAuthorization, PaymentAuthorizationUpdateResponse response);

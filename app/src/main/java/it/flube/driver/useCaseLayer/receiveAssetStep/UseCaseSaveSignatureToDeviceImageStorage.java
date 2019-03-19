@@ -6,14 +6,10 @@ package it.flube.driver.useCaseLayer.receiveAssetStep;
 
 import android.graphics.Bitmap;
 
-import java.util.UUID;
-
 import it.flube.driver.modelLayer.interfaces.CloudActiveBatchInterface;
 import it.flube.driver.modelLayer.interfaces.DeviceImageStorageInterface;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
-import it.flube.driver.useCaseLayer.photoStep.UseCaseSavePhotoToDeviceImageStorage;
-import it.flube.libbatchdata.builders.BuilderUtilities;
-import it.flube.libbatchdata.entities.PhotoRequest;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.entities.SignatureRequest;
 import timber.log.Timber;
 

@@ -62,11 +62,11 @@
         app:layout_constraintTop_toBottomOf="@+id/receipt_request_title"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/step_detail_complete" />
+        app:layout_constraintBottom_toTopOf="@+id/step_receipt_detail_complete" />
 
 
-    <include layout="@layout/step_detail_complete"
-        android:id="@+id/step_detail_complete"
+    <include layout="@layout/step_receipt_detail_complete"
+        android:id="@+id/step_receipt_detail_complete"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 

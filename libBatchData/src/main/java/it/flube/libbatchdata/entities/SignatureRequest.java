@@ -31,6 +31,8 @@ public class SignatureRequest {
     private String cloudStorageFileName;
     private String cloudStorageDownloadUrl;
 
+    private Boolean shareWithCustomer;
+
     private SignatureStatus signatureStatus;
     private Map<String, String> statusIconText;
 
@@ -136,5 +138,13 @@ public class SignatureRequest {
 
     public void setStatusIconText(Map<String, String> statusIconText) {
         this.statusIconText = statusIconText;
+    }
+
+    public Boolean getShareWithCustomer() {
+        return shareWithCustomer;
+    }
+
+    public void setShareWithCustomer(Boolean shareWithCustomer) {
+        this.shareWithCustomer = shareWithCustomer;
     }
 }

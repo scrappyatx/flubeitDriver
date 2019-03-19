@@ -23,7 +23,9 @@ import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdat
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebasePaymentAuthorizationUpdate;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebasePhotoRequestDeviceAbsoluteFilename;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebaseReceiptRequestDeviceAbsoluteFilenameRequest;
+import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebaseReceiptRequestOcrResults;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebaseServiceProviderTransactionIdUpdate;
+import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebaseServiceProviderTransactionTotalUpdate;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebaseSignatureRequestDeviceAbsoluteFilename;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchFinish.FirebaseActiveBatchFinishPrep;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchStart.FirebaseActiveBatchStart;
@@ -286,16 +288,28 @@ public class ActiveBatchFirebaseWrapper implements
         new FirebasePaymentAuthorizationUpdate().updatePaymentAuthorizationRequest(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), paymentAuthorization, response);
     }
 
-    public void updateAuthorizePaymentServiceProviderTransactionId(Driver driver, ServiceOrderAuthorizePaymentStep orderStep){
+    public void updateAuthorizePaymentServiceProviderTransactionId(Driver driver, ServiceOrderAuthorizePaymentStep orderStep, ServiceProviderTransactionIdUpdateResponse response){
         Timber.tag(TAG).d("updateAuthorizePaymentServiceProviderTransactionId");
         getNodes(driver);
-        new FirebaseServiceProviderTransactionIdUpdate().updateServiceProviderTransactionIdRequest(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), orderStep);
+        new FirebaseServiceProviderTransactionIdUpdate().updateServiceProviderTransactionIdRequest(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), orderStep, response);
     }
 
-    public void updateReceiptRequestDeviceAbsoluteFileNameRequest(Driver driver, ReceiptRequest receiptRequest, ReceiptRequestDeviceAbsoluteFileNameReponse response){
+    public void updateAuthorizePaymentServiceProviderTransactionTotal(Driver driver, ServiceOrderAuthorizePaymentStep orderStep, ServiceProviderTransactionTotalUpdateResponse response){
+        Timber.tag(TAG).d("updateAuthorizePaymentServiceProviderTransactionTotal");
+        getNodes(driver);
+        new FirebaseServiceProviderTransactionTotalUpdate().updateServiceProviderTransactionTotalRequest(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), orderStep, response);
+    }
+
+    public void updateReceiptRequestDeviceAbsoluteFileNameRequest(Driver driver, ReceiptRequest receiptRequest, ReceiptRequestDeviceAbsoluteFileNameResponse response){
         Timber.tag(TAG).d("updateReceiptRequestDeviceAbsoluteFileNameRequest START...");
         getNodes(driver);
         new FirebaseReceiptRequestDeviceAbsoluteFilenameRequest().updateReceiptRequestDeviceFilenameRequest(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), receiptRequest, response);
+    }
+
+    public void updateReceiptRequestOcrResultsRequest(Driver driver, ReceiptRequest receiptRequest, ReceiptRequestOcrResultsResponse response){
+        Timber.tag(TAG).d("updateReceiptRequestOcrResultsRequest START...");
+        getNodes(driver);
+        new FirebaseReceiptRequestOcrResults().updateReceiptRequestOcrResultsRequest(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), receiptRequest, response);
     }
 
     public void updateCloudImageStorageUploadResult(Driver driver, FileToUploadInfo fileToUploadInfo, CloudUploadResultResponse response){

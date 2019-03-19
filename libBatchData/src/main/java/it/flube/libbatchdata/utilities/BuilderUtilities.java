@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2018. scrapdoodle, LLC.  All Rights Reserved
+ * Copyright (c) 2019. scrapdoodle, LLC.  All Rights Reserved
  */
 
-package it.flube.libbatchdata.builders;
+package it.flube.libbatchdata.utilities;
 
 import java.util.Calendar;
 import java.util.Date;

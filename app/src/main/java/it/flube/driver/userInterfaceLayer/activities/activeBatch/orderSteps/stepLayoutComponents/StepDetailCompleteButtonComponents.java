@@ -110,6 +110,7 @@ public class StepDetailCompleteButtonComponents implements
         animation = null;
         button = null;
         banner = null;
+        response = null;
         Timber.tag(TAG).d("components closed");
     }
 

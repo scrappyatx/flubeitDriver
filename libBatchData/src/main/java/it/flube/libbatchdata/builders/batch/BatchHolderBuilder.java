@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.builders.RouteStopBuilder;
 import it.flube.libbatchdata.builders.serviceOrder.ServiceOrderBuilder;
 import it.flube.libbatchdata.constants.TargetEnvironmentConstants;

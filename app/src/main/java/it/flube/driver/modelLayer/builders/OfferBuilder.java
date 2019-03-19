@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import it.flube.driver.modelLayer.entities.Offer;
 import it.flube.libbatchdata.entities.RouteStop;
 import it.flube.libbatchdata.entities.ServiceProvider;
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 
 /**
  * Created on 9/6/2017

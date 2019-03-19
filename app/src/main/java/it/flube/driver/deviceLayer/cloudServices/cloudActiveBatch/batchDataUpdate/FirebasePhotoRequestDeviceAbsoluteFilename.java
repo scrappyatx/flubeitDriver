@@ -21,6 +21,7 @@ import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveB
 import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseConstants.PHOTO_REQUEST_DEVICE_ABSOLUTE_FILENAME_NODE;
 import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseConstants.PHOTO_REQUEST_HAS_DEVICE_FILE_NODE;
 import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseConstants.PHOTO_REQUEST_HAS_LABEL_MAP_NODE;
+import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseConstants.PHOTO_REQUEST_IMAGE_ANALYSIS_NODE;
 import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseConstants.PHOTO_REQUEST_LABEL_MAP_NODE;
 import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseConstants.PHOTO_REQUEST_LIST_NODE;
 import static it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.PhotoStepConstants.ATTEMPT_COUNT_KEY;
@@ -44,8 +45,7 @@ public class FirebasePhotoRequestDeviceAbsoluteFilename implements OnCompleteLis
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put(PHOTO_REQUEST_HAS_DEVICE_FILE_NODE, hasFile);
         data.put(PHOTO_REQUEST_DEVICE_ABSOLUTE_FILENAME_NODE, absoluteFileName);
-        data.put(PHOTO_REQUEST_HAS_LABEL_MAP_NODE, photoRequest.getHasLabelMap());
-        data.put(PHOTO_REQUEST_LABEL_MAP_NODE, photoRequest.getLabelMap());
+        data.put(PHOTO_REQUEST_IMAGE_ANALYSIS_NODE, photoRequest.getImageAnalysis());
         data.put(ATTEMPT_COUNT_KEY, photoRequest.getAttemptCount()+1);
 
         if (hasFile) {

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2019. scrapdoodle, LLC.  All Rights Reserved
+  -->
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:orientation="vertical"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:layout_marginLeft="0dp"
+    android:layout_marginRight="0dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+
+    android:elevation="8dp"
+    tools:targetApi="lollipop">
+
+    <Button
+        android:id="@+id/discard_photo_button"
+
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginBottom="4dp"
+        android:layout_marginRight = "4dp"
+        android:layout_marginLeft = "4dp"
+
+        tools:text="TAKE ANOTHER PHOTO"
+
+        android:background="@drawable/step_detail_swipe_complete_button_state"
+        android:textColor="@color/colorButtonText"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/save_photo_button" />
+
+    <Button
+        android:id="@+id/save_photo_button"
+
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginBottom="4dp"
+        android:layout_marginRight = "4dp"
+        android:layout_marginLeft = "4dp"
+
+        tools:text="USE THIS PHOTO"
+
+        android:background="@drawable/step_detail_swipe_complete_button_state"
+        android:textColor="@color/colorButtonText"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/discard_photo_button"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/receipt_detail_complete_banner"
+
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        tools:text="Banner Text"
+        android:textAlignment="center"
+
+        android:textAppearance="@style/StepDetailCompleteBannerStyle"
+        app:layout_constraintBottom_toTopOf="@+id/receipt_detail_complete_animation"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="parent" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/receipt_detail_complete_animation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="32dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitEnd"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="material_wave_loading.json"
+        app:lottie_loop="true"
+        android:layout_marginBottom="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp" />
+
+
+</android.support.constraint.ConstraintLayout>

@@ -4,15 +4,15 @@
 
 package it.flube.libbatchdata.demoBatchCreation;
 
-import it.flube.libbatchdata.builders.AssetTransferBuilder;
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.builders.ReceiptAnalysisBuilder;
+import it.flube.libbatchdata.interfaces.ServiceProviders;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.builders.PaymentAuthorizationBuilder;
 import it.flube.libbatchdata.builders.PotentialEarningsBuilder;
 import it.flube.libbatchdata.builders.ProductListBuilder;
 import it.flube.libbatchdata.builders.ReceiptRequestBuilder;
 import it.flube.libbatchdata.builders.batch.BatchHolderBuilder;
 import it.flube.libbatchdata.builders.orderSteps.AuthorizePaymentStepBuilder;
-import it.flube.libbatchdata.builders.orderSteps.GiveAssetStepBuilder;
 import it.flube.libbatchdata.builders.serviceOrder.ServiceOrderScaffoldBuilder;
 import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import it.flube.libbatchdata.entities.DisplayDistanceBuilder;
@@ -20,9 +20,9 @@ import it.flube.libbatchdata.entities.PotentialEarnings;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.batch.BatchHolder;
 import it.flube.libbatchdata.interfaces.DemoBatchInterface;
+import it.flube.libbatchdata.utilities.ReceiptOcrSettingsUtilities;
 
 import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_TARGET_ENVIRONMENT;
-import static it.flube.libbatchdata.interfaces.AssetTransferInterface.TransferType.TRANSFER_FROM_CUSTOMER;
 
 /**
  * Created on 6/25/2018
@@ -100,8 +100,16 @@ public class DemoBatchSingleStepAuthorizePayment implements DemoBatchInterface {
                                     .verifyPaymentAmount(true)
                                     .maxPaymentAmountCents(MAX_PAYMENT_AMOUNT_CENTS)
                                     .build())
+
+                            .requireServiceProviderTransactionTotal(true)
+                            .requireServiceProviderTransactionId(true)
+
                             .receiptRequest(new ReceiptRequestBuilder.Builder()
-                                    .doTextRecognition(true)
+                                    .receiptAnalysis(new ReceiptAnalysisBuilder.Builder()
+                                            .doDeviceOcrRecognition(true)
+                                            .doCloudOcrRecognition(false)
+                                            .receiptOcrSettings(ReceiptOcrSettingsUtilities.getReceiptOcrSettingsForProfile(ServiceProviders.ReceiptOcrSettingsProfile.SERVICE_ONE))
+                                            .build())
                                     .build())
                             .build())
 

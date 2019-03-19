@@ -4,7 +4,6 @@
 
 package it.flube.libbatchdata.entities;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -47,9 +46,10 @@ public class PhotoRequest {
     private String cloudStorageFileName;
     private String cloudStorageDownloadUrl;
 
-    private Boolean doDeviceImageDetection;
-    private Boolean hasLabelMap;
-    private HashMap<String, ImageLabel> labelMap;
+    private Boolean shareWithCustomer;
+
+    private ImageAnalysis imageAnalysis;
+
 
     public String getGuid() {
         return guid;
@@ -211,27 +211,19 @@ public class PhotoRequest {
         this.cloudStorageDownloadUrl = cloudStorageDownloadUrl;
     }
 
-    public Boolean getDoDeviceImageDetection() {
-        return doDeviceImageDetection;
+    public Boolean getShareWithCustomer() {
+        return shareWithCustomer;
     }
 
-    public void setDoDeviceImageDetection(Boolean doDeviceImageDetection) {
-        this.doDeviceImageDetection = doDeviceImageDetection;
+    public void setShareWithCustomer(Boolean shareWithCustomer) {
+        this.shareWithCustomer = shareWithCustomer;
     }
 
-    public Boolean getHasLabelMap() {
-        return hasLabelMap;
+    public ImageAnalysis getImageAnalysis() {
+        return imageAnalysis;
     }
 
-    public void setHasLabelMap(Boolean hasLabelMap) {
-        this.hasLabelMap = hasLabelMap;
-    }
-
-    public HashMap<String, ImageLabel> getLabelMap() {
-        return labelMap;
-    }
-
-    public void setLabelMap(HashMap<String, ImageLabel> labelMap) {
-        this.labelMap = labelMap;
+    public void setImageAnalysis(ImageAnalysis imageAnalysis) {
+        this.imageAnalysis = imageAnalysis;
     }
 }

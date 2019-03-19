@@ -4,13 +4,11 @@
 
 package it.flube.libbatchdata.demoBatchCreation;
 
-import it.flube.libbatchdata.builders.AssetTransferBuilder;
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.builders.DestinationBuilder;
 import it.flube.libbatchdata.builders.PotentialEarningsBuilder;
 import it.flube.libbatchdata.builders.ProductListBuilder;
 import it.flube.libbatchdata.builders.batch.BatchHolderBuilder;
-import it.flube.libbatchdata.builders.orderSteps.GiveAssetStepBuilder;
 import it.flube.libbatchdata.builders.orderSteps.NavigationStepBuilder;
 import it.flube.libbatchdata.builders.serviceOrder.ServiceOrderScaffoldBuilder;
 import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
@@ -22,7 +20,6 @@ import it.flube.libbatchdata.entities.batch.BatchHolder;
 import it.flube.libbatchdata.interfaces.DemoBatchInterface;
 
 import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_TARGET_ENVIRONMENT;
-import static it.flube.libbatchdata.interfaces.AssetTransferInterface.TransferType.TRANSFER_FROM_CUSTOMER;
 
 /**
  * Created on 6/25/2018

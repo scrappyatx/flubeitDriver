@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import it.flube.libbatchdata.entities.SignatureRequest;
-import it.flube.libbatchdata.interfaces.AssetTransferInterface;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 
 
 /**
@@ -19,6 +19,8 @@ public class SignatureRequestBuilder {
     private static final String NOT_ATTEMPTED_ICON_TEXT = "{fa-ban}";
     private static final String COMPLETED_SUCCESS_ICON_TEXT = "{fa-check-circle}";
     private static final String COMPLETED_FAILED_ICON_TEXT = "{fa-question-circle}";
+
+    private static final Boolean DEFAULT_SHARE_WITH_CUSTOMER = false;
 
     private SignatureRequest signatureRequest;
 
@@ -39,6 +41,7 @@ public class SignatureRequestBuilder {
             signatureRequest.setGuid(BuilderUtilities.generateGuid());
             signatureRequest.setHasCloudFile(false);
             signatureRequest.setHasDeviceFile(false);
+            signatureRequest.setShareWithCustomer(DEFAULT_SHARE_WITH_CUSTOMER);
 
             //build default status icon text
             HashMap<String, String> statusIconText = new HashMap<String, String>();
@@ -112,6 +115,11 @@ public class SignatureRequestBuilder {
 
         public Builder statusIconText(Map<String, String> statusIconText){
             this.signatureRequest.setStatusIconText(statusIconText);
+            return this;
+        }
+
+        public Builder shareWithCustomer(Boolean shareWithCustomer){
+            this.signatureRequest.setShareWithCustomer(shareWithCustomer);
             return this;
         }
 

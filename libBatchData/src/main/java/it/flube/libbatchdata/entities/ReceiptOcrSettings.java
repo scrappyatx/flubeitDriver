@@ -19,21 +19,27 @@ public class ReceiptOcrSettings {
 
     private String transactionIdStartSentinal;
     private String transactionIdEndSentinal;
+    private String transactionIdPattern;
 
     private String vehicleIdStartSentinal;
     private String vehicleIdEndSentinal;
+    private String vehicleIdPattern;
 
     private String vehicleMileageStartSentinal;
     private String vehicleMileageEndSentinal;
+    private String vehicleMileagePattern;
 
     private String vehicleVinStartSentinal;
     private String vehicleVinEndSentinal;
+    private String vehicleVinPattern;
 
     private String serviceChecklistStartSentinal;
     private String serviceChecklistEndSentinal;
+    private String serviceChecklistPattern;
 
     private String totalChargedStartSentinal;
     private String totalChargedEndSentinal;
+    private String totalChargedPattern;
 
     public Boolean getHasTransactionId() {
         return hasTransactionId;
@@ -43,12 +49,28 @@ public class ReceiptOcrSettings {
         this.hasTransactionId = hasTransactionId;
     }
 
+    public String getTransactionIdPattern() {
+        return transactionIdPattern;
+    }
+
+    public void setTransactionIdPattern(String transactionIdPattern) {
+        this.transactionIdPattern = transactionIdPattern;
+    }
+
     public Boolean getHasVehicleId() {
         return hasVehicleId;
     }
 
     public void setHasVehicleId(Boolean hasVehicleId) {
         this.hasVehicleId = hasVehicleId;
+    }
+
+    public String getVehicleIdPattern() {
+        return vehicleIdPattern;
+    }
+
+    public void setVehicleIdPattern(String vehicleIdPattern) {
+        this.vehicleIdPattern = vehicleIdPattern;
     }
 
     public Boolean getHasVehicleMileage() {
@@ -177,5 +199,37 @@ public class ReceiptOcrSettings {
 
     public void setVehicleVinEndSentinal(String vehicleVinEndSentinal) {
         this.vehicleVinEndSentinal = vehicleVinEndSentinal;
+    }
+
+    public String getVehicleMileagePattern() {
+        return vehicleMileagePattern;
+    }
+
+    public void setVehicleMileagePattern(String vehicleMileagePattern) {
+        this.vehicleMileagePattern = vehicleMileagePattern;
+    }
+
+    public String getVehicleVinPattern() {
+        return vehicleVinPattern;
+    }
+
+    public void setVehicleVinPattern(String vehicleVinPattern) {
+        this.vehicleVinPattern = vehicleVinPattern;
+    }
+
+    public String getServiceChecklistPattern() {
+        return serviceChecklistPattern;
+    }
+
+    public void setServiceChecklistPattern(String serviceChecklistPattern) {
+        this.serviceChecklistPattern = serviceChecklistPattern;
+    }
+
+    public String getTotalChargedPattern() {
+        return totalChargedPattern;
+    }
+
+    public void setTotalChargedPattern(String totalChargedPattern) {
+        this.totalChargedPattern = totalChargedPattern;
     }
 }

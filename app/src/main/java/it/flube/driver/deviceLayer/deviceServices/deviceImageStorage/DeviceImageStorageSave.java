@@ -55,8 +55,8 @@ public class DeviceImageStorageSave {
             stream.close();
             Timber.tag(TAG).d("   ...file saved SUCCESS!");
 
-            bitmap.recycle();
-            Timber.tag(TAG).d("   ...bitmap recycled!");
+            //bitmap.recycle();
+            //Timber.tag(TAG).d("   ...bitmap recycled!");
 
             Long fileSize = myFile.length();
 

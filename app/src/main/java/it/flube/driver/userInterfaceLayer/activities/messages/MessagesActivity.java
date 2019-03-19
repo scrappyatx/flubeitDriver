@@ -7,7 +7,6 @@ package it.flube.driver.userInterfaceLayer.activities.messages;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 
 import java.util.ArrayList;
 
@@ -16,7 +15,7 @@ import it.flube.driver.useCaseLayer.messages.UseCaseGetContactPersons;
 import it.flube.driver.userInterfaceLayer.activities.messages.layoutComponents.CommunicationActivityLayoutComponent;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.entities.ContactPerson;
 import it.flube.libbatchdata.entities.ContactPersonsByServiceOrder;
 import timber.log.Timber;

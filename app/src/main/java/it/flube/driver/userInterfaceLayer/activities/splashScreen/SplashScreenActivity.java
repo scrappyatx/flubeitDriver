@@ -9,9 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.DeviceCheckForGooglePlayServices;
-import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.userInterfaceEventHandlers.UserInterfaceEventHandler;
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import timber.log.Timber;
 
 public class SplashScreenActivity extends AppCompatActivity implements

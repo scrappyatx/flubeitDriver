@@ -9,14 +9,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
-import it.flube.libbatchdata.entities.ImageLabel;
+import it.flube.libbatchdata.entities.ImageAnalysis;
 import it.flube.libbatchdata.entities.PhotoRequest;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 
 import static it.flube.libbatchdata.constants.EnvironmentConstantsDemo.DEFAULT_NO_ATTEMPT_IMAGE_URL_DEMO;
 import static it.flube.libbatchdata.constants.EnvironmentConstantsDevelopment.DEFAULT_NO_ATTEMPT_IMAGE_URL_DEVELOPMENT;
 import static it.flube.libbatchdata.constants.EnvironmentConstantsProduction.DEFAULT_NO_ATTEMPT_IMAGE_URL_PRODUCTION;
 import static it.flube.libbatchdata.constants.EnvironmentConstantsStaging.DEFAULT_NO_ATTEMPT_IMAGE_URL_STAGING;
-import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_TARGET_ENVIRONMENT;
 
 /**
  * Created on 9/2/2017
@@ -28,7 +28,7 @@ public class PhotoRequestBuilder {
     private static final String PHOTO_SUCCESS_ICON_TEXT = "{fa-check-circle}";
     private static final String FAILED_ATTEMPTS_ICON_TEXT = "{fa-question-circle}";
 
-    private static final Boolean DEFAULT_DO_DEVICE_IMAGE_DETECTION = false;
+    private static final Boolean DEFAULT_SHARE_WITH_CUSTOMER = false;
 
     private PhotoRequest photoRequest;
 
@@ -55,6 +55,7 @@ public class PhotoRequestBuilder {
             photoRequest = new PhotoRequest();
             photoRequest.setGuid(BuilderUtilities.generateGuid());
             photoRequest.setStatus(PhotoRequest.PhotoStatus.NO_ATTEMPTS);
+            photoRequest.setHasNoAttemptImage(true);
 
             //build default status icon text
             HashMap<String, String> statusIconText = new HashMap<String, String>();
@@ -63,17 +64,20 @@ public class PhotoRequestBuilder {
             statusIconText.put(PhotoRequest.PhotoStatus.FAILED_ATTEMPTS.toString(), FAILED_ATTEMPTS_ICON_TEXT);
             photoRequest.setStatusIconText(statusIconText);
 
+            //set defaults for cloud upload
             photoRequest.setAttemptCount(0);
             photoRequest.setHasPhotoHint(false);
 
             photoRequest.setHasDeviceFile(false);
             photoRequest.setHasCloudFile(false);
 
-            photoRequest.setDoDeviceImageDetection(DEFAULT_DO_DEVICE_IMAGE_DETECTION);
-            photoRequest.setHasLabelMap(false);
-            photoRequest.setLabelMap(new HashMap<String, ImageLabel>());
+            //set default for share with customer
+            photoRequest.setShareWithCustomer(DEFAULT_SHARE_WITH_CUSTOMER);
 
-            photoRequest.setHasNoAttemptImage(true);
+            //setup ImageAnalysis
+            photoRequest.setImageAnalysis(new ImageAnalysisBuilder.Builder().build());
+
+
             //set imageUrl based on target environment
             switch (targetEnvironment){
                 case PRODUCTION:
@@ -138,10 +142,16 @@ public class PhotoRequestBuilder {
             return this;
         }
 
-        public Builder doDeviceImageDetection(Boolean deviceImageDetection){
-            this.photoRequest.setDoDeviceImageDetection(deviceImageDetection);
+        public Builder shareWithCustomer(Boolean shareWithCustomer){
+            this.photoRequest.setShareWithCustomer(shareWithCustomer);
             return this;
         }
+
+        public Builder imageAnalysis(ImageAnalysis imageAnalysis){
+            this.photoRequest.setImageAnalysis(imageAnalysis);
+            return this;
+        }
+
 
         private void validate(PhotoRequest photoRequest){
             // required PRESENT (must not be null)

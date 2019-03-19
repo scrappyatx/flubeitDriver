@@ -9,6 +9,7 @@ package it.flube.libbatchdata.builders;
 import java.util.Date;
 
 import it.flube.libbatchdata.entities.ChatMessage;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 
 /**
  * Created on 9/3/2017

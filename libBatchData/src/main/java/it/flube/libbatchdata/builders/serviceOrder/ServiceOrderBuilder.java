@@ -5,7 +5,7 @@
 package it.flube.libbatchdata.builders.serviceOrder;
 
 
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.builders.ProductListBuilder;
 import it.flube.libbatchdata.builders.ServiceOrderNotificationSettingsBuilder;
 import it.flube.libbatchdata.constants.TargetEnvironmentConstants;

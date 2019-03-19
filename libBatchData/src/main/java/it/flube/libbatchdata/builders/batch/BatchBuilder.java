@@ -5,14 +5,10 @@
 package it.flube.libbatchdata.builders.batch;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
-import it.flube.libbatchdata.builders.BuilderUtilities;
-import it.flube.libbatchdata.entities.ContactPerson;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.entities.batch.Batch;
 import it.flube.libbatchdata.entities.DisplayDistance;
-import it.flube.libbatchdata.entities.DisplayTiming;
 import it.flube.libbatchdata.entities.PotentialEarnings;
 
 

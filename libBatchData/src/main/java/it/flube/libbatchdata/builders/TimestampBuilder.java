@@ -9,6 +9,7 @@ package it.flube.libbatchdata.builders;
 import java.util.Date;
 
 import it.flube.libbatchdata.entities.Timestamp;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 
 
 /**

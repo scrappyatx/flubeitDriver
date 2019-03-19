@@ -41,8 +41,12 @@ public interface MobileDeviceInterface {
     CloudActiveBatchInterface getCloudActiveBatch();
     CloudServerMonitoringInterface getCloudServerMonitoring();
 
-    CloudImageDetectionInterface getCloudImageDetection();
+
     CloudRealTimeClockInterface getCloudRealTimeClock();
+
+    CloudImageDetectionInterface getCloudImageDetection();
+    CloudTextDetectionInterface getCloudTextDetection();
+
 
 
     ///
@@ -54,5 +58,8 @@ public interface MobileDeviceInterface {
     DeviceImageStorageInterface getDeviceImageStorage();
     LocationTelemetryInterface getLocationTelemetry();
     UseCaseInterface getUseCaseEngine();
+
+    DeviceImageDetectionInterface getDeviceImageDetection();
+    DeviceTextDetectionInterface getDeviceTextDetection();
 
 }

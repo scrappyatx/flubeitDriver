@@ -18,21 +18,38 @@ import it.flube.libbatchdata.interfaces.OrderStepInterface;
 public class ServiceOrderAuthorizePaymentStep extends AbstractStep
         implements OrderStepInterface {
 
-    public enum ServiceProviderTransactionIdSourceType {
-        NOT_ATTEMPTED,
+    public enum DataSourceType {
+        NONE,
         MANUAL_ENTRY,
         DEVICE_OCR,
         CLOUD_OCR
     }
 
+    public enum DataEntryStatus {
+        NOT_ATTEMPTED,
+        COMPLETE
+    }
+
     private PaymentAuthorization paymentAuthorization;
 
+    /// require receipt photo
     private Boolean requireReceipt;
     private ReceiptRequest receiptRequest;
 
+    /// require transaction ID
     private Boolean requireServiceProviderTransactionId;
     private String serviceProviderTransactionId;
-    private ServiceProviderTransactionIdSourceType serviceProviderTransactionIdSourceType;
+    private DataSourceType transactionIdSourceType;
+    private DataEntryStatus transactionIdStatus;
+
+    /// require transaction total
+    private Boolean requireServiceProviderTransactionTotal;
+    private String serviceProviderTransactionTotal;
+    private DataSourceType transactionTotalSourceType;
+    private DataEntryStatus transactionTotalStatus;
+
+    // status icon text
+    private Map<String, String> statusIconText;
 
 
     public PaymentAuthorization getPaymentAuthorization() {
@@ -75,11 +92,61 @@ public class ServiceOrderAuthorizePaymentStep extends AbstractStep
         this.serviceProviderTransactionId = serviceProviderTransactionId;
     }
 
-    public ServiceProviderTransactionIdSourceType getServiceProviderTransactionIdSourceType() {
-        return serviceProviderTransactionIdSourceType;
+
+    public DataEntryStatus getTransactionIdStatus() {
+        return transactionIdStatus;
     }
 
-    public void setServiceProviderTransactionIdSourceType(ServiceProviderTransactionIdSourceType serviceProviderTransactionIdSourceType) {
-        this.serviceProviderTransactionIdSourceType = serviceProviderTransactionIdSourceType;
+    public void setTransactionIdStatus(DataEntryStatus transactionIdStatus) {
+        this.transactionIdStatus = transactionIdStatus;
+    }
+
+    public Boolean getRequireServiceProviderTransactionTotal() {
+        return requireServiceProviderTransactionTotal;
+    }
+
+    public void setRequireServiceProviderTransactionTotal(Boolean requireServiceProviderTransactionTotal) {
+        this.requireServiceProviderTransactionTotal = requireServiceProviderTransactionTotal;
+    }
+
+    public String getServiceProviderTransactionTotal() {
+        return serviceProviderTransactionTotal;
+    }
+
+    public void setServiceProviderTransactionTotal(String serviceProviderTransactionTotal) {
+        this.serviceProviderTransactionTotal = serviceProviderTransactionTotal;
+    }
+
+
+    public DataEntryStatus getTransactionTotalStatus() {
+        return transactionTotalStatus;
+    }
+
+    public void setTransactionTotalStatus(DataEntryStatus transactionTotalStatus) {
+        this.transactionTotalStatus = transactionTotalStatus;
+    }
+
+    public DataSourceType getTransactionIdSourceType() {
+        return transactionIdSourceType;
+    }
+
+    public void setTransactionIdSourceType(DataSourceType transactionIdSourceType) {
+        this.transactionIdSourceType = transactionIdSourceType;
+    }
+
+    public DataSourceType getTransactionTotalSourceType() {
+        return transactionTotalSourceType;
+    }
+
+    public void setTransactionTotalSourceType(DataSourceType transactionTotalSourceType) {
+        this.transactionTotalSourceType = transactionTotalSourceType;
+    }
+
+    public Map<String, String> getStatusIconText() {
+        return statusIconText;
+    }
+
+    public void setStatusIconText(Map<String, String> statusIconText) {
+        this.statusIconText = statusIconText;
     }
 }

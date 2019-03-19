@@ -17,7 +17,9 @@ import it.flube.libbatchdata.entities.ReceiptRequest;
 import timber.log.Timber;
 
 import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseConstants.BATCH_DATA_STEPS_NODE;
+import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseConstants.RECEIPT_REQUEST_CLOUD_OCR_RESULTS_NODE;
 import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseConstants.RECEIPT_REQUEST_DEVICE_ABSOLUTE_FILENAME_NODE;
+import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseConstants.RECEIPT_REQUEST_DEVICE_OCR_RESULTS_NODE;
 import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseConstants.RECEIPT_REQUEST_HAS_DEVICE_FILE_NODE;
 import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseConstants.RECEIPT_REQUEST_HAS_TEXT_MAP_NODE;
 import static it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.ActiveBatchFirebaseConstants.RECEIPT_REQUEST_NODE;
@@ -32,9 +34,9 @@ public class FirebaseReceiptRequestDeviceAbsoluteFilenameRequest
         implements OnCompleteListener<Void> {
     private static final String TAG = "FirebaseReceiptRequestDeviceAbsoluteFilenameRequest";
 
-    private CloudActiveBatchInterface.ReceiptRequestDeviceAbsoluteFileNameReponse response;
+    private CloudActiveBatchInterface.ReceiptRequestDeviceAbsoluteFileNameResponse response;
 
-    public void updateReceiptRequestDeviceFilenameRequest(DatabaseReference batchDataNode, ReceiptRequest receiptRequest, CloudActiveBatchInterface.ReceiptRequestDeviceAbsoluteFileNameReponse response){
+    public void updateReceiptRequestDeviceFilenameRequest(DatabaseReference batchDataNode, ReceiptRequest receiptRequest, CloudActiveBatchInterface.ReceiptRequestDeviceAbsoluteFileNameResponse response){
         Timber.tag(TAG).d("batchDataNode = " + batchDataNode.toString());
         this.response = response;
 
@@ -42,8 +44,6 @@ public class FirebaseReceiptRequestDeviceAbsoluteFilenameRequest
 
         data.put(RECEIPT_REQUEST_HAS_DEVICE_FILE_NODE, receiptRequest.getHasDeviceFile());
         data.put(RECEIPT_REQUEST_DEVICE_ABSOLUTE_FILENAME_NODE, receiptRequest.getDeviceAbsoluteFileName());
-        data.put(RECEIPT_REQUEST_HAS_TEXT_MAP_NODE, receiptRequest.getHasTextMap());
-        data.put(RECEIPT_REQUEST_TEXT_MAP_NODE, receiptRequest.getTextMap());
 
         if (receiptRequest.getHasDeviceFile()){
             data.put(RECEIPT_REQUEST_STATUS_NODE, ReceiptRequest.ReceiptStatus.COMPLETED_SUCCESS);

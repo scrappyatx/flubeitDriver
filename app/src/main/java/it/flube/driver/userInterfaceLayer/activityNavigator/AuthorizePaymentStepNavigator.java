@@ -9,6 +9,8 @@ import android.content.Intent;
 
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.receiptDetail.ReceiptDetailActivity;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.receiptPhotoTake.ReceiptPhotoTakeActivity;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.transactionIdDetail.TransactionIdDetailActivity;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.transactionTotalDetail.TransactionTotalDetailActivity;
 import timber.log.Timber;
 
 /**
@@ -28,6 +30,18 @@ public class AuthorizePaymentStepNavigator {
         Intent i = new Intent(context, ReceiptPhotoTakeActivity.class);
         context.startActivity(i);
         Timber.tag(TAG).d("starting ReceiptPhotoTakeActivity");
+    }
+
+    public static void gotoActivityTransactionIdDetailActivity(Context context){
+        Intent i = new Intent(context, TransactionIdDetailActivity.class);
+        context.startActivity(i);
+        Timber.tag(TAG).d("gotoActivityTransactionIdDetailActivity");
+    }
+
+    public static void gotoActivityTransactionTotalDetailActivity(Context context){
+        Intent i = new Intent(context, TransactionTotalDetailActivity.class);
+        context.startActivity(i);
+        Timber.tag(TAG).d("gotoActivityTransactionTotalDetailActivity");
     }
 
 }

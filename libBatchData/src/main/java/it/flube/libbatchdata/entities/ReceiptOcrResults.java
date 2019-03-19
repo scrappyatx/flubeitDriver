@@ -4,11 +4,17 @@
 
 package it.flube.libbatchdata.entities;
 
+import java.util.HashMap;
+
 /**
  * Created on 2/21/2019
  * Project : Driver
  */
 public class ReceiptOcrResults {
+    private TextDetectionResults ocrText;
+
+    private Boolean allExpectedFieldsFound;
+
     private Boolean foundTransactionId;
     private Boolean foundVehicleId;
     private Boolean foundVehicleMileage;
@@ -22,6 +28,23 @@ public class ReceiptOcrResults {
     private String vehicleVin;
     private String serviceChecklist;
     private String totalCharged;
+
+
+    public TextDetectionResults getOcrText() {
+        return ocrText;
+    }
+
+    public void setOcrText(TextDetectionResults ocrText) {
+        this.ocrText = ocrText;
+    }
+
+    public Boolean getAllExpectedFieldsFound() {
+        return allExpectedFieldsFound;
+    }
+
+    public void setAllExpectedFieldsFound(Boolean allExpectedFieldsFound) {
+        this.allExpectedFieldsFound = allExpectedFieldsFound;
+    }
 
     public Boolean getFoundTransactionId() {
         return foundTransactionId;

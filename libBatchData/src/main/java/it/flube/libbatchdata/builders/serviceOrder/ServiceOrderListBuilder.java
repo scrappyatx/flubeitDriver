@@ -4,7 +4,7 @@
 
 package it.flube.libbatchdata.builders.serviceOrder;
 
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrderList;
 
 /**

@@ -410,6 +410,30 @@
         <item name="android:textColor">@color/colorAuthorizePaymentDisplayAccount</item>
     </style>
 
+    <style name="TransactionIdStyle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorTransactionIdDisplay</item>
+    </style>
+
+    <style name="TransactionIdStatusStyle" parent="TextAppearance.AppCompat.Display1">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorTransactionIdStatus</item>
+    </style>
+
+    <style name="TotalChargedStyle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorTotalChargedDisplay</item>
+    </style>
+
+    <style name="TotalChargedStatusStyle" parent="TextAppearance.AppCompat.Display1">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorTotalChargedStatus</item>
+    </style>
+
     <style name="MaxPaymentAmountStyle" parent="TextAppearance.AppCompat.Title">
         <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="android:textStyle">normal</item>
@@ -434,7 +458,19 @@
         <item name="android:textColor">@color/colorReceiptRequestStatus</item>
     </style>
 
+    <!-- TRANSACTION ID DETAIL STYLES -->
+    <style name="TransactionIdDetailTitleStyle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorTransactionIdDetailTitle</item>
+    </style>
 
+    <!-- TRANSACTION TOTAL DETAIL STYLES -->
+    <style name="TransactionTotalDetailTitleStyle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/colorTransactionIdDetailTitle</item>
+    </style>
 
 
     <!-- PHOTO STEP styles -->

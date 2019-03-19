@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.builders.TimestampBuilder;
 import it.flube.libbatchdata.entities.batch.BatchHolder;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;

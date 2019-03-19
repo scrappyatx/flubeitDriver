@@ -7,6 +7,7 @@ package it.flube.libbatchdata.builders;
 import java.util.HashMap;
 
 import it.flube.libbatchdata.entities.ProductList;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 
 /**
  * Created on 9/10/2018

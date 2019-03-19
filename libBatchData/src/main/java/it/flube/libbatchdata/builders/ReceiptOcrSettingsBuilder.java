@@ -12,29 +12,36 @@ import it.flube.libbatchdata.entities.ReceiptOcrSettings;
  */
 public class ReceiptOcrSettingsBuilder {
     private static final Boolean DEFAULT_HAS_TRANSACTION_ID = true;
-    private static final Boolean DEFAULT_HAS_VEHICLE_ID = false;
-    private static final Boolean DEFAULT_HAS_VEHICLE_MILEAGE = false;
-    private static final Boolean DEFAULT_HAS_VEHICLE_VIN = false;
+    private static final Boolean DEFAULT_HAS_VEHICLE_ID = true;
+    private static final Boolean DEFAULT_HAS_VEHICLE_MILEAGE = true;
+    private static final Boolean DEFAULT_HAS_VEHICLE_VIN = true;
     private static final Boolean DEFAULT_HAS_SERVICE_CHECKLIST = false;
-    private static final Boolean DEFAULT_HAS_TOTAL_CHARGED = false;
+    private static final Boolean DEFAULT_HAS_TOTAL_CHARGED = true;
 
-    private static final String DEFAULT_TRANSACTION_ID_START_SENTINAL = "TRANSACTIONID";
-    private static final String DEFAULT_TRANSACTION_ID_END_SENTINAL = "INVOICE";
+    private static final String DEFAULT_TRANSACTION_ID_START_SENTINAL = "TRANSACTION NO";
+    private static final String DEFAULT_TRANSACTION_ID_END_SENTINAL = "INVOICE NO";
+    private static final String DEFAULT_TRANSACTION_ID_PATTERN = "[0-9]{14}";
 
-    private static final String DEFAULT_VEHICLE_ID_START_SENTINAL = "";
-    private static final String DEFAULT_VEHICLE_ID_END_SENTINAL = "";
+    private static final String DEFAULT_VEHICLE_ID_START_SENTINAL = "VEHICLE ID";
+    private static final String DEFAULT_VEHICLE_ID_END_SENTINAL = "Customer Information";
+    private static final String DEFAULT_VEHICLE_ID_PATTERN = "[A-Za-z]{2}[-][A-Za-z0-9]{1,10}";
 
-    private static final String DEFAULT_VEHICLE_MILEAGE_START_SENTINAL = "";
-    private static final String DEFAULT_VEHICLE_MILEAGE_END_SENTINAL = "";
+    private static final String DEFAULT_VEHICLE_MILEAGE_START_SENTINAL = "MILEAGE";
+    private static final String DEFAULT_VEHICLE_MILEAGE_END_SENTINAL = "ALT ID";
+    private static final String DEFAULT_VEHICLE_MILEAGE_PATTERN = "[0-9]{1,6}";
 
-    private static final String DEFAULT_VEHICLE_VIN_START_SENTINAL = "";
-    private static final String DEFAULT_VEHICLE_VIN_END_SENTINAL = "";
+    private static final String DEFAULT_VEHICLE_VIN_START_SENTINAL = "VIN";
+    private static final String DEFAULT_VEHICLE_VIN_END_SENTINAL = "MILEAGE";
+    private static final String DEFAULT_VEHICLE_VIN_PATTERN = "[A-HJ-NPR-Z0-9]{17}";
 
     private static final String DEFAULT_SERVICE_CHECKLIST_START_SENTINAL = "";
     private static final String DEFAULT_SERVICE_CHECKLIST_END_SENTINAL = "";
+    private static final String DEFAULT_SERVICE_CHECKLIST_PATTERN = "";
 
-    private static final String DEFAULT_TOTAL_CHARGED_START_SENTINAL = "";
-    private static final String DEFAULT_TOTAL_CHARGED_END_SENTINAL = "";
+    private static final String DEFAULT_TOTAL_CHARGED_START_SENTINAL = "TOTAL";
+    private static final String DEFAULT_TOTAL_CHARGED_END_SENTINAL = "CHANGE";
+    private static final String DEFAULT_TOTAL_CHARGED_PATTERN = "[$][0-9]{1,3}[.][0-9]{2}";
+
 
     private ReceiptOcrSettings receiptOcrSettings;
 
@@ -62,113 +69,156 @@ public class ReceiptOcrSettingsBuilder {
             receiptOcrSettings.setHasServiceChecklist(DEFAULT_HAS_SERVICE_CHECKLIST);
             receiptOcrSettings.setHasTotalCharged(DEFAULT_HAS_TOTAL_CHARGED);
 
-            // now initialize the sentinals
+            // now initialize the sentinals & patterns
             receiptOcrSettings.setTransactionIdStartSentinal(DEFAULT_TRANSACTION_ID_START_SENTINAL);
             receiptOcrSettings.setTransactionIdEndSentinal(DEFAULT_TRANSACTION_ID_END_SENTINAL);
+            receiptOcrSettings.setTransactionIdPattern(DEFAULT_TRANSACTION_ID_PATTERN);
 
             receiptOcrSettings.setVehicleIdStartSentinal(DEFAULT_VEHICLE_ID_START_SENTINAL);
             receiptOcrSettings.setVehicleIdEndSentinal(DEFAULT_VEHICLE_ID_END_SENTINAL);
+            receiptOcrSettings.setVehicleIdPattern(DEFAULT_VEHICLE_ID_PATTERN);
 
             receiptOcrSettings.setVehicleMileageStartSentinal(DEFAULT_VEHICLE_MILEAGE_START_SENTINAL);
             receiptOcrSettings.setVehicleMileageEndSentinal(DEFAULT_VEHICLE_MILEAGE_END_SENTINAL);
+            receiptOcrSettings.setVehicleMileagePattern(DEFAULT_VEHICLE_MILEAGE_PATTERN);
 
             receiptOcrSettings.setVehicleVinStartSentinal(DEFAULT_VEHICLE_VIN_START_SENTINAL);
             receiptOcrSettings.setVehicleVinEndSentinal(DEFAULT_VEHICLE_VIN_END_SENTINAL);
+            receiptOcrSettings.setVehicleVinPattern(DEFAULT_VEHICLE_VIN_PATTERN);
 
             receiptOcrSettings.setServiceChecklistStartSentinal(DEFAULT_SERVICE_CHECKLIST_START_SENTINAL);
             receiptOcrSettings.setServiceChecklistEndSentinal(DEFAULT_SERVICE_CHECKLIST_END_SENTINAL);
+            receiptOcrSettings.setServiceChecklistPattern(DEFAULT_SERVICE_CHECKLIST_PATTERN);
 
             receiptOcrSettings.setTotalChargedStartSentinal(DEFAULT_TOTAL_CHARGED_START_SENTINAL);
             receiptOcrSettings.setTotalChargedEndSentinal(DEFAULT_TOTAL_CHARGED_END_SENTINAL);
+            receiptOcrSettings.setTotalChargedPattern(DEFAULT_TOTAL_CHARGED_PATTERN);
         }
 
-        public Builder setHasTransactionId(Boolean setHasTransactionId){
-            this.receiptOcrSettings.setHasTransactionId(setHasTransactionId);
+        //// FLAGS OF FIELDS TO SEARCH FOR
+        public Builder hasTransactionId(Boolean hasTransactionId){
+            this.receiptOcrSettings.setHasTransactionId(hasTransactionId);
             return this;
         }
 
-        public Builder setHasVehicleId(Boolean setHasVehicleId){
-            this.receiptOcrSettings.setHasVehicleId(setHasVehicleId);
+        public Builder hasVehicleId(Boolean hasVehicleId){
+            this.receiptOcrSettings.setHasVehicleId(hasVehicleId);
             return this;
         }
 
-        public Builder setHasVehicleMileage(Boolean setHasVehicleMileage){
-            this.receiptOcrSettings.setHasVehicleMileage(setHasVehicleMileage);
+        public Builder hasVehicleMileage(Boolean hasVehicleMileage){
+            this.receiptOcrSettings.setHasVehicleMileage(hasVehicleMileage);
             return this;
         }
 
-        public Builder setHasVehicleVin(Boolean setHasVehicleVin){
-            this.receiptOcrSettings.setHasVehicleVin(setHasVehicleVin);
+        public Builder hasVehicleVin(Boolean hasVehicleVin){
+            this.receiptOcrSettings.setHasVehicleVin(hasVehicleVin);
             return this;
         }
 
-        public Builder setHasServiceChecklist(Boolean setHasServiceChecklist){
-            this.receiptOcrSettings.setHasServiceChecklist(setHasServiceChecklist);
+        public Builder hasServiceChecklist(Boolean hasServiceChecklist){
+            this.receiptOcrSettings.setHasServiceChecklist(hasServiceChecklist);
             return this;
         }
 
-        public Builder setHasTotalCharged(Boolean setHasTotalCharged){
-            this.receiptOcrSettings.setHasTotalCharged(setHasTotalCharged);
+        public Builder hasTotalCharged(Boolean hasTotalCharged){
+            this.receiptOcrSettings.setHasTotalCharged(hasTotalCharged);
             return this;
         }
 
-        public Builder setTransactionIdStartSentinal(String transactionIdStartSentinal){
+        /// TRANSACTION ID
+        public Builder transactionIdStartSentinal(String transactionIdStartSentinal){
             this.receiptOcrSettings.setTransactionIdStartSentinal(transactionIdStartSentinal);
             return this;
         }
 
-        public Builder setTransactionIdEndSentinal(String setTransactionIdEndSentinal){
+        public Builder transactionIdEndSentinal(String setTransactionIdEndSentinal){
             this.receiptOcrSettings.setTransactionIdEndSentinal(setTransactionIdEndSentinal);
             return this;
         }
 
-        public Builder setVehicleIdStartSentinal(String setVehicleIdStartSentinal){
-            this.receiptOcrSettings.setVehicleIdStartSentinal(setVehicleIdStartSentinal);
+        public Builder transactionIdPattern(String transactionIdPattern){
+            this.receiptOcrSettings.setTransactionIdPattern(transactionIdPattern);
             return this;
         }
 
-        public Builder setVehicleIdEndSentinal(String setVehicleIdEndSentinal){
-            this.receiptOcrSettings.setVehicleIdEndSentinal(setVehicleIdEndSentinal);
+        /// VEHICLE ID
+        public Builder vehicleIdStartSentinal(String vehicleIdStartSentinal){
+            this.receiptOcrSettings.setVehicleIdStartSentinal(vehicleIdStartSentinal);
             return this;
         }
 
-        public Builder setVehicleMileageStartSentinal(String setVehicleMileageStartSentinal){
-            this.receiptOcrSettings.setVehicleMileageStartSentinal(setVehicleMileageStartSentinal);
+        public Builder vehicleIdEndSentinal(String vehicleIdEndSentinal){
+            this.receiptOcrSettings.setVehicleIdEndSentinal(vehicleIdEndSentinal);
             return this;
         }
 
-        public Builder setVehicleMileageEndSentinal(String setVehicleMileageEndSentinal){
-            this.receiptOcrSettings.setVehicleMileageEndSentinal(setVehicleMileageEndSentinal);
+        public Builder vehicleIdPattern(String vehicleIdPattern){
+            this.receiptOcrSettings.setVehicleIdPattern(vehicleIdPattern);
             return this;
         }
 
-        public Builder setVehicleVinStartSentinal(String setVehicleVinStartSentinal){
-            this.receiptOcrSettings.setVehicleVinStartSentinal(setVehicleVinStartSentinal);
+        /// VEHICLE MILEAGE
+        public Builder vehicleMileageStartSentinal(String vehicleMileageStartSentinal){
+            this.receiptOcrSettings.setVehicleMileageStartSentinal(vehicleMileageStartSentinal);
             return this;
         }
 
-        public Builder setVehicleVinEndSentinal(String setVehicleVinEndSentinal){
-            this.receiptOcrSettings.setVehicleVinEndSentinal(setVehicleVinEndSentinal);
+        public Builder vehicleMileageEndSentinal(String vehicleMileageEndSentinal){
+            this.receiptOcrSettings.setVehicleMileageEndSentinal(vehicleMileageEndSentinal);
             return this;
         }
 
-        public Builder setServiceChecklistStartSentinal(String setServiceChecklistStartSentinal){
-            this.receiptOcrSettings.setServiceChecklistStartSentinal(setServiceChecklistStartSentinal);
+        public Builder vehicleMileagePattern(String vehicleMileagePattern){
+            this.receiptOcrSettings.setVehicleMileagePattern(vehicleMileagePattern);
             return this;
         }
 
-        public Builder setServiceChecklistEndSentinal(String setServiceChecklistEndSentinal){
-            this.receiptOcrSettings.setServiceChecklistEndSentinal(setServiceChecklistEndSentinal);
+        //// VEHICLE VIN
+        public Builder vehicleVinStartSentinal(String vehicleVinStartSentinal){
+            this.receiptOcrSettings.setVehicleVinStartSentinal(vehicleVinStartSentinal);
             return this;
         }
 
-        public Builder setTotalChargedStartSentinal(String setTotalChargedStartSentinal){
-            this.receiptOcrSettings.setTotalChargedStartSentinal(setTotalChargedStartSentinal);
+        public Builder vehicleVinEndSentinal(String vehicleVinEndSentinal){
+            this.receiptOcrSettings.setVehicleVinEndSentinal(vehicleVinEndSentinal);
             return this;
         }
 
-        public Builder setTotalChargedEndSentinal(String setTotalChargedEndSentinal){
-            this.receiptOcrSettings.setTotalChargedEndSentinal(setTotalChargedEndSentinal);
+        public Builder vehicleVinPattern(String vehicleVinPattern){
+            this.receiptOcrSettings.setVehicleVinPattern(vehicleVinPattern);
+            return this;
+        }
+
+        //// SERVICE CHECKLIST
+        public Builder serviceChecklistStartSentinal(String serviceChecklistStartSentinal){
+            this.receiptOcrSettings.setServiceChecklistStartSentinal(serviceChecklistStartSentinal);
+            return this;
+        }
+
+        public Builder serviceChecklistEndSentinal(String serviceChecklistEndSentinal){
+            this.receiptOcrSettings.setServiceChecklistEndSentinal(serviceChecklistEndSentinal);
+            return this;
+        }
+
+        public Builder serviceChecklistPattern(String serviceChecklistPattern){
+            this.receiptOcrSettings.setServiceChecklistPattern(serviceChecklistPattern);
+            return this;
+        }
+
+        //// TOTAL CHARGED
+        public Builder totalChargedStartSentinal(String totalChargedStartSentinal){
+            this.receiptOcrSettings.setTotalChargedStartSentinal(totalChargedStartSentinal);
+            return this;
+        }
+
+        public Builder totalChargedEndSentinal(String totalChargedEndSentinal){
+            this.receiptOcrSettings.setTotalChargedEndSentinal(totalChargedEndSentinal);
+            return this;
+        }
+
+        public Builder totalChargedPattern(String totalChargedPattern){
+            this.receiptOcrSettings.setTotalChargedPattern(totalChargedPattern);
             return this;
         }
 

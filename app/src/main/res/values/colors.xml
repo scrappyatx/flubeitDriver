@@ -128,10 +128,16 @@
 
     <color name="colorAuthorizePaymentType">@color/offblack</color>
     <color name="colorAuthorizePaymentDisplayAccount">@color/colorPrimary</color>
+    <color name="colorTransactionIdDisplay">@color/offblack</color>
+    <color name="colorTransactionIdStatus">@color/offblack</color>
+    <color name="colorTotalChargedDisplay">@color/offblack</color>
+    <color name="colorTotalChargedStatus">@color/offblack</color>
     <color name="colorMaxPaymentDisplay">@color/offblack</color>
     <color name="colorVerificationPaymentStatus">@color/offblack</color>
     <color name="colorReceiptRequestTitle">@color/offblack</color>
     <color name="colorReceiptRequestStatus">@color/offblack</color>
+    <color name="colorTransactionIdDetailTitle">@color/offblack</color>
+    <color name="colorTransactionTotalDetailTitle">@color/offblack</color>
 
 
     <!-- COLOR PALETTE (all colors here should be in the form #TTRRGGBB)

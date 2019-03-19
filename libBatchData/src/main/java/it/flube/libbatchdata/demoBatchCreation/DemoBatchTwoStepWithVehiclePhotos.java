@@ -4,7 +4,7 @@
 
 package it.flube.libbatchdata.demoBatchCreation;
 
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.builders.DestinationBuilder;
 import it.flube.libbatchdata.builders.PhotoRequestListForVehicleBuilder;
 import it.flube.libbatchdata.builders.PotentialEarningsBuilder;
@@ -16,7 +16,6 @@ import it.flube.libbatchdata.builders.serviceOrder.ServiceOrderScaffoldBuilder;
 import it.flube.libbatchdata.constants.TargetEnvironmentConstants;
 import it.flube.libbatchdata.entities.Destination;
 import it.flube.libbatchdata.entities.DisplayDistanceBuilder;
-import it.flube.libbatchdata.entities.DisplayTimingBuilder;
 import it.flube.libbatchdata.entities.PotentialEarnings;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.batch.BatchHolder;

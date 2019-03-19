@@ -17,9 +17,7 @@ import it.flube.driver.userInterfaceLayer.activities.signIn.SignInActivity;
 import it.flube.driver.userInterfaceLayer.activities.messages.MessagesActivity;
 import it.flube.driver.userInterfaceLayer.activities.signIn.SignInAuthUiLaunchActivity;
 import it.flube.driver.userInterfaceLayer.activities.splashScreen.SplashScreenActivity;
-import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
-import it.flube.driver.userInterfaceLayer.drawerMenu.DriverManager;
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.interfaces.ActiveBatchManageInterface;
 import it.flube.libbatchdata.interfaces.OrderStepInterface;
 import timber.log.Timber;
@@ -332,6 +330,16 @@ public class ActivityNavigator {
     public void gotoActivityReceiptTakePhoto(Context context){
         AuthorizePaymentStepNavigator.gotoActivityReceiptPhotoTakeActivity(context);
         Timber.tag(TAG).d("starting activity ReceiptTakeActivity");
+    }
+
+    public void gotoActivityTransactionIdDetail(Context context){
+        AuthorizePaymentStepNavigator.gotoActivityTransactionIdDetailActivity(context);
+        Timber.tag(TAG).d("starting activity TransactionIdDetail");
+    }
+
+    public void gotoActivityTransactionTotalDetail(Context context){
+        AuthorizePaymentStepNavigator.gotoActivityTransactionTotalDetailActivity(context);
+        Timber.tag(TAG).d("starting activity TransactionTotalDetail");
     }
 
 }

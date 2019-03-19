@@ -12,7 +12,8 @@ import it.flube.driver.R;
 import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.entities.ReceiptRequest;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderAuthorizePaymentStep;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
@@ -26,7 +27,8 @@ import timber.log.Timber;
 public class ReceiptDetailActivity extends AppCompatActivity
     implements
     ReceiptDetailLayoutComponents.Response,
-    ReceiptDetailController.GetDriverAndAuthorizePaymentStepResponse {
+    ReceiptDetailController.AnalyzePhotoResponse,
+    ReceiptDetailController.GetDriverAndAuthorizePaymentStepResponse{
 
     private static final String TAG="ReceiptDetailActivity";
 
@@ -93,6 +95,17 @@ public class ReceiptDetailActivity extends AppCompatActivity
     public void takePhotoButtonClicked(){
         Timber.tag(TAG).d("takePhotoButtonClicked");
         ActivityNavigator.getInstance().gotoActivityReceiptTakePhoto(this);
+    }
+
+    public void keepPhotoButtonClicked(ReceiptRequest receiptRequest){
+        Timber.tag(TAG).d("keepPhotoButtonClicked");
+        controller.analyzePhoto(receiptRequest, this);
+    }
+
+    /// ReceiptDetailController.AnalyzePhotoResponse
+    public void analyzePhotoComplete(ReceiptRequest receiptRequest){
+        Timber.tag(TAG).d("analyzePhotoComplete");
+        ActivityNavigator.getInstance().gotoActiveBatchStep(this);
     }
 
     /// ReceiptDetailController.GetDriverAndAuthorizePaymentStepResponse

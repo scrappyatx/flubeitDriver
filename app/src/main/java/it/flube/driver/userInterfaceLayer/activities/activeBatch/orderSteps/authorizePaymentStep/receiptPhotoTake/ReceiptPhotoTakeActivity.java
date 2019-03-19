@@ -10,8 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import it.flube.driver.R;
 import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
-import it.flube.driver.userInterfaceLayer.drawerMenu.DrawerMenu;
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.entities.ReceiptRequest;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderAuthorizePaymentStep;
 import it.flube.libbatchdata.entities.serviceOrder.ServiceOrder;
@@ -25,7 +25,8 @@ import timber.log.Timber;
 public class ReceiptPhotoTakeActivity extends AppCompatActivity
     implements
     ReceiptPhotoTakeLayoutComponents.Response,
-    ReceiptPhotoTakeController.GetDriverAndAuthorizePaymentStepResponse {
+    ReceiptPhotoTakeController.GetDriverAndAuthorizePaymentStepResponse,
+    ReceiptPhotoTakeController.UpdateReceiptRequestWithImageDeviceFilenameResponse {
 
     private static final String TAG="ReceiptPhotoTakeActivity";
 
@@ -33,6 +34,8 @@ public class ReceiptPhotoTakeActivity extends AppCompatActivity
 
     private ReceiptPhotoTakeController controller;
     private ReceiptPhotoTakeLayoutComponents layoutComponents;
+
+    private Boolean haveDeviceImageFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,7 @@ public class ReceiptPhotoTakeActivity extends AppCompatActivity
         controller = new ReceiptPhotoTakeController();
         layoutComponents = new ReceiptPhotoTakeLayoutComponents(this, this);
 
+        haveDeviceImageFile = false;
     }
 
     @Override
@@ -69,7 +73,14 @@ public class ReceiptPhotoTakeActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         Timber.tag(TAG).d("onBackPressed");
-        ActivityNavigator.getInstance().gotoActivityReceiptDetail(this);
+        if (layoutComponents.hasDeviceFile()){
+            Timber.tag(TAG).d("...going to receipt detail");
+            ActivityNavigator.getInstance().gotoActivityReceiptDetail(this);
+        } else {
+            Timber.tag(TAG).d("...going to active batch step");
+            ActivityNavigator.getInstance().gotoActiveBatchStep(this);
+        }
+
     }
 
     @Override
@@ -85,8 +96,14 @@ public class ReceiptPhotoTakeActivity extends AppCompatActivity
 
 
     /// receiptTakePhotoLayoutComponents response interface
-    public void receiptTakePhotoComplete(){
+    public void receiptTakePhotoComplete(String imageDeviceAbsoluteFileName, ReceiptRequest receiptRequest){
         Timber.tag(TAG).d("receiptTakePhotoComplete (%s)", activityGuid);
+        controller.updateReceiptRequestWithImageDeviceFilename(imageDeviceAbsoluteFileName, receiptRequest, this);
+    }
+
+    /// interface for updating the image device filename
+    public void updateReceiptRequestWithImageDeviceFilenameComplete(){
+        Timber.tag(TAG).d("updateReceiptRequestWithImageDeviceFilenameComplete (%s)", activityGuid);
         ActivityNavigator.getInstance().gotoActivityReceiptDetail(this);
     }
 

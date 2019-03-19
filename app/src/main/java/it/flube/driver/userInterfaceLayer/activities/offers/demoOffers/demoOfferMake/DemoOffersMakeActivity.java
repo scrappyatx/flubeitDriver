@@ -12,7 +12,7 @@ import it.flube.driver.R;
 import it.flube.driver.userInterfaceLayer.activities.offers.demoOffers.DemoOfferAlerts;
 import it.flube.driver.userInterfaceLayer.activityNavigator.ActivityNavigator;
 import it.flube.driver.userInterfaceLayer.layoutComponents.demoOffers.DemoOffersMakeLayoutComponents;
-import it.flube.libbatchdata.builders.BuilderUtilities;
+import it.flube.libbatchdata.utilities.BuilderUtilities;
 import timber.log.Timber;
 
 /**

@@ -95,6 +95,8 @@
         <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.AuthorizePaymentActivity" android:launchMode="singleTask" />
         <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.receiptDetail.ReceiptDetailActivity" android:launchMode="singleTask" />
         <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.receiptPhotoTake.ReceiptPhotoTakeActivity" android:launchMode="singleTask" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.transactionIdDetail.TransactionIdDetailActivity" android:launchMode="singleTask" />
+        <activity android:name=".userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.transactionTotalDetail.TransactionTotalDetailActivity" android:launchMode="singleTask" />
 
         <!-- WAITING TO FINISH BATCH ACTIVITIES -->
         <activity android:name=".userInterfaceLayer.activities.activeBatch.waitingToFinishBatch.WaitingToFinishBatchActivity"  />
