@@ -23,7 +23,8 @@ import timber.log.Timber;
 
 public class PhotoDetailActivity extends AppCompatActivity implements
         PhotoDetailLayoutComponents.Response,
-        PhotoDetailController.GetDriverAndPhotoDetailResponse {
+        PhotoDetailController.GetDriverAndPhotoDetailResponse,
+        PhotoDetailController.AnalyzePhotoResponse {
 
     private static final String TAG = "PhotoDetailActivity";
 
@@ -105,6 +106,17 @@ public class PhotoDetailActivity extends AppCompatActivity implements
 
         layoutComponents.showWaitingAnimation();
         ActivityNavigator.getInstance().gotoActivityPhotoTake(this,  batchGuid, stepGuid, photoRequestGuid);
+    }
+
+    public void keepPhotoButtonClicked(PhotoRequest photoRequest){
+        Timber.tag(TAG).d("keepPhotoButtonClicked (%s)", activityGuid);
+        controller.analyzePhotoRequest(photoRequest, this);
+    }
+
+    ///response interface for analyzePhotoRequest
+    public void analyzePhotoComplete(PhotoRequest photoRequest){
+        Timber.tag(TAG).d("analyzePhotoComplete (%s)", activityGuid);
+        ActivityNavigator.getInstance().gotoActiveBatchStep(this);
     }
 
 

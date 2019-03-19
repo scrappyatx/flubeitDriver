@@ -80,8 +80,8 @@
 
         app:layout_constraintTop_toBottomOf="@+id/signature_instructions"
 
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/vGuideline50"
+        app:layout_constraintLeft_toRightOf="@+id/vGuideline50"
+        app:layout_constraintRight_toRightOf="parent"
 
         android:layout_marginTop="8dp"
         android:text="@string/get_signature_save_button_caption" />
@@ -94,8 +94,8 @@
 
         app:layout_constraintTop_toBottomOf="@+id/signature_instructions"
 
-        app:layout_constraintLeft_toRightOf="@+id/vGuideline50"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/vGuideline50"
 
         android:layout_marginTop="8dp"
 

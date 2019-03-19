@@ -265,6 +265,7 @@ dependencies {
     implementation 'com.github.gcacace:signature-pad:1.2.1'
     implementation 'com.karumi:dexter:5.0.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.github.faranjit:currency-edittext:1.0.1'
 
     //implementation('com.mapbox.mapboxsdk:mapbox-android-sdk:5.1.1@aar') {
 

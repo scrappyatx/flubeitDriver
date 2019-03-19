@@ -17,7 +17,9 @@ import io.fotoapparat.capability.Capabilities;
 import io.fotoapparat.parameter.ScaleType;
 import io.fotoapparat.result.PhotoResult;
 import io.fotoapparat.result.WhenDoneListener;
+import io.fotoapparat.selector.FlashSelectorsKt;
 import io.fotoapparat.selector.ResolutionSelectorsKt;
+import io.fotoapparat.selector.SelectorsKt;
 import it.flube.driver.R;
 import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.useCaseLayer.authorizePaymentStep.UseCaseReceiptOcr;
@@ -69,6 +71,8 @@ public class ReceiptPhotoTakeLayoutComponents implements
                 .previewScaleType(ScaleType.CenterCrop)
                 .photoResolution(ResolutionSelectorsKt.highestResolution())
                 .lensPosition(back())       // we want back camera
+                //.flash(SelectorsKt.firstAvailable()) //first available flash mode
+                //.focusMode(SelectorsKt.firstAvailable()) //first available focus mode
                 .build();
 
         setInvisible();
@@ -148,8 +152,6 @@ public class ReceiptPhotoTakeLayoutComponents implements
     /// fotoapparat call back
     public void whenDone(Unit unit){
         Timber.tag(TAG).d("whenDone -> saved to file");
-        //AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseReceiptOcr(AndroidDevice.getInstance(), imageDeviceAbsoluteFileName, receiptRequest, this));
-        //don't want to analyze photo at this point
         response.receiptTakePhotoComplete(imageDeviceAbsoluteFileName, receiptRequest);
     }
 

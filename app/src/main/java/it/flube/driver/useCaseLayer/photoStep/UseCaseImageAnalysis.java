@@ -20,24 +20,21 @@ import timber.log.Timber;
  */
 public class UseCaseImageAnalysis implements
         Runnable,
-        DeviceImageStorageInterface.DeleteResponse,
         DeviceImageDetectionInterface.DeviceDetectImageLabelResponse,
         DeviceImageDetectionInterface.DeviceMatchImageLabelResponse,
         CloudImageDetectionInterface.CloudDetectImageLabelResponse,
         CloudImageDetectionInterface.CloudMatchImageLabelResponse,
-        CloudActiveBatchInterface.PhotoRequestDeviceAbsoluteFileNameResponse {
+        CloudActiveBatchInterface.PhotoRequestAnalyzePhotoResultsResponse {
 
     private final static String TAG = "UseCaseImageAnalysis";
 
     private MobileDeviceInterface device;
-    private String imageDeviceAbsoluteFilename;
     private PhotoRequest photoRequest;
     private Response response;
 
-    public UseCaseImageAnalysis(MobileDeviceInterface device, String imageDeviceAbsoluteFilename, PhotoRequest photoRequest, Response response){
+    public UseCaseImageAnalysis(MobileDeviceInterface device, PhotoRequest photoRequest, Response response){
         Timber.tag(TAG).d("UseCaseImageAnalysis");
         this.device = device;
-        this.imageDeviceAbsoluteFilename = imageDeviceAbsoluteFilename;
         this.photoRequest = photoRequest;
         this.response = response;
     }
@@ -45,36 +42,21 @@ public class UseCaseImageAnalysis implements
     public void run(){
         Timber.tag(TAG).d("Thread -> " + Thread.currentThread().getName());
         if (photoRequest.getHasDeviceFile()){
-            //if this photoRequest already has a device file, we need to delete this old file and save the new file name to the photoRequest
-            Timber.tag(TAG).d("...deleting OLD image file -> " + photoRequest.getDeviceAbsoluteFileName());
-            device.getDeviceImageStorage().deleteImageRequest(photoRequest.getDeviceAbsoluteFileName(), this);
-        } else {
-            //put this filename into the photoRequest & detect image label
-            Timber.tag(TAG).d("...no prior image file, go straight to label detection");
-            photoRequest.setDeviceAbsoluteFileName(imageDeviceAbsoluteFilename);
-            photoRequest.setHasDeviceFile(true);
+            // do ocr on this file
+            Timber.tag(TAG).d("...has device file, doing image analysis");
             detectImageLabel();
+        } else {
+            // do nothing
+            Timber.tag(TAG).d("...no device file, do nothing");
+            doNothing();
         }
     }
 
     private void close(){
         Timber.tag(TAG).d("close");
         device = null;
-        imageDeviceAbsoluteFilename = null;
         photoRequest = null;
         response = null;
-    }
-
-    /// response interface for deleteImageRequest
-    public void deviceImageStorageDeleteComplete(){
-        Timber.tag(TAG).d("deviceImageStorageDeleteComplete");
-        // put the new file name into the photoRequest object
-        photoRequest.setDeviceAbsoluteFileName(imageDeviceAbsoluteFilename);
-        photoRequest.setHasDeviceFile(true);
-
-        //NOW do a detectImageLabel on the image
-        Timber.tag(TAG).d("...deviceImageStorageDeleteComplete, detecting image label");
-        detectImageLabel();
     }
 
     //// once old photo is deleted, we can detect label
@@ -89,10 +71,10 @@ public class UseCaseImageAnalysis implements
             ///we are going to do device image analysis
             if (photoRequest.getImageAnalysis().getDoDeviceImageLabelMatching()){
                 Timber.tag(TAG).d("   ...with image matching ");
-                device.getDeviceImageDetection().detectImageLabelRequest(device.getDeviceImageStorage(), imageDeviceAbsoluteFilename, this);
+                device.getDeviceImageDetection().detectImageLabelRequest(device.getDeviceImageStorage(), photoRequest.getDeviceAbsoluteFileName(), this);
             } else {
                 Timber.tag(TAG).d("   ...but no image matching");
-                device.getDeviceImageDetection().matchImageLabelRequest(device.getDeviceImageStorage(), imageDeviceAbsoluteFilename, photoRequest.getImageAnalysis().getImageMatchSettings(), this);
+                device.getDeviceImageDetection().matchImageLabelRequest(device.getDeviceImageStorage(), photoRequest.getDeviceAbsoluteFileName(), photoRequest.getImageAnalysis().getImageMatchSettings(), this);
             }
         } else {
             Timber.tag(TAG).d("NOT going to do device image label detection");
@@ -101,10 +83,10 @@ public class UseCaseImageAnalysis implements
                 Timber.tag(TAG).d("we are going to do cloud image label detection");
                 if (photoRequest.getImageAnalysis().getDoCloudImageLabelMatching()){
                     Timber.tag(TAG).d("   ...with image matching");
-                    device.getCloudImageDetection().detectImageLabelRequest(device.getDeviceImageStorage(), imageDeviceAbsoluteFilename, this);
+                    device.getCloudImageDetection().detectImageLabelRequest(device.getDeviceImageStorage(), photoRequest.getDeviceAbsoluteFileName(), this);
                 } else {
                     Timber.tag(TAG).d("   ...but no image matching");
-                    device.getCloudImageDetection().matchImageLabelRequest(device.getDeviceImageStorage(), imageDeviceAbsoluteFilename, photoRequest.getImageAnalysis().getImageMatchSettings(),this);
+                    device.getCloudImageDetection().matchImageLabelRequest(device.getDeviceImageStorage(), photoRequest.getDeviceAbsoluteFileName(), photoRequest.getImageAnalysis().getImageMatchSettings(),this);
                 }
             } else {
                 Timber.tag(TAG).d("we are NOT going to do cloud image label detection");
@@ -128,7 +110,7 @@ public class UseCaseImageAnalysis implements
         //// we are doing detection ONLY, but it failed, so let's try cloud if we are allowed
         if (photoRequest.getImageAnalysis().getDoCloudImageLabelDetection()){
             Timber.tag(TAG).d("...trying cloud image label detection");
-            device.getCloudImageDetection().detectImageLabelRequest(device.getDeviceImageStorage(), imageDeviceAbsoluteFilename, this);
+            device.getCloudImageDetection().detectImageLabelRequest(device.getDeviceImageStorage(), photoRequest.getDeviceAbsoluteFileName(), this);
         } else {
             Timber.tag(TAG).d("...not trying cloud image label detection, we're done");
             finishUp();
@@ -150,7 +132,7 @@ public class UseCaseImageAnalysis implements
             Timber.tag(TAG).d("we didn't find matching labels");
             if (photoRequest.getImageAnalysis().getDoCloudImageLabelMatching()){
                 Timber.tag(TAG).d("...trying cloud image label matching");
-                device.getCloudImageDetection().matchImageLabelRequest(device.getDeviceImageStorage(), imageDeviceAbsoluteFilename, photoRequest.getImageAnalysis().getImageMatchSettings(),this);
+                device.getCloudImageDetection().matchImageLabelRequest(device.getDeviceImageStorage(), photoRequest.getDeviceAbsoluteFileName(), photoRequest.getImageAnalysis().getImageMatchSettings(),this);
             } else {
                 Timber.tag(TAG).d("...not truing cloud image label matching, we're done");
                 finishUp();
@@ -166,7 +148,7 @@ public class UseCaseImageAnalysis implements
         ///we had a failure on device match, let's see if we need to try cloud matching
         if (photoRequest.getImageAnalysis().getDoCloudImageLabelMatching()){
             Timber.tag(TAG).d("...trying cloud image label matching");
-            device.getCloudImageDetection().matchImageLabelRequest(device.getDeviceImageStorage(), imageDeviceAbsoluteFilename, photoRequest.getImageAnalysis().getImageMatchSettings(),this);
+            device.getCloudImageDetection().matchImageLabelRequest(device.getDeviceImageStorage(), photoRequest.getDeviceAbsoluteFileName(), photoRequest.getImageAnalysis().getImageMatchSettings(),this);
         } else {
             //we're done
             Timber.tag(TAG).d("...not trying cloud image label matching, we're done");
@@ -200,16 +182,23 @@ public class UseCaseImageAnalysis implements
         finishUp();
     }
 
+    /// do nothing
+    private void doNothing(){
+        Timber.tag(TAG).d("doNothing");
+        response.useCaseImageAnalysisComplete(photoRequest);
+        close();
+    }
+
     private void finishUp(){
         Timber.tag(TAG).d("finishUp");
         //we're done with all our branching logic for device & cloud image detection & matching, now check to see if we need to do text detection
         //TODO do text detection
-        device.getCloudActiveBatch().updatePhotoRequestDeviceAbsoluteFileNameRequest(device.getCloudAuth().getDriver(), photoRequest, imageDeviceAbsoluteFilename, true, this);
+        device.getCloudActiveBatch().updatePhotoRequestAnalyzePhotoResultsRequest(device.getCloudAuth().getDriver(), photoRequest, this);
     }
 
-    /// response interface for updating photoRequest with file name for device image, and with results of label detection
-    public void cloudActiveBatchUpdatePhotoRequestDeviceAbsoluteFilenameComplete(){
-        Timber.tag(TAG).d("cloudActiveBatchUpdatePhotoRequestDeviceAbsoluteFilenameComplete");
+    /// response interface for updating photoRequest with results of label detection
+    public void cloudActiveBatchUpdatePhotoRequestAnalyzePhotoResultsComplete(){
+        Timber.tag(TAG).d("cloudActiveBatchUpdatePhotoRequestAnalyzePhotoResultsComplete");
         response.useCaseImageAnalysisComplete(photoRequest);
         close();
     }

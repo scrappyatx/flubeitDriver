@@ -21,6 +21,7 @@ import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdat
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebaseDriverProxyInfo;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebaseImageStorageUploadResult;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebasePaymentAuthorizationUpdate;
+import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebasePhotoRequestAnalyzePhotoResults;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebasePhotoRequestDeviceAbsoluteFilename;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebaseReceiptRequestDeviceAbsoluteFilenameRequest;
 import it.flube.driver.deviceLayer.cloudServices.cloudActiveBatch.batchDataUpdate.FirebaseReceiptRequestOcrResults;
@@ -253,17 +254,22 @@ public class ActiveBatchFirebaseWrapper implements
         new FirebaseDriverProxyInfo().updateDriverProxyInfoRequest(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), driver, batchGuid, driverProxyDialNumber, driverProxyDisplayNumber, response);
     }
 
-    public void updatePhotoRequestDeviceAbsoluteFileNameRequest(Driver driver, PhotoRequest photoRequest, String absoluteFileName, Boolean hasFile,
-                                                                PhotoRequestDeviceAbsoluteFileNameResponse response){
-
+    public void updatePhotoRequestDeviceAbsoluteFileNameRequest(Driver driver, PhotoRequest photoRequest, PhotoRequestDeviceAbsoluteFileNameResponse response){
         Timber.tag(TAG).d("updatePhotoRequestDeviceAbsoluteFileNameRequest START...");
-
         Timber.tag(TAG).d("   ....getNodes");
         getNodes(driver);
-        new FirebasePhotoRequestDeviceAbsoluteFilename().updatePhotoRequestDeviceAbsoluteFilenameRequest(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode),
-                photoRequest, absoluteFileName, hasFile, response);
+        new FirebasePhotoRequestDeviceAbsoluteFilename().updatePhotoRequestDeviceAbsoluteFilenameRequest(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), photoRequest,  response);
 
     }
+
+    public void updatePhotoRequestAnalyzePhotoResultsRequest(Driver driver, PhotoRequest photoRequest, PhotoRequestAnalyzePhotoResultsResponse response){
+        Timber.tag(TAG).d("updatePhotoRequestAnalyzePhotoResultsRequest");
+        Timber.tag(TAG).d("   ....getNodes");
+        getNodes(driver);
+        new FirebasePhotoRequestAnalyzePhotoResults().updatePhotoRequestAnalyzePhotoRequest(FirebaseDatabase.getInstance(driverDb).getReference(batchDataNode), photoRequest,  response);
+    }
+
+
 
     public void updateSignatureRequestDeviceAbsoluteFileNameRequest(Driver driver, SignatureRequest signatureRequest, String absoluteFileName, Boolean hasFile, SignatureRequestDeviceAbsoluteFileNameResponse response){
         Timber.tag(TAG).d("updateSignatureRequestDeviceAbsoluteFileNameRequest START...");

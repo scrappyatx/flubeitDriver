@@ -10,8 +10,11 @@ import it.flube.driver.dataLayer.AndroidDevice;
 import it.flube.driver.modelLayer.entities.driver.Driver;
 import it.flube.driver.modelLayer.interfaces.MobileDeviceInterface;
 import it.flube.driver.useCaseLayer.account.UseCaseGetDriver;
+import it.flube.driver.useCaseLayer.authorizePaymentStep.UseCaseReceiptOcr;
+import it.flube.driver.useCaseLayer.photoStep.UseCaseImageAnalysis;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.photoStep.PhotoRequestUtilities;
 import it.flube.libbatchdata.entities.PhotoRequest;
+import it.flube.libbatchdata.entities.ReceiptRequest;
 import timber.log.Timber;
 
 /**
@@ -19,15 +22,22 @@ import timber.log.Timber;
  * Project : Driver
  */
 public class PhotoDetailController implements
-        PhotoRequestUtilities.GetPhotoDetailResponse {
+        PhotoRequestUtilities.GetPhotoDetailResponse,
+        UseCaseImageAnalysis.Response {
 
     private final String TAG = "PhotoDetailController";
 
     private GetDriverAndPhotoDetailResponse response;
-
+    private AnalyzePhotoResponse analyzePhotoResponse;
 
     public PhotoDetailController() {
         Timber.tag(TAG).d("created");
+    }
+
+    public void analyzePhotoRequest(PhotoRequest photoRequest, AnalyzePhotoResponse analyzePhotoResponse){
+        Timber.tag(TAG).d("analyzePhotoRequest");
+        this.analyzePhotoResponse = analyzePhotoResponse;
+        AndroidDevice.getInstance().getUseCaseEngine().getUseCaseExecutor().execute(new UseCaseImageAnalysis(AndroidDevice.getInstance(), photoRequest, this));
     }
 
     public void getDriverAndPhotoDetailRequest(AppCompatActivity activity, GetDriverAndPhotoDetailResponse response){
@@ -38,6 +48,12 @@ public class PhotoDetailController implements
         //first get the data that was used to launch the activity
         new PhotoRequestUtilities().getPhotoRequest(activity, AndroidDevice.getInstance(), this);
 
+    }
+
+    /// response interface for void useCaseImageAnalysisComplete(PhotoRequest photoRequest);
+    public void useCaseImageAnalysisComplete(PhotoRequest photoRequest){
+        Timber.tag(TAG).d("useCaseImageAnalysisComplete");
+        analyzePhotoResponse.analyzePhotoComplete(photoRequest);
     }
 
 
@@ -70,6 +86,7 @@ public class PhotoDetailController implements
     public void close() {
         Timber.tag(TAG).d("close");
         response = null;
+        analyzePhotoResponse = null;
     }
 
 
@@ -81,6 +98,10 @@ public class PhotoDetailController implements
         void gotNoDriver();
 
         void intentKeysNotFound();
+    }
+
+    public interface AnalyzePhotoResponse{
+        void analyzePhotoComplete(PhotoRequest photoRequest);
     }
 
 }

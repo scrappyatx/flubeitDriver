@@ -14,10 +14,13 @@ import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 
+import faranjit.currency.edittext.CurrencyEditText;
 import it.flube.driver.R;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.transactionIdDetail.TransactionIdDetailLayoutComponents;
 import it.flube.libbatchdata.entities.orderStep.ServiceOrderAuthorizePaymentStep;
 import timber.log.Timber;
+
+import static android.text.InputType.TYPE_CLASS_NUMBER;
 
 /**
  * Created on 3/18/2019
@@ -41,7 +44,7 @@ public class TransactionTotalDetailLayoutComponents implements
 
     private TextView manualTitle;
     private Button manualEntryDoneButton;
-    private EditText manualEntryText;
+    private CurrencyEditText manualEntryText;
     private LottieAnimationView animation;
 
     private ServiceOrderAuthorizePaymentStep orderStep;
@@ -71,7 +74,8 @@ public class TransactionTotalDetailLayoutComponents implements
         manualEntryDoneButton.setTag(MANUAL_ENTRY_DONE_BUTTON_TAG);
         manualEntryDoneButton.setOnClickListener(this);
 
-        manualEntryText = (EditText) activity.findViewById(R.id.transaction_total_manual_entry_text);
+        manualEntryText = (CurrencyEditText) activity.findViewById(R.id.transaction_total_manual_entry_text);
+        manualEntryText.setInputType(TYPE_CLASS_NUMBER);
         manualEntryText.addTextChangedListener(this);
 
         setInvisible();

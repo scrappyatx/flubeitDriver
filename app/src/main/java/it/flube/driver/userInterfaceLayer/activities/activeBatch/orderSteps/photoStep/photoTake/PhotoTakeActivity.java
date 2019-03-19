@@ -24,7 +24,8 @@ import timber.log.Timber;
 
 public class PhotoTakeActivity extends AppCompatActivity implements
         PhotoRequestUtilities.GetPhotoDetailResponse,
-        PhotoTakeLayoutComponents.CaptureResponse {
+        PhotoTakeLayoutComponents.CaptureResponse,
+        PhotoTakeController.UpdatePhotoRequestWithImageDeviceFilenameResponse {
 
     private static final String TAG = "PhotoTakeActivity";
 
@@ -133,21 +134,17 @@ public class PhotoTakeActivity extends AppCompatActivity implements
     }
 
     //// interface for PhotoTakeLayoutComponents.CaptureResponse
-
-
-    public void captureSuccess(PhotoRequest photoRequest){
-        Timber.tag(TAG).d("captureSuccess (%s)", activityGuid);
-        ActivityNavigator.getInstance().gotoActivityPhotoDetail(this, photoRequest.getBatchGuid(), photoRequest.getStepGuid(), photoRequest.getGuid());
+    public void takePhotoComplete(String imageDeviceAbsoluteFileName, PhotoRequest photoRequest){
+        Timber.tag(TAG).d("takePhotoComplete (%s)", activityGuid);
+        Timber.tag(TAG).d("   imageDeviceAbsoluteFileName -> %s",imageDeviceAbsoluteFileName);
+        controller.updatePhotoRequestWithImageDeviceFilename(imageDeviceAbsoluteFileName, photoRequest, this);
     }
 
-    public void captureFailure(PhotoRequest photoRequest){
-        Timber.tag(TAG).d("captureFailure (%s)", activityGuid);
-        Timber.tag(TAG).d("batchGuid -> " + photoRequest.getBatchGuid());
-        Timber.tag(TAG).d("stepGuid  -> " + photoRequest.getStepGuid());
-        Timber.tag(TAG).d("Guid      -> " + photoRequest.getGuid());
-
+    /// interface for updating photo request with image device filename();
+    public void updatePhotoRequestWithImageDeviceFilenameComplete(PhotoRequest photoRequest){
+        Timber.tag(TAG).d("updatePhotoRequestWithImageDeviceFilenameComplete (%s)", activityGuid);
+        Timber.tag(TAG).d("");
         ActivityNavigator.getInstance().gotoActivityPhotoDetail(this, photoRequest.getBatchGuid(), photoRequest.getStepGuid(), photoRequest.getGuid());
     }
-
 
 }

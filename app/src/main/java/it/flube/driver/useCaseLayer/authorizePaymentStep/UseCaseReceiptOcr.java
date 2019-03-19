@@ -26,7 +26,6 @@ public class UseCaseReceiptOcr implements
     private final static String TAG = "UseCaseReceiptOcr";
 
     private MobileDeviceInterface device;
-    private String imageDeviceAbsoluteFilename;
     private UseCaseReceiptOcr.Response response;
 
     private ReceiptRequest receiptRequest;
@@ -40,7 +39,6 @@ public class UseCaseReceiptOcr implements
 
     private void close(){
         device = null;
-        imageDeviceAbsoluteFilename=null;
         receiptRequest = null;
         response = null;
     }
@@ -66,12 +64,12 @@ public class UseCaseReceiptOcr implements
 
         if (receiptRequest.getReceiptAnalysis().getDoDeviceOcrRecognition()){
             Timber.tag(TAG).d("...doing device text detection");
-            device.getDeviceTextDetection().detectReceiptOcrRequest(device.getDeviceImageStorage(), imageDeviceAbsoluteFilename, receiptRequest.getReceiptAnalysis().getReceiptOcrSettings(), this);
+            device.getDeviceTextDetection().detectReceiptOcrRequest(device.getDeviceImageStorage(), receiptRequest.getDeviceAbsoluteFileName(), receiptRequest.getReceiptAnalysis().getReceiptOcrSettings(), this);
         } else {
             Timber.tag(TAG).d("...not doing device text detection, check to see if we need to do cloud text detection");
             if (receiptRequest.getReceiptAnalysis().getDoCloudOcrRecognition()){
                 Timber.tag(TAG).d("...doing cloud text detection");
-                device.getCloudTextDetection().detectReceiptOcrRequest(device.getDeviceImageStorage(), imageDeviceAbsoluteFilename, receiptRequest.getReceiptAnalysis().getReceiptOcrSettings(), this);
+                device.getCloudTextDetection().detectReceiptOcrRequest(device.getDeviceImageStorage(), receiptRequest.getDeviceAbsoluteFileName(), receiptRequest.getReceiptAnalysis().getReceiptOcrSettings(), this);
             } else {
                 Timber.tag(TAG).d("...not doing cloud text detection, do nothing");
                 doNothing();
@@ -94,7 +92,7 @@ public class UseCaseReceiptOcr implements
             Timber.tag(TAG).d("...did not find all expected fields, check to see if we need cloud text detection");
             if (receiptRequest.getReceiptAnalysis().getDoCloudOcrRecognition()){
                 Timber.tag(TAG).d("   ...doing cloud text recognition");
-                device.getCloudTextDetection().detectReceiptOcrRequest(device.getDeviceImageStorage(), imageDeviceAbsoluteFilename, receiptRequest.getReceiptAnalysis().getReceiptOcrSettings(), this);
+                device.getCloudTextDetection().detectReceiptOcrRequest(device.getDeviceImageStorage(), receiptRequest.getDeviceAbsoluteFileName(), receiptRequest.getReceiptAnalysis().getReceiptOcrSettings(), this);
             } else {
                 Timber.tag(TAG).d("   ...not doing cloud text recognition");
                 finishUp();
@@ -110,7 +108,7 @@ public class UseCaseReceiptOcr implements
         //check to see if we need to do cloud text ocr;
         if (receiptRequest.getReceiptAnalysis().getDoCloudOcrRecognition()){
             Timber.tag(TAG).d("   ...doing cloud text recognition");
-            device.getCloudTextDetection().detectReceiptOcrRequest(device.getDeviceImageStorage(), imageDeviceAbsoluteFilename, receiptRequest.getReceiptAnalysis().getReceiptOcrSettings(), this);
+            device.getCloudTextDetection().detectReceiptOcrRequest(device.getDeviceImageStorage(), receiptRequest.getDeviceAbsoluteFileName(), receiptRequest.getReceiptAnalysis().getReceiptOcrSettings(), this);
         } else {
             Timber.tag(TAG).d("   ...not doing cloud text recognition");
             finishUp();

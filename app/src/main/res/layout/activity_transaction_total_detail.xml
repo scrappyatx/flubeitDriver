@@ -115,9 +115,14 @@
         android:layout_marginBottom="4dp"/>
 
 
-    <EditText
+    <faranjit.currency.edittext.CurrencyEditText
         android:id="@+id/transaction_total_manual_entry_text"
-        android:inputType="text"
+
+        android:inputType="numberDecimal"
+        app:groupDivider=","
+        app:monetaryDivider="."
+        app:locale="en_US"
+        app:showSymbol="true"
 
         android:importantForAutofill="no"
         tools:ignore="Autofill"

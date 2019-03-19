@@ -32,6 +32,7 @@ public class ReceiptDetailLayoutComponents implements
     private ImageView receiptImage;
     private ReceiptDetailButtonLayoutComponents stepComplete;
 
+    private String analyzeImageBannerText;
     private ReceiptRequest receiptRequest;
     private Response response;
 
@@ -42,6 +43,7 @@ public class ReceiptDetailLayoutComponents implements
         receiptImage = (ImageView) activity.findViewById(R.id.image_receipt);
 
         stepComplete = new ReceiptDetailButtonLayoutComponents(activity, this);
+        analyzeImageBannerText = activity.getResources().getString(R.string.receipt_detail_keep_photo_button_banner);
 
         this.response = response;
         Timber.tag(TAG).d("created");
@@ -99,6 +101,7 @@ public class ReceiptDetailLayoutComponents implements
         stepComplete.close();
         response = null;
         receiptRequest = null;
+        analyzeImageBannerText = null;
     }
 
     public void showWaitingAnimation(){
@@ -110,11 +113,13 @@ public class ReceiptDetailLayoutComponents implements
     /// response interface StepDetailCompleteButtonComponents
     public void receiptDetailRetakeButtonClicked(){
         Timber.tag(TAG).d("receiptDetailRetakeButtonClicked");
+        stepComplete.showWaitingAnimationWithNoBanner();
         response.takePhotoButtonClicked();
     }
 
     public void receiptDetailKeepButtonClicked(){
         Timber.tag(TAG).d("receiptDetailKeepButtonClicked");
+        stepComplete.showWaitingAnimationAndBanner(analyzeImageBannerText);
         response.keepPhotoButtonClicked(receiptRequest);
     }
 

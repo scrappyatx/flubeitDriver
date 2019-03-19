@@ -125,10 +125,16 @@ public interface CloudActiveBatchInterface {
     }
 
     //// update photo request
-    void updatePhotoRequestDeviceAbsoluteFileNameRequest(Driver driver, PhotoRequest photoRequest, String absoluteFileName, Boolean hasFile, PhotoRequestDeviceAbsoluteFileNameResponse response);
+    void updatePhotoRequestDeviceAbsoluteFileNameRequest(Driver driver, PhotoRequest photoRequest, PhotoRequestDeviceAbsoluteFileNameResponse response);
 
     interface PhotoRequestDeviceAbsoluteFileNameResponse {
         void cloudActiveBatchUpdatePhotoRequestDeviceAbsoluteFilenameComplete();
+    }
+
+    void updatePhotoRequestAnalyzePhotoResultsRequest(Driver driver, PhotoRequest photoRequest, PhotoRequestAnalyzePhotoResultsResponse response);
+
+    interface PhotoRequestAnalyzePhotoResultsResponse {
+        void cloudActiveBatchUpdatePhotoRequestAnalyzePhotoResultsComplete();
     }
 
 

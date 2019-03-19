@@ -72,7 +72,7 @@
         app:layout_constraintBottom_toTopOf="@+id/receipt_detail_complete_animation"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/receipt_detail_complete_animation"

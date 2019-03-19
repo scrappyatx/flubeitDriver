@@ -7,6 +7,7 @@ package it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.pho
 import android.support.v7.app.AppCompatActivity;
 
 import it.flube.driver.R;
+import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.authorizePaymentStep.receiptDetail.ReceiptDetailButtonLayoutComponents;
 import it.flube.driver.userInterfaceLayer.activities.activeBatch.orderSteps.stepLayoutComponents.StepDetailCompleteButtonComponents;
 import it.flube.libbatchdata.entities.PhotoRequest;
 import timber.log.Timber;
@@ -16,18 +17,21 @@ import timber.log.Timber;
  * Project : Driver
  */
 public class PhotoDetailLayoutComponents implements
-    StepDetailCompleteButtonComponents.Response {
+        ReceiptDetailButtonLayoutComponents.Response {
     private static final String TAG = "PhotoDetailLayoutComponents";
 
     private PhotoRequestDetailLayoutComponents requestDetail;
-    private StepDetailCompleteButtonComponents stepComplete;
+    private ReceiptDetailButtonLayoutComponents stepComplete;
+    private String analyzingImageBannerText;
     private Response response;
 
     public PhotoDetailLayoutComponents(AppCompatActivity activity, Response response) {
         this.response = response;
 
         requestDetail = new PhotoRequestDetailLayoutComponents(activity);
-        stepComplete = new StepDetailCompleteButtonComponents(activity, activity.getResources().getString(R.string.photo_detail_step_complete_button_caption), this);
+        stepComplete = new ReceiptDetailButtonLayoutComponents(activity,  this);
+
+        analyzingImageBannerText = activity.getResources().getString(R.string.photo_detail_keep_photo_button_banner);
 
         setInvisible();
         Timber.tag(TAG).d("created");
@@ -70,16 +74,27 @@ public class PhotoDetailLayoutComponents implements
     public void close() {
         requestDetail.close();
         stepComplete.close();
+        analyzingImageBannerText = null;
         Timber.tag(TAG).d("close");
     }
 
-    ///step detail complete interface
-    public void stepDetailCompleteButtonClicked(){
-        Timber.tag(TAG).d("stepDetailCompleteButtonClicked");
+
+    /// response interface StepDetailCompleteButtonComponents
+    public void receiptDetailRetakeButtonClicked(){
+        Timber.tag(TAG).d("receiptDetailRetakeButtonClicked");
+        stepComplete.showWaitingAnimationWithNoBanner();
         response.takePhotoButtonClicked(requestDetail.getPhotoRequest().getBatchGuid(), requestDetail.getPhotoRequest().getStepGuid(), requestDetail.getPhotoRequest().getGuid());
+    }
+
+    public void receiptDetailKeepButtonClicked(){
+        Timber.tag(TAG).d("receiptDetailKeepButtonClicked");
+        stepComplete.showWaitingAnimationAndBanner(analyzingImageBannerText);
+        response.keepPhotoButtonClicked(requestDetail.getPhotoRequest());
     }
 
     public interface Response {
         void takePhotoButtonClicked(String batchGuid, String stepGuid, String photoRequestGuid);
+
+        void keepPhotoButtonClicked(PhotoRequest photoRequest);
     }
 }

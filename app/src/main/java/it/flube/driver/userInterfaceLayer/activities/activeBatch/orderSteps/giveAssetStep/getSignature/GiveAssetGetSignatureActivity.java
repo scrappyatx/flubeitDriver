@@ -29,7 +29,7 @@ public class GiveAssetGetSignatureActivity extends AppCompatActivity implements
         GiveAssetGetSignatureController.GetDriverAndActiveBatchStepResponse,
         GiveAssetGetSignatureController.UpdateSignatureRequestWithImageResponse {
 
-    private static final String TAG="ReceiveAssetGetSignatureActivity";
+    private static final String TAG="GiveAssetGetSignatureActivity";
 
     private String activityGuid;
 

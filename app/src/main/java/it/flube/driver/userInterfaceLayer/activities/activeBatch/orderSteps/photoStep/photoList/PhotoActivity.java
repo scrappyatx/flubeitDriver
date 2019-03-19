@@ -101,7 +101,13 @@ public class PhotoActivity extends AppCompatActivity implements
     //// photo list interface
     public void photoRequestSelected(PhotoRequest photoRequest){
         Timber.tag(TAG).d("photoRequestSelected (%s) -> " + photoRequest.getGuid(), activityGuid);
-        ActivityNavigator.getInstance().gotoActivityPhotoDetail(this, photoRequest.getBatchGuid(), photoRequest.getStepGuid(), photoRequest.getGuid());
+        if (photoRequest.getHasDeviceFile()) {
+            Timber.tag(TAG).d("...has device file, going to photo detail");
+            ActivityNavigator.getInstance().gotoActivityPhotoDetail(this, photoRequest.getBatchGuid(), photoRequest.getStepGuid(), photoRequest.getGuid());
+        } else {
+            Timber.tag(TAG).d("...no device file, going straight to take a photo");
+            ActivityNavigator.getInstance().gotoActivityPhotoTake(this,photoRequest.getBatchGuid(), photoRequest.getStepGuid(), photoRequest.getGuid());
+        }
     }
 
     ///

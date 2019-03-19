@@ -5,6 +5,9 @@
 package it.flube.libbatchdata.demoBatchCreation;
 
 import it.flube.libbatchdata.builders.AssetTransferBuilder;
+import it.flube.libbatchdata.builders.ReceiptAnalysisBuilder;
+import it.flube.libbatchdata.builders.ReceiptRequestBuilder;
+import it.flube.libbatchdata.interfaces.ServiceProviders;
 import it.flube.libbatchdata.utilities.BuilderUtilities;
 import it.flube.libbatchdata.builders.DestinationBuilder;
 import it.flube.libbatchdata.builders.PaymentAuthorizationBuilder;
@@ -32,6 +35,7 @@ import it.flube.libbatchdata.entities.asset.Vehicle;
 import it.flube.libbatchdata.entities.batch.BatchDetail;
 import it.flube.libbatchdata.entities.batch.BatchHolder;
 import it.flube.libbatchdata.interfaces.DemoBatchInterface;
+import it.flube.libbatchdata.utilities.ReceiptOcrSettingsUtilities;
 
 import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT_TARGET_ENVIRONMENT;
 import static it.flube.libbatchdata.interfaces.AssetTransferInterface.TransferType.TRANSFER_FROM_CUSTOMER;
@@ -210,10 +214,19 @@ public class DemoBatchOilChange implements DemoBatchInterface {
                         .addStep(new AuthorizePaymentStepBuilder.Builder()
                                 .title("Pay for service")
                                 .description("Pay for service")
-                                //.startTime(BuilderUtilities.getNowDate())
-                                //.finishTime(BuilderUtilities.getNowDate(),10)
                                 .milestoneWhenFinished("Driver has paid for oil change")
-                                .requireReceipt(true)
+
+                                .requireServiceProviderTransactionTotal(true)
+                                .requireServiceProviderTransactionId(true)
+
+                                .receiptRequest(new ReceiptRequestBuilder.Builder()
+                                        .receiptAnalysis(new ReceiptAnalysisBuilder.Builder()
+                                                .doDeviceOcrRecognition(true)
+                                                .doCloudOcrRecognition(false)
+                                                .receiptOcrSettings(ReceiptOcrSettingsUtilities.getReceiptOcrSettingsForProfile(ServiceProviders.ReceiptOcrSettingsProfile.SERVICE_ONE))
+                                                .build())
+                                        .build())
+
                                 .paymentAuthorization(new PaymentAuthorizationBuilder.Builder()
                                         .maxPaymentAmountCents(15000)
                                         .build())

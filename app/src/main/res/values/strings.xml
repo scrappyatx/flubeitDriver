@@ -356,6 +356,7 @@
     <!-- Strings related to photo detail activity layout -->
     <string name="photo_detail_activity_title">Photo Detail</string>
     <string name="photo_detail_step_complete_button_caption">Take a Photo</string>
+    <string name="photo_detail_keep_photo_button_banner">Analyzing Image...</string>
 
     <!-- Strings related to photo take activity layout -->
     <string name="photo_take_button_caption">{fa-camera}</string>
@@ -431,6 +432,7 @@
     <string name="receipt_detail_receipt_request_title">Receipt Photo</string>
     <string name="receipt_detail_keep_button_caption">Use This Photo</string>
     <string name="receipt_detail_discard_button_caption">Take Another Photo</string>
+    <string name="receipt_detail_keep_photo_button_banner">Analyzing Image...</string>
 
     <!-- Strings related to transaction id detail activity layout -->
     <string name="transaction_id_detail_activity_title">Transaction Id</string>

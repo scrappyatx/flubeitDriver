@@ -64,6 +64,7 @@ public class ReceiptDetailButtonLayoutComponents implements
 
     public void showWaitingAnimationAndBanner(String bannerText){
         Timber.tag(TAG).d("showWaitingAnimationAndBanner");
+        Timber.tag(TAG).d("...bannerText -> %s", bannerText);
         keepButton.setVisibility(View.GONE);
         retakeButton.setVisibility(View.GONE);
 
@@ -84,7 +85,6 @@ public class ReceiptDetailButtonLayoutComponents implements
         animation.setVisibility(View.VISIBLE);
         animation.setProgress(0);
         animation.playAnimation();
-        Timber.tag(TAG).d("...showWaitingAnimationAndBanner");
     }
 
     public void setVisible(){

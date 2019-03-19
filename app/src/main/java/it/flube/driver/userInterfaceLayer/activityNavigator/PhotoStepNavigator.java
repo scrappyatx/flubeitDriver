@@ -49,6 +49,8 @@ public class PhotoStepNavigator {
         Timber.tag(TAG).d("starting PhotoDetailActivity, photoRequestGuid -> " + photoRequestGuid);
     }
 
+
+
     public static void gotoActivityPhotoTake(Context context, String batchGuid, String orderStepGuid, String photoRequestGuid){
         Intent i = new Intent(context, PhotoTakeActivity.class);
         i.putExtra(BATCH_GUID_KEY, batchGuid);
