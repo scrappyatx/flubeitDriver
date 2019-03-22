@@ -24,6 +24,7 @@ public class FirebaseCloudTextDetectionWrapper implements
     public void detectImageTextRequest(DeviceImageStorageInterface deviceImageStorage, String imageAbsoluteFilename, CloudDetectImageTextResponse response){
         Timber.tag(TAG).d("detectImageTextRequest");
         new FirebaseCloudTextStart().textDetectionStart(deviceImageStorage, imageAbsoluteFilename, response);
+
     }
 
     public void detectReceiptOcrRequest(DeviceImageStorageInterface deviceImageStorage, String imageAbsoluteFilename, ReceiptOcrSettings receiptOcrSettings, CloudDetectReceiptOcrResponse response){

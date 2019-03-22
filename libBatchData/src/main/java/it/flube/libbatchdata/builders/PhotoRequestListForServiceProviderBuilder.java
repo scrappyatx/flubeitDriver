@@ -15,6 +15,7 @@ import it.flube.libbatchdata.entities.PhotoRequest;
  */
 public class PhotoRequestListForServiceProviderBuilder {
     //// Photo titles and descriptions
+    private static final Boolean SHARE_WITH_CUSTOMER = true;
     private static final String SERVICE_PROVIDER_TITLE = "Service Provider";
     private static final String SERVICE_PROVIDER_DESCRIPTION = "Take this photo facing the service provider building";
 
@@ -63,6 +64,7 @@ public class PhotoRequestListForServiceProviderBuilder {
                     .description(SERVICE_PROVIDER_DESCRIPTION)
                     .sequence(this.photoList.size()+1)
                     .photoHintUrl(null)
+                    .shareWithCustomer(SHARE_WITH_CUSTOMER)
                     .build();
             this.photoList.put(photoRequest.getGuid(), photoRequest);
         }

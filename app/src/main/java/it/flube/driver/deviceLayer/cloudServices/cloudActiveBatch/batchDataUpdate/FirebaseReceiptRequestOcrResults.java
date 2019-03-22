@@ -34,7 +34,10 @@ public class FirebaseReceiptRequestOcrResults implements OnCompleteListener<Void
     private CloudActiveBatchInterface.ReceiptRequestOcrResultsResponse response;
 
     public void updateReceiptRequestOcrResultsRequest(DatabaseReference batchDataNode, ReceiptRequest receiptRequest, CloudActiveBatchInterface.ReceiptRequestOcrResultsResponse response){
+        Timber.tag(TAG).d("updateReceiptRequestOcrResultsRequest");
         Timber.tag(TAG).d("batchDataNode = " + batchDataNode.toString());
+        //Timber.tag(TAG).d("deviceOcrResults  = " + receiptRequest.getReceiptAnalysis().getDeviceOcrResults().getOcrText());
+        //Timber.tag(TAG).d("cloudOcrResults transaction id  = " + receiptRequest.getReceiptAnalysis().getCloudOcrResults().getTransactionId());
         this.response = response;
 
         HashMap<String, Object> data = new HashMap<String, Object>();

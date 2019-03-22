@@ -151,7 +151,7 @@ public class TransactionIdDetailLayoutComponents implements
     }
 
     private Boolean haveCloudOcrTransactionId(ServiceOrderAuthorizePaymentStep orderStep){
-        Timber.tag(TAG).d("haveDeviceOcrTransactionId");
+        Timber.tag(TAG).d("haveCloudOcrTransactionId");
         if (orderStep.getReceiptRequest() != null){
             // we have a receipt request
             Timber.tag(TAG).d("...we have a receipt request");
@@ -205,7 +205,7 @@ public class TransactionIdDetailLayoutComponents implements
         if (cloudOcrButton.getText().length() != 0){
             Timber.tag(TAG).d("...cloud ocr -> %s", cloudOcrButton.getText());
             cloudOcrButton.setVisibility(View.VISIBLE);
-            cloudOcrButton.setVisibility(View.VISIBLE);
+            detectedTitle.setVisibility(View.VISIBLE);
         } else {
             Timber.tag(TAG).d("...cloud ocr is zero length");
             cloudOcrButton.setVisibility(View.INVISIBLE);

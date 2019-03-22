@@ -46,7 +46,8 @@ public class FirebaseCloudReceiptOcr implements
     public void deviceImageStorageGetSuccess(Bitmap bitmap){
         Timber.tag(TAG).d("deviceImageStorageGetSuccess");
         ///now we can do cloud image label detection on this bitmap
-        new FirebaseCloudTextDetection().detectTextRequest(bitmap, this);
+        //new FirebaseCloudTextDetection().detectTextRequest(bitmap, this);
+        new FirebaseCloudDocumentDetection().detectTextRequest(bitmap, this);
     }
 
     public void deviceImageStorageGetFailure(){

@@ -34,7 +34,8 @@ public class FirebaseCloudTextStart implements
     public void deviceImageStorageGetSuccess(Bitmap bitmap){
         Timber.tag(TAG).d("deviceImageStorageGetSuccess");
         ///now we can do cloud image label detection on this bitmap
-        new FirebaseCloudTextDetection().detectTextRequest(bitmap, response);
+        //new FirebaseCloudTextDetection().detectTextRequest(bitmap, response);
+        new FirebaseCloudDocumentDetection().detectTextRequest(bitmap, response);
     }
 
     public void deviceImageStorageGetFailure(){

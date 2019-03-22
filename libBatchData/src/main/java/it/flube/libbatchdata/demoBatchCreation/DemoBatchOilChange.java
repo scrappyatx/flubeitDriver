@@ -192,7 +192,7 @@ public class DemoBatchOilChange implements DemoBatchInterface {
                         /// STEP 6 -> TAKE PHOTOS OF SERVICE PROVIDER LOCATION
                         .addStep(new PhotoStepBuilder.Builder()
                                 .title("Take photo")
-                                .description("Take photo of service provider")
+                                .description("Take photo of service provider building")
                                 .milestoneWhenFinished("Photo Taken")
                                 .addServiceProviderPhotoRequest(new PhotoRequestListForServiceProviderBuilder.Builder(targetEnvironment)
                                         .addFullSetPhotos()
@@ -221,8 +221,8 @@ public class DemoBatchOilChange implements DemoBatchInterface {
 
                                 .receiptRequest(new ReceiptRequestBuilder.Builder()
                                         .receiptAnalysis(new ReceiptAnalysisBuilder.Builder()
-                                                .doDeviceOcrRecognition(true)
-                                                .doCloudOcrRecognition(false)
+                                                .doDeviceOcrRecognition(false)
+                                                .doCloudOcrRecognition(true)
                                                 .receiptOcrSettings(ReceiptOcrSettingsUtilities.getReceiptOcrSettingsForProfile(ServiceProviders.ReceiptOcrSettingsProfile.SERVICE_ONE))
                                                 .build())
                                         .build())

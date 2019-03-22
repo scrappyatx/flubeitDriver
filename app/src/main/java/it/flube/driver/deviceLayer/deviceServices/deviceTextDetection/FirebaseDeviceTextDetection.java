@@ -41,19 +41,11 @@ public class FirebaseDeviceTextDetection implements
         Timber.tag(TAG).d("detectImageRequest START...");
         this.response = response;
 
-        Timber.tag(TAG).d("   ...creating vision image from bitmap");
-        //create a vision image from the bitmap
-        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
-
-        //recycle bitmap
-        //bitmap.recycle();
-
         Timber.tag(TAG).d("   ...getting detector with desired options");
-        FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
-                .getOnDeviceTextRecognizer();
+        FirebaseVision.getInstance().getOnDeviceTextRecognizer().processImage(FirebaseVisionImage.fromBitmap(bitmap)).addOnSuccessListener(this).addOnFailureListener(this);
 
         Timber.tag(TAG).d("   ...detecting the image");
-        detector.processImage(image).addOnSuccessListener(this).addOnFailureListener(this);
+        //detector.processImage(FirebaseVisionImage.fromBitmap(bitmap)).addOnSuccessListener(this).addOnFailureListener(this);
     }
 
     public void onSuccess(FirebaseVisionText firebaseVisionText){
@@ -74,11 +66,11 @@ public class FirebaseDeviceTextDetection implements
             TextDetectBlock resultBlock = new TextDetectBlock();
 
             //set the confidence
-            try {
+            if (block.getConfidence() != null){
+                Timber.tag(TAG).d("      confidence -> %s", block.getConfidence().toString());
                 resultBlock.setConfidence(block.getConfidence());
-            } catch (Exception e){
-                Timber.tag(TAG).w("couldn't get block confidence");
-                Timber.tag(TAG).e(e);
+            } else {
+                Timber.tag(TAG).d("      confidence is null");
                 resultBlock.setConfidence(0f);
             }
 
@@ -95,11 +87,11 @@ public class FirebaseDeviceTextDetection implements
                 Timber.tag(TAG).d("      **** LINE START ****");
                 TextDetectLine resultLine = new TextDetectLine();
 
-                try {
+                if (line.getConfidence() != null){
+                    Timber.tag(TAG).d("        confidence -> %s", line.getConfidence().toString());
                     resultLine.setConfidence(line.getConfidence());
-                } catch (Exception e){
-                    Timber.tag(TAG).w("couldn't get line confidence");
-                    Timber.tag(TAG).e(e);
+                } else {
+                    Timber.tag(TAG).d("        confidence is null");
                     resultLine.setConfidence(0f);
                 }
 
@@ -111,12 +103,13 @@ public class FirebaseDeviceTextDetection implements
                            Timber.tag(TAG).d("         **** ELEMENT START ****");
                            TextDetectElement resultElement = new TextDetectElement();
 
-                           try {
+                           if (element.getConfidence() != null){
+                               Timber.tag(TAG).d("            confidence -> %s", element.getConfidence().toString());
                                resultElement.setConfidence(element.getConfidence());
-                           } catch (Exception e){
+
+                           } else {
+                               Timber.tag(TAG).d("            confidence is null");
                                resultElement.setConfidence(0f);
-                               Timber.tag(TAG).w("couldn't get element confidence");
-                               Timber.tag(TAG).e(e);
                            }
 
                            resultElement.setText(element.getText());

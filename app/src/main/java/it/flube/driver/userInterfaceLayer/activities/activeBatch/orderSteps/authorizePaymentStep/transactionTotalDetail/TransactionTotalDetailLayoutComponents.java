@@ -208,7 +208,7 @@ public class TransactionTotalDetailLayoutComponents implements
         if (cloudOcrButton.getText().length() != 0){
             Timber.tag(TAG).d("...cloud ocr -> %s", cloudOcrButton.getText());
             cloudOcrButton.setVisibility(View.VISIBLE);
-            cloudOcrButton.setVisibility(View.VISIBLE);
+            detectedTitle.setVisibility(View.VISIBLE);
         } else {
             Timber.tag(TAG).d("...cloud ocr is zero length");
             cloudOcrButton.setVisibility(View.INVISIBLE);

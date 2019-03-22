@@ -62,7 +62,9 @@ public class UseCaseReceiptOcr implements
         /// 1. first, we do a device text recognition, and see if we get all the required fields
         /// 2. second, if we don't get values for all our expected fields, then we follow up with cloud text recognition
 
-        if (receiptRequest.getReceiptAnalysis().getDoDeviceOcrRecognition()){
+        //if (receiptRequest.getReceiptAnalysis().getDoDeviceOcrRecognition()){
+        //TODO for now, forcing "doDeviceOcrRecognition" to be ignored, only lookign at cloud ocr recognition
+        if (false){
             Timber.tag(TAG).d("...doing device text detection");
             device.getDeviceTextDetection().detectReceiptOcrRequest(device.getDeviceImageStorage(), receiptRequest.getDeviceAbsoluteFileName(), receiptRequest.getReceiptAnalysis().getReceiptOcrSettings(), this);
         } else {
@@ -117,13 +119,14 @@ public class UseCaseReceiptOcr implements
 
     /// interface for cloud ocr recognition results
     public void cloudDetectReceiptOcrSuccess(ReceiptOcrResults receiptOcrResults){
-        Timber.tag(TAG).d("deviceDetectReceiptOcrSuccess");
+        Timber.tag(TAG).d("cloudDetectReceiptOcrSuccess");
+        Timber.tag(TAG).d("    transaction id -> " + receiptOcrResults.getTransactionId());
         receiptRequest.getReceiptAnalysis().setCloudOcrResults(receiptOcrResults);
         finishUp();
     }
 
     public void cloudDetectReceiptOcrFailure(){
-        Timber.tag(TAG).d("deviceDetectReceiptOcrSuccess");
+        Timber.tag(TAG).d("cloudDetectReceiptOcrFailure");
         receiptRequest.getReceiptAnalysis().setCloudOcrResults(null);
         finishUp();
     }

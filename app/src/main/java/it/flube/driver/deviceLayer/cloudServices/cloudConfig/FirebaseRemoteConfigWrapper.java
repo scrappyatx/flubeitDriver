@@ -163,8 +163,10 @@ public class FirebaseRemoteConfigWrapper implements
             try {
                 throw task.getException();
             } catch (FirebaseRemoteConfigFetchException e) {
-                Timber.tag(TAG).w("         ...FirebaseRemoteConfigException -> " + e.getMessage());
-                Timber.tag(TAG).e(e);
+                //// this seems to happen when devices are idle for long periods of time
+                //// not going to send to warning channel for now, to stop spurious reporting
+                Timber.tag(TAG).d("         ...FirebaseRemoteConfigException -> " + e.getMessage());
+                Timber.tag(TAG).d(e);
             }
             catch (Exception e) {
                 Timber.tag(TAG).w("         ...FETCH EXCEPTION -> " + e.getMessage());

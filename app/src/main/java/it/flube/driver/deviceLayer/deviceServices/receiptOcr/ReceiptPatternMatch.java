@@ -4,6 +4,7 @@
 
 package it.flube.driver.deviceLayer.deviceServices.receiptOcr;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,6 +22,25 @@ public class ReceiptPatternMatch {
     public ReceiptPatternMatch(String stringToSearch){
         this.stringToSearch = stringToSearch;
         Timber.tag(TAG).d("    stringToSearch -> %s", stringToSearch);
+    }
+
+    public ArrayList<String> matchPatternRequestIgnoreSentinals(String patternMatch){
+        Timber.tag(TAG).d("matchPatternRequest");
+        Timber.tag(TAG).d("    patternMatch   -> %s", patternMatch);
+
+        Matcher matcher = Pattern.compile(patternMatch).matcher(stringToSearch);
+        ArrayList<String> matchList = new ArrayList<String>();
+
+        while (matcher.find()){
+            Timber.tag(TAG).d("***** match found ****");
+            Timber.tag(TAG).d("   startIndex -> %s", matcher.start());
+            Timber.tag(TAG).d("   endIndex   -> %s", matcher.end());
+            Timber.tag(TAG).d("   match      -> %s", matcher.group());
+
+            matchList.add(matcher.group());
+        }
+
+        return matchList;
     }
 
     //// returns matching String if found in search string, returns null if not found

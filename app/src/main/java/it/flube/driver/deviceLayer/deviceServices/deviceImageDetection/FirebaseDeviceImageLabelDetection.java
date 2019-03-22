@@ -69,38 +69,36 @@ public class FirebaseDeviceImageLabelDetection implements
 
             for (FirebaseVisionImageLabel label : labels) {
                 //put this into an ImageLabel object
-                String base64 = "";
-                try {
-                    base64 = Base64.encodeToString(label.getEntityId().getBytes(), Base64.DEFAULT);
-                } catch (Exception e){
-                    Timber.tag(TAG).e(e);
-                    Timber.tag(TAG).w("error trying to base64 encode an entityId -> %s", label.getEntityId());
-                }
-
                 Timber.tag(TAG).d("***** Image Label START ****");
-                Timber.tag(TAG).d("  label -> %s", label.getText());
-                Timber.tag(TAG).d("  entityId -> %s", label.getEntityId());
-                Timber.tag(TAG).d("  entityId (base64) -> %s", base64);
-                Timber.tag(TAG).d("  confidence -> %s", Float.toString(label.getConfidence()));
+                if (label.getEntityId() != null){
 
-                //create an image label, and add to the imageLabel array
-                ImageLabel imageLabel = new ImageLabel();
-                imageLabel.setLabel(label.getText());
-                imageLabel.setEntityId(base64);
-                imageLabel.setConfidence(label.getConfidence());
+                    Timber.tag(TAG).d("  label -> %s", label.getText());
+                    Timber.tag(TAG).d("  entityId -> %s", label.getEntityId());
+                    Timber.tag(TAG).d("  entityId (base64) -> %s", Base64.encodeToString(label.getEntityId().getBytes(), Base64.DEFAULT));
+                    Timber.tag(TAG).d("  confidence -> %s", Float.toString(label.getConfidence()));
 
-                results.getLabelMap().add(imageLabel);
+                    //create an image label, and add to the imageLabel array
+                    ImageLabel imageLabel = new ImageLabel();
+                    imageLabel.setLabel(label.getText());
+                    imageLabel.setEntityId(Base64.encodeToString(label.getEntityId().getBytes(), Base64.DEFAULT));
+                    imageLabel.setConfidence(label.getConfidence());
 
+                    results.getLabelMap().add(imageLabel);
 
-                //store this in the mostLikelyImageLabel object if it has a higher confidence than the one there
-                if (imageLabel.getConfidence() > highestConfidenceFound) {
-                    Timber.tag(TAG).d("  this is the highest confidence label we've found so far");
-                    highestConfidenceFound = imageLabel.getConfidence();
-                    results.setMostLikelyLabel(imageLabel);
+                    //store this in the mostLikelyImageLabel object if it has a higher confidence than the one there
+                    if (imageLabel.getConfidence() > highestConfidenceFound) {
+                        Timber.tag(TAG).d("  this is the highest confidence label we've found so far");
+                        highestConfidenceFound = imageLabel.getConfidence();
+                        results.setMostLikelyLabel(imageLabel);
+                    } else {
+                        Timber.tag(TAG).d("  this isn't the highest confidence label we've found so far");
+                    }
+
                 } else {
-                    Timber.tag(TAG).d("  this isn't the highest confidence label we've found so far");
+                    Timber.tag(TAG).w("  label.getEntityId() is null, nothing to base64 encode");
                 }
                 Timber.tag(TAG).d("***** Image Label END ****");
+
             }
             response.deviceDetectImageLabelSuccess(results);
         } else {

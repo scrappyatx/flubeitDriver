@@ -51,6 +51,8 @@ import static it.flube.libbatchdata.constants.TargetEnvironmentConstants.DEFAULT
 
 public class PhotoRequestListForVehicleBuilder {
     //// Photo titles and descriptions
+    private static final Boolean SHARE_WITH_CUSTOMER = true;
+
     private static final String FRONT_CORNER_DRIVER_TITLE = "Front Corner Driver";
     private static final String FRONT_CORNER_DRIVER_DESCRIPTION = "Take this photo facing the front corner of the vehicle on the driver side";
 
@@ -186,6 +188,7 @@ public class PhotoRequestListForVehicleBuilder {
                             .description(FRONT_CORNER_DRIVER_DESCRIPTION)
                             .sequence(this.photoList.size()+1)
                             .photoHintUrl(frontCornerDriverViewHintUrl)
+                            .shareWithCustomer(SHARE_WITH_CUSTOMER)
                             .build();
             this.photoList.put(photoRequest.getGuid(), photoRequest);
         }
@@ -196,6 +199,7 @@ public class PhotoRequestListForVehicleBuilder {
                     .description(FRONT_CORNER_PASSENGER_DESCRIPTION)
                     .sequence(this.photoList.size()+1)
                     .photoHintUrl(frontCornerPassengerViewHintUrl)
+                    .shareWithCustomer(SHARE_WITH_CUSTOMER)
                     .build();
             this.photoList.put(photoRequest.getGuid(), photoRequest);
         }
@@ -206,6 +210,7 @@ public class PhotoRequestListForVehicleBuilder {
                     .description(FRONT_DESCRIPTION)
                     .sequence(this.photoList.size()+1)
                     .photoHintUrl(frontViewHintUrl)
+                    .shareWithCustomer(SHARE_WITH_CUSTOMER)
                     .build();
             this.photoList.put(photoRequest.getGuid(), photoRequest);
         }
@@ -216,6 +221,7 @@ public class PhotoRequestListForVehicleBuilder {
                     .description(REAR_CORNER_DRIVER_DESCRIPTION)
                     .sequence(this.photoList.size()+1)
                     .photoHintUrl(rearCornerDriverViewHintUrl)
+                    .shareWithCustomer(SHARE_WITH_CUSTOMER)
                     .build();
             this.photoList.put(photoRequest.getGuid(), photoRequest);
         }
@@ -226,6 +232,7 @@ public class PhotoRequestListForVehicleBuilder {
                     .description(REAR_CORNER_PASSENGER_DESCRIPTION)
                     .sequence(this.photoList.size()+1)
                     .photoHintUrl(rearCornerPassengerViewHintUrl)
+                    .shareWithCustomer(SHARE_WITH_CUSTOMER)
                     .build();
             this.photoList.put(photoRequest.getGuid(), photoRequest);
         }
@@ -236,6 +243,7 @@ public class PhotoRequestListForVehicleBuilder {
                     .description(REAR_DESCRIPTION)
                     .sequence(this.photoList.size()+1)
                     .photoHintUrl(readViewHintUrl)
+                    .shareWithCustomer(SHARE_WITH_CUSTOMER)
                     .build();
             this.photoList.put(photoRequest.getGuid(), photoRequest);
         }
@@ -246,6 +254,7 @@ public class PhotoRequestListForVehicleBuilder {
                     .description(SIDE_DRIVER_DESCRIPTION)
                     .sequence(this.photoList.size()+1)
                     .photoHintUrl(sideDriverViewHintUrl)
+                    .shareWithCustomer(SHARE_WITH_CUSTOMER)
                     .build();
             this.photoList.put(photoRequest.getGuid(), photoRequest);
         }
@@ -256,6 +265,7 @@ public class PhotoRequestListForVehicleBuilder {
                     .description(SIDE_PASSENGER_DESCRIPTION)
                     .sequence(this.photoList.size()+1)
                     .photoHintUrl(sidePassengerViewHintUrl)
+                    .shareWithCustomer(SHARE_WITH_CUSTOMER)
                     .build();
             this.photoList.put(photoRequest.getGuid(), photoRequest);
         }

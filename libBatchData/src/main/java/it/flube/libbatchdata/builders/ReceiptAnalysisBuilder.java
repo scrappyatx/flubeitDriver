@@ -14,8 +14,8 @@ import it.flube.libbatchdata.entities.ReceiptValidationSettings;
  * Project : Driver
  */
 public class ReceiptAnalysisBuilder {
-    private static final Boolean DEFAULT_DO_DEVICE_OCR_RECOGNITION = true;
-    private static final Boolean DEFAULT_DO_CLOUD_OCR_RECOGNITION = false;
+    private static final Boolean DEFAULT_DO_DEVICE_OCR_RECOGNITION = false;
+    private static final Boolean DEFAULT_DO_CLOUD_OCR_RECOGNITION = true;
 
     private ReceiptAnalysis receiptAnalysis;
 

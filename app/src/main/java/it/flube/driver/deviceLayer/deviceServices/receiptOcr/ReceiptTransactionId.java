@@ -4,6 +4,8 @@
 
 package it.flube.driver.deviceLayer.deviceServices.receiptOcr;
 
+import java.util.ArrayList;
+
 import it.flube.libbatchdata.entities.ReceiptOcrResults;
 import it.flube.libbatchdata.entities.ReceiptOcrSettings;
 import it.flube.libbatchdata.entities.TextDetectionResults;
@@ -21,11 +23,13 @@ public class ReceiptTransactionId {
 
         if (settings.getHasTransactionId()) {
             Timber.tag(TAG).d("searching for transaction id");
-            String transactionId = matcher.matchPatternRequest(settings.getTransactionIdStartSentinal(), settings.getTransactionIdEndSentinal(), settings.getTransactionIdPattern());
-            if (transactionId != null) {
-                Timber.tag(TAG).d("   transactionId FOUND -> %s", transactionId);
+            ArrayList<String> matchList = matcher.matchPatternRequestIgnoreSentinals(settings.getTransactionIdPattern());
+
+            ///for transaction id, we just use the first match in the list
+            if (matchList.size() > 0) {
+                Timber.tag(TAG).d("   transactionId FOUND -> %s", matchList.get(0));
                 results.setFoundTransactionId(true);
-                results.setTransactionId(transactionId);
+                results.setTransactionId(matchList.get(0));
             } else {
                 Timber.tag(TAG).d("   transactionId NOT FOUND");
                 results.setFoundTransactionId(false);

@@ -43,18 +43,17 @@ public class FirebaseCloudTextDetection implements
 
         Timber.tag(TAG).d("   ...creating vision image from bitmap");
         //create a vision image from the bitmap
-        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
+        //FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
 
         //recycle bitmap
         //bitmap.recycle();
 
         Timber.tag(TAG).d("   ...getting detector with desired options");
-        FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
-                .getCloudTextRecognizer();
+        FirebaseVision.getInstance().getCloudTextRecognizer().processImage(FirebaseVisionImage.fromBitmap(bitmap)).addOnSuccessListener(this).addOnFailureListener(this);
 
 
         Timber.tag(TAG).d("   ...detecting the image");
-        detector.processImage(image).addOnSuccessListener(this).addOnFailureListener(this);
+        //detector.processImage(image).addOnSuccessListener(this).addOnFailureListener(this);
     }
 
     public void onSuccess(FirebaseVisionText firebaseVisionText){
@@ -65,27 +64,32 @@ public class FirebaseCloudTextDetection implements
 
         //create TextDetectionResults object
         TextDetectionResults textDetectionResults = new TextDetectionResults();
+
+        //save the results
+        Timber.tag(TAG).d("   ...detected text -> %s", firebaseVisionText.getText());
         textDetectionResults.setText(firebaseVisionText.getText());
+
         textDetectionResults.setBlocks(new ArrayList<TextDetectBlock>());
 
         Timber.tag(TAG).d("   ...looping through results");
+
+
         for (FirebaseVisionText.TextBlock block: firebaseVisionText.getTextBlocks()) {
-            Timber.tag(TAG).d("   **** BLOCK START ****");
+            //Timber.tag(TAG).d("   **** BLOCK START ****");
             //// https://firebase.google.com/docs/ml-kit/android/recognize-text
             TextDetectBlock resultBlock = new TextDetectBlock();
 
             //set the confidence
-            try {
+            if (block.getConfidence() != null){
+                //Timber.tag(TAG).w("      block confidence -> %s", block.getConfidence());
                 resultBlock.setConfidence(block.getConfidence());
-            } catch (Exception e){
-                Timber.tag(TAG).w("couldn't get block confidence");
-                Timber.tag(TAG).e(e);
+            } else {
+                //Timber.tag(TAG).w("      block confidence is null");
                 resultBlock.setConfidence(0f);
             }
 
             resultBlock.setText(block.getText());
-
-            Timber.tag(TAG).d("      ...text -> " + block.getText());
+            Timber.tag(TAG).d("      ...block text -> " + block.getText());
 
 
 
@@ -93,47 +97,51 @@ public class FirebaseCloudTextDetection implements
             resultBlock.setLines(new ArrayList<TextDetectLine>());
 
             for (FirebaseVisionText.Line line : block.getLines()){
-                Timber.tag(TAG).d("      **** LINE START ****");
+                //Timber.tag(TAG).d("      **** LINE START ****");
                 TextDetectLine resultLine = new TextDetectLine();
 
-                try {
+                //set the confidence
+                if (line.getConfidence() != null){
+                    //Timber.tag(TAG).w("      line confidence -> %s", line.getConfidence());
                     resultLine.setConfidence(line.getConfidence());
-                } catch (Exception e){
-                    Timber.tag(TAG).w("couldn't get line confidence");
-                    Timber.tag(TAG).e(e);
+                } else {
+                    //Timber.tag(TAG).w("      line confidence is null");
                     resultLine.setConfidence(0f);
                 }
 
                 resultLine.setText(line.getText());
+                Timber.tag(TAG).d("         ...line text -> " + line.getText());
 
                 resultLine.setElements(new ArrayList<TextDetectElement>());
 
                 for (FirebaseVisionText.Element element: line.getElements()){
-                    Timber.tag(TAG).d("         **** ELEMENT START ****");
+                    //Timber.tag(TAG).d("         **** ELEMENT START ****");
                     TextDetectElement resultElement = new TextDetectElement();
 
-                    try {
+                    //set the confidence
+                    if (element.getConfidence() != null){
+                        //Timber.tag(TAG).w("      element confidence -> %s", element.getConfidence());
                         resultElement.setConfidence(element.getConfidence());
-                    } catch (Exception e){
+                    } else {
+                        //Timber.tag(TAG).w("      element confidence is null");
                         resultElement.setConfidence(0f);
-                        Timber.tag(TAG).w("couldn't get element confidence");
-                        Timber.tag(TAG).e(e);
                     }
 
                     resultElement.setText(element.getText());
+                    Timber.tag(TAG).d("            ...element text -> " + element.getText());
 
                     //add this element to the result line
                     resultLine.getElements().add(resultElement);
-                    Timber.tag(TAG).d("         **** ELEMENT END ****");
+                    //Timber.tag(TAG).d("         **** ELEMENT END ****");
                 }
 
                 //add this line to the result block
                 resultBlock.getLines().add(resultLine);
-                Timber.tag(TAG).d("      **** LINE END ****");
+                //Timber.tag(TAG).d("      **** LINE END ****");
             }
             //add this block to the results
             textDetectionResults.getBlocks().add(resultBlock);
-            Timber.tag(TAG).d("   **** BLOCK END ****");
+            //Timber.tag(TAG).d("   **** BLOCK END ****");
 
         }
         Timber.tag(TAG).d("   ...returning results");

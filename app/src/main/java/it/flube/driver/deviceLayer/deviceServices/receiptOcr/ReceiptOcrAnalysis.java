@@ -26,6 +26,7 @@ public class ReceiptOcrAnalysis {
         ReceiptOcrResults receiptOcrResults = new ReceiptOcrResults();
         receiptOcrResults.setOcrText(textDetectionResults);
 
+
         Timber.tag(TAG).d("   checking transaction id...");
         ReceiptTransactionId.findTransactionId(receiptOcrSettings, receiptPatternMatch, receiptOcrResults);
 

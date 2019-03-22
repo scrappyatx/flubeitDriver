@@ -106,8 +106,8 @@ public class DemoBatchSingleStepAuthorizePayment implements DemoBatchInterface {
 
                             .receiptRequest(new ReceiptRequestBuilder.Builder()
                                     .receiptAnalysis(new ReceiptAnalysisBuilder.Builder()
-                                            .doDeviceOcrRecognition(true)
-                                            .doCloudOcrRecognition(false)
+                                            .doDeviceOcrRecognition(false)
+                                            .doCloudOcrRecognition(true)
                                             .receiptOcrSettings(ReceiptOcrSettingsUtilities.getReceiptOcrSettingsForProfile(ServiceProviders.ReceiptOcrSettingsProfile.SERVICE_ONE))
                                             .build())
                                     .build())

@@ -4,6 +4,8 @@
 
 package it.flube.driver.deviceLayer.deviceServices.receiptOcr;
 
+import java.util.ArrayList;
+
 import it.flube.libbatchdata.entities.ReceiptOcrResults;
 import it.flube.libbatchdata.entities.ReceiptOcrSettings;
 import timber.log.Timber;
@@ -20,11 +22,27 @@ public class ReceiptTotalCharged {
 
         if (settings.getHasTransactionId()) {
             Timber.tag(TAG).d("searching for total charged");
-            String totalCharged = matcher.matchPatternRequest(settings.getTotalChargedStartSentinal(), settings.getTotalChargedEndSentinal(), settings.getTotalChargedPattern());
-            if (totalCharged != null) {
-                Timber.tag(TAG).d("   total charged FOUND -> %s", totalCharged);
+            ArrayList<String> matchList = matcher.matchPatternRequestIgnoreSentinals(settings.getTotalChargedPattern());
+
+            /// for total charged, we will pick the largest value out of the list
+            float maxValue = 0.0f;
+            String maxString = null;
+
+            for (String candidate : matchList){
+                Timber.tag(TAG).d("   candidate      -> " + candidate);
+                float candidateValue = Float.valueOf(candidate.replaceAll("[$,]",""));
+                Timber.tag(TAG).d("   candidate value -> " + candidateValue);
+                if (candidateValue > maxValue){
+                    maxString = candidate;
+                    Timber.tag(TAG).d("   setting maxString -> " + candidate);
+                }
+            }
+            Timber.tag(TAG).d("returning maxString -> " + maxString);
+
+            if (maxString != null) {
+                Timber.tag(TAG).d("   total charged FOUND -> %s", maxString);
                 results.setFoundTotalCharged(true);
-                results.setTotalCharged(totalCharged);
+                results.setTotalCharged(maxString);
             } else {
                 Timber.tag(TAG).d("   total charged NOT FOUND");
                 results.setFoundTotalCharged(false);

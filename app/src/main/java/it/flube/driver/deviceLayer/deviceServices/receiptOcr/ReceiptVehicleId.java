@@ -4,6 +4,8 @@
 
 package it.flube.driver.deviceLayer.deviceServices.receiptOcr;
 
+import java.util.ArrayList;
+
 import it.flube.libbatchdata.entities.ReceiptOcrResults;
 import it.flube.libbatchdata.entities.ReceiptOcrSettings;
 import timber.log.Timber;
@@ -20,11 +22,13 @@ public class ReceiptVehicleId {
 
         if (settings.getHasTransactionId()) {
             Timber.tag(TAG).d("searching for vehicle vin");
-            String vehicleId = matcher.matchPatternRequest(settings.getVehicleIdStartSentinal(), settings.getVehicleIdEndSentinal(), settings.getVehicleIdPattern());
-            if (vehicleId != null) {
-                Timber.tag(TAG).d("   vehicle id FOUND -> %s", vehicleId);
+            ArrayList<String> matchList = matcher.matchPatternRequestIgnoreSentinals(settings.getVehicleIdPattern());
+
+            //for vehicle id just return the first match
+            if (matchList.size() > 0) {
+                Timber.tag(TAG).d("   vehicle id FOUND -> %s", matchList.get(0));
                 results.setFoundVehicleId(true);
-                results.setVehicleId(vehicleId);
+                results.setVehicleId(matchList.get(0));
             } else {
                 Timber.tag(TAG).d("   vehicle id NOT FOUND");
                 results.setFoundVehicleId(false);
